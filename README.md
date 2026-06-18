@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cîhan
 
-## Getting Started
+> A global community + discovery platform for the Kurdish diaspora, built around a
+> Radio-Garden-style interactive 3D globe. **"Cîhan"** (Kurdish for *world*) is a working
+> name — replace it when the brand is confirmed (see `lib/constants.ts`).
 
-First, run the development server:
+This repository is being built in phases. **Phase 0 (Scaffold & Auth) is complete.** See
+[`PROGRESS.md`](./PROGRESS.md) for status and [`DECISIONS.md`](./DECISIONS.md) for the decision log.
+
+---
+
+## Tech stack
+
+- **Next.js 16** (App Router, Turbopack) · React 19 · **TypeScript (strict)**
+- **Tailwind CSS v4** + shadcn/ui-style primitives (Radix) · **lucide-react** · **Framer Motion** (`motion`)
+- **next-intl** for i18n (EN, DE, Kurmancî, Soranî, Arabic) with full **RTL** support
+- **next-themes** (dark-first, with light + system)
+- **Supabase** (Auth + Postgres + PostGIS) via `@supabase/ssr`
+- **Zod** (validation, used from Phase 1)
+
+> ⚠️ Next.js 16 renames `middleware.ts` → **`proxy.ts`**, makes `params`/`cookies()`/`headers()`
+> **async**, and uses Tailwind v4's CSS-first config. See `AGENTS.md`.
+
+---
+
+## Prerequisites
+
+- **Node.js ≥ 20.9** and npm (this project was scaffolded with Node 24 / npm 11)
+- A free **Supabase** project (cloud) — no Docker required
+
+---
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # then fill in the values (see below)
+npm run dev                  # http://localhost:3000  (redirects to /en)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app **runs without Supabase keys** — auth simply stays inactive and shows a friendly
+"not connected yet" notice. Add keys to activate sign-in.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Configure Supabase
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Create a project at <https://supabase.com/dashboard>.
+2. **Project Settings → API**, copy into `.env.local`:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY` (server-only; never expose to the client)
+3. Run the base migration so the database is PostGIS-enabled and RLS-ready:
+   - **SQL Editor** → paste the contents of `supabase/migrations/0000_init.sql` → Run.
+   - (Later, when the Supabase CLI is installed, migrations can be applied with
+     `supabase db push`.)
+4. **Authentication → Providers → Email**: for quick demos you may disable
+   "Confirm email" so password sign-ups log in immediately.
 
-## Learn More
+### 2. (Optional) Enable Google sign-in
 
-To learn more about Next.js, take a look at the following resources:
+The "Continue with Google" button is already built. To activate it:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Create OAuth credentials in Google Cloud Console.
+2. Supabase **Authentication → Providers → Google**: paste the Client ID + Secret.
+3. Add the Supabase callback URL shown there to Google's authorized redirect URIs.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+No code changes are needed — Google login works as soon as the provider is configured.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Command           | Description                                  |
+| ----------------- | -------------------------------------------- |
+| `npm run dev`     | Start the dev server (Turbopack)             |
+| `npm run build`   | Production build (also type-checks)          |
+| `npm run start`   | Run the production build                     |
+| `npm run lint`    | ESLint (flat config)                         |
+| `npx tsc --noEmit`| Type-check only                              |
+
+---
+
+## Project structure
+
+```
+app/
+  layout.tsx              # root pass-through (i18n pattern)
+  globals.css             # Tailwind v4 tokens: "cosmic warmth" palette + utilities
+  [locale]/               # locale-segmented routes (en, de, ku, ckb, ar)
+    layout.tsx            # <html lang dir>, fonts, theme + intl providers, app shell
+    page.tsx              # landing (hero globe + features)
+    (auth)/login, signup  # email/password + Continue with Google
+    dashboard/            # auth-gated page
+    not-found.tsx
+  auth/callback, signout  # OAuth/email-confirm + sign-out route handlers
+components/
+  ui/                     # shadcn-style primitives (button, input, card, dropdown, …)
+  app-shell/              # header, footer, brand, language switcher, theme toggle, menus
+  auth/                   # auth form (Google + email)
+  marketing/              # hero globe
+  backdrop.tsx            # cosmic starfield background
+i18n/                     # next-intl routing, navigation, request config
+messages/                 # en/de/ku/ckb/ar.json
+lib/                      # supabase clients, auth, env, utils, constants
+proxy.ts                  # next-intl routing + Supabase session refresh (Next 16 "middleware")
+supabase/migrations/      # versioned SQL (PostGIS + RLS conventions)
+```
+
+---
+
+## Internationalization & RTL
+
+- Locales: `en`, `de`, `ku` (Kurmancî), `ckb` (Soranî), `ar` (Arabic). English is the
+  source of truth; the others cover the app shell + auth (Kurmancî/Soranî are best-effort
+  and will be refined).
+- `ckb` and `ar` render **right-to-left** — the whole layout mirrors and switches to the
+  Vazirmatn typeface. Latin locales use Fraunces (display) + Manrope (UI).
+
+---
+
+## Deployment
+
+Target: **Vercel** (frontend) + **Supabase** (cloud). Set the same environment variables
+in the Vercel project, and set `NEXT_PUBLIC_SITE_URL` to the deployed origin. Full deploy
+steps are finalized in Phase 9.

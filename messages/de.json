@@ -1,0 +1,80 @@
+{
+  "Brand": {
+    "tagline": "Die kurdische Welt, verbunden."
+  },
+  "Nav": {
+    "explore": "Entdecken",
+    "directory": "Verzeichnis",
+    "people": "Menschen",
+    "feed": "Feed",
+    "news": "Nachrichten",
+    "soon": "Bald",
+    "signIn": "Anmelden",
+    "getStarted": "Loslegen",
+    "dashboard": "Dashboard",
+    "signOut": "Abmelden",
+    "account": "Konto",
+    "openMenu": "Menü öffnen"
+  },
+  "Common": {
+    "language": "Sprache",
+    "toggleTheme": "Design umschalten",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "system": "System",
+    "or": "oder"
+  },
+  "Landing": {
+    "eyebrow": "Ein Zuhause für die kurdische Diaspora",
+    "title": "Finde deine Leute, wo immer sie sind.",
+    "subtitle": "Drehe einen lebendigen Globus, um kurdische Gemeinschaften, Restaurants, Ärzte und Unternehmen weltweit zu entdecken — verbinde dich, bewerte und gehöre dazu.",
+    "ctaJoin": "Der Community beitreten",
+    "ctaExplore": "Den Globus erkunden",
+    "feature1Title": "Ein lebendiger Globus",
+    "feature1Body": "Drehe die Erde, um kurdische Menschen und Orte sichtbar zu machen — sie leuchten dort, wo die Gemeinschaft lebt.",
+    "feature2Title": "Vertrauenswürdiges Verzeichnis",
+    "feature2Body": "Restaurants, Ärzte und Unternehmen mit Bewertungen, Rezensionen und echten Kontaktdaten.",
+    "feature3Title": "Echte Verbindung",
+    "feature3Body": "Entdecke Menschen in deiner Nähe, schreibe in Echtzeit und teile Veranstaltungen mit der Community.",
+    "phaseNote": "Du siehst eine frühe Grundlage. Globus, Verzeichnis und Community folgen in den nächsten Phasen."
+  },
+  "Auth": {
+    "loginTitle": "Willkommen zurück",
+    "loginSubtitle": "Melde dich an, um zu Cîhan zu gelangen.",
+    "signupTitle": "Konto erstellen",
+    "signupSubtitle": "Tritt der kurdischen Community auf Cîhan bei.",
+    "emailLabel": "E-Mail",
+    "emailPlaceholder": "du@beispiel.com",
+    "passwordLabel": "Passwort",
+    "passwordPlaceholder": "••••••••",
+    "continueWithGoogle": "Mit Google fortfahren",
+    "signInCta": "Anmelden",
+    "signUpCta": "Konto erstellen",
+    "noAccount": "Noch kein Konto?",
+    "haveAccount": "Bereits ein Konto?",
+    "signUpLink": "Registrieren",
+    "signInLink": "Anmelden",
+    "checkEmailTitle": "Prüfe dein Postfach",
+    "checkEmailBody": "Wir haben einen Bestätigungslink an {email} gesendet. Klicke darauf, um dein Konto zu aktivieren.",
+    "notConfigured": "Die Authentifizierung ist noch nicht verbunden. Füge deine Supabase-Schlüssel in .env.local hinzu, um die Anmeldung zu aktivieren.",
+    "genericError": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    "working": "Einen Moment…"
+  },
+  "Dashboard": {
+    "title": "Dein Dashboard",
+    "subtitle": "Das ist dein angemeldeter Bereich. Das vollständige Erlebnis folgt in den nächsten Phasen.",
+    "signedInAs": "Angemeldet als",
+    "signOut": "Abmelden",
+    "comingSoonTitle": "Demnächst",
+    "comingSoon": "Profil & Onboarding, der Globus, das Verzeichnis, Chat, der Feed, Nachrichten und Abrechnung."
+  },
+  "NotFound": {
+    "title": "Verloren im All",
+    "body": "Diese Seite konnten wir nicht finden.",
+    "back": "Zurück zur Startseite"
+  },
+  "Metadata": {
+    "title": "Cîhan — Die kurdische Welt, verbunden",
+    "description": "Eine globale Community- und Entdeckungsplattform für die kurdische Diaspora."
+  }
+}
