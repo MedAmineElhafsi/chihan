@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { LayoutDashboard, LogOut } from "lucide-react";
+import { LayoutDashboard, LogOut, UserRound } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -57,6 +57,12 @@ export function UserMenu({ email }: { email: string | null }) {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href="/profile">
+            <UserRound />
+            {t("profile")}
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/dashboard">
             <LayoutDashboard />
