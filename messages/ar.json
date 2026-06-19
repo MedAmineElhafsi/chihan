@@ -115,6 +115,21 @@
     "notLocated": "لم يُحدَّد موقع",
     "noBio": "لا توجد نبذة بعد."
   },
+  "Explore": {
+    "title": "استكشاف",
+    "people": "الأشخاص",
+    "restaurants": "المطاعم",
+    "doctors": "الأطباء",
+    "soon": "قريبًا",
+    "memberCount": "{count} عضو",
+    "countries": "البلدان",
+    "allCountries": "كل البلدان",
+    "backToCountry": "العودة إلى {country}",
+    "viewProfile": "عرض الملف",
+    "recenter": "توسيط",
+    "empty": "لا أعضاء عامّون على الكرة الأرضية بعد. كن أول من يظهر.",
+    "emptyCta": "أكمل ملفك الشخصي"
+  },
   "NotFound": {
     "title": "تائه في الفضاء",
     "body": "لم نتمكّن من العثور على تلك الصفحة.",

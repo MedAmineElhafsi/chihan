@@ -28,13 +28,31 @@ globe; PostGIS/RLS base migration. Verified against the live Supabase project (s
 **Final step (requires you):** run `supabase/migrations/0001_profiles.sql` in the Supabase SQL
 editor, then complete onboarding to confirm a consented profile saves with a geocoded location.
 
-## ⏭️ Next: Phase 2 — The Globe
+## ✅ Phase 2 — The Globe (code complete)
 
-`react-globe.gl` Explore screen fed by profile/listing points, center reticle, rotate + click
-country selection, fly-to, layer toggles, glass results panel. **Awaiting "go".**
+- **`/explore`**: full-screen `react-globe.gl` Explore screen — a stylized dark globe (graticule
+  grid, golden atmosphere) over the cosmic backdrop, with a center **reticle**, auto-rotation,
+  and a glowing **people points** layer fed from public geocoded profiles (`lib/globe.ts`).
+- **Interaction**: click a point or a country → **fly-to** + a glass **results panel** (countries
+  list → country members → person detail with a link to the public profile). Recenter control.
+- **Layer toggles**: People (active); Restaurants/Doctors present but "Soon" (Directory = Phase 3).
+- Empty state when no public members yet. "Explore" is now a real nav link (desktop + mobile).
+- **Optional `supabase/seed.sql`**: ~24 fake Kurdish people across the diaspora so the globe looks
+  alive in demos. Explore i18n namespace across all 5 locales.
+
+**Verification:** `tsc` ✓ · `eslint` ✓ · `next build` ✓. Globe renders in-browser (WebGL ok),
+no console errors; empty state shown until profiles exist.
+**To populate (you):** run `0001_profiles.sql` (if not yet) and optionally `seed.sql`, then open
+`/explore` to see the dots + per-country panel.
+
+## ⏭️ Next: Phase 3 — Directory & reviews
+
+`listings` + `reviews` tables + RLS; create/claim/edit listings (geocoded, photos), category
+browse, listing detail with MapLibre map + contact info + star reviews; wire to the globe.
+**Awaiting "go".**
 
 ## Backlog (per brief)
 
-Phase 3 Directory & reviews · 4 People discovery + entitlements · 5 Chat · 6 Feed & events ·
-7 News · 8 Stripe billing · 9 Polish, moderation, deploy. (Account deletion + data export from
-§7 are scheduled with the privacy pass.)
+Phase 4 People discovery + entitlements · 5 Chat · 6 Feed & events · 7 News · 8 Stripe billing ·
+9 Polish, moderation, deploy. (Account deletion + data export from §7 with the privacy pass;
+business/listing seed data in Phase 3.)

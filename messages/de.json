@@ -115,6 +115,21 @@
     "notLocated": "Kein Standort festgelegt",
     "noBio": "Noch keine Bio."
   },
+  "Explore": {
+    "title": "Entdecken",
+    "people": "Menschen",
+    "restaurants": "Restaurants",
+    "doctors": "Ärzte",
+    "soon": "Bald",
+    "memberCount": "{count} Mitglieder",
+    "countries": "Länder",
+    "allCountries": "Alle Länder",
+    "backToCountry": "Zurück zu {country}",
+    "viewProfile": "Profil ansehen",
+    "recenter": "Zentrieren",
+    "empty": "Noch keine öffentlichen Mitglieder auf dem Globus. Sei das erste.",
+    "emptyCta": "Profil vervollständigen"
+  },
   "NotFound": {
     "title": "Verloren im All",
     "body": "Diese Seite konnten wir nicht finden.",

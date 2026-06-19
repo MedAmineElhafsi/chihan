@@ -115,6 +115,21 @@
     "notLocated": "No location set",
     "noBio": "No bio yet."
   },
+  "Explore": {
+    "title": "Explore",
+    "people": "People",
+    "restaurants": "Restaurants",
+    "doctors": "Doctors",
+    "soon": "Soon",
+    "memberCount": "{count} members",
+    "countries": "Countries",
+    "allCountries": "All countries",
+    "backToCountry": "Back to {country}",
+    "viewProfile": "View profile",
+    "recenter": "Recenter",
+    "empty": "No public members on the globe yet. Be the first to appear.",
+    "emptyCta": "Complete your profile"
+  },
   "NotFound": {
     "title": "Lost in space",
     "body": "We couldn’t find that page.",

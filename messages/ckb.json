@@ -115,6 +115,21 @@
     "notLocated": "هیچ شوێنێک دانەنراوە",
     "noBio": "هێشتا بایۆ نییە."
   },
+  "Explore": {
+    "title": "گەڕان",
+    "people": "خەڵک",
+    "restaurants": "چێشتخانە",
+    "doctors": "پزیشک",
+    "soon": "بەمزووانە",
+    "memberCount": "{count} ئەندام",
+    "countries": "وڵاتان",
+    "allCountries": "هەموو وڵاتان",
+    "backToCountry": "گەڕانەوە بۆ {country}",
+    "viewProfile": "بینینی پرۆفایل",
+    "recenter": "ناوەندکردن",
+    "empty": "هێشتا هیچ ئەندامێکی گشتی لەسەر گۆ نییە. ببە یەکەم کەس.",
+    "emptyCta": "پرۆفایلەکەت تەواو بکە"
+  },
   "NotFound": {
     "title": "ون لە بۆشایی",
     "body": "ئەو پەڕەیەمان نەدۆزییەوە.",

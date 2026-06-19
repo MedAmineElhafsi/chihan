@@ -36,3 +36,19 @@ A running log of notable technical/product decisions and their rationale.
   trusts client values (languages/dialect filtered to known sets; `user_id` taken from the session).
 - **Account deletion + data export (§7) deferred** to the later privacy/moderation pass; Phase 1
   focuses on the onboarding + consent acceptance criteria.
+
+## Phase 2
+
+- **Stylized textureless globe**, not a photoreal earth image. A dark `MeshPhongMaterial` sphere
+  with graticules + a golden atmosphere reads as the Radio-Garden look, matches our aesthetic, and
+  avoids bundling/fetching a large earth texture or countries GeoJSON.
+- **Country selection without polygon data.** Countries are derived by grouping points by their
+  `country` field; fly-to targets the average of a country's member coordinates. No external
+  GeoJSON/topojson dependency, no reverse-geocoding on click.
+- **`react-globe.gl` loaded via `next/dynamic` (`ssr:false`)** inside a small client wrapper, with
+  the globe instance passed back through a `globeRef` prop (dynamic components don't forward refs).
+- **Globe fed by real public profiles only** (People layer). Restaurants/Doctors layers are shown
+  but disabled until the Directory (`listings`) lands in Phase 3.
+- **Seed creates `auth.users` + `profiles` in one data-modifying CTE** (shared fixed UUIDs) so the
+  two inserts stay consistent and re-runnable; seed users have no `identities` row (data only, not
+  meant to log in). Kept optional.

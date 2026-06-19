@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
+import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { BrandWordmark } from "./brand";
 import { LanguageSwitcher } from "./language-switcher";
@@ -20,7 +21,13 @@ export async function SiteHeader() {
         <div className="flex items-center gap-8">
           <BrandWordmark />
           <nav className="hidden items-center gap-0.5 lg:flex">
-            {NAV_KEYS.map((key) => (
+            <Link
+              href="/explore"
+              className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+            >
+              {t("explore")}
+            </Link>
+            {NAV_KEYS.filter((key) => key !== "explore").map((key) => (
               <span
                 key={key}
                 className="group flex cursor-default items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"

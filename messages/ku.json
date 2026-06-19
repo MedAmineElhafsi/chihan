@@ -115,6 +115,21 @@
     "notLocated": "Cih nehatiye danîn",
     "noBio": "Hîn bîo tune."
   },
+  "Explore": {
+    "title": "Vekole",
+    "people": "Mirov",
+    "restaurants": "Xwaringeh",
+    "doctors": "Bijîjk",
+    "soon": "Zû",
+    "memberCount": "{count} endam",
+    "countries": "Welat",
+    "allCountries": "Hemû welat",
+    "backToCountry": "Vegere {country}",
+    "viewProfile": "Profîlê bibîne",
+    "recenter": "Navendîkirin",
+    "empty": "Hîn endamên giştî li ser gerstêrkê tune. Bibe yê yekem.",
+    "emptyCta": "Profîla xwe temam bike"
+  },
   "NotFound": {
     "title": "Di fezayê de winda",
     "body": "Me ew rûpel nedît.",

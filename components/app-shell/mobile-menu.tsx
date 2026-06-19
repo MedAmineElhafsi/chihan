@@ -39,7 +39,10 @@ export function MobileMenu({ email }: { email: string | null }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[15rem]">
-        {NAV_KEYS.map((key) => (
+        <DropdownMenuItem asChild>
+          <Link href="/explore">{tNav("explore")}</Link>
+        </DropdownMenuItem>
+        {NAV_KEYS.filter((key) => key !== "explore").map((key) => (
           <DropdownMenuItem
             key={key}
             disabled
