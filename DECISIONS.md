@@ -8,25 +8,31 @@ A running log of notable technical/product decisions and their rationale.
   path to a working demo. Migrations are versioned SQL applied via the dashboard/CLI.
 - **Google login built now, configured later.** The button + `/auth/callback` flow ships in
   Phase 0; Google activates once OAuth credentials are added in the Supabase dashboard.
-  Email/password works immediately.
-- **Next.js 16** (current latest from `create-next-app`). Required adapting to breaking changes:
-  `middleware.ts` → **`proxy.ts`** (Node runtime), **async** `params`/`cookies()`/`headers()`,
-  ESLint flat config, Turbopack by default, and **Tailwind v4** (CSS-first `@theme`).
-- **proxy.ts composition order:** run next-intl routing first (it owns the response), then
-  refresh the Supabase session onto that response. Skipped gracefully when Supabase env vars
-  are absent, so the app runs before keys exist.
-- **Auth route handlers live outside `[locale]`** (`/auth/callback`, `/auth/signout`) and are
-  excluded from the proxy matcher to avoid locale-prefix rewrites.
-- **npm** as the package manager (no pnpm/yarn present).
-- **Design direction "cosmic warmth":** dark-first night-sky base with a single golden-sun
-  accent (`#E1B12C`); Kurdish red/green used sparingly. Fonts: Fraunces (display) + Manrope
-  (UI) + Vazirmatn (Arabic/RTL) — deliberately avoiding generic stacks (no Inter/Roboto).
-- **Bespoke shadcn-style primitives.** Rather than run `shadcn init` against bleeding-edge
-  Next 16 / Tailwind v4 (risk of mangling the custom theme), the primitives are hand-authored
-  in shadcn conventions with a `components.json`, so the CLI can still add components later.
-- **Placeholder nav** (Explore/Directory/People/Feed/News) shown with "Soon" badges instead of
-  dead links — honest about the roadmap, no 404s.
-- **Translations:** English is source-of-truth; German + Arabic are solid; Kurmancî/Soranî are
-  best-effort for Phase 0 and flagged for native review.
-- **`getEntitlements`/limits** stub placed in `lib/constants.ts` (`FREE_LIMITS`) now so monetization
-  numbers live in one tunable place; enforcement arrives in Phase 4.
+- **Next.js 16** (current latest). Adapted to breaking changes: `middleware.ts` → **`proxy.ts`**
+  (Node runtime), **async** `params`/`cookies()`/`headers()`, ESLint flat config, Turbopack
+  default, and **Tailwind v4** (CSS-first `@theme`).
+- **proxy.ts composition order:** next-intl routing first (owns the response), then Supabase
+  session refresh onto it. Skipped gracefully when Supabase env vars are absent.
+- **Auth route handlers live outside `[locale]`** and are excluded from the proxy matcher.
+- **npm**; **dark-first "cosmic warmth"** palette (golden-sun accent, Kurdish red/green sparingly);
+  Fraunces + Manrope + Vazirmatn fonts; hand-authored shadcn-style primitives on Radix.
+
+## Phase 1
+
+- **PostGIS point via trigger, not a generated column.** A `before insert/update` trigger derives
+  `location` from `lat`/`lng`, so the app (and PostgREST) only ever writes plain numbers — avoids
+  geography-cast immutability concerns and keeps the API simple.
+- **Two SELECT RLS policies on profiles** (public-when-`is_public` OR owner) so an owner always
+  sees their own private profile while everyone else only sees consented ones. Private profiles
+  therefore 404 on `/u/[id]` for non-owners via RLS, not app logic.
+- **Privacy by default (brief §7).** `is_public=false` and `consent_at=null` until the user ticks
+  the explicit "appear in the directory" consent. Consent timestamp is recorded server-side.
+- **Geocoding server-side on save** via Nominatim with a descriptive User-Agent + in-process cache;
+  results stored as `lat`/`lng` on the profile (so the place isn't re-geocoded unless it changes).
+- **Avatars in a public Storage bucket**, objects keyed `"<user_id>/<file>"`; RLS lets each user
+  write only their own folder while anyone can read (public profile photos).
+- **Server Action for saving** (`saveProfile`, Zod-validated) — client uploads the avatar first
+  (browser client, RLS-scoped), then hands the resulting URL + fields to the action, which never
+  trusts client values (languages/dialect filtered to known sets; `user_id` taken from the session).
+- **Account deletion + data export (§7) deferred** to the later privacy/moderation pass; Phase 1
+  focuses on the onboarding + consent acceptance criteria.

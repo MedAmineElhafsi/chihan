@@ -2,36 +2,39 @@
 
 Building in phases (see the project brief). One phase at a time; stop for confirmation after each.
 
-## ✅ Phase 0 — Scaffold & Auth (complete)
+## ✅ Phase 0 — Scaffold & Auth (complete & verified)
 
-- Next.js 16 (App Router, Turbopack) + TypeScript strict + Tailwind v4.
-- shadcn/ui-style primitives on Radix (button, input, label, card, dropdown-menu, avatar);
-  `components.json` set so the shadcn CLI works going forward.
-- Design system: "cosmic warmth" tokens (dark-first night-sky + golden-sun `#E1B12C`),
-  Fraunces / Manrope / Vazirmatn fonts, glassmorphism + starfield backdrop.
-- i18n via next-intl: `en, de, ku, ckb, ar` with a language switcher and **RTL** flip
-  (verified `dir=rtl`, Vazirmatn, mirrored layout for `ar`/`ckb`).
-- Theme: next-themes (dark default, light + system), verified in both modes.
-- Supabase client layer (`@supabase/ssr`): browser, server, service-role clients +
-  session refresh composed with next-intl routing in **`proxy.ts`** (Next 16).
-- Auth: email/password **sign up + log in + log out**, "Continue with Google" + `/auth/callback`,
-  auth-gated `/dashboard` (redirects to login when signed out). Runs gracefully before keys exist.
-- App shell: glass header (brand, placeholder nav with "soon" badges, language switcher,
-  theme toggle, user menu), responsive + mobile menu, footer. Cinematic landing with hero globe.
-- DB: `supabase/migrations/0000_init.sql` enables **PostGIS** + pgcrypto, adds `set_updated_at()`
-  and documents the **RLS convention** (no feature tables yet — those start in Phase 1).
-- Tooling/docs: ESLint (flat) + Prettier, `.env.example`, README, DECISIONS, this file.
+Next.js 16 + TS strict + Tailwind v4; next-intl (en/de/ku/ckb/ar) with RTL; next-themes
+dark-first "cosmic warmth" design system; Supabase (`@supabase/ssr`) clients + session refresh
+in `proxy.ts`; email/password + Google auth, gated dashboard; glass app shell + landing with hero
+globe; PostGIS/RLS base migration. Verified against the live Supabase project (sign-up → dashboard
+→ sign-out).
 
-**Verification:** `tsc --noEmit` ✓ · `eslint` ✓ · `next build` ✓ (25 static pages across 5 locales).
-Browser-checked: landing (dark + light), `/ar/login` RTL, no console errors. Live auth round-trip
-is "ready, pending Supabase keys."
+## ✅ Phase 1 — Profiles & onboarding (code complete)
 
-## ⏭️ Next: Phase 1 — Profiles & onboarding
+- **Migration `0001_profiles.sql`**: `profiles` table with `geography(Point,4326)` derived from
+  lat/lng via trigger; **RLS** (public-read only for consented profiles + owner-only writes);
+  GIST index; public **`avatars` storage bucket** with per-user-folder policies.
+- **Onboarding / edit flow** (`/onboarding`, `/profile/edit`): avatar upload to Storage,
+  display name, bio, city/country, languages + dialect chips, and an explicit **consent** toggle
+  — profiles are **private by default**; `consent_at`/`is_public` set only on opt-in (brief §7).
+- **Geocoding**: city/country → lat/lng via Nominatim (`lib/geocode.ts`, cached, polite UA).
+- **Server action** `saveProfile` (Zod-validated, server-side geocode + upsert).
+- **Profile pages**: own `/profile` (with Edit), public `/u/[id]` (RLS-gated — private profiles
+  404 for non-owners). Dashboard shows a profile summary and forces onboarding for new users.
+- **i18n**: Onboarding + Profile namespaces across all 5 locales.
 
-`profiles` table + RLS; onboarding with consent + location geocoding + languages + avatar upload;
-editable profile + public profile view. **Awaiting "go".**
+**Verification:** `tsc` ✓ · `eslint` ✓ · `next build` ✓ (all routes compile). Onboarding UI renders.
+**Final step (requires you):** run `supabase/migrations/0001_profiles.sql` in the Supabase SQL
+editor, then complete onboarding to confirm a consented profile saves with a geocoded location.
+
+## ⏭️ Next: Phase 2 — The Globe
+
+`react-globe.gl` Explore screen fed by profile/listing points, center reticle, rotate + click
+country selection, fly-to, layer toggles, glass results panel. **Awaiting "go".**
 
 ## Backlog (per brief)
 
-Phase 2 Globe · 3 Directory & reviews · 4 People discovery + entitlements · 5 Chat ·
-6 Feed & events · 7 News · 8 Stripe billing · 9 Polish, moderation, deploy.
+Phase 3 Directory & reviews · 4 People discovery + entitlements · 5 Chat · 6 Feed & events ·
+7 News · 8 Stripe billing · 9 Polish, moderation, deploy. (Account deletion + data export from
+§7 are scheduled with the privacy pass.)
