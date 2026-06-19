@@ -1,6 +1,13 @@
 import { redirect } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Compass, LogOut, Pencil, Sparkles, UserRound } from "lucide-react";
+import {
+  Compass,
+  Globe2,
+  LogOut,
+  Pencil,
+  Sparkles,
+  UserRound,
+} from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
@@ -83,8 +90,33 @@ export default async function DashboardPage({
         </CardContent>
       </Card>
 
+      {/* Explore the globe */}
+      <Card className="glass animate-fade-up mt-5 overflow-hidden [animation-delay:120ms]">
+        <CardContent className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-4">
+            <div className="inline-flex size-11 items-center justify-center rounded-xl bg-secondary text-gold ring-1 ring-border">
+              <Globe2 className="size-5" />
+            </div>
+            <div>
+              <div className="font-display text-lg font-semibold">
+                {t("exploreTitle")}
+              </div>
+              <div className="max-w-md text-sm text-muted-foreground">
+                {t("exploreBody")}
+              </div>
+            </div>
+          </div>
+          <Button asChild className="gap-2 glow-gold">
+            <Link href="/explore">
+              <Globe2 className="size-4" />
+              {t("openGlobe")}
+            </Link>
+          </Button>
+        </CardContent>
+      </Card>
+
       {/* Coming soon */}
-      <Card className="glass animate-fade-up mt-5 [animation-delay:160ms]">
+      <Card className="glass animate-fade-up mt-5 [animation-delay:200ms]">
         <CardHeader>
           <div className="mb-1 inline-flex size-11 items-center justify-center rounded-xl bg-secondary text-gold ring-1 ring-border">
             <Sparkles className="size-5" />

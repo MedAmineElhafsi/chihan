@@ -42,13 +42,13 @@ export async function SiteHeader() {
         </div>
 
         <div className="flex items-center gap-1.5">
-          <div className="hidden items-center gap-1.5 md:flex">
+          <div className="hidden items-center gap-1.5 lg:flex">
             <LanguageSwitcher />
             <ThemeToggle />
             <div className="mx-1 h-6 w-px bg-border" />
             <UserMenu email={email} />
           </div>
-          <div className="flex items-center gap-0.5 md:hidden">
+          <div className="flex items-center gap-0.5 lg:hidden">
             <ThemeToggle />
             <MobileMenu email={email} />
           </div>
