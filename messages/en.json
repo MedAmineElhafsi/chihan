@@ -293,6 +293,13 @@
     "errorPhotoSize": "Image is too large (max 4 MB).",
     "errorGeneric": "Couldn’t post. Please try again."
   },
+  "News": {
+    "title": "News",
+    "subtitle": "Kurdish news from around the world.",
+    "all": "All",
+    "readMore": "Read more",
+    "empty": "No news yet."
+  },
   "NotFound": {
     "title": "Lost in space",
     "body": "We couldn’t find that page.",

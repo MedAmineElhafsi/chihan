@@ -293,6 +293,13 @@
     "errorPhotoSize": "Bild ist zu groß (max. 4 MB).",
     "errorGeneric": "Konnte nicht gepostet werden. Bitte versuche es erneut."
   },
+  "News": {
+    "title": "Nachrichten",
+    "subtitle": "Kurdische Nachrichten aus aller Welt.",
+    "all": "Alle",
+    "readMore": "Mehr lesen",
+    "empty": "Noch keine Nachrichten."
+  },
   "NotFound": {
     "title": "Verloren im All",
     "body": "Diese Seite konnten wir nicht finden.",

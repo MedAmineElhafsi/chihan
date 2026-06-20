@@ -123,12 +123,25 @@ state (sign-in prompt / upgrade prompt / composer), no console errors.
 **To test acceptance (you):** run `0005_feed.sql`; as a free user you'll see the upgrade prompt; to
 try the premium path, temporarily set your `subscriptions.status` to `active`, then post an event.
 
-## ⏭️ Next: Phase 7 — News
+## ✅ Phase 7 — News (code complete)
 
-`news_articles` table + News page with region filter; seed content; simple admin insert path.
-**Awaiting "go".**
+- **Migration `0006`**: `news_articles` (title, summary, source, url, image, country, category,
+  published_at) + RLS (public read; writes via service-role / admin — no user insert policy).
+- **`/news`**: responsive article cards (category-colored header, country badge, summary, source +
+  date, external "Read more"), filterable by **country** via chips.
+- Optional **`supabase/seed_news.sql`** (~12 sample articles across countries/categories).
+- "News" wired as a real nav link — **all five primary nav items are now live** (no more "Soon").
+  News i18n across all 5 locales.
+
+**Verification:** `tsc` ✓ · `eslint` ✓ · `next build` ✓. News page renders (empty state until
+seeded), no console errors.
+**To populate (you):** run `0006_news.sql` then `seed_news.sql`, and open `/news`.
+
+## ⏭️ Next: Phase 8 — Stripe billing
+
+Checkout (monthly + yearly), Customer Portal, and a webhook that writes `subscriptions` and flips
+entitlements — test mode end-to-end. **Awaiting "go".**
 
 ## Backlog (per brief)
 
-Phase 8 Stripe billing · 9 Polish, moderation, deploy.
-(Account deletion + data export from §7 with the privacy pass.)
+Phase 9 Polish, moderation, deploy. (Account deletion + data export from §7 with the privacy pass.)

@@ -293,6 +293,13 @@
     "errorPhotoSize": "Wêne pir mezin e (herî zêde 4 MB).",
     "errorGeneric": "Nehat weşandin. Ji kerema xwe dîsa biceribîne."
   },
+  "News": {
+    "title": "Nûçe",
+    "subtitle": "Nûçeyên kurdî ji çar aliyên cîhanê.",
+    "all": "Hemû",
+    "readMore": "Bêtir bixwîne",
+    "empty": "Hîn nûçe tune."
+  },
   "NotFound": {
     "title": "Di fezayê de winda",
     "body": "Me ew rûpel nedît.",

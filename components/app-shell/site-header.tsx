@@ -8,8 +8,6 @@ import { ThemeToggle } from "./theme-toggle";
 import { UserMenu } from "./user-menu";
 import { MobileMenu } from "./mobile-menu";
 
-const NAV_KEYS = ["explore", "directory", "people", "feed", "news"] as const;
-
 export async function SiteHeader() {
   const t = await getTranslations("Nav");
   const user = await getCurrentUser();
@@ -45,23 +43,12 @@ export async function SiteHeader() {
             >
               {t("feed")}
             </Link>
-            {NAV_KEYS.filter(
-              (key) =>
-                key !== "explore" &&
-                key !== "directory" &&
-                key !== "people" &&
-                key !== "feed"
-            ).map((key) => (
-              <span
-                key={key}
-                className="group flex cursor-default items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {t(key)}
-                <span className="rounded-full bg-secondary px-1.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-gold/90">
-                  {t("soon")}
-                </span>
-              </span>
-            ))}
+            <Link
+              href="/news"
+              className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+            >
+              {t("news")}
+            </Link>
           </nav>
         </div>
 

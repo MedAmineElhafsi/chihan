@@ -23,8 +23,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const NAV_KEYS = ["explore", "directory", "people", "feed", "news"] as const;
-
 export function MobileMenu({ email }: { email: string | null }) {
   const tNav = useTranslations("Nav");
   const tCommon = useTranslations("Common");
@@ -58,24 +56,9 @@ export function MobileMenu({ email }: { email: string | null }) {
         <DropdownMenuItem asChild>
           <Link href="/feed">{tNav("feed")}</Link>
         </DropdownMenuItem>
-        {NAV_KEYS.filter(
-          (key) =>
-            key !== "explore" &&
-            key !== "directory" &&
-            key !== "people" &&
-            key !== "feed"
-        ).map((key) => (
-          <DropdownMenuItem
-            key={key}
-            disabled
-            className="justify-between opacity-100 data-[disabled]:opacity-100"
-          >
-            <span className="text-muted-foreground">{tNav(key)}</span>
-            <span className="rounded-full bg-secondary px-2 py-0.5 text-[0.65rem] font-medium uppercase tracking-wide text-muted-foreground">
-              {tNav("soon")}
-            </span>
-          </DropdownMenuItem>
-        ))}
+        <DropdownMenuItem asChild>
+          <Link href="/news">{tNav("news")}</Link>
+        </DropdownMenuItem>
 
         <DropdownMenuSeparator />
         <DropdownMenuLabel>{tCommon("language")}</DropdownMenuLabel>
