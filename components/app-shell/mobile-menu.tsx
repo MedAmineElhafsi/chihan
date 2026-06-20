@@ -2,7 +2,14 @@
 
 import { useTransition } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Check, LayoutDashboard, LogOut, Menu, UserRound } from "lucide-react";
+import {
+  Check,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  MessageSquare,
+  UserRound,
+} from "lucide-react";
 
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { locales, localeMeta, type Locale } from "@/i18n/routing";
@@ -84,6 +91,12 @@ export function MobileMenu({ email }: { email: string | null }) {
               <Link href="/profile">
                 <UserRound />
                 {tNav("profile")}
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/messages">
+                <MessageSquare />
+                {tNav("messages")}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>

@@ -13,6 +13,7 @@
     "getStarted": "Loslegen",
     "dashboard": "Dashboard",
     "profile": "Profil",
+    "messages": "Chats",
     "signOut": "Abmelden",
     "account": "Konto",
     "openMenu": "Menü öffnen"
@@ -250,6 +251,19 @@
     "b4": "Events posten & Verifizierungs-Badge erhalten",
     "seePlans": "Pläne ansehen",
     "later": "Vielleicht später"
+  },
+  "Chat": {
+    "title": "Nachrichten",
+    "empty": "Noch keine Unterhaltungen.",
+    "emptyHint": "Starte eine über das Profil einer Person.",
+    "selectConversation": "Wähle eine Unterhaltung, um zu chatten.",
+    "messagePlaceholder": "Nachricht schreiben…",
+    "send": "Senden",
+    "seen": "Gesehen",
+    "you": "Du",
+    "partnerFallback": "Mitglied",
+    "back": "Zurück",
+    "message": "Nachricht"
   },
   "NotFound": {
     "title": "Verloren im All",

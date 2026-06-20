@@ -4,6 +4,7 @@ import { setRequestLocale } from "next-intl/server";
 import { getCurrentUser } from "@/lib/auth";
 import { getProfileById } from "@/lib/profiles";
 import { ProfileView } from "@/components/profile/profile-view";
+import { MessageButton } from "@/components/chat/message-button";
 
 export default async function PublicProfilePage({
   params,
@@ -25,6 +26,11 @@ export default async function PublicProfilePage({
       <div className="animate-fade-up">
         <ProfileView profile={profile} isOwner={isOwner} />
       </div>
+      {user && !isOwner && (
+        <div className="animate-fade-up mt-4 flex justify-end [animation-delay:80ms]">
+          <MessageButton targetUserId={profile.user_id} />
+        </div>
+      )}
     </div>
   );
 }

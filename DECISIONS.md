@@ -83,3 +83,21 @@ A running log of notable technical/product decisions and their rationale.
 - **`subscriptions` has no user write policies** — only the service role (Stripe webhook) writes;
   users can read their own row. Created now so entitlements work before Stripe lands in Phase 8.
 - Added a small **Radix Dialog** primitive (shadcn-style) for the upgrade modal — reusable later.
+
+## Phase 5
+
+- **`SECURITY DEFINER` helper functions inside RLS** (`is_conversation_participant`,
+  `shares_conversation`) so participant checks don't recurse on `conversation_participants`.
+- **Conversations created via a `SECURITY DEFINER` RPC** (`create_direct_conversation`) — the
+  creator inserts both participant rows, which a normal `with check (user_id = auth.uid())` policy
+  would forbid. `find_direct_conversation` makes start-conversation a get-or-create.
+- **Read state via `last_read_at` on the participant row**, not `read_at` per message — one update
+  to mark a thread read, column-safe RLS (`user_id = auth.uid()`), and the sender derives "Seen"
+  from the partner's `last_read_at`. (Deviates slightly from the brief's `messages.read_at`.)
+- **A single Realtime subscription** to `messages` powers both the live thread and the list's
+  unread counts; RLS scopes the stream to the user's own conversations, so no client-side filter
+  by id is needed.
+- **Partners can read each other's profile** (extra `profiles` SELECT policy via
+  `shares_conversation`) so you always see who you're chatting with, even if they're private.
+- Active conversation's unread is **derived to 0 at render** (not set in an effect) to satisfy the
+  React `set-state-in-effect` rule.

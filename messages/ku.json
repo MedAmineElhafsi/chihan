@@ -13,6 +13,7 @@
     "getStarted": "Dest pê bike",
     "dashboard": "Panel",
     "profile": "Profîl",
+    "messages": "Peyam",
     "signOut": "Derkeve",
     "account": "Hesab",
     "openMenu": "Menûyê veke"
@@ -250,6 +251,19 @@
     "b4": "Bûyeran biweşîne & nîşana piştrastkirinê bistîne",
     "seePlans": "Planan bibîne",
     "later": "Dibe ku paşê"
+  },
+  "Chat": {
+    "title": "Peyam",
+    "empty": "Hîn axaftin tune.",
+    "emptyHint": "Yekê ji profîla kesekî dest pê bike.",
+    "selectConversation": "Axaftinekê hilbijêre da ku biaxivî.",
+    "messagePlaceholder": "Peyamekê binivîse…",
+    "send": "Bişîne",
+    "seen": "Hat dîtin",
+    "you": "Tu",
+    "partnerFallback": "Endam",
+    "back": "Vegere",
+    "message": "Peyam"
   },
   "NotFound": {
     "title": "Di fezayê de winda",

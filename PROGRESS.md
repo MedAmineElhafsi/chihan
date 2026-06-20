@@ -85,12 +85,32 @@ filter locks, blurred cards, sign-in gate), no console errors.
 **To exercise the limit (you):** run `0003_usage_subscriptions.sql`, sign in, ensure several public
 profiles exist (run `seed.sql`), then reveal 6 people on `/people` to hit the upgrade prompt.
 
-## ⏭️ Next: Phase 5 — Realtime chat
+## ✅ Phase 5 — Realtime chat (code complete)
 
-conversations / participants / messages + RLS; conversation list + thread UI; Supabase Realtime
-live updates; read receipts; unread badges. **Awaiting "go".**
+- **Migration `0004`**: `conversations` / `conversation_participants` (with `last_read_at`) /
+  `messages`. RLS uses `SECURITY DEFINER` helpers (`is_conversation_participant`,
+  `shares_conversation`) to avoid recursive policies; find/create-conversation RPCs; a policy so
+  chat partners can view each other's profile even if private; `messages` added to the Realtime
+  publication.
+- **Chat data + actions**: conversation list (last message + unread), thread messages,
+  `startConversation` (free **new-conversation/day limit**; replies always free), `sendMessage`,
+  `markRead`.
+- **Chat UI** (`/messages`, `/messages/[id]`): two-pane list + thread, **live messages via Supabase
+  Realtime**, **unread badges**, and **"Seen" receipts** (driven by participants' `last_read_at`).
+- **Message** button on public profiles → get-or-create conversation → thread (or upgrade prompt
+  when the daily new-conversation cap is hit). Messages link added to the account menus.
+- Chat i18n across all 5 locales.
+
+**Verification:** `tsc` ✓ · `eslint` ✓ · `next build` ✓ (all message routes compile).
+**To test live (you):** run `0004_chat.sql`, then open two browsers signed in as two accounts and
+message between them — they update in real time.
+
+## ⏭️ Next: Phase 6 — Feed & events
+
+posts / likes / comments + RLS; feed UI; create post + create event; premium gating
+(free = read/like only). **Awaiting "go".**
 
 ## Backlog (per brief)
 
-Phase 6 Feed & events · 7 News · 8 Stripe billing · 9 Polish, moderation, deploy.
+Phase 7 News · 8 Stripe billing · 9 Polish, moderation, deploy.
 (Account deletion + data export from §7 with the privacy pass.)

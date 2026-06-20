@@ -13,6 +13,7 @@
     "getStarted": "Get started",
     "dashboard": "Dashboard",
     "profile": "Profile",
+    "messages": "Messages",
     "signOut": "Sign out",
     "account": "Account",
     "openMenu": "Open menu"
@@ -250,6 +251,19 @@
     "b4": "Post events & get a verified badge",
     "seePlans": "See plans",
     "later": "Maybe later"
+  },
+  "Chat": {
+    "title": "Messages",
+    "empty": "No conversations yet.",
+    "emptyHint": "Start one from someone’s profile.",
+    "selectConversation": "Select a conversation to start chatting.",
+    "messagePlaceholder": "Write a message…",
+    "send": "Send",
+    "seen": "Seen",
+    "you": "You",
+    "partnerFallback": "Member",
+    "back": "Back",
+    "message": "Message"
   },
   "NotFound": {
     "title": "Lost in space",
