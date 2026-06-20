@@ -68,3 +68,9 @@ export const CATEGORY_COLORS: Record<string, string> = {
 };
 
 export const LISTING_PHOTO_MAX_BYTES = 4 * 1024 * 1024; // 4 MB
+
+/** Illustrative pricing (real Stripe prices wired in Phase 8). */
+export const PRICING = {
+  monthly: "€5.99",
+  yearly: "€49.99",
+} as const;

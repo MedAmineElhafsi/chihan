@@ -45,8 +45,12 @@ export function MobileMenu({ email }: { email: string | null }) {
         <DropdownMenuItem asChild>
           <Link href="/directory">{tNav("directory")}</Link>
         </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/people">{tNav("people")}</Link>
+        </DropdownMenuItem>
         {NAV_KEYS.filter(
-          (key) => key !== "explore" && key !== "directory"
+          (key) =>
+            key !== "explore" && key !== "directory" && key !== "people"
         ).map((key) => (
           <DropdownMenuItem
             key={key}

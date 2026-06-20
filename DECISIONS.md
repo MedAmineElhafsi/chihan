@@ -68,3 +68,18 @@ A running log of notable technical/product decisions and their rationale.
 - **Category as a text CHECK** (not a Postgres enum) so adding categories is a simple migration.
 - **Listings seeded unowned** so the Claim button is demonstrable; photos left empty (cards fall
   back to a category icon) to avoid bundling external images.
+
+## Phase 4
+
+- **One `getEntitlements()` source of truth** (brief §5). It reads `subscriptions`; everything else
+  (filters, reveals, future feed/event gates) derives from it, so tuning the model is one place.
+- **Reveal limit enforced server-side** in `revealProfile` (counts distinct `target_id` in
+  `usage_events` since local midnight), not just blurred in the UI — re-revealing the same profile
+  that day is free, so the count reflects distinct people.
+- **Advanced filters gated server-side too**: the page ignores `language`/`dialect` query params
+  for free users, so the lock can't be bypassed by editing the URL.
+- **Blur is a product gate, not a security boundary** — profiles are already public via `/u/[id]`,
+  so CSS-blurring loaded data is acceptable for the freemium UX (no hidden secrets here).
+- **`subscriptions` has no user write policies** — only the service role (Stripe webhook) writes;
+  users can read their own row. Created now so entitlements work before Stripe lands in Phase 8.
+- Added a small **Radix Dialog** primitive (shadcn-style) for the upgrade modal — reusable later.

@@ -65,12 +65,32 @@ no console errors; empty state shown until profiles exist.
 **To populate (you):** run `0002_listings_reviews.sql` and optionally `seed_listings.sql`, then
 browse `/directory`, open a listing, leave a ★ review, and find it on the globe.
 
-## ⏭️ Next: Phase 4 — People discovery + gating foundation
+## ✅ Phase 4 — People discovery + gating foundation (code complete)
 
-Searchable/filterable people list; profile reveal flow; `getEntitlements` + `usage_events` with
-the free limits from §5 (upgrade prompts, before Stripe). **Awaiting "go".**
+- **Migration `0003`**: `usage_events` (daily rate limits) + `subscriptions` (entitlements, wired
+  to Stripe in Phase 8), with RLS (owner-read; usage self-insert; subscriptions written only by
+  the service role).
+- **`getEntitlements()`** (free vs premium) drives the whole freemium model in one place.
+- **`/people`** discovery: searchable list of public profiles; **country/city filters free**;
+  **language/dialect filters premium-gated** (shown locked, enforced server-side); each card's
+  details are **blurred until revealed**.
+- **Profile reveal flow**: 5 distinct reveals/day for free users, enforced server-side via
+  `usage_events` (`revealProfile` action). The 6th reveal opens an **upgrade dialog**; a daily
+  counter shows reveals left.
+- **`/pricing`** page (Free vs Premium) + reusable Dialog primitive + UpgradeDialog.
+- "People" wired as a real nav link. People/Pricing/Upgrade i18n across all 5 locales.
+
+**Verification:** `tsc` ✓ · `eslint` ✓ · `next build` ✓. Pricing + People pages render (premium
+filter locks, blurred cards, sign-in gate), no console errors.
+**To exercise the limit (you):** run `0003_usage_subscriptions.sql`, sign in, ensure several public
+profiles exist (run `seed.sql`), then reveal 6 people on `/people` to hit the upgrade prompt.
+
+## ⏭️ Next: Phase 5 — Realtime chat
+
+conversations / participants / messages + RLS; conversation list + thread UI; Supabase Realtime
+live updates; read receipts; unread badges. **Awaiting "go".**
 
 ## Backlog (per brief)
 
-Phase 5 Chat · 6 Feed & events · 7 News · 8 Stripe billing · 9 Polish, moderation, deploy.
+Phase 6 Feed & events · 7 News · 8 Stripe billing · 9 Polish, moderation, deploy.
 (Account deletion + data export from §7 with the privacy pass.)
