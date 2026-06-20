@@ -12,17 +12,20 @@ import { useTranslations } from "next-intl";
 import {
   ChevronLeft,
   Crosshair,
+  Globe2,
   MapPin,
   Stethoscope,
-  Store,
   UserRound,
   Users,
+  Utensils,
 } from "lucide-react";
 import type { GlobeMethods } from "react-globe.gl";
 
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { CategoryIcon } from "@/components/directory/category-icon";
+import { CATEGORY_COLORS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import type { GlobePoint } from "@/lib/globe";
 
@@ -30,6 +33,8 @@ const GlobeGL = dynamic(() => import("./globe-gl"), {
   ssr: false,
   loading: () => null,
 });
+
+type Layer = "all" | "people" | "restaurants" | "doctors";
 
 function esc(s: string) {
   return s.replace(
@@ -48,27 +53,37 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
 
+  const [layer, setLayer] = useState<Layer>("all");
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  // Measure the globe container.
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const update = () =>
-      setSize({ w: el.clientWidth, h: el.clientHeight });
+    const update = () => setSize({ w: el.clientWidth, h: el.clientHeight });
     update();
     const ro = new ResizeObserver(update);
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
 
+  const filtered = useMemo(
+    () =>
+      points.filter((p) => {
+        if (layer === "people") return p.kind === "person";
+        if (layer === "restaurants") return p.category === "restaurant";
+        if (layer === "doctors") return p.category === "doctor";
+        return true;
+      }),
+    [points, layer]
+  );
+
   const countries = useMemo(() => {
     const map = new Map<
       string,
       { country: string; count: number; lat: number; lng: number }
     >();
-    for (const p of points) {
+    for (const p of filtered) {
       const key = p.country || "—";
       const e = map.get(key) ?? { country: key, count: 0, lat: 0, lng: 0 };
       e.count += 1;
@@ -79,47 +94,45 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
     return [...map.values()]
       .map((e) => ({ ...e, lat: e.lat / e.count, lng: e.lng / e.count }))
       .sort((a, b) => b.count - a.count);
-  }, [points]);
+  }, [filtered]);
 
-  const selectedPerson = useMemo(
-    () => points.find((p) => p.id === selectedId) ?? null,
-    [points, selectedId]
+  const selectedItem = useMemo(
+    () => filtered.find((p) => p.id === selectedId) ?? null,
+    [filtered, selectedId]
   );
-  const countryPeople = useMemo(
+  const countryItems = useMemo(
     () =>
       selectedCountry
-        ? points.filter((p) => (p.country || "—") === selectedCountry)
+        ? filtered.filter((p) => (p.country || "—") === selectedCountry)
         : [],
-    [points, selectedCountry]
+    [filtered, selectedCountry]
   );
 
   const globeData = useMemo(
     () =>
-      points.map((p) => {
+      filtered.map((p) => {
         const dimmed =
           selectedCountry != null && (p.country || "—") !== selectedCountry;
+        const base = CATEGORY_COLORS[p.category] ?? CATEGORY_COLORS.other;
         return {
           id: p.id,
           name: p.name,
           lat: p.lat,
           lng: p.lng,
-          color:
-            p.id === selectedId ? "#ffffff" : dimmed ? "#7c6420" : "#e1b12c",
+          color: p.id === selectedId ? "#ffffff" : dimmed ? "#4b5563" : base,
           radius: p.id === selectedId ? 0.95 : 0.5,
           label: `<div style="background:rgba(8,12,20,.85);border:1px solid rgba(255,255,255,.12);color:#e8ecf6;padding:4px 8px;border-radius:8px;font-size:12px;white-space:nowrap">${esc(
             p.name
           )}${p.city ? ` · ${esc(p.city)}` : ""}</div>`,
         };
       }),
-    [points, selectedId, selectedCountry]
+    [filtered, selectedId, selectedCountry]
   );
 
   const rings = useMemo(
     () =>
-      selectedPerson
-        ? [{ lat: selectedPerson.lat, lng: selectedPerson.lng }]
-        : [],
-    [selectedPerson]
+      selectedItem ? [{ lat: selectedItem.lat, lng: selectedItem.lng }] : [],
+    [selectedItem]
   );
 
   function flyTo(lat: number, lng: number, altitude = 1.6) {
@@ -149,12 +162,18 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
     if (c) flyTo(c.lat, c.lng, 1.8);
   }
 
-  function selectPerson(id: string) {
-    const p = points.find((x) => x.id === id);
+  function selectItem(id: string) {
+    const p = filtered.find((x) => x.id === id);
     if (!p) return;
     setSelectedId(id);
     setSelectedCountry(p.country || "—");
     flyTo(p.lat, p.lng, 1.1);
+  }
+
+  function changeLayer(next: Layer) {
+    setLayer(next);
+    setSelectedCountry(null);
+    setSelectedId(null);
   }
 
   function recenter() {
@@ -167,15 +186,15 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
     g.pointOfView({ lat: 42, lng: 24, altitude: 2.5 }, 1000);
   }
 
-  const layers = [
-    { key: "people", label: t("people"), icon: Users, active: true },
-    { key: "restaurants", label: t("restaurants"), icon: Store, active: false },
-    { key: "doctors", label: t("doctors"), icon: Stethoscope, active: false },
+  const layers: { key: Layer; label: string; icon: typeof Users }[] = [
+    { key: "all", label: t("all"), icon: Globe2 },
+    { key: "people", label: t("people"), icon: Users },
+    { key: "restaurants", label: t("restaurants"), icon: Utensils },
+    { key: "doctors", label: t("doctors"), icon: Stethoscope },
   ];
 
   return (
     <div className="relative h-[calc(100dvh-4rem)] w-full overflow-hidden">
-      {/* Globe */}
       <div ref={containerRef} className="absolute inset-0">
         {size.w > 0 && (
           <GlobeGL
@@ -184,7 +203,7 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
             height={size.h}
             points={globeData}
             rings={rings}
-            onPointClick={selectPerson}
+            onPointClick={selectItem}
             onGlobeReady={handleReady}
           />
         )}
@@ -193,14 +212,7 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
       {/* Center reticle */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <svg width="46" height="46" viewBox="0 0 46 46" className="opacity-70">
-          <circle
-            cx="23"
-            cy="23"
-            r="13"
-            fill="none"
-            stroke="#f2c84b"
-            strokeWidth="1.5"
-          />
+          <circle cx="23" cy="23" r="13" fill="none" stroke="#f2c84b" strokeWidth="1.5" />
           <line x1="23" y1="4" x2="23" y2="14" stroke="#f2c84b" strokeWidth="1.5" />
           <line x1="23" y1="32" x2="23" y2="42" stroke="#f2c84b" strokeWidth="1.5" />
           <line x1="4" y1="23" x2="14" y2="23" stroke="#f2c84b" strokeWidth="1.5" />
@@ -208,7 +220,6 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
         </svg>
       </div>
 
-      {/* Recenter */}
       <Button
         variant="outline"
         size="icon"
@@ -225,34 +236,30 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
           <div className="flex items-center justify-between">
             <h1 className="font-display text-lg font-semibold">{t("title")}</h1>
             <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-              {t("memberCount", { count: points.length })}
+              {t("memberCount", { count: filtered.length })}
             </span>
           </div>
           <div className="flex flex-wrap gap-1.5">
-            {layers.map(({ key, label, icon: Icon, active }) => (
-              <span
+            {layers.map(({ key, label, icon: Icon }) => (
+              <button
                 key={key}
+                onClick={() => changeLayer(key)}
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium",
-                  active
+                  "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors",
+                  layer === key
                     ? "border-gold/50 bg-gold/15 text-gold"
-                    : "border-border bg-card/40 text-muted-foreground"
+                    : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
                 )}
               >
                 <Icon className="size-3.5" />
                 {label}
-                {!active && (
-                  <span className="rounded-full bg-secondary px-1.5 text-[0.6rem] uppercase">
-                    {t("soon")}
-                  </span>
-                )}
-              </span>
+              </button>
             ))}
           </div>
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto p-3">
-          {points.length === 0 ? (
+          {filtered.length === 0 ? (
             <div className="flex flex-col items-center gap-2 px-4 py-10 text-center">
               <MapPin className="size-7 text-gold" />
               <p className="text-sm text-muted-foreground">{t("empty")}</p>
@@ -260,14 +267,18 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
                 <Link href="/onboarding">{t("emptyCta")}</Link>
               </Button>
             </div>
-          ) : selectedPerson ? (
-            <PersonDetail
-              person={selectedPerson}
+          ) : selectedItem ? (
+            <ItemDetail
+              item={selectedItem}
               backLabel={t("backToCountry", {
-                country: selectedPerson.country || "—",
+                country: selectedItem.country || "—",
               })}
               onBack={() => setSelectedId(null)}
-              viewLabel={t("viewProfile")}
+              viewLabel={
+                selectedItem.kind === "listing"
+                  ? t("viewListing")
+                  : t("viewProfile")
+              }
             />
           ) : selectedCountry ? (
             <div className="flex flex-col gap-1">
@@ -279,14 +290,11 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
                 {t("allCountries")}
               </button>
               <div className="px-2 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                {selectedCountry} · {t("memberCount", { count: countryPeople.length })}
+                {selectedCountry} ·{" "}
+                {t("memberCount", { count: countryItems.length })}
               </div>
-              {countryPeople.map((p) => (
-                <PersonRow
-                  key={p.id}
-                  person={p}
-                  onClick={() => selectPerson(p.id)}
-                />
+              {countryItems.map((p) => (
+                <ItemRow key={p.id} item={p} onClick={() => selectItem(p.id)} />
               ))}
             </div>
           ) : (
@@ -315,30 +323,41 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
   );
 }
 
-function PersonRow({
-  person,
-  onClick,
-}: {
-  person: GlobePoint;
-  onClick: () => void;
-}) {
-  const initial = person.name.trim().charAt(0).toUpperCase() || "?";
+function ItemAvatar({ item }: { item: GlobePoint }) {
+  if (item.kind === "listing") {
+    const color = CATEGORY_COLORS[item.category] ?? CATEGORY_COLORS.other;
+    return (
+      <span
+        className="flex size-9 shrink-0 items-center justify-center rounded-full text-white"
+        style={{ backgroundColor: `${color}cc` }}
+      >
+        <CategoryIcon category={item.category} className="size-4" />
+      </span>
+    );
+  }
+  const initial = item.name.trim().charAt(0).toUpperCase() || "?";
+  return (
+    <Avatar className="size-9">
+      {item.avatarUrl && <AvatarImage src={item.avatarUrl} alt={item.name} />}
+      <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-xs text-primary-foreground">
+        {initial}
+      </AvatarFallback>
+    </Avatar>
+  );
+}
+
+function ItemRow({ item, onClick }: { item: GlobePoint; onClick: () => void }) {
   return (
     <button
       onClick={onClick}
       className="flex items-center gap-3 rounded-lg px-3 py-2 text-start transition-colors hover:bg-accent"
     >
-      <Avatar className="size-9">
-        {person.avatarUrl && <AvatarImage src={person.avatarUrl} alt={person.name} />}
-        <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-xs text-primary-foreground">
-          {initial}
-        </AvatarFallback>
-      </Avatar>
+      <ItemAvatar item={item} />
       <span className="flex min-w-0 flex-col">
-        <span className="truncate text-sm font-medium">{person.name}</span>
-        {person.city && (
+        <span className="truncate text-sm font-medium">{item.name}</span>
+        {item.city && (
           <span className="truncate text-xs text-muted-foreground">
-            {person.city}
+            {item.city}
           </span>
         )}
       </span>
@@ -346,19 +365,19 @@ function PersonRow({
   );
 }
 
-function PersonDetail({
-  person,
+function ItemDetail({
+  item,
   backLabel,
   onBack,
   viewLabel,
 }: {
-  person: GlobePoint;
+  item: GlobePoint;
   backLabel: string;
   onBack: () => void;
   viewLabel: string;
 }) {
-  const initial = person.name.trim().charAt(0).toUpperCase() || "?";
-  const place = [person.city, person.country].filter(Boolean).join(", ");
+  const place = [item.city, item.country].filter(Boolean).join(", ");
+  const href = item.kind === "listing" ? `/directory/${item.id}` : `/u/${item.id}`;
   return (
     <div className="flex flex-col gap-4 p-2">
       <button
@@ -369,15 +388,12 @@ function PersonDetail({
         {backLabel}
       </button>
       <div className="flex items-center gap-4">
-        <Avatar className="size-16">
-          {person.avatarUrl && <AvatarImage src={person.avatarUrl} alt={person.name} />}
-          <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-xl text-primary-foreground">
-            {initial}
-          </AvatarFallback>
-        </Avatar>
-        <div className="min-w-0">
+        <div className="scale-150">
+          <ItemAvatar item={item} />
+        </div>
+        <div className="min-w-0 ps-2">
           <div className="truncate font-display text-lg font-semibold">
-            {person.name}
+            {item.name}
           </div>
           {place && (
             <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -388,8 +404,12 @@ function PersonDetail({
         </div>
       </div>
       <Button asChild className="gap-2">
-        <Link href={`/u/${person.id}`}>
-          <UserRound className="size-4" />
+        <Link href={href}>
+          {item.kind === "listing" ? (
+            <CategoryIcon category={item.category} className="size-4" />
+          ) : (
+            <UserRound className="size-4" />
+          )}
           {viewLabel}
         </Link>
       </Button>

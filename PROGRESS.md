@@ -45,14 +45,32 @@ no console errors; empty state shown until profiles exist.
 **To populate (you):** run `0001_profiles.sql` (if not yet) and optionally `seed.sql`, then open
 `/explore` to see the dots + per-country panel.
 
-## ⏭️ Next: Phase 3 — Directory & reviews
+## ✅ Phase 3 — Directory & reviews (code complete)
 
-`listings` + `reviews` tables + RLS; create/claim/edit listings (geocoded, photos), category
-browse, listing detail with MapLibre map + contact info + star reviews; wire to the globe.
-**Awaiting "go".**
+- **Migration `0002`**: `listings` (category CHECK, PostGIS location via trigger) + `reviews`
+  (1–5, one per user/listing) + a `listings_with_stats` view (rating average/count) + a
+  `listing-photos` storage bucket. RLS: public read; owner-only writes; an authenticated user
+  can **claim** an unowned listing.
+- **Directory**: `/directory` browse with category filter + cards (photo, rating, place);
+  `/directory/[id]` detail with photo gallery, **MapLibre map** (key-less CARTO dark basemap),
+  full contact info (tel/mailto/website), **1–5★ reviews** (read + write/update/delete), and a
+  **Claim** button; `/directory/new` + `/directory/[id]/edit` with multi-photo upload + geocoding.
+- **Globe integration**: listings now appear as points; the **All / People / Restaurants /
+  Doctors** toggles filter live; panel entries link people → `/u/[id]` and businesses →
+  `/directory/[id]` (the "Spain → restaurants" path).
+- "Directory" is a real nav link (desktop + mobile). Directory i18n across all 5 locales.
+- Optional `supabase/seed_listings.sql`: ~20 Kurdish businesses (claimable) across the diaspora.
+
+**Verification:** `tsc` ✓ · `eslint` ✓ · `next build` ✓ (all directory routes compile).
+**To populate (you):** run `0002_listings_reviews.sql` and optionally `seed_listings.sql`, then
+browse `/directory`, open a listing, leave a ★ review, and find it on the globe.
+
+## ⏭️ Next: Phase 4 — People discovery + gating foundation
+
+Searchable/filterable people list; profile reveal flow; `getEntitlements` + `usage_events` with
+the free limits from §5 (upgrade prompts, before Stripe). **Awaiting "go".**
 
 ## Backlog (per brief)
 
-Phase 4 People discovery + entitlements · 5 Chat · 6 Feed & events · 7 News · 8 Stripe billing ·
-9 Polish, moderation, deploy. (Account deletion + data export from §7 with the privacy pass;
-business/listing seed data in Phase 3.)
+Phase 5 Chat · 6 Feed & events · 7 News · 8 Stripe billing · 9 Polish, moderation, deploy.
+(Account deletion + data export from §7 with the privacy pass.)

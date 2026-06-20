@@ -42,3 +42,29 @@ export const KURDISH_DIALECTS = [
 /** Avatar upload constraints. */
 export const AVATAR_MAX_BYTES = 3 * 1024 * 1024; // 3 MB
 export const AVATAR_ACCEPT = ["image/jpeg", "image/png", "image/webp"] as const;
+
+/** Directory listing categories (matches the `listings.category` CHECK). */
+export const LISTING_CATEGORIES = [
+  "restaurant",
+  "doctor",
+  "grocery",
+  "lawyer",
+  "hairdresser",
+  "community",
+  "other",
+] as const;
+export type ListingCategory = (typeof LISTING_CATEGORIES)[number];
+
+/** Globe point color per category. */
+export const CATEGORY_COLORS: Record<string, string> = {
+  person: "#e1b12c",
+  restaurant: "#d6443b",
+  doctor: "#1fa36b",
+  grocery: "#3b82f6",
+  lawyer: "#a855f7",
+  hairdresser: "#ec4899",
+  community: "#14b8a6",
+  other: "#94a3b8",
+};
+
+export const LISTING_PHOTO_MAX_BYTES = 4 * 1024 * 1024; // 4 MB

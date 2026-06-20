@@ -52,3 +52,19 @@ A running log of notable technical/product decisions and their rationale.
 - **Seed creates `auth.users` + `profiles` in one data-modifying CTE** (shared fixed UUIDs) so the
   two inserts stay consistent and re-runnable; seed users have no `identities` row (data only, not
   meant to log in). Kept optional.
+
+## Phase 3
+
+- **MapLibre with a key-less CARTO dark raster basemap** (over OSM data) — free, no token, and it
+  matches the dark theme. The JS is dynamically imported inside `useEffect` so it never touches
+  `window` during SSR.
+- **`listings_with_stats` view** (`security_invoker`) computes rating average/count once in the DB
+  rather than aggregating reviews in the app; excludes the raw geography column.
+- **`set_profile_location()` reused** for listings — it only reads `lat`/`lng`, so it's generic.
+- **Reviewer names come from public profiles only** (RLS); private reviewers render as "Member",
+  keeping the consent model intact.
+- **Claim flow via one RLS UPDATE policy**: `using (owner is null or owner = auth.uid())` +
+  `with check (owner = auth.uid())` lets a user take an unowned listing without a separate table.
+- **Category as a text CHECK** (not a Postgres enum) so adding categories is a simple migration.
+- **Listings seeded unowned** so the Claim button is demonstrable; photos left empty (cards fall
+  back to a category icon) to avoid bundling external images.
