@@ -39,9 +39,18 @@ export async function SiteHeader() {
             >
               {t("people")}
             </Link>
+            <Link
+              href="/feed"
+              className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+            >
+              {t("feed")}
+            </Link>
             {NAV_KEYS.filter(
               (key) =>
-                key !== "explore" && key !== "directory" && key !== "people"
+                key !== "explore" &&
+                key !== "directory" &&
+                key !== "people" &&
+                key !== "feed"
             ).map((key) => (
               <span
                 key={key}

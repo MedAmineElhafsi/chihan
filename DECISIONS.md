@@ -101,3 +101,16 @@ A running log of notable technical/product decisions and their rationale.
   `shares_conversation`) so you always see who you're chatting with, even if they're private.
 - Active conversation's unread is **derived to 0 at render** (not set in an effect) to satisfy the
   React `set-state-in-effect` rule.
+
+## Phase 6
+
+- **Premium gating in the server action**, not RLS: posting/event creation checks
+  `getEntitlements`. RLS only enforces `author_id = auth.uid()` (a tier check in a policy would
+  need a subscriptions join on every insert). Free members can like and comment (lighter
+  engagement); only authoring posts/events is gated.
+- **30-day event horizon filtered server-side** in `getFeed` for free users — far-future events
+  never reach the client.
+- **`posts_with_counts` view** for like/comment counts; "liked by me" is a separate per-viewer
+  query (can't live in a shared view). Comments load lazily on expand via a server action.
+- **Insert row typed as `Record<string, unknown>`** so the post/event union doesn't trip the
+  Supabase client's excess-property check.

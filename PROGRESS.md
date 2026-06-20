@@ -105,12 +105,30 @@ profiles exist (run `seed.sql`), then reveal 6 people on `/people` to hit the up
 **To test live (you):** run `0004_chat.sql`, then open two browsers signed in as two accounts and
 message between them — they update in real time.
 
-## ⏭️ Next: Phase 6 — Feed & events
+## ✅ Phase 6 — Feed & events (code complete)
 
-posts / likes / comments + RLS; feed UI; create post + create event; premium gating
-(free = read/like only). **Awaiting "go".**
+- **Migration `0005`**: `posts` (post|event), `post_likes`, `post_comments`, a `posts_with_counts`
+  view, RLS (public read; owner writes), and a `post-media` storage bucket.
+- **`/feed`**: post & event cards with **likes** and **comments** (load on expand), author headers
+  linking to profiles, event cards (title, full date/time, location).
+- **Composer** (premium): Post tab (text + optional image) and Event tab (title, datetime,
+  geocoded location, details).
+- **Gating** (server-enforced): creating posts/events is **premium** — free members read, like and
+  comment, and see an upgrade prompt instead of the composer; **events more than 30 days out are
+  hidden from free users**. Anonymous visitors get a sign-in prompt.
+- "Feed" wired as a real nav link; Feed i18n across all 5 locales.
+
+**Verification:** `tsc` ✓ · `eslint` ✓ · `next build` ✓. Feed renders with the correct gating
+state (sign-in prompt / upgrade prompt / composer), no console errors.
+**To test acceptance (you):** run `0005_feed.sql`; as a free user you'll see the upgrade prompt; to
+try the premium path, temporarily set your `subscriptions.status` to `active`, then post an event.
+
+## ⏭️ Next: Phase 7 — News
+
+`news_articles` table + News page with region filter; seed content; simple admin insert path.
+**Awaiting "go".**
 
 ## Backlog (per brief)
 
-Phase 7 News · 8 Stripe billing · 9 Polish, moderation, deploy.
+Phase 8 Stripe billing · 9 Polish, moderation, deploy.
 (Account deletion + data export from §7 with the privacy pass.)
