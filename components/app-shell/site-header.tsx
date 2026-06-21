@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 
 import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
+import { isAdmin } from "@/lib/moderation";
 import { BrandWordmark } from "./brand";
 import { LanguageSwitcher } from "./language-switcher";
 import { ThemeToggle } from "./theme-toggle";
@@ -12,6 +13,7 @@ export async function SiteHeader() {
   const t = await getTranslations("Nav");
   const user = await getCurrentUser();
   const email = user?.email ?? null;
+  const admin = user ? await isAdmin(user.id) : false;
 
   return (
     <header className="sticky top-0 z-40 border-b border-border glass">
@@ -57,11 +59,11 @@ export async function SiteHeader() {
             <LanguageSwitcher />
             <ThemeToggle />
             <div className="mx-1 h-6 w-px bg-border" />
-            <UserMenu email={email} />
+            <UserMenu email={email} isAdmin={admin} />
           </div>
           <div className="flex items-center gap-0.5 lg:hidden">
             <ThemeToggle />
-            <MobileMenu email={email} />
+            <MobileMenu email={email} isAdmin={admin} />
           </div>
         </div>
       </div>

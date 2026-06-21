@@ -14,6 +14,8 @@
     "dashboard": "Dashboard",
     "profile": "Profil",
     "messages": "Chats",
+    "settings": "Einstellungen",
+    "admin": "Moderation",
     "signOut": "Abmelden",
     "account": "Konto",
     "openMenu": "Menü öffnen"
@@ -304,6 +306,51 @@
     "all": "Alle",
     "readMore": "Mehr lesen",
     "empty": "Noch keine Nachrichten."
+  },
+  "Report": {
+    "flag": "Melden",
+    "title": "Inhalt melden",
+    "body": "Sag uns, was nicht stimmt. Unser Team prüft es.",
+    "reasonPlaceholder": "Grund (optional)…",
+    "submit": "Meldung senden",
+    "cancel": "Abbrechen",
+    "done": "Danke — unser Team wird das prüfen.",
+    "close": "Schließen"
+  },
+  "Admin": {
+    "title": "Moderation",
+    "subtitle": "Offene Meldungen",
+    "empty": "Keine offenen Meldungen.",
+    "noReason": "(kein Grund angegeben)",
+    "dismiss": "Verwerfen",
+    "remove": "Inhalt entfernen"
+  },
+  "Settings": {
+    "title": "Einstellungen",
+    "subtitle": "Verwalte dein Konto und deine Privatsphäre.",
+    "exportTitle": "Deine Daten exportieren",
+    "exportBody": "Lade eine Kopie deines Profils, deiner Einträge, Beiträge, Bewertungen und Kommentare herunter.",
+    "exportCta": "Meine Daten herunterladen",
+    "dangerTitle": "Konto löschen",
+    "dangerBody": "Lösche dein Konto und alle Daten dauerhaft. Das kann nicht rückgängig gemacht werden.",
+    "deleteCta": "Konto löschen",
+    "deleteConfirmTitle": "Konto löschen?",
+    "deleteConfirmBody": "Dies löscht dein Profil und alle Inhalte dauerhaft. Das kann nicht rückgängig gemacht werden.",
+    "deleteConfirmCta": "Ja, alles löschen",
+    "deleteError": "Konto konnte nicht gelöscht werden.",
+    "cancel": "Abbrechen",
+    "privacyLink": "Datenschutzhinweis"
+  },
+  "Privacy": {
+    "title": "Datenschutzhinweis",
+    "p1": "Cîhan ist eine Community für die kurdische Diaspora. Da eine Mitgliedschaft eine ethnische Zugehörigkeit nahelegen kann — in der EU sensible Daten — ist dein Profil standardmäßig privat und erscheint erst nach ausdrücklicher Zustimmung in der Suche und auf dem Globus.",
+    "p2": "Wir speichern die von dir angegebenen Informationen (Name, Bio, Standort, Sprachen, Fotos), um den Dienst zu betreiben. Du kannst dein Profil jederzeit bearbeiten oder verbergen, deine Daten exportieren und dein Konto samt aller Inhalte in den Einstellungen löschen.",
+    "p3": "Wir verkaufen deine Daten nie. Zahlungen werden von Stripe abgewickelt; wir speichern keine Kartendaten."
+  },
+  "Error": {
+    "title": "Etwas ist schiefgelaufen",
+    "body": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut.",
+    "retry": "Erneut versuchen"
   },
   "NotFound": {
     "title": "Verloren im All",

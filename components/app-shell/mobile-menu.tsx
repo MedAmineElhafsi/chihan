@@ -8,6 +8,8 @@ import {
   LogOut,
   Menu,
   MessageSquare,
+  Settings,
+  ShieldCheck,
   UserRound,
 } from "lucide-react";
 
@@ -23,7 +25,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function MobileMenu({ email }: { email: string | null }) {
+export function MobileMenu({
+  email,
+  isAdmin,
+}: {
+  email: string | null;
+  isAdmin?: boolean;
+}) {
   const tNav = useTranslations("Nav");
   const tCommon = useTranslations("Common");
   const locale = useLocale() as Locale;
@@ -94,6 +102,20 @@ export function MobileMenu({ email }: { email: string | null }) {
                 {tNav("dashboard")}
               </Link>
             </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/settings">
+                <Settings />
+                {tNav("settings")}
+              </Link>
+            </DropdownMenuItem>
+            {isAdmin && (
+              <DropdownMenuItem asChild>
+                <Link href="/admin">
+                  <ShieldCheck />
+                  {tNav("admin")}
+                </Link>
+              </DropdownMenuItem>
+            )}
             <form action="/auth/signout" method="post">
               <DropdownMenuItem asChild>
                 <button

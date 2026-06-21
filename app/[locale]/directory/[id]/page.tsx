@@ -19,6 +19,7 @@ import { CategoryIcon } from "@/components/directory/category-icon";
 import { ReviewForm } from "@/components/directory/review-form";
 import { ClaimButton } from "@/components/directory/claim-button";
 import { ListingMap } from "@/components/directory/listing-map";
+import { ReportButton } from "@/components/moderation/report-button";
 
 export default async function ListingDetailPage({
   params,
@@ -97,6 +98,9 @@ export default async function ListingDetailPage({
             </Button>
           )}
           {canClaim && <ClaimButton listingId={listing.id} />}
+          {user && !isOwner && (
+            <ReportButton targetType="listing" targetId={listing.id} />
+          )}
         </div>
       </div>
 

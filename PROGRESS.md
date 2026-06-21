@@ -155,7 +155,31 @@ renders the interval toggle + Upgrade button (disabled until keys exist), no con
 **To test end-to-end (you):** add Stripe test keys + price IDs, run `stripe listen`, then upgrade
 with card `4242 4242 4242 4242` and cancel via the portal (see README §3).
 
-## ⏭️ Next: Phase 9 — Polish, moderation & deploy
+## ✅ Phase 9 — Polish, moderation & deploy (code complete)
 
-`reports` table + minimal admin moderation; empty/loading/error states; responsive + RTL pass;
-perf pass; deploy to Vercel + Supabase; README finalize. **Awaiting "go".**
+- **Migration `0007`**: `reports` + `profiles.is_admin` with a trigger that blocks self-elevation;
+  RLS (users file reports; admins read/resolve).
+- **Moderation**: a **Report** button (dialog) on posts and listings → `reports`; an admin-only
+  **`/admin`** queue to **Dismiss** or **Remove** flagged content (removal via the service role;
+  reported profiles are hidden, not deleted). Admin link surfaces in the account menu for admins.
+- **Privacy (§7)**: **`/settings`** with **data export** (`/api/account/export` → JSON download)
+  and **account deletion** (full erasure via the auth admin API), a **`/privacy`** notice page, and
+  a footer link.
+- **Polish**: global **`error.tsx`** + **`loading.tsx`** boundaries. Report/Admin/Settings/Privacy/
+  Error localized across all 5 locales.
+- **Deploy-ready**: README documents the migration order, Vercel + Supabase setup, Auth redirect
+  config, and the Stripe webhook endpoint.
+
+**Verification:** `tsc` ✓ · `eslint` ✓ (clean) · `next build` ✓ (all routes incl. `/admin`,
+`/settings`, `/privacy`, `/api/account/export`). Privacy page renders, no console errors.
+**Deploy (you):** push to GitHub → import in Vercel → set env vars → run migrations on Supabase →
+set the Auth redirect URLs + Stripe webhook (see README "Deployment").
+
+---
+
+## 🎉 All 10 phases (0–9) are code-complete
+
+The platform is feature-complete: auth · profiles/onboarding · the globe · directory & reviews ·
+people discovery + freemium gating · realtime chat · feed & events · news · Stripe billing ·
+moderation + privacy. Each phase is on its own branch; everything type-checks, lints and builds.
+Remaining work is your hosted setup (run migrations, add keys, deploy).

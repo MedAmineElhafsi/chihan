@@ -135,8 +135,35 @@ supabase/migrations/      # versioned SQL (PostGIS + RLS conventions)
 
 ---
 
-## Deployment
+## Database migrations
 
-Target: **Vercel** (frontend) + **Supabase** (cloud). Set the same environment variables
-in the Vercel project, and set `NEXT_PUBLIC_SITE_URL` to the deployed origin. Full deploy
-steps are finalized in Phase 9.
+Apply the SQL files in `supabase/migrations` **in order** (SQL Editor or `supabase db push`):
+
+| File | Adds |
+| --- | --- |
+| `0000_init.sql` | PostGIS + pgcrypto + `set_updated_at()` + RLS conventions |
+| `0001_profiles.sql` | `profiles` + RLS + `avatars` bucket |
+| `0002_listings_reviews.sql` | `listings` + `reviews` + stats view + `listing-photos` bucket |
+| `0003_usage_subscriptions.sql` | `usage_events` + `subscriptions` |
+| `0004_chat.sql` | chat tables + RPCs + Realtime |
+| `0005_feed.sql` | `posts` + likes + comments + `post-media` bucket |
+| `0006_news.sql` | `news_articles` |
+| `0007_moderation.sql` | `reports` + `profiles.is_admin` |
+
+Optional demo data: `seed.sql` (people), `seed_listings.sql` (businesses), `seed_news.sql` (news).
+Make yourself an admin once: `update public.profiles set is_admin = true where user_id = '<id>';`
+
+## Deployment (Vercel + Supabase)
+
+1. **Supabase**: create a project, run all migrations above (+ optional seeds).
+2. **Vercel**: import this repo. Add the environment variables from `.env.example`
+   (`NEXT_PUBLIC_SUPABASE_*`, `SUPABASE_SERVICE_ROLE_KEY`, Stripe keys, and set
+   `NEXT_PUBLIC_SITE_URL` to the deployed origin, e.g. `https://your-app.vercel.app`). Deploy.
+3. **Supabase Auth → URL Configuration**: set the Site URL + add `https://your-app.vercel.app/**`
+   to the redirect allow-list (and configure Google OAuth there if used).
+4. **Stripe** (if billing): in the live/test dashboard add a webhook endpoint
+   `https://your-app.vercel.app/api/stripe/webhook` for `checkout.session.completed` and
+   `customer.subscription.*`, and put its signing secret in `STRIPE_WEBHOOK_SECRET`.
+
+The app runs in degraded-but-functional mode if Stripe (or even Supabase) keys are missing, so you
+can deploy first and wire integrations incrementally.

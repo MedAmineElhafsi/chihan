@@ -14,6 +14,8 @@
     "dashboard": "Panel",
     "profile": "Profîl",
     "messages": "Peyam",
+    "settings": "Sazkarî",
+    "admin": "Çavdêrî",
     "signOut": "Derkeve",
     "account": "Hesab",
     "openMenu": "Menûyê veke"
@@ -304,6 +306,51 @@
     "all": "Hemû",
     "readMore": "Bêtir bixwîne",
     "empty": "Hîn nûçe tune."
+  },
+  "Report": {
+    "flag": "Ragihandin",
+    "title": "Naverokê ragihîne",
+    "body": "Ji me re bêje çi çewt e. Tîma me wê binirxîne.",
+    "reasonPlaceholder": "Sedem (bijarte)…",
+    "submit": "Ragihandinê bişîne",
+    "cancel": "Betal bike",
+    "done": "Spas — tîma me wê binirxîne.",
+    "close": "Bigire"
+  },
+  "Admin": {
+    "title": "Çavdêrî",
+    "subtitle": "Ragihandinên vekirî",
+    "empty": "Ragihandinên vekirî tune.",
+    "noReason": "(sedem nehat dayîn)",
+    "dismiss": "Paşguh bike",
+    "remove": "Naverokê rake"
+  },
+  "Settings": {
+    "title": "Sazkarî",
+    "subtitle": "Hesab û nepenîtiya xwe bi rê ve bibe.",
+    "exportTitle": "Daneyên xwe derxe",
+    "exportBody": "Kopyayek ji profîl, navnîş, şandî, nirxandin û şîroveyên xwe daxe.",
+    "exportCta": "Daneyên min daxe",
+    "dangerTitle": "Hesabê jê bibe",
+    "dangerBody": "Hesab û hemû daneyên xwe bi domdarî jê bibe. Ev nayê vegerandin.",
+    "deleteCta": "Hesabê jê bibe",
+    "deleteConfirmTitle": "Hesabê xwe jê bibî?",
+    "deleteConfirmBody": "Ev profîl û hemû naveroka te bi domdarî jê dibe. Ev nayê vegerandin.",
+    "deleteConfirmCta": "Erê, her tiştî jê bibe",
+    "deleteError": "Hesab nehat jêbirin.",
+    "cancel": "Betal bike",
+    "privacyLink": "Agahdariya nepenîtiyê"
+  },
+  "Privacy": {
+    "title": "Agahdariya nepenîtiyê",
+    "p1": "Cîhan civakek e ji bo koçberên kurd. Ji ber ku endamtî dikare girêdana etnîkî nîşan bide — daneyên hesas li YE — profîla te ji xwe ve taybet e û tenê piştî erêkirina te ya eşkere di vedîtin û li ser gerstêrkê de xuya dibe.",
+    "p2": "Em agahiyên ku tu didî (nav, bîo, cih, ziman, wêne) hildigirin da ku xizmetê bimeşînin. Tu dikarî her dem profîla xwe biguherînî an veşêrî, daneyên xwe derxî, û hesab û hemû naveroka xwe ji Sazkariyan jê bibî.",
+    "p3": "Em qet daneyên te nafiroşin. Dravdan ji aliyê Stripe ve tê kirin; em agahiyên kartê hilnagirin."
+  },
+  "Error": {
+    "title": "Tiştek çewt çû",
+    "body": "Çewtiyek nelirê çêbû. Ji kerema xwe dîsa biceribîne.",
+    "retry": "Dîsa biceribîne"
   },
   "NotFound": {
     "title": "Di fezayê de winda",

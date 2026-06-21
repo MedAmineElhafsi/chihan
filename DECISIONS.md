@@ -130,3 +130,18 @@ A running log of notable technical/product decisions and their rationale.
 - **Premium unlock is fully automatic** — once the webhook marks a subscription `active`, every
   existing gate (people reveals, advanced filters, posting/events) opens via `getEntitlements`,
   with no per-feature billing code.
+
+## Phase 9
+
+- **Admin via `profiles.is_admin`** + an `is_admin()` SECURITY DEFINER helper for RLS. A trigger
+  blocks non-admins from elevating themselves, but allows changes when `auth.uid()` is null (SQL
+  editor / service role) so the first admin can be bootstrapped.
+- **Moderation "remove" uses the service role** after verifying the caller is an admin in the
+  action — simpler than per-table admin-override RLS policies. Reported **profiles are hidden**
+  (`is_public=false`), not deleted, to avoid destroying a person's account over a content report.
+- **Account deletion** uses `auth.admin.deleteUser`; all owned rows cascade via FK
+  `on delete cascade`. **Data export** is a route handler streaming the user's own rows as JSON.
+- **`error.tsx` / `loading.tsx`** live under `[locale]` so they render inside the intl + theme
+  providers.
+- The app is built to **degrade gracefully** end-to-end: missing Supabase or Stripe keys never
+  crash a page — data loaders catch and return empty, and gated actions return friendly errors.

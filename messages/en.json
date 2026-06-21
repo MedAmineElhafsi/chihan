@@ -14,6 +14,8 @@
     "dashboard": "Dashboard",
     "profile": "Profile",
     "messages": "Messages",
+    "settings": "Settings",
+    "admin": "Moderation",
     "signOut": "Sign out",
     "account": "Account",
     "openMenu": "Open menu"
@@ -304,6 +306,51 @@
     "all": "All",
     "readMore": "Read more",
     "empty": "No news yet."
+  },
+  "Report": {
+    "flag": "Report",
+    "title": "Report content",
+    "body": "Tell us what’s wrong. Our team will review it.",
+    "reasonPlaceholder": "Reason (optional)…",
+    "submit": "Submit report",
+    "cancel": "Cancel",
+    "done": "Thanks — our team will review this.",
+    "close": "Close"
+  },
+  "Admin": {
+    "title": "Moderation",
+    "subtitle": "Open reports",
+    "empty": "No open reports.",
+    "noReason": "(no reason given)",
+    "dismiss": "Dismiss",
+    "remove": "Remove content"
+  },
+  "Settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account and privacy.",
+    "exportTitle": "Export your data",
+    "exportBody": "Download a copy of your profile, listings, posts, reviews and comments.",
+    "exportCta": "Download my data",
+    "dangerTitle": "Delete account",
+    "dangerBody": "Permanently delete your account and all your data. This can’t be undone.",
+    "deleteCta": "Delete account",
+    "deleteConfirmTitle": "Delete your account?",
+    "deleteConfirmBody": "This permanently erases your profile and all your content. This can’t be undone.",
+    "deleteConfirmCta": "Yes, delete everything",
+    "deleteError": "Could not delete your account.",
+    "cancel": "Cancel",
+    "privacyLink": "Privacy notice"
+  },
+  "Privacy": {
+    "title": "Privacy notice",
+    "p1": "Cîhan is a community for the Kurdish diaspora. Because membership can imply ethnic affiliation — sensitive data in the EU — your profile is private by default and only appears in discovery and on the globe after you explicitly opt in.",
+    "p2": "We store the information you provide (name, bio, location, languages, photos) to run the service. You can edit or hide your profile anytime, export your data, and delete your account and all associated content from Settings.",
+    "p3": "We never sell your data. Payments are processed by Stripe; we don’t store card details."
+  },
+  "Error": {
+    "title": "Something went wrong",
+    "body": "An unexpected error occurred. Please try again.",
+    "retry": "Try again"
   },
   "NotFound": {
     "title": "Lost in space",

@@ -1,10 +1,12 @@
 import { getTranslations } from "next-intl/server";
 
+import { Link } from "@/i18n/navigation";
 import { BRAND } from "@/lib/constants";
 import { BrandMark } from "./brand";
 
 export async function SiteFooter() {
   const t = await getTranslations("Brand");
+  const tp = await getTranslations("Privacy");
   const year = new Date().getFullYear();
 
   return (
@@ -17,8 +19,13 @@ export async function SiteFooter() {
             — {t("tagline")}
           </span>
         </div>
-        <div>
-          © {year} {BRAND.name}
+        <div className="flex items-center gap-4">
+          <Link href="/privacy" className="transition-colors hover:text-foreground">
+            {tp("title")}
+          </Link>
+          <span>
+            © {year} {BRAND.name}
+          </span>
         </div>
       </div>
     </footer>

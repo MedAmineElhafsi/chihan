@@ -21,6 +21,7 @@ import {
 } from "@/lib/feed-actions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { ReportButton } from "@/components/moderation/report-button";
 import { cn } from "@/lib/utils";
 import type { FeedItem, PostComment } from "@/types/post";
 
@@ -124,7 +125,7 @@ export function PostCard({
               {t("event")}
             </span>
           )}
-          {isAuthor && (
+          {isAuthor ? (
             <Button
               variant="ghost"
               size="icon"
@@ -134,6 +135,8 @@ export function PostCard({
             >
               <Trash2 className="size-4" />
             </Button>
+          ) : (
+            canInteract && <ReportButton targetType="post" targetId={item.id} />
           )}
         </div>
       </header>

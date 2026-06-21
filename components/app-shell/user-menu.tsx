@@ -6,6 +6,8 @@ import {
   LayoutDashboard,
   LogOut,
   MessageSquare,
+  Settings,
+  ShieldCheck,
   UserRound,
 } from "lucide-react";
 
@@ -21,7 +23,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function UserMenu({ email }: { email: string | null }) {
+export function UserMenu({
+  email,
+  isAdmin,
+}: {
+  email: string | null;
+  isAdmin?: boolean;
+}) {
   const t = useTranslations("Nav");
 
   if (!email) {
@@ -87,6 +95,20 @@ export function UserMenu({ email }: { email: string | null }) {
             {t("dashboard")}
           </Link>
         </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/settings">
+            <Settings />
+            {t("settings")}
+          </Link>
+        </DropdownMenuItem>
+        {isAdmin && (
+          <DropdownMenuItem asChild>
+            <Link href="/admin">
+              <ShieldCheck />
+              {t("admin")}
+            </Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuSeparator />
         <form action="/auth/signout" method="post">
           <DropdownMenuItem asChild>
