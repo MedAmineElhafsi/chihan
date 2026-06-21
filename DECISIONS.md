@@ -114,3 +114,19 @@ A running log of notable technical/product decisions and their rationale.
   query (can't live in a shared view). Comments load lazily on expand via a server action.
 - **Insert row typed as `Record<string, unknown>`** so the post/event union doesn't trip the
   Supabase client's excess-property check.
+
+## Phase 8
+
+- **User↔Stripe mapping via `client_reference_id` + `subscription_data.metadata.user_id`** at
+  checkout, so every `customer.subscription.*` webhook can resolve the user without a lookup table.
+- **Webhook writes with the service role** (bypasses RLS); the `subscriptions` table stays
+  user-read-only. Entitlements are derived from `subscriptions.status` — no separate "is premium"
+  flag to keep in sync.
+- **`current_period_end` read defensively** (subscription or first item) to survive Stripe API
+  version differences.
+- **Billing degrades gracefully**: actions return a friendly error and the Upgrade button is
+  disabled with a "connect Stripe keys" note when `STRIPE_SECRET_KEY` is absent, so the app builds
+  and runs without billing configured.
+- **Premium unlock is fully automatic** — once the webhook marks a subscription `active`, every
+  existing gate (people reveals, advanced filters, posting/events) opens via `getEntitlements`,
+  with no per-feature billing code.

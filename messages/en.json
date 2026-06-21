@@ -75,7 +75,9 @@
     "publicState": "Visible in the community directory",
     "privateState": "Private — only you can see it",
     "viewProfile": "View profile",
-    "editProfile": "Edit profile"
+    "editProfile": "Edit profile",
+    "premium": "Premium",
+    "upgradedBanner": "You’re Premium now — enjoy unlimited access."
   },
   "Onboarding": {
     "title": "Set up your profile",
@@ -231,7 +233,10 @@
     "perMonth": "/mo",
     "currentPlan": "Current plan",
     "upgradeCta": "Upgrade to Premium",
-    "comingSoon": "Checkout opens in a later phase.",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "manage": "Manage subscription",
+    "comingSoon": "Connect Stripe keys to enable checkout.",
     "freeGlobe": "Explore the globe & directory",
     "freeDirectory": "Read reviews and listings",
     "freeReveals": "5 profile reveals per day",

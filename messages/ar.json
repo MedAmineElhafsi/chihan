@@ -75,7 +75,9 @@
     "publicState": "ظاهر في دليل المجتمع",
     "privateState": "خاص — لا يراه سواك",
     "viewProfile": "عرض الملف",
-    "editProfile": "تعديل الملف"
+    "editProfile": "تعديل الملف",
+    "premium": "Premium",
+    "upgradedBanner": "أنت الآن Premium — استمتع بوصول غير محدود."
   },
   "Onboarding": {
     "title": "أنشئ ملفك الشخصي",
@@ -231,7 +233,10 @@
     "perMonth": "/شهر",
     "currentPlan": "خطتك الحالية",
     "upgradeCta": "الترقية إلى Premium",
-    "comingSoon": "تُفتح عملية الدفع في مرحلة لاحقة.",
+    "monthly": "شهري",
+    "yearly": "سنوي",
+    "manage": "إدارة الاشتراك",
+    "comingSoon": "اربط مفاتيح Stripe لتفعيل الدفع.",
     "freeGlobe": "استكشاف الكرة الأرضية والدليل",
     "freeDirectory": "قراءة المراجعات والمُدخلات",
     "freeReveals": "٥ كشوفات للملفات يوميًا",

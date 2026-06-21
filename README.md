@@ -65,6 +65,24 @@ The "Continue with Google" button is already built. To activate it:
 
 No code changes are needed — Google login works as soon as the provider is configured.
 
+### 3. (Optional) Enable Stripe billing
+
+Premium unlocks automatically once a `subscriptions` row is `active`. To wire real checkout:
+
+1. In the Stripe **test-mode** dashboard, create a **Premium** product with a **monthly** and a
+   **yearly** recurring price. Copy the two Price IDs.
+2. Fill `.env.local`:
+   - `STRIPE_SECRET_KEY` (Developers → API keys)
+   - `NEXT_PUBLIC_STRIPE_PRICE_MONTHLY`, `NEXT_PUBLIC_STRIPE_PRICE_YEARLY`
+3. Forward webhooks locally with the Stripe CLI and copy the signing secret it prints into
+   `STRIPE_WEBHOOK_SECRET`:
+   ```bash
+   stripe listen --forward-to localhost:3000/api/stripe/webhook
+   ```
+4. Restart `npm run dev`. On `/pricing`, choose monthly/yearly → **Upgrade** → pay with test card
+   `4242 4242 4242 4242`. The webhook writes the subscription and you become Premium; **Manage
+   subscription** opens the Customer Portal to cancel (which re-locks Premium).
+
 ---
 
 ## Scripts

@@ -75,7 +75,9 @@
     "publicState": "Di rêbera civakê de xuya ye",
     "privateState": "Taybet — tenê tu dikarî bibînî",
     "viewProfile": "Profîlê bibîne",
-    "editProfile": "Profîlê biguherîne"
+    "editProfile": "Profîlê biguherîne",
+    "premium": "Premium",
+    "upgradedBanner": "Tu niha Premium î — ji gihîştina bêsînor kêfxweş be."
   },
   "Onboarding": {
     "title": "Profîla xwe saz bike",
@@ -231,7 +233,10 @@
     "perMonth": "/meh",
     "currentPlan": "Plana niha",
     "upgradeCta": "Bibe Premium",
-    "comingSoon": "Dravdan di qonaxeke paşê de tê.",
+    "monthly": "Mehane",
+    "yearly": "Salane",
+    "manage": "Aboneyê bi rê ve bibe",
+    "comingSoon": "Mifteyên Stripe girêbide da ku dravdan çalak bibe.",
     "freeGlobe": "Gerstêrk û rêberê vekole",
     "freeDirectory": "Nirxandin û navnîşan bixwîne",
     "freeReveals": "Rojê 5 veçirandinên profîlê",

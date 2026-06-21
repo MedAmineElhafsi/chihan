@@ -137,11 +137,25 @@ try the premium path, temporarily set your `subscriptions.status` to `active`, t
 seeded), no console errors.
 **To populate (you):** run `0006_news.sql` then `seed_news.sql`, and open `/news`.
 
-## ⏭️ Next: Phase 8 — Stripe billing
+## ✅ Phase 8 — Stripe billing (code complete)
 
-Checkout (monthly + yearly), Customer Portal, and a webhook that writes `subscriptions` and flips
-entitlements — test mode end-to-end. **Awaiting "go".**
+- **`lib/stripe.ts`** + **`lib/billing-actions.ts`**: `createCheckout(monthly|yearly)` (Stripe
+  Checkout, subscription mode, `client_reference_id` + `subscription_data.metadata.user_id`) and
+  `createPortal()` (Customer Portal).
+- **Webhook** `app/api/stripe/webhook/route.ts`: verifies the signature and on
+  `checkout.session.completed` / `customer.subscription.*` upserts the `subscriptions` row via the
+  **service role** — `getEntitlements` then flips the user to Premium automatically.
+- **Pricing** page wired with a `BillingActions` client (interval toggle + Upgrade, or **Manage
+  subscription** when premium); graceful "connect Stripe keys" state when unconfigured.
+- Dashboard shows a **Premium badge** + an upgrade-success banner; Pricing/Dashboard i18n updated.
+- `.env.example` + README document the test-mode setup (Stripe CLI webhook forwarding).
 
-## Backlog (per brief)
+**Verification:** `tsc` ✓ · `eslint` ✓ · `next build` ✓ (`/api/stripe/webhook` compiles). Pricing
+renders the interval toggle + Upgrade button (disabled until keys exist), no console errors.
+**To test end-to-end (you):** add Stripe test keys + price IDs, run `stripe listen`, then upgrade
+with card `4242 4242 4242 4242` and cancel via the portal (see README §3).
 
-Phase 9 Polish, moderation, deploy. (Account deletion + data export from §7 with the privacy pass.)
+## ⏭️ Next: Phase 9 — Polish, moderation & deploy
+
+`reports` table + minimal admin moderation; empty/loading/error states; responsive + RTL pass;
+perf pass; deploy to Vercel + Supabase; README finalize. **Awaiting "go".**

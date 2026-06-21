@@ -3,9 +3,9 @@ import { Check, Sparkles } from "lucide-react";
 
 import { getCurrentUser } from "@/lib/auth";
 import { getEntitlements } from "@/lib/entitlements";
+import { stripeConfigured } from "@/lib/stripe";
 import { PRICING } from "@/lib/constants";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { BillingActions } from "@/components/billing/billing-actions";
 
 const FREE_FEATURES = [
   "freeGlobe",
@@ -97,16 +97,10 @@ export default async function PricingPage({
               </li>
             ))}
           </ul>
-          <Button
-            disabled
-            size="lg"
-            className={cn("mt-6 w-full glow-gold", "disabled:opacity-100")}
-          >
-            {t("upgradeCta")}
-          </Button>
-          <p className="mt-2 text-center text-xs text-muted-foreground">
-            {t("comingSoon")}
-          </p>
+          <BillingActions
+            isPremium={ent.tier === "premium"}
+            configured={stripeConfigured}
+          />
         </div>
       </div>
     </div>

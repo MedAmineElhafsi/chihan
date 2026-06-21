@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
+  BadgeCheck,
   Compass,
   Globe2,
   LogOut,
@@ -11,6 +12,7 @@ import {
 
 import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
+import { getEntitlements } from "@/lib/entitlements";
 import { getOwnProfile } from "@/lib/profiles";
 import {
   Card,
@@ -24,8 +26,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default async function DashboardPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ upgraded?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -37,12 +41,21 @@ export default async function DashboardPage({
   // First-time users finish onboarding before reaching the dashboard.
   if (!profile || !profile.display_name) redirect(`/${locale}/onboarding`);
 
+  const ent = await getEntitlements(user.id);
+  const { upgraded } = await searchParams;
   const t = await getTranslations("Dashboard");
   const name = profile.display_name;
   const initial = name.charAt(0).toUpperCase();
+  const isPremium = ent.tier === "premium";
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-16 sm:px-6">
+      {upgraded && isPremium && (
+        <div className="animate-fade-up mb-5 flex items-center gap-2 rounded-xl border border-gold/40 bg-gold/10 px-4 py-3 text-sm">
+          <Sparkles className="size-4 text-gold" />
+          {t("upgradedBanner")}
+        </div>
+      )}
       <div className="animate-fade-up flex flex-col gap-2">
         <span className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium text-muted-foreground">
           <Compass className="size-3.5 text-gold" />
@@ -67,7 +80,15 @@ export default async function DashboardPage({
               </AvatarFallback>
             </Avatar>
             <div>
-              <div className="font-display text-lg font-semibold">{name}</div>
+              <div className="flex items-center gap-2">
+                <span className="font-display text-lg font-semibold">{name}</span>
+                {isPremium && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-gold/15 px-2 py-0.5 text-xs font-medium text-gold">
+                    <BadgeCheck className="size-3.5" />
+                    {t("premium")}
+                  </span>
+                )}
+              </div>
               <div className="text-sm text-muted-foreground">
                 {profile.is_public ? t("publicState") : t("privateState")}
               </div>

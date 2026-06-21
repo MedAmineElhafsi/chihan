@@ -75,7 +75,9 @@
     "publicState": "Im Community-Verzeichnis sichtbar",
     "privateState": "Privat — nur du kannst es sehen",
     "viewProfile": "Profil ansehen",
-    "editProfile": "Profil bearbeiten"
+    "editProfile": "Profil bearbeiten",
+    "premium": "Premium",
+    "upgradedBanner": "Du bist jetzt Premium — viel Spaß mit unbegrenztem Zugriff."
   },
   "Onboarding": {
     "title": "Richte dein Profil ein",
@@ -231,7 +233,10 @@
     "perMonth": "/Mon.",
     "currentPlan": "Aktueller Plan",
     "upgradeCta": "Auf Premium upgraden",
-    "comingSoon": "Checkout folgt in einer späteren Phase.",
+    "monthly": "Monatlich",
+    "yearly": "Jährlich",
+    "manage": "Abo verwalten",
+    "comingSoon": "Stripe-Schlüssel verbinden, um den Checkout zu aktivieren.",
     "freeGlobe": "Globus & Verzeichnis erkunden",
     "freeDirectory": "Bewertungen und Einträge lesen",
     "freeReveals": "5 Profil-Freischaltungen pro Tag",
