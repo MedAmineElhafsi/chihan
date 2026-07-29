@@ -1,7 +1,8 @@
 import "server-only";
 
 import { createClient } from "./supabase/server";
-import { PROFILE_COLUMNS, type Profile } from "@/types/profile";
+import { isMissingProfession, profileColumns } from "./profile-columns";
+import { PROFILE_COLUMNS_BASE, type Profile } from "@/types/profile";
 
 export type PeopleFilters = {
   country?: string;
@@ -17,18 +18,24 @@ export async function getPeople(
 ): Promise<Profile[]> {
   try {
     const supabase = await createClient();
-    let q = supabase
-      .from("profiles")
-      .select(PROFILE_COLUMNS)
-      .eq("is_public", true)
-      .order("created_at", { ascending: false })
-      .limit(200);
-    if (filters.country) q = q.ilike("country", `%${filters.country}%`);
-    if (filters.city) q = q.ilike("city", `%${filters.city}%`);
-    if (filters.language) q = q.contains("languages", [filters.language]);
-    if (filters.dialect) q = q.eq("dialect", filters.dialect);
+    const build = (cols: string) => {
+      let q = supabase
+        .from("profiles")
+        .select(cols)
+        .eq("is_public", true)
+        .order("created_at", { ascending: false })
+        .limit(200);
+      if (filters.country) q = q.ilike("country", `%${filters.country}%`);
+      if (filters.city) q = q.ilike("city", `%${filters.city}%`);
+      if (filters.language) q = q.contains("languages", [filters.language]);
+      if (filters.dialect) q = q.eq("dialect", filters.dialect);
+      return q;
+    };
 
-    const { data, error } = await q;
+    let { data, error } = await build(profileColumns());
+    if (isMissingProfession(error)) {
+      ({ data, error } = await build(PROFILE_COLUMNS_BASE));
+    }
     if (error || !data) return [];
     let people = data as unknown as Profile[];
     if (excludeUserId) people = people.filter((p) => p.user_id !== excludeUserId);

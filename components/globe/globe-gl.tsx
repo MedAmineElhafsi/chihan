@@ -10,8 +10,11 @@ export type GlobeDatum = {
   lat: number;
   lng: number;
   color: string;
+  icon: string;
   radius: number;
-  label: string;
+  selected: boolean;
+  dimmed: boolean;
+  subtitle: string;
 };
 
 export type RingDatum = { lat: number; lng: number };
@@ -21,6 +24,12 @@ type CountryFeature = {
   properties: { name?: string };
   geometry: unknown;
 };
+
+/**
+ * Above this many visible points we fall back to lightweight 3D dots instead of
+ * DOM pins — the brief (§7) calls out not rendering thousands of DOM nodes.
+ */
+const HTML_MARKER_LIMIT = 300;
 
 export default function GlobeGL({
   globeRef,
@@ -67,18 +76,21 @@ export default function GlobeGL({
     };
   }, []);
 
-  // Ocean sphere — the land polygons sit on top of this.
-  const globeMaterial = useMemo(() => {
-    return new THREE.MeshPhongMaterial({
-      color: "#0a1120",
-      emissive: "#07101f",
-      emissiveIntensity: 0.6,
-      shininess: 2,
-    });
-  }, []);
+  // Ocean sphere — land polygons sit on top.
+  const globeMaterial = useMemo(
+    () =>
+      new THREE.MeshPhongMaterial({
+        color: "#0d2b52",
+        emissive: "#06182f",
+        emissiveIntensity: 0.55,
+        shininess: 6,
+      }),
+    []
+  );
 
   const norm = (s?: string) => (s ?? "").toLowerCase();
   const highlight = norm(highlightCountry ?? undefined);
+  const useHtmlMarkers = points.length <= HTML_MARKER_LIMIT;
 
   return (
     <Globe
@@ -89,39 +101,77 @@ export default function GlobeGL({
       animateIn={false}
       globeMaterial={globeMaterial}
       showAtmosphere
-      atmosphereColor="#e1b12c"
-      atmosphereAltitude={0.16}
+      atmosphereColor="#7dd3fc"
+      atmosphereAltitude={0.18}
       showGraticules
       onGlobeReady={onGlobeReady}
       /* Continents & country borders */
       polygonsData={countries}
-      polygonAltitude={0.006}
+      polygonAltitude={0.008}
       polygonCapColor={(d: object) => {
         const name = norm((d as CountryFeature).properties?.name);
         return highlight && name === highlight
-          ? "rgba(225,177,44,0.35)"
-          : "rgba(64,92,140,0.42)";
+          ? "rgba(225,177,44,0.55)"
+          : "rgba(34,122,102,0.62)";
       }}
-      polygonSideColor={() => "rgba(10,17,32,0.6)"}
+      polygonSideColor={() => "rgba(8,24,44,0.75)"}
       polygonStrokeColor={(d: object) => {
         const name = norm((d as CountryFeature).properties?.name);
-        return highlight && name === highlight ? "#f2c84b" : "rgba(150,180,220,0.55)";
+        return highlight && name === highlight
+          ? "#f2c84b"
+          : "rgba(190,220,210,0.5)";
       }}
       polygonLabel={(d: object) =>
-        `<div style="background:rgba(8,12,20,.85);border:1px solid rgba(255,255,255,.12);color:#e8ecf6;padding:4px 8px;border-radius:8px;font-size:12px;white-space:nowrap">${
+        `<div style="background:rgba(8,12,20,.88);border:1px solid rgba(255,255,255,.14);color:#e8ecf6;padding:4px 8px;border-radius:8px;font-size:12px;white-space:nowrap">${
           (d as CountryFeature).properties?.name ?? ""
         }</div>`
       }
-      /* Community points */
-      pointsData={points}
+      /* Icon pins — crisp, always face the camera, never z-fight */
+      htmlElementsData={useHtmlMarkers ? points : []}
+      htmlLat="lat"
+      htmlLng="lng"
+      htmlAltitude={0.02}
+      htmlTransitionDuration={250}
+      htmlElementVisibilityModifier={(el: HTMLElement, isVisible: boolean) => {
+        el.style.opacity = isVisible ? "1" : "0";
+        el.style.pointerEvents = isVisible ? "auto" : "none";
+      }}
+      htmlElement={(obj: object) => {
+        const d = obj as GlobeDatum;
+        const el = document.createElement("div");
+        el.title = d.subtitle ? `${d.name} · ${d.subtitle}` : d.name;
+        el.style.cssText = [
+          "display:flex",
+          "align-items:center",
+          "justify-content:center",
+          `width:${d.selected ? 30 : 22}px`,
+          `height:${d.selected ? 30 : 22}px`,
+          "border-radius:9999px",
+          `background:${d.color}`,
+          `border:2px solid ${d.selected ? "#ffffff" : "rgba(255,255,255,.75)"}`,
+          `box-shadow:0 0 0 2px rgba(6,12,22,.55), 0 3px 10px rgba(0,0,0,.5)${
+            d.selected ? `, 0 0 16px ${d.color}` : ""
+          }`,
+          `font-size:${d.selected ? 15 : 11}px`,
+          "line-height:1",
+          "cursor:pointer",
+          `opacity:${d.dimmed ? 0.28 : 1}`,
+          "transition:opacity .2s, width .2s, height .2s",
+          "user-select:none",
+        ].join(";");
+        el.textContent = d.icon;
+        el.onclick = () => onPointClick(d.id);
+        return el;
+      }}
+      /* Fallback for very large datasets */
+      pointsData={useHtmlMarkers ? [] : points}
       pointLat="lat"
       pointLng="lng"
       pointColor="color"
       pointRadius="radius"
       pointAltitude={0.02}
-      pointResolution={18}
-      pointLabel="label"
-      pointsMerge={false}
+      pointResolution={12}
+      pointLabel="name"
       onPointClick={(d: object) => onPointClick((d as GlobeDatum).id)}
       ringsData={rings}
       ringLat="lat"

@@ -11,7 +11,10 @@ export type GlobePoint = {
   lat: number;
   lng: number;
   avatarUrl: string | null;
-  category: string; // "person" | "restaurant" | "doctor" | ...
+  /** Listing category, or "person" for members. */
+  category: string;
+  /** For people: their profession (drives the marker colour). */
+  profession: string | null;
 };
 
 /**
@@ -22,14 +25,18 @@ export type GlobePoint = {
 export async function getGlobePoints(): Promise<GlobePoint[]> {
   try {
     const supabase = await createClient();
-    const [profilesRes, listingsRes] = await Promise.all([
+    const PROFILE_PT = "id, display_name, city, country, lat, lng, avatar_url";
+    const profileQuery = (cols: string) =>
       supabase
         .from("profiles")
-        .select("id, display_name, city, country, lat, lng, avatar_url")
+        .select(cols)
         .eq("is_public", true)
         .not("lat", "is", null)
         .not("lng", "is", null)
-        .limit(2000),
+        .limit(2000);
+
+    const results = await Promise.all([
+      profileQuery(`${PROFILE_PT}, profession`),
       supabase
         .from("listings")
         .select("id, name, category, city, country, lat, lng, photos")
@@ -37,10 +44,19 @@ export async function getGlobePoints(): Promise<GlobePoint[]> {
         .not("lng", "is", null)
         .limit(2000),
     ]);
+    const listingsRes = results[1];
 
+    // `profession` only exists after migration 0008 — retry without it if needed.
+    const profilesRes = results[0].error
+      ? await profileQuery(PROFILE_PT)
+      : results[0];
+
+    const profileRows = (profilesRes.data ?? []) as unknown as Array<
+      Record<string, unknown>
+    >;
     const points: GlobePoint[] = [];
 
-    for (const p of (profilesRes.data ?? []) as Array<Record<string, unknown>>) {
+    for (const p of profileRows) {
       if (p.lat == null || p.lng == null || !p.display_name) continue;
       points.push({
         id: String(p.id),
@@ -52,6 +68,7 @@ export async function getGlobePoints(): Promise<GlobePoint[]> {
         lng: Number(p.lng),
         avatarUrl: (p.avatar_url as string | null) ?? null,
         category: "person",
+        profession: (p.profession as string | null) ?? null,
       });
     }
 
@@ -68,6 +85,7 @@ export async function getGlobePoints(): Promise<GlobePoint[]> {
         lng: Number(l.lng),
         avatarUrl: photos[0] ?? null,
         category: String(l.category),
+        profession: null,
       });
     }
 

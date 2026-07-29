@@ -11,6 +11,8 @@ import {
   AVATAR_ACCEPT,
   AVATAR_MAX_BYTES,
   KURDISH_DIALECTS,
+  PROFESSIONS,
+  PROFESSION_STYLE,
   SPOKEN_LANGUAGES,
 } from "@/lib/constants";
 import type { Profile } from "@/types/profile";
@@ -37,6 +39,7 @@ export function ProfileForm({
   const [country, setCountry] = useState(initial?.country ?? "");
   const [languages, setLanguages] = useState<string[]>(initial?.languages ?? []);
   const [dialect, setDialect] = useState(initial?.dialect ?? "");
+  const [profession, setProfession] = useState(initial?.profession ?? "");
   const [isPublic, setIsPublic] = useState(initial?.is_public ?? false);
 
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
@@ -114,6 +117,7 @@ export function ProfileForm({
         country,
         languages,
         dialect,
+        profession,
         avatarUrl,
         isPublic,
       });
@@ -241,6 +245,51 @@ export function ProfileForm({
           </div>
         </div>
         <p className="text-xs text-muted-foreground">{t("locationHint")}</p>
+      </div>
+
+      {/* Profession */}
+      <div className="flex flex-col gap-2.5">
+        <Label>{t("professionLabel")}</Label>
+        <div className="flex flex-wrap gap-2">
+          {PROFESSIONS.map((p) => {
+            const active = profession === p;
+            const style = PROFESSION_STYLE[p];
+            return (
+              <button
+                key={p}
+                type="button"
+                onClick={() => setProfession(active ? "" : p)}
+                disabled={loading}
+                aria-pressed={active}
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+                  active
+                    ? "border-transparent text-foreground"
+                    : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
+                )}
+                style={
+                  active
+                    ? {
+                        backgroundColor: `${style.color}26`,
+                        borderColor: style.color,
+                      }
+                    : undefined
+                }
+              >
+                <span
+                  className="flex size-4 items-center justify-center rounded-full text-[0.6rem]"
+                  style={{ backgroundColor: style.color }}
+                >
+                  {style.icon}
+                </span>
+                {t(`prof_${p}` as never)}
+              </button>
+            );
+          })}
+        </div>
+        <span className="text-xs text-muted-foreground">
+          {t("professionHint")}
+        </span>
       </div>
 
       {/* Languages */}

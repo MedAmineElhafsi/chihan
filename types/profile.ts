@@ -11,6 +11,7 @@ export type Profile = {
   lng: number | null;
   languages: string[];
   dialect: string | null;
+  profession: string | null;
   is_public: boolean;
   consent_at: string | null;
   created_at: string;
@@ -19,4 +20,8 @@ export type Profile = {
 
 /** Columns selected for profile reads (excludes the raw geography column). */
 export const PROFILE_COLUMNS =
+  "id, user_id, display_name, bio, avatar_url, city, country, lat, lng, languages, dialect, profession, is_public, consent_at, created_at, updated_at";
+
+/** Column list before `profession` (migration 0008) — used as a fallback. */
+export const PROFILE_COLUMNS_BASE =
   "id, user_id, display_name, bio, avatar_url, city, country, lat, lng, languages, dialect, is_public, consent_at, created_at, updated_at";

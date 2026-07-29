@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 
 import { createClient } from "./supabase/server";
 import { geocode } from "./geocode";
-import { KURDISH_DIALECTS, SPOKEN_LANGUAGES } from "./constants";
+import { KURDISH_DIALECTS, PROFESSIONS, SPOKEN_LANGUAGES } from "./constants";
 
 const schema = z.object({
   displayName: z.string().trim().min(2).max(60),
@@ -14,6 +14,7 @@ const schema = z.object({
   country: z.string().trim().max(80).optional().default(""),
   languages: z.array(z.string()).max(20).optional().default([]),
   dialect: z.string().trim().max(60).optional().default(""),
+  profession: z.string().trim().max(40).optional().default(""),
   avatarUrl: z.string().optional().nullable(),
   isPublic: z.boolean().optional().default(false),
 });
@@ -54,6 +55,10 @@ export async function saveProfile(
     v.dialect && (KURDISH_DIALECTS as readonly string[]).includes(v.dialect)
       ? v.dialect
       : null;
+  const profession =
+    v.profession && (PROFESSIONS as readonly string[]).includes(v.profession)
+      ? v.profession
+      : null;
 
   const geo = await geocode(v.city, v.country);
 
@@ -67,6 +72,7 @@ export async function saveProfile(
     lng: geo?.lng ?? null,
     languages,
     dialect,
+    profession,
     avatar_url: v.avatarUrl || null,
     is_public: v.isPublic,
     consent_at: v.isPublic ? new Date().toISOString() : null,

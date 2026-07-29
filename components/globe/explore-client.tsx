@@ -25,7 +25,7 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CategoryIcon } from "@/components/directory/category-icon";
-import { CATEGORY_COLORS } from "@/lib/constants";
+import { CATEGORY_COLORS, pointStyle } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import type { GlobePoint } from "@/lib/globe";
 
@@ -35,17 +35,6 @@ const GlobeGL = dynamic(() => import("./globe-gl"), {
 });
 
 type Layer = "all" | "people" | "restaurants" | "doctors";
-
-function esc(s: string) {
-  return s.replace(
-    /[&<>"]/g,
-    (c) =>
-      (({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }) as Record<
-        string,
-        string
-      >)[c]
-  );
-}
 
 export function ExploreClient({ points }: { points: GlobePoint[] }) {
   const t = useTranslations("Explore");
@@ -111,23 +100,43 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
   const globeData = useMemo(
     () =>
       filtered.map((p) => {
-        const dimmed =
-          selectedCountry != null && (p.country || "—") !== selectedCountry;
-        const base = CATEGORY_COLORS[p.category] ?? CATEGORY_COLORS.other;
+        const style = pointStyle(p.kind, p.kind === "person" ? p.profession : p.category);
         return {
           id: p.id,
           name: p.name,
           lat: p.lat,
           lng: p.lng,
-          color: p.id === selectedId ? "#ffffff" : dimmed ? "#4b5563" : base,
-          radius: p.id === selectedId ? 0.95 : 0.5,
-          label: `<div style="background:rgba(8,12,20,.85);border:1px solid rgba(255,255,255,.12);color:#e8ecf6;padding:4px 8px;border-radius:8px;font-size:12px;white-space:nowrap">${esc(
-            p.name
-          )}${p.city ? ` · ${esc(p.city)}` : ""}</div>`,
+          color: style.color,
+          icon: style.icon,
+          radius: p.id === selectedId ? 0.9 : 0.45,
+          selected: p.id === selectedId,
+          dimmed:
+            selectedCountry != null && (p.country || "—") !== selectedCountry,
+          subtitle: p.city ?? "",
         };
       }),
     [filtered, selectedId, selectedCountry]
   );
+
+  /** Colour key for whatever is currently on screen. */
+  const legend = useMemo(() => {
+    const seen = new Map<string, { color: string; icon: string; label: string }>();
+    for (const p of filtered) {
+      const key = p.kind === "person" ? p.profession || "other" : p.category;
+      const id = `${p.kind}:${key}`;
+      if (seen.has(id)) continue;
+      const style = pointStyle(p.kind, key);
+      seen.set(id, {
+        color: style.color,
+        icon: style.icon,
+        label:
+          p.kind === "person"
+            ? t(`prof_${key}` as never)
+            : t(`cat_${p.category}` as never),
+      });
+    }
+    return [...seen.values()];
+  }, [filtered, t]);
 
   const rings = useMemo(
     () =>
@@ -269,6 +278,25 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
               </button>
             ))}
           </div>
+
+          {legend.length > 0 && (
+            <div className="flex flex-wrap gap-x-3 gap-y-1.5 border-t border-border/60 pt-2.5">
+              {legend.map((l) => (
+                <span
+                  key={l.label + l.color}
+                  className="inline-flex items-center gap-1.5 text-[0.7rem] text-muted-foreground"
+                >
+                  <span
+                    className="flex size-3.5 items-center justify-center rounded-full text-[0.5rem] ring-1 ring-white/40"
+                    style={{ backgroundColor: l.color }}
+                  >
+                    {l.icon}
+                  </span>
+                  {l.label}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto p-3">
@@ -349,13 +377,23 @@ function ItemAvatar({ item }: { item: GlobePoint }) {
     );
   }
   const initial = item.name.trim().charAt(0).toUpperCase() || "?";
+  const style = pointStyle("person", item.profession);
   return (
-    <Avatar className="size-9">
-      {item.avatarUrl && <AvatarImage src={item.avatarUrl} alt={item.name} />}
-      <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-xs text-primary-foreground">
-        {initial}
-      </AvatarFallback>
-    </Avatar>
+    <span className="relative shrink-0">
+      <Avatar className="size-9">
+        {item.avatarUrl && <AvatarImage src={item.avatarUrl} alt={item.name} />}
+        <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-xs text-primary-foreground">
+          {initial}
+        </AvatarFallback>
+      </Avatar>
+      <span
+        className="absolute -bottom-0.5 -end-0.5 flex size-4 items-center justify-center rounded-full text-[0.55rem] ring-2 ring-card"
+        style={{ backgroundColor: style.color }}
+        aria-hidden="true"
+      >
+        {style.icon}
+      </span>
+    </span>
   );
 }
 

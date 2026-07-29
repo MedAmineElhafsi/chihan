@@ -55,17 +55,66 @@ export const LISTING_CATEGORIES = [
 ] as const;
 export type ListingCategory = (typeof LISTING_CATEGORIES)[number];
 
-/** Globe point color per category. */
-export const CATEGORY_COLORS: Record<string, string> = {
-  person: "#e1b12c",
-  restaurant: "#d6443b",
-  doctor: "#1fa36b",
-  grocery: "#3b82f6",
-  lawyer: "#a855f7",
-  hairdresser: "#ec4899",
-  community: "#14b8a6",
-  other: "#94a3b8",
+/** What a member does — colour-codes people on the globe. */
+export const PROFESSIONS = [
+  "student",
+  "worker",
+  "engineer",
+  "doctor",
+  "nurse",
+  "teacher",
+  "artist",
+  "business",
+  "driver",
+  "chef",
+  "lawyer",
+  "other",
+] as const;
+export type Profession = (typeof PROFESSIONS)[number];
+
+/** Colour + icon per profession (people). */
+export const PROFESSION_STYLE: Record<string, { color: string; icon: string }> = {
+  student: { color: "#38bdf8", icon: "🎓" },
+  worker: { color: "#f97316", icon: "🔧" },
+  engineer: { color: "#a78bfa", icon: "⚙️" },
+  doctor: { color: "#34d399", icon: "🩺" },
+  nurse: { color: "#2dd4bf", icon: "💊" },
+  teacher: { color: "#facc15", icon: "📚" },
+  artist: { color: "#f472b6", icon: "🎨" },
+  business: { color: "#e1b12c", icon: "💼" },
+  driver: { color: "#60a5fa", icon: "🚗" },
+  chef: { color: "#fb7185", icon: "👨‍🍳" },
+  lawyer: { color: "#818cf8", icon: "⚖️" },
+  other: { color: "#cbd5e1", icon: "👤" },
 };
+
+/** Colour + icon per business category (listings). */
+export const CATEGORY_STYLE: Record<string, { color: string; icon: string }> = {
+  restaurant: { color: "#d6443b", icon: "🍽️" },
+  doctor: { color: "#1fa36b", icon: "🏥" },
+  grocery: { color: "#3b82f6", icon: "🛒" },
+  lawyer: { color: "#a855f7", icon: "🏛️" },
+  hairdresser: { color: "#ec4899", icon: "✂️" },
+  community: { color: "#14b8a6", icon: "🤝" },
+  other: { color: "#94a3b8", icon: "🏪" },
+};
+
+/** Back-compat colour map (person + categories) used by list UIs. */
+export const CATEGORY_COLORS: Record<string, string> = {
+  person: PROFESSION_STYLE.business.color,
+  ...Object.fromEntries(
+    Object.entries(CATEGORY_STYLE).map(([k, v]) => [k, v.color])
+  ),
+};
+
+/** Resolve the marker style for any globe point. */
+export function pointStyle(
+  kind: "person" | "listing",
+  key: string | null | undefined
+): { color: string; icon: string } {
+  const table = kind === "person" ? PROFESSION_STYLE : CATEGORY_STYLE;
+  return table[key ?? "other"] ?? table.other;
+}
 
 export const LISTING_PHOTO_MAX_BYTES = 4 * 1024 * 1024; // 4 MB
 
