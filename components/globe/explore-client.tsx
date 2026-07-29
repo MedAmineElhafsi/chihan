@@ -135,11 +135,18 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
     [selectedItem]
   );
 
+  /** Hand control to the user the moment they touch the globe. */
+  function stopAutoRotate() {
+    const controls = globeRef.current?.controls() as
+      | { autoRotate?: boolean }
+      | undefined;
+    if (controls) controls.autoRotate = false;
+  }
+
   function flyTo(lat: number, lng: number, altitude = 1.6) {
     const g = globeRef.current;
     if (!g) return;
-    const controls = g.controls() as { autoRotate?: boolean } | undefined;
-    if (controls) controls.autoRotate = false;
+    stopAutoRotate();
     g.pointOfView({ lat, lng, altitude }, 1200);
   }
 
@@ -195,7 +202,12 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
 
   return (
     <div className="relative h-[calc(100dvh-4rem)] w-full overflow-hidden">
-      <div ref={containerRef} className="absolute inset-0">
+      <div
+        ref={containerRef}
+        className="absolute inset-0"
+        onPointerDown={stopAutoRotate}
+        onWheel={stopAutoRotate}
+      >
         {size.w > 0 && (
           <GlobeGL
             globeRef={globeRef as MutableRefObject<GlobeMethods | undefined>}
@@ -205,6 +217,7 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
             rings={rings}
             onPointClick={selectItem}
             onGlobeReady={handleReady}
+            highlightCountry={selectedCountry}
           />
         )}
       </div>

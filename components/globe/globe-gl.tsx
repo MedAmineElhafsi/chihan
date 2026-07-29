@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, type MutableRefObject } from "react";
+import { useEffect, useMemo, useState, type MutableRefObject } from "react";
 import * as THREE from "three";
 import Globe, { type GlobeMethods } from "react-globe.gl";
 
@@ -16,6 +16,12 @@ export type GlobeDatum = {
 
 export type RingDatum = { lat: number; lng: number };
 
+type CountryFeature = {
+  type: "Feature";
+  properties: { name?: string };
+  geometry: unknown;
+};
+
 export default function GlobeGL({
   globeRef,
   width,
@@ -24,6 +30,7 @@ export default function GlobeGL({
   rings,
   onPointClick,
   onGlobeReady,
+  highlightCountry,
 }: {
   globeRef: MutableRefObject<GlobeMethods | undefined>;
   width: number;
@@ -32,16 +39,46 @@ export default function GlobeGL({
   rings: RingDatum[];
   onPointClick: (id: string) => void;
   onGlobeReady?: () => void;
+  highlightCountry?: string | null;
 }) {
-  // Stylized dark globe (no photo texture) that sits over the cosmic backdrop.
+  const [countries, setCountries] = useState<CountryFeature[]>([]);
+
+  // Land + country borders, lazy-loaded so they never block first paint.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const [{ feature }, topo] = await Promise.all([
+        import("topojson-client"),
+        import("world-atlas/countries-110m.json"),
+      ]);
+      if (cancelled) return;
+      const topology = (topo.default ?? topo) as unknown as Parameters<
+        typeof feature
+      >[0];
+      const fc = feature(
+        topology,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (topology as any).objects.countries
+      ) as unknown as { features: CountryFeature[] };
+      setCountries(fc.features);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Ocean sphere — the land polygons sit on top of this.
   const globeMaterial = useMemo(() => {
     return new THREE.MeshPhongMaterial({
-      color: "#0b1326",
-      emissive: "#0a1a33",
-      emissiveIntensity: 0.5,
-      shininess: 4,
+      color: "#0a1120",
+      emissive: "#07101f",
+      emissiveIntensity: 0.6,
+      shininess: 2,
     });
   }, []);
+
+  const norm = (s?: string) => (s ?? "").toLowerCase();
+  const highlight = norm(highlightCountry ?? undefined);
 
   return (
     <Globe
@@ -56,12 +93,32 @@ export default function GlobeGL({
       atmosphereAltitude={0.16}
       showGraticules
       onGlobeReady={onGlobeReady}
+      /* Continents & country borders */
+      polygonsData={countries}
+      polygonAltitude={0.006}
+      polygonCapColor={(d: object) => {
+        const name = norm((d as CountryFeature).properties?.name);
+        return highlight && name === highlight
+          ? "rgba(225,177,44,0.35)"
+          : "rgba(64,92,140,0.42)";
+      }}
+      polygonSideColor={() => "rgba(10,17,32,0.6)"}
+      polygonStrokeColor={(d: object) => {
+        const name = norm((d as CountryFeature).properties?.name);
+        return highlight && name === highlight ? "#f2c84b" : "rgba(150,180,220,0.55)";
+      }}
+      polygonLabel={(d: object) =>
+        `<div style="background:rgba(8,12,20,.85);border:1px solid rgba(255,255,255,.12);color:#e8ecf6;padding:4px 8px;border-radius:8px;font-size:12px;white-space:nowrap">${
+          (d as CountryFeature).properties?.name ?? ""
+        }</div>`
+      }
+      /* Community points */
       pointsData={points}
       pointLat="lat"
       pointLng="lng"
       pointColor="color"
       pointRadius="radius"
-      pointAltitude={0.012}
+      pointAltitude={0.02}
       pointResolution={18}
       pointLabel="label"
       pointsMerge={false}
