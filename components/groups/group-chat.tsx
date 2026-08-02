@@ -37,9 +37,16 @@ export function GroupChat({
     [locale]
   );
 
-  useEffect(() => {
+  // Re-sync when the server sends genuinely new messages. Adjusting state
+  // during render is React's supported pattern for this; doing it in an effect
+  // triggers a cascading re-render. Comparing a content signature (not array
+  // identity) avoids clobbering messages that arrived live over Realtime.
+  const serverSignature = initialMessages.map((m) => m.id).join(",");
+  const [syncedSignature, setSyncedSignature] = useState(serverSignature);
+  if (serverSignature !== syncedSignature) {
+    setSyncedSignature(serverSignature);
     setMessages(initialMessages);
-  }, [initialMessages]);
+  }
 
   useEffect(() => {
     if (!canChat || !supabaseConfigured) return;

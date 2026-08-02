@@ -87,10 +87,20 @@ export function NotificationsBell({
   const [unread, setUnread] = useState(initialUnread);
   const [, startT] = useTransition();
 
-  useEffect(() => {
+  // Re-sync when the server sends genuinely new data (e.g. after navigation).
+  // Adjusting state during render is React's supported pattern for this —
+  // doing it in an effect triggers a cascading re-render. Comparing a content
+  // signature (not array identity) also preserves optimistic read marks when
+  // the server re-renders with unchanged data.
+  const serverSignature = `${initialUnread}|${initialItems
+    .map((n) => `${n.id}:${n.read_at ? 1 : 0}`)
+    .join(",")}`;
+  const [syncedSignature, setSyncedSignature] = useState(serverSignature);
+  if (serverSignature !== syncedSignature) {
+    setSyncedSignature(serverSignature);
     setItems(initialItems);
     setUnread(initialUnread);
-  }, [initialItems, initialUnread]);
+  }
 
   useEffect(() => {
     if (!supabaseConfigured) return;
