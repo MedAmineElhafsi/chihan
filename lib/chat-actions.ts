@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "./supabase/server";
 import { getEntitlements } from "./entitlements";
 import { FREE_LIMITS } from "./constants";
+import { createNotification } from "./notifications";
 import type { ChatMessage } from "@/types/chat";
 
 function startOfTodayISO() {
@@ -97,6 +98,21 @@ export async function sendMessage(
     .update({ last_read_at: new Date().toISOString() })
     .eq("conversation_id", conversationId)
     .eq("user_id", user.id);
+
+  const { data: recipients } = await supabase
+    .from("conversation_participants")
+    .select("user_id")
+    .eq("conversation_id", conversationId)
+    .neq("user_id", user.id);
+  for (const r of recipients ?? []) {
+    await createNotification({
+      userId: String(r.user_id),
+      actorId: user.id,
+      type: "message",
+      entityId: conversationId,
+      link: `/messages/${conversationId}`,
+    });
+  }
 
   revalidatePath("/messages");
   return { ok: true, message: data as ChatMessage };

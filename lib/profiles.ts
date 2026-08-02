@@ -5,7 +5,23 @@ import {
   isMissingProfession,
   profileColumns,
 } from "./profile-columns";
-import { PROFILE_COLUMNS_BASE, type Profile } from "@/types/profile";
+import {
+  PROFILE_COLUMNS_BASE,
+  type Profile,
+  type ProfileViewer,
+} from "@/types/profile";
+
+function normalizeProfile(data: Record<string, unknown> | null): Profile | null {
+  if (!data) return null;
+  return {
+    ...(data as unknown as Profile),
+    languages: Array.isArray(data.languages)
+      ? (data.languages as string[])
+      : [],
+    profession: (data.profession as string | null) ?? null,
+    is_verified: Boolean(data.is_verified),
+  };
+}
 
 /** The signed-in user's own profile (visible even while private), or null. */
 export async function getOwnProfile(userId: string): Promise<Profile | null> {
@@ -14,8 +30,9 @@ export async function getOwnProfile(userId: string): Promise<Profile | null> {
     supabase.from("profiles").select(cols).eq("user_id", userId).maybeSingle();
 
   let { data, error } = await run(profileColumns());
-  if (isMissingProfession(error)) ({ data, error } = await run(PROFILE_COLUMNS_BASE));
-  return (data as Profile | null) ?? null;
+  if (isMissingProfession(error))
+    ({ data, error } = await run(PROFILE_COLUMNS_BASE));
+  return normalizeProfile((data as Record<string, unknown> | null) ?? null);
 }
 
 /**
@@ -28,6 +45,82 @@ export async function getProfileById(id: string): Promise<Profile | null> {
     supabase.from("profiles").select(cols).eq("id", id).maybeSingle();
 
   let { data, error } = await run(profileColumns());
-  if (isMissingProfession(error)) ({ data, error } = await run(PROFILE_COLUMNS_BASE));
-  return (data as Profile | null) ?? null;
+  if (isMissingProfession(error))
+    ({ data, error } = await run(PROFILE_COLUMNS_BASE));
+  return normalizeProfile((data as Record<string, unknown> | null) ?? null);
+}
+
+/** Record that `viewerUserId` opened `profileId` (no-op for self / missing auth). */
+export async function recordProfileView(
+  profileId: string,
+  viewerUserId: string,
+  profileOwnerUserId: string
+): Promise<void> {
+  if (viewerUserId === profileOwnerUserId) return;
+  try {
+    const supabase = await createClient();
+    const now = new Date().toISOString();
+    const { error } = await supabase.from("profile_views").upsert(
+      {
+        profile_id: profileId,
+        viewer_user_id: viewerUserId,
+        created_at: now,
+      },
+      { onConflict: "profile_id,viewer_user_id" }
+    );
+    if (error) {
+      // Table missing pre-migration — ignore.
+    }
+  } catch {
+    // ignore
+  }
+}
+
+/** Viewers of the owner's profile, newest first. */
+export async function getProfileViewers(
+  ownerUserId: string,
+  limit = 50
+): Promise<ProfileViewer[]> {
+  try {
+    const supabase = await createClient();
+    const { data: own } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("user_id", ownerUserId)
+      .maybeSingle();
+    if (!own?.id) return [];
+
+    const { data: views, error } = await supabase
+      .from("profile_views")
+      .select("viewer_user_id, created_at")
+      .eq("profile_id", own.id)
+      .order("created_at", { ascending: false })
+      .limit(limit);
+    if (error || !views?.length) return [];
+
+    const ids = views.map((v) => String(v.viewer_user_id));
+    const { data: profiles } = await supabase
+      .from("profiles")
+      .select("id, user_id, display_name, avatar_url, city, country, is_public")
+      .in("user_id", ids);
+
+    const byUser = new Map(
+      (profiles ?? []).map((p) => [String(p.user_id), p] as const)
+    );
+
+    return views.map((v) => {
+      const p = byUser.get(String(v.viewer_user_id));
+      return {
+        viewer_user_id: String(v.viewer_user_id),
+        profile_id: p?.is_public ? String(p.id) : null,
+        display_name: (p?.display_name as string | null) ?? null,
+        avatar_url: (p?.avatar_url as string | null) ?? null,
+        city: (p?.city as string | null) ?? null,
+        country: (p?.country as string | null) ?? null,
+        viewed_at: String(v.created_at),
+      };
+    });
+  } catch {
+    return [];
+  }
 }

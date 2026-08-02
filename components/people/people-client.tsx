@@ -9,6 +9,8 @@ import { revealProfile } from "@/lib/people-actions";
 import type { Profile } from "@/types/profile";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { MessageButton } from "@/components/chat/message-button";
+import { VerifiedBadge } from "@/components/profile/verified-badge";
 import { cn } from "@/lib/utils";
 import { UpgradeDialog } from "./upgrade-dialog";
 
@@ -28,6 +30,8 @@ export function PeopleClient({
   initialUsed: number;
 }) {
   const t = useTranslations("People");
+  const tChat = useTranslations("Chat");
+  const tProfile = useTranslations("Profile");
   const [revealed, setRevealed] = useState<Set<string>>(
     () => new Set(initialRevealedIds)
   );
@@ -94,8 +98,12 @@ export function PeopleClient({
                     </AvatarFallback>
                   </Avatar>
                   <div className="min-w-0">
-                    <div className="truncate font-display text-lg font-semibold">
-                      {p.display_name}
+                    <div className="flex items-center gap-1.5 truncate font-display text-lg font-semibold">
+                      <span className="truncate">{p.display_name}</span>
+                      <VerifiedBadge
+                        verified={p.is_verified}
+                        label={tProfile("verified")}
+                      />
                     </div>
                     {place && (
                       <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -137,15 +145,21 @@ export function PeopleClient({
                           {t("viewProfile")}
                         </Link>
                       </Button>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        disabled
-                        className="gap-1.5 text-muted-foreground"
-                      >
-                        <MessageCircle className="size-4" />
-                        {t("messageSoon")}
-                      </Button>
+                      {isAuthenticated ? (
+                        <MessageButton
+                          targetUserId={p.user_id}
+                          size="sm"
+                          variant="ghost"
+                          className="text-muted-foreground"
+                        />
+                      ) : (
+                        <Button asChild size="sm" variant="ghost" className="gap-1.5">
+                          <Link href="/login">
+                            <MessageCircle className="size-4" />
+                            {tChat("message")}
+                          </Link>
+                        </Button>
+                      )}
                     </div>
                   </div>
 

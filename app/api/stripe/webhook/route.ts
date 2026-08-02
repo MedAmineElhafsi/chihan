@@ -59,6 +59,14 @@ export async function POST(request: NextRequest) {
       },
       { onConflict: "user_id" }
     );
+
+    // Premium unlocks the verified badge on the member profile.
+    const premium =
+      sub.status === "active" || sub.status === "trialing";
+    await svc
+      .from("profiles")
+      .update({ is_verified: premium })
+      .eq("user_id", uid);
   }
 
   try {

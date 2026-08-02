@@ -8,8 +8,19 @@ import { useRouter } from "@/i18n/navigation";
 import { startConversation } from "@/lib/chat-actions";
 import { Button } from "@/components/ui/button";
 import { UpgradeDialog } from "@/components/people/upgrade-dialog";
+import { cn } from "@/lib/utils";
 
-export function MessageButton({ targetUserId }: { targetUserId: string }) {
+export function MessageButton({
+  targetUserId,
+  size = "default",
+  variant = "default",
+  className,
+}: {
+  targetUserId: string;
+  size?: "default" | "sm" | "lg" | "icon";
+  variant?: "default" | "secondary" | "outline" | "ghost" | "link" | "destructive";
+  className?: string;
+}) {
   const t = useTranslations("Chat");
   const router = useRouter();
   const [pending, startT] = useTransition();
@@ -28,7 +39,13 @@ export function MessageButton({ targetUserId }: { targetUserId: string }) {
 
   return (
     <>
-      <Button onClick={onClick} disabled={pending} className="gap-2">
+      <Button
+        onClick={onClick}
+        disabled={pending}
+        size={size}
+        variant={variant}
+        className={cn("gap-1.5", className)}
+      >
         {pending ? (
           <Loader2 className="size-4 animate-spin" />
         ) : (

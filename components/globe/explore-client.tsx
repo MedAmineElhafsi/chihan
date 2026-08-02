@@ -27,6 +27,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CategoryIcon } from "@/components/directory/category-icon";
 import { CATEGORY_COLORS, pointStyle } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { useOnlineProfiles } from "@/lib/use-online";
 import type { GlobePoint } from "@/lib/globe";
 
 const GlobeGL = dynamic(() => import("./globe-gl"), {
@@ -45,6 +46,7 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
   const [layer, setLayer] = useState<Layer>("all");
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const online = useOnlineProfiles();
 
   useEffect(() => {
     const el = containerRef.current;
@@ -113,9 +115,11 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
           dimmed:
             selectedCountry != null && (p.country || "—") !== selectedCountry,
           subtitle: p.city ?? "",
+          kind: p.kind,
+          online: p.kind === "person" ? online.has(p.id) : undefined,
         };
       }),
-    [filtered, selectedId, selectedCountry]
+    [filtered, selectedId, selectedCountry, online]
   );
 
   /** Colour key for whatever is currently on screen. */
@@ -295,6 +299,14 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
                   {l.label}
                 </span>
               ))}
+              <span className="inline-flex items-center gap-1.5 text-[0.7rem] text-muted-foreground">
+                <span className="size-2.5 rounded-full bg-emerald-500 ring-1 ring-white/40" />
+                {t("online")}
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-[0.7rem] text-muted-foreground">
+                <span className="size-2.5 rounded-full bg-muted-foreground/50 ring-1 ring-white/40" />
+                {t("offline")}
+              </span>
             </div>
           )}
         </div>
@@ -311,6 +323,7 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
           ) : selectedItem ? (
             <ItemDetail
               item={selectedItem}
+              online={online.has(selectedItem.id)}
               backLabel={t("backToCountry", {
                 country: selectedItem.country || "—",
               })}
@@ -335,7 +348,12 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
                 {t("memberCount", { count: countryItems.length })}
               </div>
               {countryItems.map((p) => (
-                <ItemRow key={p.id} item={p} onClick={() => selectItem(p.id)} />
+                <ItemRow
+                  key={p.id}
+                  item={p}
+                  online={online.has(p.id)}
+                  onClick={() => selectItem(p.id)}
+                />
               ))}
             </div>
           ) : (
@@ -364,7 +382,7 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
   );
 }
 
-function ItemAvatar({ item }: { item: GlobePoint }) {
+function ItemAvatar({ item, online }: { item: GlobePoint; online?: boolean }) {
   if (item.kind === "listing") {
     const color = CATEGORY_COLORS[item.category] ?? CATEGORY_COLORS.other;
     return (
@@ -393,24 +411,57 @@ function ItemAvatar({ item }: { item: GlobePoint }) {
       >
         {style.icon}
       </span>
+      <span
+        className={cn(
+          "absolute -top-0.5 -end-0.5 size-2.5 rounded-full ring-2 ring-card",
+          online ? "bg-emerald-500" : "bg-muted-foreground/40"
+        )}
+        aria-hidden="true"
+      />
     </span>
   );
 }
 
-function ItemRow({ item, onClick }: { item: GlobePoint; onClick: () => void }) {
+function OnlineStatus({ online }: { online?: boolean }) {
+  const t = useTranslations("Explore");
+  return (
+    <span
+      className={cn(
+        "font-medium",
+        online ? "text-emerald-400" : "text-muted-foreground/70"
+      )}
+    >
+      {online ? t("online") : t("offline")}
+    </span>
+  );
+}
+
+function ItemRow({
+  item,
+  online,
+  onClick,
+}: {
+  item: GlobePoint;
+  online?: boolean;
+  onClick: () => void;
+}) {
   return (
     <button
       onClick={onClick}
       className="flex items-center gap-3 rounded-lg px-3 py-2 text-start transition-colors hover:bg-accent"
     >
-      <ItemAvatar item={item} />
+      <ItemAvatar item={item} online={online} />
       <span className="flex min-w-0 flex-col">
         <span className="truncate text-sm font-medium">{item.name}</span>
-        {item.city && (
-          <span className="truncate text-xs text-muted-foreground">
-            {item.city}
-          </span>
-        )}
+        <span className="flex min-w-0 items-center gap-1 text-xs text-muted-foreground">
+          {item.kind === "person" && (
+            <>
+              <OnlineStatus online={online} />
+              {item.city && <span aria-hidden="true">·</span>}
+            </>
+          )}
+          {item.city && <span className="truncate">{item.city}</span>}
+        </span>
       </span>
     </button>
   );
@@ -418,11 +469,13 @@ function ItemRow({ item, onClick }: { item: GlobePoint; onClick: () => void }) {
 
 function ItemDetail({
   item,
+  online,
   backLabel,
   onBack,
   viewLabel,
 }: {
   item: GlobePoint;
+  online?: boolean;
   backLabel: string;
   onBack: () => void;
   viewLabel: string;
@@ -440,7 +493,7 @@ function ItemDetail({
       </button>
       <div className="flex items-center gap-4">
         <div className="scale-150">
-          <ItemAvatar item={item} />
+          <ItemAvatar item={item} online={online} />
         </div>
         <div className="min-w-0 ps-2">
           <div className="truncate font-display text-lg font-semibold">
@@ -450,6 +503,11 @@ function ItemDetail({
             <div className="flex items-center gap-1 text-sm text-muted-foreground">
               <MapPin className="size-3.5 text-gold" />
               {place}
+            </div>
+          )}
+          {item.kind === "person" && (
+            <div className="text-sm">
+              <OnlineStatus online={online} />
             </div>
           )}
         </div>

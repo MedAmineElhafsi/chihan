@@ -15,6 +15,9 @@ export type GlobeDatum = {
   selected: boolean;
   dimmed: boolean;
   subtitle: string;
+  /** People only — realtime presence. Listings stay undefined. */
+  online?: boolean;
+  kind?: "person" | "listing";
 };
 
 export type RingDatum = { lat: number; lng: number };
@@ -138,19 +141,31 @@ export default function GlobeGL({
       }}
       htmlElement={(obj: object) => {
         const d = obj as GlobeDatum;
+        const size = d.selected ? 30 : 22;
         const el = document.createElement("div");
-        el.title = d.subtitle ? `${d.name} · ${d.subtitle}` : d.name;
+        const status =
+          d.kind === "person"
+            ? d.online
+              ? " · Online"
+              : " · Offline"
+            : "";
+        el.title = `${d.name}${d.subtitle ? ` · ${d.subtitle}` : ""}${status}`;
         el.style.cssText = [
+          "position:relative",
           "display:flex",
           "align-items:center",
           "justify-content:center",
-          `width:${d.selected ? 30 : 22}px`,
-          `height:${d.selected ? 30 : 22}px`,
+          `width:${size}px`,
+          `height:${size}px`,
           "border-radius:9999px",
           `background:${d.color}`,
           `border:2px solid ${d.selected ? "#ffffff" : "rgba(255,255,255,.75)"}`,
           `box-shadow:0 0 0 2px rgba(6,12,22,.55), 0 3px 10px rgba(0,0,0,.5)${
-            d.selected ? `, 0 0 16px ${d.color}` : ""
+            d.selected
+              ? `, 0 0 16px ${d.color}`
+              : d.online
+                ? ", 0 0 10px rgba(16,185,129,.85)"
+                : ""
           }`,
           `font-size:${d.selected ? 15 : 11}px`,
           "line-height:1",
@@ -160,6 +175,27 @@ export default function GlobeGL({
           "user-select:none",
         ].join(";");
         el.textContent = d.icon;
+
+        // Presence pip for people (green = online, muted = offline).
+        if (d.kind === "person") {
+          const pip = document.createElement("span");
+          const pipSize = d.selected ? 9 : 7;
+          pip.style.cssText = [
+            "position:absolute",
+            "top:-1px",
+            "right:-1px",
+            `width:${pipSize}px`,
+            `height:${pipSize}px`,
+            "border-radius:9999px",
+            `background:${d.online ? "#10b981" : "rgba(148,163,184,.7)"}`,
+            "border:1.5px solid rgba(6,12,22,.9)",
+            d.online ? "box-shadow:0 0 6px rgba(16,185,129,.9)" : "",
+          ]
+            .filter(Boolean)
+            .join(";");
+          el.appendChild(pip);
+        }
+
         el.onclick = () => onPointClick(d.id);
         return el;
       }}

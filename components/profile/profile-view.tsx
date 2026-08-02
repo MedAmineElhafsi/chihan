@@ -1,9 +1,10 @@
 import { getTranslations } from "next-intl/server";
-import { Globe2, Languages, MapPin, Pencil } from "lucide-react";
+import { Eye, Globe2, Languages, MapPin, Pencil } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { VerifiedBadge } from "@/components/profile/verified-badge";
 import type { Profile } from "@/types/profile";
 
 export async function ProfileView({
@@ -47,18 +48,27 @@ export async function ProfileView({
               {profile.is_public ? t("public") : t("private")}
             </span>
             {isOwner && (
-              <Button asChild size="sm" variant="outline" className="gap-1.5">
-                <Link href="/profile/edit">
-                  <Pencil className="size-3.5" />
-                  {t("editCta")}
-                </Link>
-              </Button>
+              <>
+                <Button asChild size="sm" variant="outline" className="gap-1.5">
+                  <Link href="/views">
+                    <Eye className="size-3.5" />
+                    {t("whoViewed")}
+                  </Link>
+                </Button>
+                <Button asChild size="sm" variant="outline" className="gap-1.5">
+                  <Link href="/profile/edit">
+                    <Pencil className="size-3.5" />
+                    {t("editCta")}
+                  </Link>
+                </Button>
+              </>
             )}
           </div>
         </div>
 
-        <h1 className="mt-3 font-display text-2xl font-semibold tracking-tight">
+        <h1 className="mt-3 flex items-center gap-2 font-display text-2xl font-semibold tracking-tight">
           {name}
+          <VerifiedBadge verified={profile.is_verified} label={t("verified")} />
         </h1>
 
         {place && (

@@ -3,7 +3,9 @@
 import { useTransition } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import {
+  Bell,
   Check,
+  Eye,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -67,6 +69,12 @@ export function MobileMenu({
         <DropdownMenuItem asChild>
           <Link href="/news">{tNav("news")}</Link>
         </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/groups">{tNav("groups")}</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/search">{tNav("search")}</Link>
+        </DropdownMenuItem>
 
         <DropdownMenuSeparator />
         <DropdownMenuLabel>{tCommon("language")}</DropdownMenuLabel>
@@ -91,9 +99,21 @@ export function MobileMenu({
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
+              <Link href="/views">
+                <Eye />
+                {tNav("whoViewed")}
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
               <Link href="/messages">
                 <MessageSquare />
                 {tNav("messages")}
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/notifications">
+                <Bell />
+                {tNav("notifications")}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>

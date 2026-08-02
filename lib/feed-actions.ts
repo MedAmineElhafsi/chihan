@@ -7,6 +7,7 @@ import { createClient } from "./supabase/server";
 import { getEntitlements } from "./entitlements";
 import { geocode } from "./geocode";
 import { getComments } from "./feed";
+import { createNotification } from "./notifications";
 import type { PostComment } from "@/types/post";
 
 const postSchema = z.object({
@@ -120,6 +121,23 @@ export async function toggleLike(
   await supabase
     .from("post_likes")
     .insert({ post_id: postId, user_id: user.id });
+
+  const { data: post } = await supabase
+    .from("posts")
+    .select("author_id, group_id")
+    .eq("id", postId)
+    .maybeSingle();
+  if (post?.author_id && String(post.author_id) !== user.id) {
+    const groupId = post.group_id ? String(post.group_id) : null;
+    await createNotification({
+      userId: String(post.author_id),
+      actorId: user.id,
+      type: "like",
+      entityId: postId,
+      link: groupId ? `/groups/${groupId}#board` : "/feed",
+    });
+  }
+
   return { ok: true, liked: true };
 }
 
@@ -142,6 +160,23 @@ export async function addComment(
     .insert({ post_id: postId, author_id: user.id, body: text });
   if (error) return { ok: false, error: error.message };
 
+  const { data: post } = await supabase
+    .from("posts")
+    .select("author_id, group_id")
+    .eq("id", postId)
+    .maybeSingle();
+  if (post?.author_id && String(post.author_id) !== user.id) {
+    const groupId = post.group_id ? String(post.group_id) : null;
+    await createNotification({
+      userId: String(post.author_id),
+      actorId: user.id,
+      type: "comment",
+      entityId: postId,
+      link: groupId ? `/groups/${groupId}#board` : "/feed",
+    });
+  }
+
+  if (post?.group_id) revalidatePath(`/groups/${String(post.group_id)}`);
   revalidatePath("/feed");
   return { ok: true };
 }
@@ -158,12 +193,17 @@ export async function deletePost(
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return { ok: false, error: "Not authenticated." };
-  const { error } = await supabase
+
+  const { data: existing } = await supabase
     .from("posts")
-    .delete()
+    .select("group_id")
     .eq("id", postId)
-    .eq("author_id", user.id);
+    .maybeSingle();
+
+  const { error } = await supabase.from("posts").delete().eq("id", postId);
   if (error) return { ok: false, error: error.message };
+
+  if (existing?.group_id) revalidatePath(`/groups/${String(existing.group_id)}`);
   revalidatePath("/feed");
   return { ok: true };
 }

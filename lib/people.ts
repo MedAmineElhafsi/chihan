@@ -37,7 +37,12 @@ export async function getPeople(
       ({ data, error } = await build(PROFILE_COLUMNS_BASE));
     }
     if (error || !data) return [];
-    let people = data as unknown as Profile[];
+    let people = (data as unknown as Profile[]).map((p) => ({
+      ...p,
+      languages: Array.isArray(p.languages) ? p.languages : [],
+      profession: p.profession ?? null,
+      is_verified: Boolean(p.is_verified),
+    }));
     if (excludeUserId) people = people.filter((p) => p.user_id !== excludeUserId);
     return people;
   } catch {

@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getProfileById } from "@/lib/profiles";
 import { ProfileView } from "@/components/profile/profile-view";
 import { MessageButton } from "@/components/chat/message-button";
+import { RecordProfileView } from "@/components/profile/record-profile-view";
 
 export default async function PublicProfilePage({
   params,
@@ -23,6 +24,7 @@ export default async function PublicProfilePage({
 
   return (
     <div className="mx-auto w-full max-w-2xl px-4 py-12 sm:px-6">
+      {user && !isOwner && <RecordProfileView profileId={profile.id} />}
       <div className="animate-fade-up">
         <ProfileView profile={profile} isOwner={isOwner} />
       </div>
