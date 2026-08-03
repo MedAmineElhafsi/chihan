@@ -128,7 +128,45 @@
     "errorName": "Please enter a display name (at least 2 characters).",
     "errorPhotoSize": "Image is too large (max 3 MB).",
     "errorPhotoType": "Please choose a JPG, PNG or WebP image.",
-    "errorGeneric": "Couldn’t save your profile. Please try again."
+    "errorGeneric": "Couldn’t save your profile. Please try again.",
+    "originLabel": "Where are you from?",
+    "originHint": "Your Kurdish region of origin — helps others find common roots.",
+    "origin_bakur": "Bakur (North)",
+    "origin_bashur": "Başûr (South)",
+    "origin_rojava": "Rojava (West)",
+    "origin_rojhilat": "Rojhilat (East)",
+    "origin_diaspora": "Born in diaspora",
+    "origin_mixed": "Mixed / other",
+    "interestsLabel": "Interests",
+    "int_culture": "Culture",
+    "int_music": "Music",
+    "int_sports": "Sports",
+    "int_business": "Business",
+    "int_education": "Education",
+    "int_family": "Family",
+    "int_tech": "Tech",
+    "int_art": "Art",
+    "int_food": "Food",
+    "int_volunteering": "Volunteering",
+    "int_politics": "Politics",
+    "int_faith": "Faith",
+    "lookingLabel": "I am looking for",
+    "looking_friends": "Friends",
+    "looking_housing": "Housing",
+    "looking_work": "Work",
+    "looking_mentorship": "Mentorship",
+    "looking_events": "Events",
+    "looking_language_exchange": "Language exchange",
+    "looking_business_partners": "Business partners",
+    "offeringLabel": "I can offer",
+    "offer_friendship": "Friendship",
+    "offer_housing_help": "Housing help",
+    "offer_job_leads": "Job leads",
+    "offer_mentorship": "Mentorship",
+    "offer_local_tips": "Local tips",
+    "offer_language_help": "Language help",
+    "offer_business_help": "Business help",
+    "offer_volunteering": "Volunteering"
   },
   "Profile": {
     "editCta": "Edit profile",
@@ -141,7 +179,10 @@
     "dialect": "Dialect",
     "onGlobe": "On the globe",
     "notLocated": "No location set",
-    "noBio": "No bio yet."
+    "noBio": "No bio yet.",
+    "interests": "Interests",
+    "lookingFor": "Looking for",
+    "offering": "Can offer"
   },
   "Explore": {
     "title": "Explore",
@@ -265,7 +306,11 @@
     "viewProfile": "View profile",
     "messageSoon": "Message · Soon",
     "noBio": "No bio yet.",
-    "empty": "No people match your filters."
+    "empty": "No people match your filters.",
+    "origin": "Origin",
+    "looking": "Looking for",
+    "anyOrigin": "Any origin",
+    "anyLooking": "Anything"
   },
   "Pricing": {
     "title": "Choose your plan",
@@ -339,7 +384,16 @@
     "delete": "Delete",
     "errorPhotoType": "Please choose a JPG, PNG or WebP image.",
     "errorPhotoSize": "Image is too large (max 4 MB).",
-    "errorGeneric": "Couldn’t post. Please try again."
+    "errorGeneric": "Couldn’t post. Please try again.",
+    "filterAll": "All",
+    "filterNear": "Events near me",
+    "needLocation": "Add a city to your profile to see nearby events.",
+    "setLocation": "Edit profile",
+    "emptyNear": "No events near you yet.",
+    "rsvpGoing": "Going",
+    "rsvpInterested": "Interested",
+    "addToCalendar": "Add to calendar",
+    "distanceKm": "{km} km"
   },
   "News": {
     "title": "News",
@@ -380,7 +434,10 @@
     "deleteConfirmCta": "Yes, delete everything",
     "deleteError": "Could not delete your account.",
     "cancel": "Cancel",
-    "privacyLink": "Privacy notice"
+    "privacyLink": "Privacy notice",
+    "menuTitle": "Privacy & safety",
+    "menuBody": "Manage who can interact with you.",
+    "blockedMenuHint": "View and unblock people you blocked."
   },
   "Privacy": {
     "title": "Privacy notice",
@@ -493,5 +550,23 @@
     "kind_group": "Group",
     "kind_post": "Post",
     "kind_news": "News"
+  },
+  "Safety": {
+    "block": "Block",
+    "unblock": "Unblock",
+    "mute": "Mute",
+    "unmute": "Unmute",
+    "blockedHint": "You blocked this person. They can’t message you, and you won’t see their posts.",
+    "blockedTitle": "Blocked users",
+    "blockedBody": "People you blocked can’t message you. Unblock anytime.",
+    "blockedEmpty": "You haven’t blocked anyone.",
+    "unknownUser": "Unknown user",
+    "backToSettings": "Back to settings"
+  },
+  "Pwa": {
+    "installTitle": "Install Cîhan",
+    "installBody": "Add the app to your home screen for faster access.",
+    "installCta": "Install",
+    "installLater": "Not now"
   }
 }

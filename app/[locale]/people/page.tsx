@@ -8,6 +8,8 @@ import { getPeople, getRevealState } from "@/lib/people";
 import {
   FREE_LIMITS,
   KURDISH_DIALECTS,
+  LOOKING_FOR,
+  ORIGIN_REGIONS,
   SPOKEN_LANGUAGES,
 } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
@@ -27,6 +29,8 @@ export default async function PeoplePage({
     city?: string;
     language?: string;
     dialect?: string;
+    origin?: string;
+    looking?: string;
   }>;
 }) {
   const { locale } = await params;
@@ -42,9 +46,12 @@ export default async function PeoplePage({
     city: sp.city?.trim() || undefined,
     language: advanced ? sp.language || undefined : undefined,
     dialect: advanced ? sp.dialect || undefined : undefined,
+    origin: sp.origin || undefined,
+    looking: sp.looking || undefined,
   };
 
   const t = await getTranslations("People");
+  const tOn = await getTranslations("Onboarding");
   const people = await getPeople(filters, user?.id);
   const reveal = user
     ? await getRevealState(user.id)
@@ -58,7 +65,7 @@ export default async function PeoplePage({
       <p className="mt-1 text-muted-foreground">{t("subtitle")}</p>
 
       {/* Filters */}
-      <form className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5 lg:items-end">
+      <form className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 xl:items-end">
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-medium text-muted-foreground">
             {t("country")}
@@ -70,6 +77,40 @@ export default async function PeoplePage({
             {t("city")}
           </label>
           <Input name="city" defaultValue={sp.city ?? ""} />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-xs font-medium text-muted-foreground">
+            {t("origin")}
+          </label>
+          <select
+            name="origin"
+            defaultValue={sp.origin ?? ""}
+            className={selectClass}
+          >
+            <option value="">{t("anyOrigin")}</option>
+            {ORIGIN_REGIONS.map((o) => (
+              <option key={o} value={o}>
+                {tOn(`origin_${o}` as never)}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-xs font-medium text-muted-foreground">
+            {t("looking")}
+          </label>
+          <select
+            name="looking"
+            defaultValue={sp.looking ?? ""}
+            className={selectClass}
+          >
+            <option value="">{t("anyLooking")}</option>
+            {LOOKING_FOR.map((item) => (
+              <option key={item} value={item}>
+                {tOn(`looking_${item}` as never)}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="flex flex-col gap-1.5">
           <label className="flex items-center gap-1 text-xs font-medium text-muted-foreground">

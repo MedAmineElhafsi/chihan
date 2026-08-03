@@ -128,7 +128,45 @@
     "errorName": "تکایە ناوێکی پیشاندان بنووسە (لانیکەم ٢ پیت).",
     "errorPhotoSize": "وێنە زۆر گەورەیە (زۆرترین ٣ مێگابایت).",
     "errorPhotoType": "تکایە وێنەیەکی JPG، PNG یان WebP هەڵبژێرە.",
-    "errorGeneric": "نەتوانرا پرۆفایلەکەت پاشەکەوت بکرێت. تکایە دووبارە هەوڵبدەرەوە."
+    "errorGeneric": "نەتوانرا پرۆفایلەکەت پاشەکەوت بکرێت. تکایە دووبارە هەوڵبدەرەوە.",
+    "originLabel": "تۆ لە کوێوەیت؟",
+    "originHint": "هەرێمی کوردی ڕەسەنت — بۆ دۆزینەوەی ڕەگ و بنەچەی هاوبەش.",
+    "origin_bakur": "باکوور",
+    "origin_bashur": "باشوور",
+    "origin_rojava": "ڕۆژئاوا",
+    "origin_rojhilat": "ڕۆژهەڵات",
+    "origin_diaspora": "لە دایاسپۆرا لەدایکبوو",
+    "origin_mixed": "تێکەڵ / تر",
+    "interestsLabel": "علاقەکان",
+    "int_culture": "کلتور",
+    "int_music": "مۆسیقا",
+    "int_sports": "وەرزش",
+    "int_business": "بازرگانی",
+    "int_education": "پەروەردە",
+    "int_family": "خێزان",
+    "int_tech": "تەکنەلۆژیا",
+    "int_art": "هونەر",
+    "int_food": "خواردن",
+    "int_volunteering": "خۆبەخشی",
+    "int_politics": "سیاسەت",
+    "int_faith": "باوەڕ",
+    "lookingLabel": "من بەدوای ئەمەدا دەگەڕێم",
+    "looking_friends": "هاوڕێ",
+    "looking_housing": "نیشتەجێبوون",
+    "looking_work": "کار",
+    "looking_mentorship": "ڕێنمایی",
+    "looking_events": "بۆنە",
+    "looking_language_exchange": "ئاڵوگۆڕی زمان",
+    "looking_business_partners": "هاوبەشی بازرگانی",
+    "offeringLabel": "دەتوانم پێشکەش بکەم",
+    "offer_friendship": "هاوڕێیەتی",
+    "offer_housing_help": "یارمەتی نیشتەجێبوون",
+    "offer_job_leads": "سەرنجەکانی کار",
+    "offer_mentorship": "ڕێنمایی",
+    "offer_local_tips": "ئامۆژگاری ناوخۆیی",
+    "offer_language_help": "یارمەتی زمان",
+    "offer_business_help": "یارمەتی بازرگانی",
+    "offer_volunteering": "خۆبەخشی"
   },
   "Profile": {
     "editCta": "دەستکاریی پرۆفایل",
@@ -141,7 +179,10 @@
     "dialect": "زاراوە",
     "onGlobe": "لەسەر گۆ",
     "notLocated": "هیچ شوێنێک دانەنراوە",
-    "noBio": "هێشتا بایۆ نییە."
+    "noBio": "هێشتا بایۆ نییە.",
+    "interests": "علاقەکان",
+    "lookingFor": "بەدوایدا دەگەڕێت",
+    "offering": "پێشکەش دەکات"
   },
   "Explore": {
     "title": "گەڕان",
@@ -265,7 +306,11 @@
     "viewProfile": "بینینی پرۆفایل",
     "messageSoon": "نامە · بەمزووانە",
     "noBio": "هێشتا بایۆ نییە.",
-    "empty": "هیچ کەسێک لەگەڵ پاڵێوەرەکانت ناگونجێت."
+    "empty": "هیچ کەسێک لەگەڵ پاڵێوەرەکانت ناگونجێت.",
+    "origin": "ڕەگەز",
+    "looking": "بەدوای",
+    "anyOrigin": "هەر ڕەگەزێک",
+    "anyLooking": "هەر شتێک"
   },
   "Pricing": {
     "title": "پلانەکەت هەڵبژێرە",
@@ -339,7 +384,16 @@
     "delete": "سڕینەوە",
     "errorPhotoType": "تکایە وێنەی JPG، PNG یان WebP هەڵبژێرە.",
     "errorPhotoSize": "وێنە زۆر گەورەیە (زۆرترین ٤ مێگابایت).",
-    "errorGeneric": "نەتوانرا بڵاوبکرێتەوە. تکایە دووبارە هەوڵبدەرەوە."
+    "errorGeneric": "نەتوانرا بڵاوبکرێتەوە. تکایە دووبارە هەوڵبدەرەوە.",
+    "filterAll": "هەموو",
+    "filterNear": "بۆنەکانی نزیکم",
+    "needLocation": "شارێک زیاد بکە بۆ بینینی بۆنە نزیکەکان.",
+    "setLocation": "دەستکاری پرۆفایل",
+    "emptyNear": "هێشتا بۆنەی نزیک نییە.",
+    "rsvpGoing": "دەچم",
+    "rsvpInterested": "حەزم لێیە",
+    "addToCalendar": "زیادکردن بۆ کالێندەر",
+    "distanceKm": "{km} کم"
   },
   "News": {
     "title": "هەواڵ",
@@ -380,7 +434,10 @@
     "deleteConfirmCta": "بەڵێ، هەمووی بسڕەوە",
     "deleteError": "نەتوانرا هەژمارەکەت بسڕدرێتەوە.",
     "cancel": "هەڵوەشاندنەوە",
-    "privacyLink": "ئاگاداری تایبەتمەندی"
+    "privacyLink": "ئاگاداری تایبەتمەندی",
+    "menuTitle": "تایبەتمەندی و سەلامەتی",
+    "menuBody": "بەڕێوەبەری ئەوانەی دەتوانن پەیوەندیت پێوە بکەن.",
+    "blockedMenuHint": "کەسانی بلۆککراو ببینە و لاببە."
   },
   "Privacy": {
     "title": "ئاگاداری تایبەتمەندی",
@@ -493,5 +550,23 @@
     "kind_group": "گرووپ",
     "kind_post": "پۆست",
     "kind_news": "هەواڵ"
+  },
+  "Safety": {
+    "block": "بلۆک",
+    "unblock": "لابردنی بلۆک",
+    "mute": "بێدەنگ",
+    "unmute": "دەنگ بکەرەوە",
+    "blockedHint": "ئەم کەسەت بلۆک کردووە. ناتوانێت پەیام بنێرێت و پۆستەکانی نابینیت.",
+    "blockedTitle": "بەکارهێنەرانی بلۆککراو",
+    "blockedBody": "کەسانی بلۆککراو ناتوانن پەیام بنێرن. هەر کاتێک لاببە.",
+    "blockedEmpty": "هیچ کەسێکت بلۆک نەکردووە.",
+    "unknownUser": "بەکارهێنەری نەناسراو",
+    "backToSettings": "گەڕانەوە بۆ ڕێکخستنەکان"
+  },
+  "Pwa": {
+    "installTitle": "دامەزراندنی Cîhan",
+    "installBody": "ئەپەکە زیاد بکە بۆ شاشەی سەرەکی.",
+    "installCta": "دامەزراندن",
+    "installLater": "ئێستا نا"
   }
 }

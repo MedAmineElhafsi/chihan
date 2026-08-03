@@ -3,9 +3,8 @@ import "server-only";
 import { PROFILE_COLUMNS, PROFILE_COLUMNS_BASE } from "@/types/profile";
 
 /**
- * Optional columns (profession, is_verified) arrive in later migrations.
- * Until applied, selecting them fails every profile query — detect once and
- * fall back for the rest of the process.
+ * Optional columns arrive in later migrations. Until applied, selecting them
+ * fails every profile query — detect once and fall back for the process.
  */
 let useBaseColumns: boolean | null = null;
 
@@ -20,7 +19,9 @@ export function isMissingProfession(
   if (!error) return false;
   const msg = error.message ?? "";
   const missingCol =
-    (/profession|is_verified/i.test(msg) &&
+    (/profession|is_verified|origin_region|interests|looking_for|offering/i.test(
+      msg
+    ) &&
       (error.code === "42703" ||
         /does not exist|schema cache|column/i.test(msg))) ||
     false;

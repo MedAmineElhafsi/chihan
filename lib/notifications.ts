@@ -1,6 +1,7 @@
 import "server-only";
 
 import { createClient } from "./supabase/server";
+import { filterAllowedNotifications } from "./blocks";
 import type { AppNotification, NotificationType } from "@/types/notification";
 
 export type CreateNotificationInput = {
@@ -22,7 +23,9 @@ export async function createNotification(
 export async function createNotifications(
   inputs: CreateNotificationInput[]
 ): Promise<void> {
-  const rows = inputs.filter((i) => i.userId !== i.actorId);
+  const selfFiltered = inputs.filter((i) => i.userId !== i.actorId);
+  if (selfFiltered.length === 0) return;
+  const rows = await filterAllowedNotifications(selfFiltered);
   if (rows.length === 0) return;
   try {
     const supabase = await createClient();

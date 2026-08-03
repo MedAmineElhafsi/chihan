@@ -128,7 +128,45 @@
     "errorName": "Ji kerema xwe navekî xuyabar binivîse (herî kêm 2 tîp).",
     "errorPhotoSize": "Wêne pir mezin e (herî zêde 3 MB).",
     "errorPhotoType": "Ji kerema xwe wêneyek JPG, PNG an WebP hilbijêre.",
-    "errorGeneric": "Profîla te nehat tomarkirin. Ji kerema xwe dîsa biceribîne."
+    "errorGeneric": "Profîla te nehat tomarkirin. Ji kerema xwe dîsa biceribîne.",
+    "originLabel": "Tu ji ku derê yî?",
+    "originHint": "Herêma te ya kurdî — ji bo dîtina kokên hevpar.",
+    "origin_bakur": "Bakur",
+    "origin_bashur": "Başûr",
+    "origin_rojava": "Rojava",
+    "origin_rojhilat": "Rojhilat",
+    "origin_diaspora": "Li dîasporayê ji dayik bûyî",
+    "origin_mixed": "Tevlihev / din",
+    "interestsLabel": "Eleqe",
+    "int_culture": "Çand",
+    "int_music": "Muzîk",
+    "int_sports": "Werzîş",
+    "int_business": "Karsazî",
+    "int_education": "Perwerde",
+    "int_family": "Malbat",
+    "int_tech": "Teknolojî",
+    "int_art": "Huner",
+    "int_food": "Xwarin",
+    "int_volunteering": "Dilxwazî",
+    "int_politics": "Siyaset",
+    "int_faith": "Bawerî",
+    "lookingLabel": "Ez li digerin",
+    "looking_friends": "Heval",
+    "looking_housing": "Xanî",
+    "looking_work": "Kar",
+    "looking_mentorship": "Şêwirdarî",
+    "looking_events": "Bûyer",
+    "looking_language_exchange": "Guhertina ziman",
+    "looking_business_partners": "Hevkarên karsaziyê",
+    "offeringLabel": "Ez dikarim pêşkêş bikim",
+    "offer_friendship": "Hevaltî",
+    "offer_housing_help": "Alîkariya xanî",
+    "offer_job_leads": "Pêşniyarên kar",
+    "offer_mentorship": "Şêwirdarî",
+    "offer_local_tips": "Serişteyên herêmî",
+    "offer_language_help": "Alîkariya ziman",
+    "offer_business_help": "Alîkariya karsaziyê",
+    "offer_volunteering": "Dilxwazî"
   },
   "Profile": {
     "editCta": "Profîlê biguherîne",
@@ -141,7 +179,10 @@
     "dialect": "Zarava",
     "onGlobe": "Li ser gerstêrkê",
     "notLocated": "Cih nehatiye danîn",
-    "noBio": "Hîn bîo tune."
+    "noBio": "Hîn bîo tune.",
+    "interests": "Eleqe",
+    "lookingFor": "Li digere",
+    "offering": "Pêşkêş dike"
   },
   "Explore": {
     "title": "Vekole",
@@ -265,7 +306,11 @@
     "viewProfile": "Profîlê bibîne",
     "messageSoon": "Peyam · Zû",
     "noBio": "Hîn bîo tune.",
-    "empty": "Tu kes li gorî parzûnên te tune."
+    "empty": "Tu kes li gorî parzûnên te tune.",
+    "origin": "Kok",
+    "looking": "Li digere",
+    "anyOrigin": "Her kok",
+    "anyLooking": "Her tişt"
   },
   "Pricing": {
     "title": "Plana xwe hilbijêre",
@@ -339,7 +384,16 @@
     "delete": "Jê bibe",
     "errorPhotoType": "Ji kerema xwe wêneyek JPG, PNG an WebP hilbijêre.",
     "errorPhotoSize": "Wêne pir mezin e (herî zêde 4 MB).",
-    "errorGeneric": "Nehat weşandin. Ji kerema xwe dîsa biceribîne."
+    "errorGeneric": "Nehat weşandin. Ji kerema xwe dîsa biceribîne.",
+    "filterAll": "Hemû",
+    "filterNear": "Bûyerên nêzîk",
+    "needLocation": "Ji bo bûyerên nêzîk bajêrekî li profîla xwe zêde bike.",
+    "setLocation": "Profîlê biguherîne",
+    "emptyNear": "Hê bûyerên nêzîk tune.",
+    "rsvpGoing": "Ezêm",
+    "rsvpInterested": "Eleqedarm",
+    "addToCalendar": "Têxe salnameyê",
+    "distanceKm": "{km} km"
   },
   "News": {
     "title": "Nûçe",
@@ -380,7 +434,10 @@
     "deleteConfirmCta": "Erê, her tiştî jê bibe",
     "deleteError": "Hesab nehat jêbirin.",
     "cancel": "Betal bike",
-    "privacyLink": "Agahdariya nepenîtiyê"
+    "privacyLink": "Agahdariya nepenîtiyê",
+    "menuTitle": "Nepenî û ewlehî",
+    "menuBody": "Kesên ku dikarin bi te re têkilî daynin birêve bibe.",
+    "blockedMenuHint": "Kesên astengkirî bibîne û rake."
   },
   "Privacy": {
     "title": "Agahdariya nepenîtiyê",
@@ -493,5 +550,23 @@
     "kind_group": "Kom",
     "kind_post": "Post",
     "kind_news": "Nûçe"
+  },
+  "Safety": {
+    "block": "Asteng bike",
+    "unblock": "Astengê rake",
+    "mute": "Bêdeng bike",
+    "unmute": "Dengê vekî",
+    "blockedHint": "Te ev kes asteng kir. Peyam û postên wî nîn in.",
+    "blockedTitle": "Bikarhênerên astengkirî",
+    "blockedBody": "Kesên astengkirî nikarin peyamê bişînin. Tu dikarî rake.",
+    "blockedEmpty": "Te kes asteng nekiriye.",
+    "unknownUser": "Bikarhênerê nenas",
+    "backToSettings": "Vegere mîhengan"
+  },
+  "Pwa": {
+    "installTitle": "Cîhan saz bike",
+    "installBody": "Appê li ser ekrana malê zêde bike.",
+    "installCta": "Saz bike",
+    "installLater": "Ne niha"
   }
 }

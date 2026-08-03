@@ -1,6 +1,7 @@
 import "server-only";
 
 import { createClient } from "./supabase/server";
+import { getHiddenAuthorIds } from "./blocks";
 import { isMissingProfession, profileColumns } from "./profile-columns";
 import { PROFILE_COLUMNS_BASE, type Profile } from "@/types/profile";
 
@@ -9,6 +10,8 @@ export type PeopleFilters = {
   city?: string;
   language?: string;
   dialect?: string;
+  origin?: string;
+  looking?: string;
 };
 
 /** Public, consented profiles for discovery (optionally filtered). */
@@ -29,6 +32,8 @@ export async function getPeople(
       if (filters.city) q = q.ilike("city", `%${filters.city}%`);
       if (filters.language) q = q.contains("languages", [filters.language]);
       if (filters.dialect) q = q.eq("dialect", filters.dialect);
+      if (filters.origin) q = q.eq("origin_region", filters.origin);
+      if (filters.looking) q = q.contains("looking_for", [filters.looking]);
       return q;
     };
 
@@ -41,9 +46,18 @@ export async function getPeople(
       ...p,
       languages: Array.isArray(p.languages) ? p.languages : [],
       profession: p.profession ?? null,
+      origin_region: p.origin_region ?? null,
+      interests: Array.isArray(p.interests) ? p.interests : [],
+      looking_for: Array.isArray(p.looking_for) ? p.looking_for : [],
+      offering: Array.isArray(p.offering) ? p.offering : [],
       is_verified: Boolean(p.is_verified),
     }));
-    if (excludeUserId) people = people.filter((p) => p.user_id !== excludeUserId);
+    if (excludeUserId) {
+      const hidden = await getHiddenAuthorIds(excludeUserId);
+      people = people.filter(
+        (p) => p.user_id !== excludeUserId && !hidden.has(p.user_id)
+      );
+    }
     return people;
   } catch {
     return [];

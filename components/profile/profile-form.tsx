@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { useTranslations } from "next-intl";
 import { AlertCircle, Check, ImagePlus, Loader2, Trash2 } from "lucide-react";
 
@@ -10,7 +10,11 @@ import { saveProfile } from "@/lib/profile-actions";
 import {
   AVATAR_ACCEPT,
   AVATAR_MAX_BYTES,
+  INTERESTS,
   KURDISH_DIALECTS,
+  LOOKING_FOR,
+  OFFERING,
+  ORIGIN_REGIONS,
   PROFESSIONS,
   PROFESSION_STYLE,
   SPOKEN_LANGUAGES,
@@ -40,6 +44,16 @@ export function ProfileForm({
   const [languages, setLanguages] = useState<string[]>(initial?.languages ?? []);
   const [dialect, setDialect] = useState(initial?.dialect ?? "");
   const [profession, setProfession] = useState(initial?.profession ?? "");
+  const [originRegion, setOriginRegion] = useState(
+    initial?.origin_region ?? ""
+  );
+  const [interests, setInterests] = useState<string[]>(
+    initial?.interests ?? []
+  );
+  const [lookingFor, setLookingFor] = useState<string[]>(
+    initial?.looking_for ?? []
+  );
+  const [offering, setOffering] = useState<string[]>(initial?.offering ?? []);
   const [isPublic, setIsPublic] = useState(initial?.is_public ?? false);
 
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
@@ -77,9 +91,12 @@ export function ProfileForm({
     if (fileInput.current) fileInput.current.value = "";
   }
 
-  function toggleLanguage(l: string) {
-    setLanguages((prev) =>
-      prev.includes(l) ? prev.filter((x) => x !== l) : [...prev, l]
+  function toggleIn(
+    setter: Dispatch<SetStateAction<string[]>>,
+    value: string
+  ) {
+    setter((prev) =>
+      prev.includes(value) ? prev.filter((x) => x !== value) : [...prev, value]
     );
   }
 
@@ -118,6 +135,10 @@ export function ProfileForm({
         languages,
         dialect,
         profession,
+        originRegion,
+        interests,
+        lookingFor,
+        offering,
         avatarUrl,
         isPublic,
       });
@@ -292,6 +313,34 @@ export function ProfileForm({
         </span>
       </div>
 
+      {/* Origin */}
+      <div className="flex flex-col gap-2.5">
+        <Label>{t("originLabel")}</Label>
+        <div className="flex flex-wrap gap-2">
+          {ORIGIN_REGIONS.map((o) => {
+            const active = originRegion === o;
+            return (
+              <button
+                key={o}
+                type="button"
+                onClick={() => setOriginRegion(active ? "" : o)}
+                disabled={loading}
+                aria-pressed={active}
+                className={cn(
+                  "rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+                  active
+                    ? "border-gold/50 bg-gold/15 text-gold"
+                    : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {t(`origin_${o}` as never)}
+              </button>
+            );
+          })}
+        </div>
+        <span className="text-xs text-muted-foreground">{t("originHint")}</span>
+      </div>
+
       {/* Languages */}
       <div className="flex flex-col gap-2.5">
         <Label>{t("languagesLabel")}</Label>
@@ -302,7 +351,7 @@ export function ProfileForm({
               <button
                 key={l}
                 type="button"
-                onClick={() => toggleLanguage(l)}
+                onClick={() => toggleIn(setLanguages, l)}
                 disabled={loading}
                 aria-pressed={active}
                 className={cn(
@@ -340,6 +389,87 @@ export function ProfileForm({
                 )}
               >
                 {d}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Interests */}
+      <div className="flex flex-col gap-2.5">
+        <Label>{t("interestsLabel")}</Label>
+        <div className="flex flex-wrap gap-2">
+          {INTERESTS.map((item) => {
+            const active = interests.includes(item);
+            return (
+              <button
+                key={item}
+                type="button"
+                onClick={() => toggleIn(setInterests, item)}
+                disabled={loading}
+                aria-pressed={active}
+                className={cn(
+                  "rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+                  active
+                    ? "border-gold/50 bg-gold/15 text-gold"
+                    : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {t(`int_${item}` as never)}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Looking for */}
+      <div className="flex flex-col gap-2.5">
+        <Label>{t("lookingLabel")}</Label>
+        <div className="flex flex-wrap gap-2">
+          {LOOKING_FOR.map((item) => {
+            const active = lookingFor.includes(item);
+            return (
+              <button
+                key={item}
+                type="button"
+                onClick={() => toggleIn(setLookingFor, item)}
+                disabled={loading}
+                aria-pressed={active}
+                className={cn(
+                  "rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+                  active
+                    ? "border-kurd-green/50 bg-kurd-green/15 text-kurd-green"
+                    : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {t(`looking_${item}` as never)}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Offering */}
+      <div className="flex flex-col gap-2.5">
+        <Label>{t("offeringLabel")}</Label>
+        <div className="flex flex-wrap gap-2">
+          {OFFERING.map((item) => {
+            const active = offering.includes(item);
+            return (
+              <button
+                key={item}
+                type="button"
+                onClick={() => toggleIn(setOffering, item)}
+                disabled={loading}
+                aria-pressed={active}
+                className={cn(
+                  "rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+                  active
+                    ? "border-kurd-red/50 bg-kurd-red/15 text-kurd-red"
+                    : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {t(`offer_${item}` as never)}
               </button>
             );
           })}

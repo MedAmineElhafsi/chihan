@@ -5,7 +5,15 @@ import { revalidatePath } from "next/cache";
 
 import { createClient } from "./supabase/server";
 import { geocode } from "./geocode";
-import { KURDISH_DIALECTS, PROFESSIONS, SPOKEN_LANGUAGES } from "./constants";
+import {
+  INTERESTS,
+  KURDISH_DIALECTS,
+  LOOKING_FOR,
+  OFFERING,
+  ORIGIN_REGIONS,
+  PROFESSIONS,
+  SPOKEN_LANGUAGES,
+} from "./constants";
 
 const schema = z.object({
   displayName: z.string().trim().min(2).max(60),
@@ -15,6 +23,10 @@ const schema = z.object({
   languages: z.array(z.string()).max(20).optional().default([]),
   dialect: z.string().trim().max(60).optional().default(""),
   profession: z.string().trim().max(40).optional().default(""),
+  originRegion: z.string().trim().max(40).optional().default(""),
+  interests: z.array(z.string()).max(20).optional().default([]),
+  lookingFor: z.array(z.string()).max(20).optional().default([]),
+  offering: z.array(z.string()).max(20).optional().default([]),
   avatarUrl: z.string().optional().nullable(),
   isPublic: z.boolean().optional().default(false),
 });
@@ -23,6 +35,10 @@ export type SaveProfileInput = z.input<typeof schema>;
 export type SaveProfileResult =
   | { ok: true; id: string }
   | { ok: false; error: string };
+
+function pickKnown(values: string[], allowed: readonly string[]): string[] {
+  return values.filter((v) => allowed.includes(v));
+}
 
 /**
  * Create or update the current user's profile. Geocodes city/country to
@@ -48,9 +64,7 @@ export async function saveProfile(
   if (!user) return { ok: false, error: "Not authenticated." };
 
   // Only persist values from the known sets (never trust the client).
-  const languages = v.languages.filter((l) =>
-    (SPOKEN_LANGUAGES as readonly string[]).includes(l)
-  );
+  const languages = pickKnown(v.languages, SPOKEN_LANGUAGES);
   const dialect =
     v.dialect && (KURDISH_DIALECTS as readonly string[]).includes(v.dialect)
       ? v.dialect
@@ -59,6 +73,14 @@ export async function saveProfile(
     v.profession && (PROFESSIONS as readonly string[]).includes(v.profession)
       ? v.profession
       : null;
+  const originRegion =
+    v.originRegion &&
+    (ORIGIN_REGIONS as readonly string[]).includes(v.originRegion)
+      ? v.originRegion
+      : null;
+  const interests = pickKnown(v.interests, INTERESTS);
+  const lookingFor = pickKnown(v.lookingFor, LOOKING_FOR);
+  const offering = pickKnown(v.offering, OFFERING);
 
   const geo = await geocode(v.city, v.country);
 
@@ -73,6 +95,10 @@ export async function saveProfile(
     languages,
     dialect,
     profession,
+    origin_region: originRegion,
+    interests,
+    looking_for: lookingFor,
+    offering,
     avatar_url: v.avatarUrl || null,
     is_public: v.isPublic,
     consent_at: v.isPublic ? new Date().toISOString() : null,

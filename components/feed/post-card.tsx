@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import {
   CalendarDays,
+  CalendarPlus,
   Heart,
   Loader2,
   MapPin,
@@ -19,11 +20,13 @@ import {
   fetchComments,
   toggleLike,
 } from "@/lib/feed-actions";
+import { setEventRsvp } from "@/lib/event-rsvp-actions";
+import { downloadEventIcs } from "@/lib/event-ics";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ReportButton } from "@/components/moderation/report-button";
 import { cn } from "@/lib/utils";
-import type { FeedItem, PostComment } from "@/types/post";
+import type { FeedItem, PostComment, RsvpStatus } from "@/types/post";
 
 export function PostCard({
   item,
@@ -40,6 +43,11 @@ export function PostCard({
 
   const [liked, setLiked] = useState(item.liked);
   const [likeCount, setLikeCount] = useState(item.like_count);
+  const [myRsvp, setMyRsvp] = useState<RsvpStatus | null>(item.my_rsvp);
+  const [goingCount, setGoingCount] = useState(item.rsvp_going);
+  const [interestedCount, setInterestedCount] = useState(
+    item.rsvp_interested
+  );
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState<PostComment[] | null>(null);
   const [commentText, setCommentText] = useState("");
@@ -89,6 +97,36 @@ export function PostCard({
     startT(async () => {
       await deletePost(item.id);
       router.refresh();
+    });
+  }
+
+  function onRsvp(next: RsvpStatus) {
+    if (!canInteract) return;
+    const prev = myRsvp;
+    const clearing = prev === next;
+    const status = clearing ? null : next;
+
+    setMyRsvp(status);
+    setGoingCount((c) => {
+      let n = c;
+      if (prev === "going") n -= 1;
+      if (status === "going") n += 1;
+      return Math.max(0, n);
+    });
+    setInterestedCount((c) => {
+      let n = c;
+      if (prev === "interested") n -= 1;
+      if (status === "interested") n += 1;
+      return Math.max(0, n);
+    });
+
+    startT(async () => {
+      const res = await setEventRsvp(item.id, status);
+      if (!res.ok) {
+        setMyRsvp(prev);
+        setGoingCount(item.rsvp_going);
+        setInterestedCount(item.rsvp_interested);
+      }
     });
   }
 
@@ -156,8 +194,50 @@ export function PostCard({
             <div className="mt-0.5 flex items-center gap-1.5 text-sm text-muted-foreground">
               <MapPin className="size-4" />
               {item.event_location}
+              {item.distance_km != null && (
+                <span className="text-gold">
+                  · {t("distanceKm", { km: Math.round(item.distance_km) })}
+                </span>
+              )}
             </div>
           )}
+
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            {(
+              [
+                { key: "going" as const, label: t("rsvpGoing"), count: goingCount },
+                {
+                  key: "interested" as const,
+                  label: t("rsvpInterested"),
+                  count: interestedCount,
+                },
+              ] as const
+            ).map(({ key, label, count }) => (
+              <button
+                key={key}
+                type="button"
+                disabled={!canInteract}
+                onClick={() => onRsvp(key)}
+                className={cn(
+                  "rounded-full border px-3 py-1 text-xs font-medium transition-colors disabled:opacity-60",
+                  myRsvp === key
+                    ? "border-gold/50 bg-gold/20 text-gold"
+                    : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {label}
+                {count > 0 ? ` · ${count}` : ""}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => downloadEventIcs(item)}
+              className="inline-flex items-center gap-1 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <CalendarPlus className="size-3.5" />
+              {t("addToCalendar")}
+            </button>
+          </div>
         </div>
       )}
 

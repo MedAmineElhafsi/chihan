@@ -11,14 +11,20 @@ import {
   type ProfileViewer,
 } from "@/types/profile";
 
+function asStringArray(v: unknown): string[] {
+  return Array.isArray(v) ? (v as string[]) : [];
+}
+
 function normalizeProfile(data: Record<string, unknown> | null): Profile | null {
   if (!data) return null;
   return {
     ...(data as unknown as Profile),
-    languages: Array.isArray(data.languages)
-      ? (data.languages as string[])
-      : [],
+    languages: asStringArray(data.languages),
     profession: (data.profession as string | null) ?? null,
+    origin_region: (data.origin_region as string | null) ?? null,
+    interests: asStringArray(data.interests),
+    looking_for: asStringArray(data.looking_for),
+    offering: asStringArray(data.offering),
     is_verified: Boolean(data.is_verified),
   };
 }

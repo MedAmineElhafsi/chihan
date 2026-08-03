@@ -1,9 +1,17 @@
 import "server-only";
 
 import { createClient } from "./supabase/server";
-import type { FeedAuthor, FeedItem, PostComment } from "@/types/post";
+import { getHiddenAuthorIds } from "./blocks";
+import type {
+  FeedAuthor,
+  FeedItem,
+  PostComment,
+  RsvpStatus,
+} from "@/types/post";
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
+
+const NEAR_KM_DEFAULT = 80;
 
 async function loadAuthors(
   supabase: Supabase,
@@ -38,10 +46,64 @@ function countFromEmbed(value: unknown): number {
   return 0;
 }
 
-const POST_SELECT =
-  "id, author_id, type, body, media, event_title, event_at, event_location, created_at, post_likes(count), post_comments(count)";
+function haversineKm(
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number
+): number {
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const R = 6371;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
 
-async function mapPostRows(
+const POST_SELECT =
+  "id, author_id, type, body, media, event_title, event_at, event_location, event_lat, event_lng, created_at, post_likes(count), post_comments(count)";
+
+async function loadRsvps(
+  supabase: Supabase,
+  postIds: string[],
+  viewerId?: string | null
+): Promise<{
+  going: Map<string, number>;
+  interested: Map<string, number>;
+  mine: Map<string, RsvpStatus>;
+}> {
+  const going = new Map<string, number>();
+  const interested = new Map<string, number>();
+  const mine = new Map<string, RsvpStatus>();
+  if (postIds.length === 0) return { going, interested, mine };
+
+  try {
+    const { data } = await supabase
+      .from("event_rsvps")
+      .select("post_id, user_id, status")
+      .in("post_id", postIds);
+    for (const row of (data ?? []) as Array<{
+      post_id: string;
+      user_id: string;
+      status: string;
+    }>) {
+      const pid = String(row.post_id);
+      if (row.status === "going") going.set(pid, (going.get(pid) ?? 0) + 1);
+      if (row.status === "interested")
+        interested.set(pid, (interested.get(pid) ?? 0) + 1);
+      if (viewerId && String(row.user_id) === viewerId) {
+        mine.set(pid, row.status as RsvpStatus);
+      }
+    }
+  } catch {
+    // table missing pre-migration
+  }
+  return { going, interested, mine };
+}
+
+export async function mapPostRows(
   supabase: Supabase,
   data: Array<Record<string, unknown>>,
   viewerId?: string | null
@@ -55,6 +117,8 @@ async function mapPostRows(
     event_title: (r.event_title as string | null) ?? null,
     event_at: (r.event_at as string | null) ?? null,
     event_location: (r.event_location as string | null) ?? null,
+    event_lat: r.event_lat != null ? Number(r.event_lat) : null,
+    event_lng: r.event_lng != null ? Number(r.event_lng) : null,
     created_at: String(r.created_at),
     like_count: countFromEmbed(r.post_likes),
     comment_count: countFromEmbed(r.post_comments),
@@ -62,6 +126,11 @@ async function mapPostRows(
 
   const authorIds = [...new Set(rows.map((r) => r.author_id))];
   const authors = await loadAuthors(supabase, authorIds);
+  const rsvps = await loadRsvps(
+    supabase,
+    rows.filter((r) => r.type === "event").map((r) => r.id),
+    viewerId
+  );
 
   const likedSet = new Set<string>();
   if (viewerId && rows.length) {
@@ -88,6 +157,9 @@ async function mapPostRows(
         displayName: null,
         avatarUrl: null,
       },
+    rsvp_going: rsvps.going.get(r.id) ?? 0,
+    rsvp_interested: rsvps.interested.get(r.id) ?? 0,
+    my_rsvp: rsvps.mine.get(r.id) ?? null,
   }));
 }
 
@@ -95,17 +167,24 @@ export async function getFeed(opts: {
   isPremium: boolean;
   horizonDays: number;
   viewerId?: string;
+  /** When set, keep only events within this radius (km). Posts stay. */
+  nearLat?: number | null;
+  nearLng?: number | null;
+  nearKm?: number;
+  eventsOnly?: boolean;
 }): Promise<FeedItem[]> {
   try {
     const supabase = await createClient();
-    // Query `posts` directly (not posts_with_counts) so we can filter group_id
-    // without rewriting the old view (which deadlocks under load).
-    let { data, error } = await supabase
+    let query = supabase
       .from("posts")
       .select(POST_SELECT)
       .is("group_id", null)
       .order("created_at", { ascending: false })
       .limit(100);
+
+    if (opts.eventsOnly) query = query.eq("type", "event");
+
+    let { data, error } = await query;
 
     if (error) {
       const retry = await supabase
@@ -132,6 +211,40 @@ export async function getFeed(opts: {
           !r.event_at ||
           new Date(r.event_at).getTime() <= horizon
       );
+    }
+
+    if (
+      opts.nearLat != null &&
+      opts.nearLng != null &&
+      Number.isFinite(opts.nearLat) &&
+      Number.isFinite(opts.nearLng)
+    ) {
+      const maxKm = opts.nearKm ?? NEAR_KM_DEFAULT;
+      items = items
+        .filter((r) => r.type === "event")
+        .map((r) => {
+          if (r.event_lat == null || r.event_lng == null) {
+            return { ...r, distance_km: null as number | null };
+          }
+          return {
+            ...r,
+            distance_km: haversineKm(
+              opts.nearLat!,
+              opts.nearLng!,
+              r.event_lat,
+              r.event_lng
+            ),
+          };
+        })
+        .filter((r) => r.distance_km != null && r.distance_km <= maxKm)
+        .sort((a, b) => (a.distance_km ?? 0) - (b.distance_km ?? 0));
+    }
+
+    if (opts.viewerId) {
+      const hidden = await getHiddenAuthorIds(opts.viewerId);
+      if (hidden.size > 0) {
+        items = items.filter((r) => !hidden.has(r.author_id));
+      }
     }
 
     return items;

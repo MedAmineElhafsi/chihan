@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { Eye, Globe2, Languages, MapPin, Pencil } from "lucide-react";
+import { Eye, Globe2, Handshake, Heart, Languages, MapPin, Pencil, Search } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -15,11 +15,16 @@ export async function ProfileView({
   isOwner?: boolean;
 }) {
   const t = await getTranslations("Profile");
+  const tOn = await getTranslations("Onboarding");
 
   const name = profile.display_name ?? "—";
   const initial = name.trim().charAt(0).toUpperCase() || "?";
   const place = [profile.city, profile.country].filter(Boolean).join(", ");
   const located = profile.lat != null && profile.lng != null;
+
+  const originLabel = profile.origin_region
+    ? tOn(`origin_${profile.origin_region}` as never)
+    : null;
 
   return (
     <article className="glass overflow-hidden rounded-2xl">
@@ -71,15 +76,31 @@ export async function ProfileView({
           <VerifiedBadge verified={profile.is_verified} label={t("verified")} />
         </h1>
 
-        {place && (
-          <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
-            <MapPin className="size-4 text-gold" />
-            {place}
-            <span className="text-muted-foreground/60">·</span>
-            <span className="inline-flex items-center gap-1">
-              <Globe2 className="size-3.5" />
-              {located ? t("onGlobe") : t("notLocated")}
-            </span>
+        {(place || originLabel) && (
+          <p className="mt-1 flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
+            {place && (
+              <>
+                <MapPin className="size-4 text-gold" />
+                {place}
+              </>
+            )}
+            {originLabel && (
+              <>
+                {place && <span className="text-muted-foreground/60">·</span>}
+                <span className="rounded-full bg-gold/15 px-2 py-0.5 text-xs font-medium text-gold">
+                  {originLabel}
+                </span>
+              </>
+            )}
+            {place && (
+              <>
+                <span className="text-muted-foreground/60">·</span>
+                <span className="inline-flex items-center gap-1">
+                  <Globe2 className="size-3.5" />
+                  {located ? t("onGlobe") : t("notLocated")}
+                </span>
+              </>
+            )}
           </p>
         )}
 
@@ -121,6 +142,66 @@ export async function ProfileView({
                 <span className="rounded-full bg-gold/15 px-2.5 py-0.5 text-xs font-medium text-gold">
                   {profile.dialect}
                 </span>
+              </div>
+            )}
+          </div>
+        )}
+
+        {profile.interests.length > 0 && (
+          <div className="mt-5 flex flex-col gap-2 border-t border-border/60 pt-5">
+            <span className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+              <Heart className="size-4" />
+              {t("interests")}
+            </span>
+            <div className="flex flex-wrap gap-2">
+              {profile.interests.map((item) => (
+                <span
+                  key={item}
+                  className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground"
+                >
+                  {tOn(`int_${item}` as never)}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {(profile.looking_for.length > 0 || profile.offering.length > 0) && (
+          <div className="mt-5 flex flex-col gap-4 border-t border-border/60 pt-5">
+            {profile.looking_for.length > 0 && (
+              <div className="flex flex-col gap-2">
+                <span className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+                  <Search className="size-4" />
+                  {t("lookingFor")}
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {profile.looking_for.map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-full bg-kurd-green/15 px-2.5 py-0.5 text-xs font-medium text-kurd-green"
+                    >
+                      {tOn(`looking_${item}` as never)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {profile.offering.length > 0 && (
+              <div className="flex flex-col gap-2">
+                <span className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+                  <Handshake className="size-4" />
+                  {t("offering")}
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {profile.offering.map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-full bg-kurd-red/15 px-2.5 py-0.5 text-xs font-medium text-kurd-red"
+                    >
+                      {tOn(`offer_${item}` as never)}
+                    </span>
+                  ))}
+                </div>
               </div>
             )}
           </div>

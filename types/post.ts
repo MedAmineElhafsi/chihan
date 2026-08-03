@@ -1,5 +1,7 @@
 export type PostType = "post" | "event";
 
+export type RsvpStatus = "going" | "interested" | "declined";
+
 export type FeedAuthor = {
   userId: string;
   profileId: string | null;
@@ -16,11 +18,18 @@ export type FeedItem = {
   event_title: string | null;
   event_at: string | null;
   event_location: string | null;
+  event_lat: number | null;
+  event_lng: number | null;
   created_at: string;
   like_count: number;
   comment_count: number;
   liked: boolean;
   author: FeedAuthor;
+  rsvp_going: number;
+  rsvp_interested: number;
+  my_rsvp: RsvpStatus | null;
+  /** Distance in km when "near me" filter is applied. */
+  distance_km?: number | null;
 };
 
 export type PostComment = {

@@ -128,7 +128,45 @@
     "errorName": "يُرجى إدخال اسم معروض (حرفان على الأقل).",
     "errorPhotoSize": "الصورة كبيرة جدًا (3 ميغابايت كحد أقصى).",
     "errorPhotoType": "يُرجى اختيار صورة JPG أو PNG أو WebP.",
-    "errorGeneric": "تعذّر حفظ ملفك. يُرجى المحاولة مرة أخرى."
+    "errorGeneric": "تعذّر حفظ ملفك. يُرجى المحاولة مرة أخرى.",
+    "originLabel": "من أين أنت؟",
+    "originHint": "منطقتك الكردية الأصلية — للمساعدة في إيجاد جذور مشتركة.",
+    "origin_bakur": "باكور (الشمال)",
+    "origin_bashur": "باشور (الجنوب)",
+    "origin_rojava": "روج آفا (الغرب)",
+    "origin_rojhilat": "روج هيلات (الشرق)",
+    "origin_diaspora": "مولود في الشتات",
+    "origin_mixed": "مختلط / آخر",
+    "interestsLabel": "الاهتمامات",
+    "int_culture": "ثقافة",
+    "int_music": "موسيقى",
+    "int_sports": "رياضة",
+    "int_business": "أعمال",
+    "int_education": "تعليم",
+    "int_family": "عائلة",
+    "int_tech": "تقنية",
+    "int_art": "فن",
+    "int_food": "طعام",
+    "int_volunteering": "تطوع",
+    "int_politics": "سياسة",
+    "int_faith": "إيمان",
+    "lookingLabel": "أبحث عن",
+    "looking_friends": "أصدقاء",
+    "looking_housing": "سكن",
+    "looking_work": "عمل",
+    "looking_mentorship": "إرشاد",
+    "looking_events": "فعاليات",
+    "looking_language_exchange": "تبادل لغوي",
+    "looking_business_partners": "شركاء أعمال",
+    "offeringLabel": "يمكنني تقديم",
+    "offer_friendship": "صداقة",
+    "offer_housing_help": "مساعدة سكن",
+    "offer_job_leads": "فرص عمل",
+    "offer_mentorship": "إرشاد",
+    "offer_local_tips": "نصائح محلية",
+    "offer_language_help": "مساعدة لغوية",
+    "offer_business_help": "مساعدة أعمال",
+    "offer_volunteering": "تطوع"
   },
   "Profile": {
     "editCta": "تعديل الملف",
@@ -141,7 +179,10 @@
     "dialect": "اللهجة",
     "onGlobe": "على الكرة الأرضية",
     "notLocated": "لم يُحدَّد موقع",
-    "noBio": "لا توجد نبذة بعد."
+    "noBio": "لا توجد نبذة بعد.",
+    "interests": "الاهتمامات",
+    "lookingFor": "يبحث عن",
+    "offering": "يقدم"
   },
   "Explore": {
     "title": "استكشاف",
@@ -265,7 +306,11 @@
     "viewProfile": "عرض الملف",
     "messageSoon": "مراسلة · قريبًا",
     "noBio": "لا توجد نبذة بعد.",
-    "empty": "لا أحد يطابق فلاترك."
+    "empty": "لا أحد يطابق فلاترك.",
+    "origin": "الأصل",
+    "looking": "يبحث عن",
+    "anyOrigin": "أي أصل",
+    "anyLooking": "أي شيء"
   },
   "Pricing": {
     "title": "اختر خطتك",
@@ -339,7 +384,16 @@
     "delete": "حذف",
     "errorPhotoType": "يُرجى اختيار صورة JPG أو PNG أو WebP.",
     "errorPhotoSize": "الصورة كبيرة جدًا (4 ميغابايت كحد أقصى).",
-    "errorGeneric": "تعذّر النشر. يُرجى المحاولة مرة أخرى."
+    "errorGeneric": "تعذّر النشر. يُرجى المحاولة مرة أخرى.",
+    "filterAll": "الكل",
+    "filterNear": "فعاليات قريبة",
+    "needLocation": "أضف مدينة إلى ملفك لرؤية الفعاليات القريبة.",
+    "setLocation": "تعديل الملف",
+    "emptyNear": "لا فعاليات قريبة بعد.",
+    "rsvpGoing": "سأحضر",
+    "rsvpInterested": "مهتم",
+    "addToCalendar": "أضف للتقويم",
+    "distanceKm": "{km} كم"
   },
   "News": {
     "title": "الأخبار",
@@ -380,7 +434,10 @@
     "deleteConfirmCta": "نعم، احذف كل شيء",
     "deleteError": "تعذّر حذف حسابك.",
     "cancel": "إلغاء",
-    "privacyLink": "إشعار الخصوصية"
+    "privacyLink": "إشعار الخصوصية",
+    "menuTitle": "الخصوصية والأمان",
+    "menuBody": "تحكّم في من يمكنه التفاعل معك.",
+    "blockedMenuHint": "عرض وإلغاء حظر الأشخاص."
   },
   "Privacy": {
     "title": "إشعار الخصوصية",
@@ -493,5 +550,23 @@
     "kind_group": "مجموعة",
     "kind_post": "منشور",
     "kind_news": "خبر"
+  },
+  "Safety": {
+    "block": "حظر",
+    "unblock": "إلغاء الحظر",
+    "mute": "كتم",
+    "unmute": "إلغاء الكتم",
+    "blockedHint": "لقد حظرت هذا الشخص. لا رسائل ولا منشورات.",
+    "blockedTitle": "المستخدمون المحظورون",
+    "blockedBody": "لا يمكن للمحظورين مراسلتك. ألغِ الحظر في أي وقت.",
+    "blockedEmpty": "لم تحظر أحداً.",
+    "unknownUser": "مستخدم غير معروف",
+    "backToSettings": "العودة إلى الإعدادات"
+  },
+  "Pwa": {
+    "installTitle": "تثبيت Cîhan",
+    "installBody": "أضف التطبيق إلى الشاشة الرئيسية للوصول السريع.",
+    "installCta": "تثبيت",
+    "installLater": "ليس الآن"
   }
 }

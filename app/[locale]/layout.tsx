@@ -9,6 +9,8 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Backdrop } from "@/components/backdrop";
 import { SiteHeader } from "@/components/app-shell/site-header";
 import { SiteFooter } from "@/components/app-shell/site-footer";
+import { ServiceWorkerRegister } from "@/components/pwa/sw-register";
+import { InstallPrompt } from "@/components/pwa/install-prompt";
 import { cn } from "@/lib/utils";
 
 const fraunces = Fraunces({
@@ -40,7 +42,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
-  return { title: t("title"), description: t("description") };
+  return {
+    title: t("title"),
+    description: t("description"),
+    themeColor: [
+      { media: "(prefers-color-scheme: dark)", color: "#070a14" },
+      { media: "(prefers-color-scheme: light)", color: "#fbf7ef" },
+    ],
+  };
 }
 
 export default async function LocaleLayout({
@@ -77,6 +86,8 @@ export default async function LocaleLayout({
               <main className="flex-1">{children}</main>
               <SiteFooter />
             </div>
+            <InstallPrompt />
+            <ServiceWorkerRegister />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

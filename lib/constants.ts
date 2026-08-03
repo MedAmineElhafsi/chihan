@@ -118,6 +118,59 @@ export function pointStyle(
 
 export const LISTING_PHOTO_MAX_BYTES = 4 * 1024 * 1024; // 4 MB
 
+/** Kurdish geographic / diaspora origin (onboarding single-select). */
+export const ORIGIN_REGIONS = [
+  "bakur",
+  "bashur",
+  "rojava",
+  "rojhilat",
+  "diaspora",
+  "mixed",
+] as const;
+export type OriginRegion = (typeof ORIGIN_REGIONS)[number];
+
+/** Community interests (onboarding multi-select). */
+export const INTERESTS = [
+  "culture",
+  "music",
+  "sports",
+  "business",
+  "education",
+  "family",
+  "tech",
+  "art",
+  "food",
+  "volunteering",
+  "politics",
+  "faith",
+] as const;
+export type Interest = (typeof INTERESTS)[number];
+
+/** What a member is looking for. */
+export const LOOKING_FOR = [
+  "friends",
+  "housing",
+  "work",
+  "mentorship",
+  "events",
+  "language_exchange",
+  "business_partners",
+] as const;
+export type LookingFor = (typeof LOOKING_FOR)[number];
+
+/** What a member can offer others. */
+export const OFFERING = [
+  "friendship",
+  "housing_help",
+  "job_leads",
+  "mentorship",
+  "local_tips",
+  "language_help",
+  "business_help",
+  "volunteering",
+] as const;
+export type Offering = (typeof OFFERING)[number];
+
 /** Illustrative pricing (real Stripe prices wired in Phase 8). */
 export const PRICING = {
   monthly: "€5.99",

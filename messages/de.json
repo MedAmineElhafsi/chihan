@@ -128,7 +128,45 @@
     "errorName": "Bitte gib einen Anzeigenamen ein (mindestens 2 Zeichen).",
     "errorPhotoSize": "Bild ist zu groß (max. 3 MB).",
     "errorPhotoType": "Bitte wähle ein JPG-, PNG- oder WebP-Bild.",
-    "errorGeneric": "Dein Profil konnte nicht gespeichert werden. Bitte versuche es erneut."
+    "errorGeneric": "Dein Profil konnte nicht gespeichert werden. Bitte versuche es erneut.",
+    "originLabel": "Woher kommst du?",
+    "originHint": "Deine kurdische Herkunftsregion — hilft, gemeinsame Wurzeln zu finden.",
+    "origin_bakur": "Bakur (Norden)",
+    "origin_bashur": "Başûr (Süden)",
+    "origin_rojava": "Rojava (Westen)",
+    "origin_rojhilat": "Rojhilat (Osten)",
+    "origin_diaspora": "In der Diaspora geboren",
+    "origin_mixed": "Gemischt / anders",
+    "interestsLabel": "Interessen",
+    "int_culture": "Kultur",
+    "int_music": "Musik",
+    "int_sports": "Sport",
+    "int_business": "Business",
+    "int_education": "Bildung",
+    "int_family": "Familie",
+    "int_tech": "Technik",
+    "int_art": "Kunst",
+    "int_food": "Essen",
+    "int_volunteering": "Ehrenamt",
+    "int_politics": "Politik",
+    "int_faith": "Glaube",
+    "lookingLabel": "Ich suche",
+    "looking_friends": "Freunde",
+    "looking_housing": "Wohnung",
+    "looking_work": "Arbeit",
+    "looking_mentorship": "Mentoring",
+    "looking_events": "Events",
+    "looking_language_exchange": "Sprachaustausch",
+    "looking_business_partners": "Geschäftspartner",
+    "offeringLabel": "Ich kann anbieten",
+    "offer_friendship": "Freundschaft",
+    "offer_housing_help": "Wohnungshilfe",
+    "offer_job_leads": "Jobtipps",
+    "offer_mentorship": "Mentoring",
+    "offer_local_tips": "Lokale Tipps",
+    "offer_language_help": "Sprachhilfe",
+    "offer_business_help": "Business-Hilfe",
+    "offer_volunteering": "Ehrenamt"
   },
   "Profile": {
     "editCta": "Profil bearbeiten",
@@ -141,7 +179,10 @@
     "dialect": "Dialekt",
     "onGlobe": "Auf dem Globus",
     "notLocated": "Kein Standort festgelegt",
-    "noBio": "Noch keine Bio."
+    "noBio": "Noch keine Bio.",
+    "interests": "Interessen",
+    "lookingFor": "Sucht",
+    "offering": "Bietet an"
   },
   "Explore": {
     "title": "Entdecken",
@@ -265,7 +306,11 @@
     "viewProfile": "Profil ansehen",
     "messageSoon": "Nachricht · Bald",
     "noBio": "Noch keine Bio.",
-    "empty": "Keine Personen entsprechen deinen Filtern."
+    "empty": "Keine Personen entsprechen deinen Filtern.",
+    "origin": "Herkunft",
+    "looking": "Sucht",
+    "anyOrigin": "Jede Herkunft",
+    "anyLooking": "Alles"
   },
   "Pricing": {
     "title": "Wähle deinen Plan",
@@ -339,7 +384,16 @@
     "delete": "Löschen",
     "errorPhotoType": "Bitte wähle ein JPG-, PNG- oder WebP-Bild.",
     "errorPhotoSize": "Bild ist zu groß (max. 4 MB).",
-    "errorGeneric": "Konnte nicht gepostet werden. Bitte versuche es erneut."
+    "errorGeneric": "Konnte nicht gepostet werden. Bitte versuche es erneut.",
+    "filterAll": "Alle",
+    "filterNear": "Events in der Nähe",
+    "needLocation": "Füge eine Stadt zu deinem Profil hinzu, um Events in der Nähe zu sehen.",
+    "setLocation": "Profil bearbeiten",
+    "emptyNear": "Noch keine Events in deiner Nähe.",
+    "rsvpGoing": "Dabei",
+    "rsvpInterested": "Interessiert",
+    "addToCalendar": "Zum Kalender",
+    "distanceKm": "{km} km"
   },
   "News": {
     "title": "Nachrichten",
@@ -380,7 +434,10 @@
     "deleteConfirmCta": "Ja, alles löschen",
     "deleteError": "Konto konnte nicht gelöscht werden.",
     "cancel": "Abbrechen",
-    "privacyLink": "Datenschutzhinweis"
+    "privacyLink": "Datenschutzhinweis",
+    "menuTitle": "Privatsphäre & Sicherheit",
+    "menuBody": "Verwalte, wer mit dir interagieren kann.",
+    "blockedMenuHint": "Blockierte Personen ansehen und entsperren."
   },
   "Privacy": {
     "title": "Datenschutzhinweis",
@@ -493,5 +550,23 @@
     "kind_group": "Gruppe",
     "kind_post": "Beitrag",
     "kind_news": "News"
+  },
+  "Safety": {
+    "block": "Blockieren",
+    "unblock": "Entsperren",
+    "mute": "Stummschalten",
+    "unmute": "Ton an",
+    "blockedHint": "Du hast diese Person blockiert. Keine Nachrichten, keine Beiträge.",
+    "blockedTitle": "Blockierte Nutzer",
+    "blockedBody": "Blockierte Personen können dir nicht schreiben. Jederzeit entsperren.",
+    "blockedEmpty": "Du hast niemanden blockiert.",
+    "unknownUser": "Unbekannter Nutzer",
+    "backToSettings": "Zurück zu Einstellungen"
+  },
+  "Pwa": {
+    "installTitle": "Cîhan installieren",
+    "installBody": "Füge die App zum Startbildschirm hinzu.",
+    "installCta": "Installieren",
+    "installLater": "Nicht jetzt"
   }
 }

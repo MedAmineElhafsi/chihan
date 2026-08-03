@@ -32,6 +32,7 @@ export function PeopleClient({
   const t = useTranslations("People");
   const tChat = useTranslations("Chat");
   const tProfile = useTranslations("Profile");
+  const tOn = useTranslations("Onboarding");
   const [revealed, setRevealed] = useState<Set<string>>(
     () => new Set(initialRevealedIds)
   );
@@ -114,9 +115,24 @@ export function PeopleClient({
                   </div>
                 </div>
 
-                {p.languages.length > 0 && (
+                {(p.origin_region ||
+                  p.looking_for.length > 0 ||
+                  p.languages.length > 0) && (
                   <div className="flex flex-wrap gap-1.5">
-                    {p.languages.slice(0, 4).map((l) => (
+                    {p.origin_region && (
+                      <span className="rounded-full bg-gold/15 px-2 py-0.5 text-xs font-medium text-gold">
+                        {tOn(`origin_${p.origin_region}` as never)}
+                      </span>
+                    )}
+                    {p.looking_for.slice(0, 2).map((item) => (
+                      <span
+                        key={item}
+                        className="rounded-full bg-kurd-green/15 px-2 py-0.5 text-xs font-medium text-kurd-green"
+                      >
+                        {tOn(`looking_${item}` as never)}
+                      </span>
+                    ))}
+                    {p.languages.slice(0, 2).map((l) => (
                       <span
                         key={l}
                         className="rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground"

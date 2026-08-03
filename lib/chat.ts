@@ -1,6 +1,7 @@
 import "server-only";
 
 import { createClient } from "./supabase/server";
+import { getBlockedEitherWayIds } from "./blocks";
 import type {
   ChatMessage,
   ChatPartner,
@@ -110,12 +111,17 @@ export async function getConversations(
       };
     });
 
-    summaries.sort((a, b) => {
+    const blocked = await getBlockedEitherWayIds(userId);
+    const visible = summaries.filter(
+      (s) => !s.partner?.userId || !blocked.has(s.partner.userId)
+    );
+
+    visible.sort((a, b) => {
       const at = a.lastMessage?.created_at ?? "";
       const bt = b.lastMessage?.created_at ?? "";
       return bt.localeCompare(at);
     });
-    return summaries;
+    return visible;
   } catch {
     return [];
   }

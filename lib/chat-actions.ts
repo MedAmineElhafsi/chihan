@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "./supabase/server";
 import { getEntitlements } from "./entitlements";
 import { FREE_LIMITS } from "./constants";
+import { isBlockedEitherWay } from "./blocks";
 import { createNotification } from "./notifications";
 import type { ChatMessage } from "@/types/chat";
 
@@ -33,6 +34,10 @@ export async function startConversation(
   } = await supabase.auth.getUser();
   if (!user) return { ok: false, error: "Not authenticated." };
   if (user.id === otherUserId) return { ok: false, error: "Invalid recipient." };
+
+  if (await isBlockedEitherWay(user.id, otherUserId)) {
+    return { ok: false, error: "You can’t message this person." };
+  }
 
   const { data: existing } = await supabase.rpc("find_direct_conversation", {
     other: otherUserId,
@@ -84,6 +89,17 @@ export async function sendMessage(
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return { ok: false, error: "Not authenticated." };
+
+  const { data: others } = await supabase
+    .from("conversation_participants")
+    .select("user_id")
+    .eq("conversation_id", conversationId)
+    .neq("user_id", user.id);
+  for (const r of others ?? []) {
+    if (await isBlockedEitherWay(user.id, String(r.user_id))) {
+      return { ok: false, error: "You can’t message this person." };
+    }
+  }
 
   const { data, error } = await supabase
     .from("messages")

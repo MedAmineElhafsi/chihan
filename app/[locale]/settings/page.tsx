@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Download } from "lucide-react";
+import { Ban, ChevronRight, Download } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
@@ -26,6 +26,7 @@ export default async function SettingsPage({
   if (!user) redirect(`/${locale}/login`);
 
   const t = await getTranslations("Settings");
+  const tSafety = await getTranslations("Safety");
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-5 px-4 py-12 sm:px-6">
@@ -35,6 +36,32 @@ export default async function SettingsPage({
         </h1>
         <p className="mt-1 text-muted-foreground">{t("subtitle")}</p>
       </div>
+
+      <Card className="glass">
+        <CardHeader>
+          <CardTitle className="font-display">{t("menuTitle")}</CardTitle>
+          <CardDescription>{t("menuBody")}</CardDescription>
+        </CardHeader>
+        <CardContent className="p-0">
+          <Link
+            href="/settings/blocked"
+            className="flex items-center gap-3 border-t border-border/60 px-6 py-4 transition-colors hover:bg-secondary/40"
+          >
+            <span className="flex size-9 items-center justify-center rounded-full bg-secondary text-muted-foreground">
+              <Ban className="size-4" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-sm font-medium">
+                {tSafety("blockedTitle")}
+              </span>
+              <span className="block text-xs text-muted-foreground">
+                {t("blockedMenuHint")}
+              </span>
+            </span>
+            <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
+          </Link>
+        </CardContent>
+      </Card>
 
       <Card className="glass">
         <CardHeader>
