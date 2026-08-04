@@ -23,12 +23,11 @@ function ArticleCard({
   dateLabel: string;
   readMore: string;
 }) {
-  const color =
-    NEWS_COLORS[article.category ?? ""] ?? "#94a3b8";
+  const color = NEWS_COLORS[article.category ?? ""] ?? "#94a3b8";
   return (
-    <article className="glass flex flex-col overflow-hidden rounded-2xl">
+    <article className="social-surface flex flex-col overflow-hidden transition-colors hover:border-gold/25">
       <div
-        className="relative flex h-28 items-center justify-center"
+        className="relative flex h-40 items-center justify-center sm:h-44"
         style={{
           backgroundImage: article.image_url
             ? `url(${article.image_url})`
@@ -38,11 +37,11 @@ function ArticleCard({
         }}
       >
         {!article.image_url && (
-          <Newspaper className="size-8 opacity-50" style={{ color }} />
+          <Newspaper className="size-10 opacity-50" style={{ color }} />
         )}
         {article.category && (
           <span
-            className="absolute start-3 top-3 rounded-full px-2.5 py-0.5 text-xs font-medium text-white"
+            className="absolute start-3 top-3 rounded-md px-2.5 py-0.5 text-xs font-medium text-white"
             style={{ backgroundColor: `${color}cc` }}
           >
             {article.category}
@@ -50,23 +49,23 @@ function ArticleCard({
         )}
       </div>
 
-      <div className="flex flex-1 flex-col gap-2 p-5">
+      <div className="flex flex-1 flex-col gap-2.5 p-5 sm:p-6">
         {article.country && (
-          <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-            <Globe2 className="size-3.5 text-gold" />
+          <span className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+            <Globe2 className="size-4 text-gold" />
             {article.country}
           </span>
         )}
-        <h2 className="font-display text-lg font-semibold leading-tight">
+        <h2 className="font-display text-xl font-semibold leading-snug">
           {article.title}
         </h2>
         {article.summary && (
-          <p className="text-sm leading-relaxed text-muted-foreground">
+          <p className="text-[0.95rem] leading-relaxed text-muted-foreground">
             {article.summary}
           </p>
         )}
-        <div className="mt-auto flex items-center justify-between gap-2 pt-2 text-xs text-muted-foreground">
-          <span>
+        <div className="mt-auto flex items-center justify-between gap-3 pt-3 text-sm text-muted-foreground">
+          <span className="min-w-0 truncate">
             {article.source ? `${article.source} · ` : ""}
             {dateLabel}
           </span>
@@ -75,7 +74,7 @@ function ArticleCard({
               href={article.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 font-medium text-gold hover:underline"
+              className="inline-flex shrink-0 items-center gap-1 font-medium text-gold hover:underline"
             >
               {readMore}
               <ExternalLink className="size-3.5" />
@@ -110,21 +109,21 @@ export default async function NewsPage({
 
   const chip = (active: boolean) =>
     cn(
-      "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+      "inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
       active
         ? "border-gold/50 bg-gold/15 text-gold"
-        : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
+        : "border-border bg-card text-muted-foreground hover:text-foreground"
     );
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+    <div className="mx-auto w-full max-w-5xl px-4 py-6 sm:px-6 lg:max-w-6xl lg:py-8">
       <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
         {t("title")}
       </h1>
       <p className="mt-1 text-muted-foreground">{t("subtitle")}</p>
 
       {countries.length > 0 && (
-        <div className="mt-6 flex flex-wrap gap-2">
+        <div className="mt-5 flex flex-wrap gap-2">
           <Link href="/news" className={chip(!country)}>
             {t("all")}
           </Link>
@@ -143,7 +142,7 @@ export default async function NewsPage({
       {articles.length === 0 ? (
         <p className="py-16 text-center text-muted-foreground">{t("empty")}</p>
       ) : (
-        <div className="mt-6 grid gap-5 sm:grid-cols-2">
+        <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
           {articles.map((a) => (
             <ArticleCard
               key={a.id}

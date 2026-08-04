@@ -4,23 +4,23 @@ import { createClient } from "./supabase/server";
 
 export type GlobePoint = {
   id: string;
-  kind: "person" | "listing";
+  kind: "person" | "listing" | "event";
   name: string;
   city: string | null;
   country: string | null;
   lat: number;
   lng: number;
   avatarUrl: string | null;
-  /** Listing category, or "person" for members. */
+  /** Listing category, "person", or "event". */
   category: string;
   /** For people: their profession (drives the marker colour). */
   profession: string | null;
+  /** Events only. */
+  eventAt?: string | null;
 };
 
 /**
- * Globe points: public consented profiles (people) + all listings. RLS keeps
- * private profiles out. Returns [] on error / pre-migration so the page still
- * renders (people show even if the listings table doesn't exist yet).
+ * Globe points: public profiles + listings + upcoming geocoded events.
  */
 export async function getGlobePoints(): Promise<GlobePoint[]> {
   try {
@@ -43,10 +43,22 @@ export async function getGlobePoints(): Promise<GlobePoint[]> {
         .not("lat", "is", null)
         .not("lng", "is", null)
         .limit(2000),
+      supabase
+        .from("posts")
+        .select(
+          "id, event_title, event_at, event_location, event_lat, event_lng, group_id"
+        )
+        .eq("type", "event")
+        .is("group_id", null)
+        .not("event_lat", "is", null)
+        .not("event_lng", "is", null)
+        .gte("event_at", new Date().toISOString())
+        .order("event_at", { ascending: true })
+        .limit(500),
     ]);
     const listingsRes = results[1];
+    const eventsRes = results[2];
 
-    // `profession` only exists after migration 0008 — retry without it if needed.
     const profilesRes = results[0].error
       ? await profileQuery(PROFILE_PT)
       : results[0];
@@ -86,6 +98,24 @@ export async function getGlobePoints(): Promise<GlobePoint[]> {
         avatarUrl: photos[0] ?? null,
         category: String(l.category),
         profession: null,
+      });
+    }
+
+    for (const e of (eventsRes.data ?? []) as Array<Record<string, unknown>>) {
+      if (e.event_lat == null || e.event_lng == null) continue;
+      const title = (e.event_title as string | null) || "Event";
+      points.push({
+        id: String(e.id),
+        kind: "event",
+        name: title,
+        city: (e.event_location as string | null) ?? null,
+        country: null,
+        lat: Number(e.event_lat),
+        lng: Number(e.event_lng),
+        avatarUrl: null,
+        category: "event",
+        profession: null,
+        eventAt: (e.event_at as string | null) ?? null,
       });
     }
 

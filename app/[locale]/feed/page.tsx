@@ -5,11 +5,13 @@ import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getEntitlements } from "@/lib/entitlements";
 import { getFeed } from "@/lib/feed";
+import { getActiveStories } from "@/lib/stories";
 import { getOwnProfile } from "@/lib/profiles";
 import { FREE_LIMITS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { FeedComposer } from "@/components/feed/feed-composer";
 import { PostCard } from "@/components/feed/post-card";
+import { StoriesRail } from "@/components/stories/stories-rail";
 import { cn } from "@/lib/utils";
 
 export default async function FeedPage({
@@ -25,9 +27,10 @@ export default async function FeedPage({
   const nearMe = near === "1";
 
   const user = await getCurrentUser();
-  const [ent, profile] = await Promise.all([
+  const [ent, profile, storyGroups] = await Promise.all([
     getEntitlements(user?.id ?? null),
     user ? getOwnProfile(user.id) : Promise.resolve(null),
+    getActiveStories(user?.id),
   ]);
   const t = await getTranslations("Feed");
 
@@ -47,50 +50,62 @@ export default async function FeedPage({
   });
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
-      <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-        {t("title")}
-      </h1>
-      <p className="mt-1 text-muted-foreground">{t("subtitle")}</p>
-
-      <div className="mt-4 flex flex-wrap gap-2">
-        <Link
-          href="/feed"
-          className={cn(
-            "rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
-            !nearMe
-              ? "border-gold/50 bg-gold/15 text-gold"
-              : "border-border text-muted-foreground hover:text-foreground"
-          )}
-        >
-          {t("filterAll")}
-        </Link>
-        <Link
-          href="/feed?near=1"
-          className={cn(
-            "inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
-            nearMe
-              ? "border-gold/50 bg-gold/15 text-gold"
-              : "border-border text-muted-foreground hover:text-foreground"
-          )}
-        >
-          <MapPin className="size-3.5" />
-          {t("filterNear")}
-        </Link>
+    <div className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 lg:max-w-4xl lg:py-8">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+            {t("title")}
+          </h1>
+          <p className="mt-1 text-muted-foreground">{t("subtitle")}</p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            href="/feed"
+            className={cn(
+              "rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
+              !nearMe
+                ? "border-gold/50 bg-gold/15 text-gold"
+                : "border-border text-muted-foreground hover:text-foreground"
+            )}
+          >
+            {t("filterAll")}
+          </Link>
+          <Link
+            href="/feed?near=1"
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
+              nearMe
+                ? "border-gold/50 bg-gold/15 text-gold"
+                : "border-border text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <MapPin className="size-3.5" />
+            {t("filterNear")}
+          </Link>
+        </div>
       </div>
 
       {nearMe && !hasLocation && (
-        <p className="glass mt-4 rounded-xl px-4 py-3 text-sm text-muted-foreground">
+        <p className="social-surface mt-3 px-3.5 py-2.5 text-sm text-muted-foreground">
           {t("needLocation")}{" "}
-          <Link href="/profile/edit" className="font-medium text-gold hover:underline">
+          <Link
+            href="/profile/edit"
+            className="font-medium text-gold hover:underline"
+          >
             {t("setLocation")}
           </Link>
         </p>
       )}
 
-      <div className="mt-6">
+      {(user || storyGroups.length > 0) && (
+        <div className="mt-4">
+          <StoriesRail groups={storyGroups} userId={user?.id ?? null} />
+        </div>
+      )}
+
+      <div className="mt-3">
         {!user ? (
-          <div className="glass flex flex-wrap items-center justify-between gap-3 rounded-2xl p-4 text-sm">
+          <div className="social-surface flex flex-wrap items-center justify-between gap-3 p-3.5 text-sm">
             <span className="text-muted-foreground">{t("signInToPost")}</span>
             <Button asChild size="sm">
               <Link href="/login">{t("signIn")}</Link>
@@ -99,7 +114,7 @@ export default async function FeedPage({
         ) : ent.features.createPosts ? (
           <FeedComposer userId={user.id} />
         ) : (
-          <div className="glass flex flex-col gap-3 rounded-2xl border-gold/30 p-5 ring-1 ring-gold/20 sm:flex-row sm:items-center sm:justify-between">
+          <div className="social-surface flex flex-col gap-3 border-gold/25 p-4 ring-1 ring-gold/15 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-start gap-3">
               <Sparkles className="mt-0.5 size-5 shrink-0 text-gold" />
               <div>
@@ -116,7 +131,7 @@ export default async function FeedPage({
         )}
       </div>
 
-      <div className="mt-6 flex flex-col gap-5">
+      <div className="mt-3 flex flex-col gap-3">
         {items.length === 0 ? (
           <p className="py-12 text-center text-muted-foreground">
             {nearMe ? t("emptyNear") : t("empty")}

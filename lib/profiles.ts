@@ -25,7 +25,9 @@ function normalizeProfile(data: Record<string, unknown> | null): Profile | null 
     interests: asStringArray(data.interests),
     looking_for: asStringArray(data.looking_for),
     offering: asStringArray(data.offering),
+    photos: asStringArray(data.photos),
     is_verified: Boolean(data.is_verified),
+    is_banned: Boolean(data.is_banned),
   };
 }
 

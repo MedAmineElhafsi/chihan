@@ -11,11 +11,14 @@ import { AuthForm } from "@/components/auth/auth-form";
 
 export default async function SignupPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ email?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const { email } = await searchParams;
   const t = await getTranslations("Auth");
 
   return (
@@ -28,7 +31,7 @@ export default async function SignupPage({
           <CardDescription>{t("signupSubtitle")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <AuthForm mode="signup" />
+          <AuthForm mode="signup" defaultEmail={email?.trim() ?? ""} />
         </CardContent>
       </Card>
     </div>

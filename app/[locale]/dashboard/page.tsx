@@ -4,6 +4,7 @@ import {
   BadgeCheck,
   Compass,
   Globe2,
+  HeartHandshake,
   LogOut,
   Pencil,
   Sparkles,
@@ -17,9 +18,6 @@ import { getOwnProfile } from "@/lib/profiles";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -136,28 +134,41 @@ export default async function DashboardPage({
         </CardContent>
       </Card>
 
-      {/* Coming soon */}
-      <Card className="glass animate-fade-up mt-5 [animation-delay:200ms]">
-        <CardHeader>
-          <div className="mb-1 inline-flex size-11 items-center justify-center rounded-xl bg-secondary text-gold ring-1 ring-border">
-            <Sparkles className="size-5" />
+      {/* Matches */}
+      <Card className="glass animate-fade-up mt-5 overflow-hidden [animation-delay:200ms]">
+        <CardContent className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-4">
+            <div className="inline-flex size-11 items-center justify-center rounded-xl bg-secondary text-gold ring-1 ring-border">
+              <HeartHandshake className="size-5" />
+            </div>
+            <div>
+              <div className="font-display text-lg font-semibold">
+                {t("matchesTitle")}
+              </div>
+              <div className="max-w-md text-sm text-muted-foreground">
+                {t("matchesBody")}
+              </div>
+            </div>
           </div>
-          <CardTitle className="font-display">{t("comingSoonTitle")}</CardTitle>
-          <CardDescription>{t("comingSoon")}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form action="/auth/signout" method="post">
-            <Button
-              type="submit"
-              variant="ghost"
-              className="gap-2 text-muted-foreground"
-            >
-              <LogOut className="size-4" />
-              {t("signOut")}
-            </Button>
-          </form>
+          <Button asChild className="gap-2">
+            <Link href="/match">
+              <HeartHandshake className="size-4" />
+              {t("matchesCta")}
+            </Link>
+          </Button>
         </CardContent>
       </Card>
+
+      <form action="/auth/signout" method="post" className="mt-6">
+        <Button
+          type="submit"
+          variant="ghost"
+          className="gap-2 text-muted-foreground"
+        >
+          <LogOut className="size-4" />
+          {t("signOut")}
+        </Button>
+      </form>
     </div>
   );
 }

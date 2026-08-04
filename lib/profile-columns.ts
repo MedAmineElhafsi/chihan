@@ -19,7 +19,7 @@ export function isMissingProfession(
   if (!error) return false;
   const msg = error.message ?? "";
   const missingCol =
-    (/profession|is_verified|origin_region|interests|looking_for|offering/i.test(
+    (/profession|is_verified|origin_region|interests|looking_for|offering|photos|is_banned/i.test(
       msg
     ) &&
       (error.code === "42703" ||

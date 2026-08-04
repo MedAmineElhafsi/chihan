@@ -6,6 +6,7 @@ import {
   Bell,
   Check,
   Eye,
+  HeartHandshake,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -17,6 +18,7 @@ import {
 
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { locales, localeMeta, type Locale } from "@/i18n/routing";
+import { signOutAction } from "@/lib/auth-actions";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -64,6 +66,9 @@ export function MobileMenu({
           <Link href="/people">{tNav("people")}</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
+          <Link href="/match">{tNav("match")}</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <Link href="/feed">{tNav("feed")}</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
@@ -105,6 +110,12 @@ export function MobileMenu({
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
+              <Link href="/match">
+                <HeartHandshake />
+                {tNav("match")}
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
               <Link href="/messages">
                 <MessageSquare />
                 {tNav("messages")}
@@ -136,15 +147,17 @@ export function MobileMenu({
                 </Link>
               </DropdownMenuItem>
             )}
-            <form action="/auth/signout" method="post">
-              <DropdownMenuItem asChild>
-                <button
-                  type="submit"
-                  className="w-full text-kurd-red focus:text-kurd-red"
-                >
-                  <LogOut />
-                  {tNav("signOut")}
-                </button>
+            <form action={signOutAction}>
+              <DropdownMenuItem
+                className="text-kurd-red focus:text-kurd-red"
+                onSelect={(e) => {
+                  e.preventDefault();
+                  const el = e.target as HTMLElement | null;
+                  el?.closest("form")?.requestSubmit();
+                }}
+              >
+                <LogOut />
+                {tNav("signOut")}
               </DropdownMenuItem>
             </form>
           </>

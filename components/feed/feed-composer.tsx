@@ -103,8 +103,8 @@ export function FeedComposer({ userId }: { userId: string }) {
   }
 
   return (
-    <div className="glass rounded-2xl p-4">
-      <div className="mb-3 flex gap-1.5">
+    <div className="social-surface p-4 sm:p-5">
+      <div className="mb-3 flex gap-2">
         {(
           [
             { key: "post", label: t("tabPost"), icon: PenLine },
@@ -116,10 +116,10 @@ export function FeedComposer({ userId }: { userId: string }) {
             type="button"
             onClick={() => setTab(key)}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+              "inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
               tab === key
                 ? "border-gold/50 bg-gold/15 text-gold"
-                : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
+                : "border-border bg-muted/40 text-muted-foreground hover:text-foreground"
             )}
           >
             <Icon className="size-4" />
@@ -158,6 +158,7 @@ export function FeedComposer({ userId }: { userId: string }) {
           onChange={(e) => setBody(e.target.value)}
           placeholder={tab === "event" ? t("eventBody") : t("postPlaceholder")}
           maxLength={2000}
+          className="min-h-[5.5rem] resize-none text-base"
         />
 
         {tab === "post" && (

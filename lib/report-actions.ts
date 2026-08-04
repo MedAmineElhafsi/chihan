@@ -12,6 +12,27 @@ const TARGET_TABLES: Record<string, string> = {
   review: "reviews",
 };
 
+async function requireAdmin(): Promise<
+  | { ok: true; supabase: Awaited<ReturnType<typeof createClient>> }
+  | { ok: false; error: string }
+> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, error: "Forbidden." };
+
+  const { data: me } = await supabase
+    .from("profiles")
+    .select("is_admin")
+    .eq("user_id", user.id)
+    .maybeSingle();
+  if (!(me as { is_admin?: boolean } | null)?.is_admin) {
+    return { ok: false, error: "Forbidden." };
+  }
+  return { ok: true, supabase };
+}
+
 export async function createReport(
   targetType: string,
   targetId: string,
@@ -33,24 +54,30 @@ export async function createReport(
   return { ok: true };
 }
 
+export async function banProfile(
+  profileId: string
+): Promise<{ ok: boolean; error?: string }> {
+  const gate = await requireAdmin();
+  if (!gate.ok) return gate;
+
+  const svc = createServiceClient();
+  const { error } = await svc
+    .from("profiles")
+    .update({ is_banned: true, is_public: false })
+    .eq("id", profileId);
+  if (error) return { ok: false, error: error.message };
+
+  revalidatePath("/admin");
+  return { ok: true };
+}
+
 export async function resolveReport(
   reportId: string,
-  action: "dismiss" | "remove"
+  action: "dismiss" | "remove" | "ban"
 ): Promise<{ ok: boolean; error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return { ok: false, error: "Forbidden." };
-
-  const { data: me } = await supabase
-    .from("profiles")
-    .select("is_admin")
-    .eq("user_id", user.id)
-    .maybeSingle();
-  if (!(me as { is_admin?: boolean } | null)?.is_admin) {
-    return { ok: false, error: "Forbidden." };
-  }
+  const gate = await requireAdmin();
+  if (!gate.ok) return gate;
+  const { supabase } = gate;
 
   const { data: report } = await supabase
     .from("reports")
@@ -61,9 +88,16 @@ export async function resolveReport(
 
   const r = report as { target_type: string; target_id: string };
 
-  if (action === "remove") {
+  if (action === "dismiss") {
+    await supabase.from("reports").update({ status: "dismissed" }).eq("id", reportId);
+  } else {
     const svc = createServiceClient();
-    if (r.target_type === "profile") {
+    if (action === "ban" && r.target_type === "profile") {
+      await svc
+        .from("profiles")
+        .update({ is_banned: true, is_public: false })
+        .eq("id", r.target_id);
+    } else if (r.target_type === "profile") {
       // Don't delete a person — just hide them from discovery.
       await svc.from("profiles").update({ is_public: false }).eq("id", r.target_id);
     } else {
@@ -71,8 +105,6 @@ export async function resolveReport(
       if (table) await svc.from(table).delete().eq("id", r.target_id);
     }
     await supabase.from("reports").update({ status: "actioned" }).eq("id", reportId);
-  } else {
-    await supabase.from("reports").update({ status: "dismissed" }).eq("id", reportId);
   }
 
   revalidatePath("/admin");

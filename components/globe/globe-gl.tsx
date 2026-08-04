@@ -17,7 +17,7 @@ export type GlobeDatum = {
   subtitle: string;
   /** People only — realtime presence. Listings stay undefined. */
   online?: boolean;
-  kind?: "person" | "listing";
+  kind?: "person" | "listing" | "event";
 };
 
 export type RingDatum = { lat: number; lng: number };

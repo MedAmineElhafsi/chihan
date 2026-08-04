@@ -11,6 +11,7 @@ import {
   LOOKING_FOR,
   OFFERING,
   ORIGIN_REGIONS,
+  PROFILE_PHOTOS_MAX,
   PROFESSIONS,
   SPOKEN_LANGUAGES,
 } from "./constants";
@@ -27,6 +28,7 @@ const schema = z.object({
   interests: z.array(z.string()).max(20).optional().default([]),
   lookingFor: z.array(z.string()).max(20).optional().default([]),
   offering: z.array(z.string()).max(20).optional().default([]),
+  photos: z.array(z.string().url()).max(8).optional().default([]),
   avatarUrl: z.string().optional().nullable(),
   isPublic: z.boolean().optional().default(false),
 });
@@ -81,6 +83,7 @@ export async function saveProfile(
   const interests = pickKnown(v.interests, INTERESTS);
   const lookingFor = pickKnown(v.lookingFor, LOOKING_FOR);
   const offering = pickKnown(v.offering, OFFERING);
+  const photos = v.photos.slice(0, PROFILE_PHOTOS_MAX);
 
   const geo = await geocode(v.city, v.country);
 
@@ -99,6 +102,7 @@ export async function saveProfile(
     interests,
     looking_for: lookingFor,
     offering,
+    photos,
     avatar_url: v.avatarUrl || null,
     is_public: v.isPublic,
     consent_at: v.isPublic ? new Date().toISOString() : null,

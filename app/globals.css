@@ -175,6 +175,14 @@
   border: 1px solid var(--border);
 }
 
+/* Opaque social card — feed posts, match suggestions (less blur than glass). */
+@utility social-surface {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 2px);
+  box-shadow: 0 1px 0 color-mix(in oklab, var(--foreground) 4%, transparent);
+}
+
 /* Soft golden halo for primary moments. */
 @utility glow-gold {
   box-shadow:
@@ -233,8 +241,23 @@
   }
 }
 
+@keyframes story-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .animate-fade-up {
   animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-story-in {
+  animation: story-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .animate-twinkle {
@@ -251,7 +274,8 @@
   .animate-twinkle,
   .animate-aurora,
   .animate-float-slow,
-  .animate-fade-up {
+  .animate-fade-up,
+  .animate-story-in {
     animation: none;
   }
 }

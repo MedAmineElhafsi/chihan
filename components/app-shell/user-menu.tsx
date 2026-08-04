@@ -5,6 +5,7 @@ import {
   Bell,
   Eye,
   Globe2,
+  HeartHandshake,
   LayoutDashboard,
   LogOut,
   MessageSquare,
@@ -14,6 +15,7 @@ import {
 } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
+import { signOutAction } from "@/lib/auth-actions";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -92,6 +94,12 @@ export function UserMenu({
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
+          <Link href="/match">
+            <HeartHandshake />
+            {t("match")}
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <Link href="/messages">
             <MessageSquare />
             {t("messages")}
@@ -124,15 +132,18 @@ export function UserMenu({
           </DropdownMenuItem>
         )}
         <DropdownMenuSeparator />
-        <form action="/auth/signout" method="post">
-          <DropdownMenuItem asChild>
-            <button
-              type="submit"
-              className="w-full text-kurd-red focus:text-kurd-red"
-            >
-              <LogOut />
-              {t("signOut")}
-            </button>
+        <form action={signOutAction}>
+          <DropdownMenuItem
+            className="text-kurd-red focus:text-kurd-red"
+            onSelect={(e) => {
+              // Radix closes the menu on select; keep the form submit alive.
+              e.preventDefault();
+              const el = e.target as HTMLElement | null;
+              el?.closest("form")?.requestSubmit();
+            }}
+          >
+            <LogOut />
+            {t("signOut")}
           </DropdownMenuItem>
         </form>
       </DropdownMenuContent>

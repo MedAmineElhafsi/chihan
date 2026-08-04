@@ -109,9 +109,12 @@ export const CATEGORY_COLORS: Record<string, string> = {
 
 /** Resolve the marker style for any globe point. */
 export function pointStyle(
-  kind: "person" | "listing",
+  kind: "person" | "listing" | "event",
   key: string | null | undefined
 ): { color: string; icon: string } {
+  if (kind === "event") {
+    return { color: "#e1b12c", icon: "📅" };
+  }
   const table = kind === "person" ? PROFESSION_STYLE : CATEGORY_STYLE;
   return table[key ?? "other"] ?? table.other;
 }
@@ -170,6 +173,35 @@ export const OFFERING = [
   "volunteering",
 ] as const;
 export type Offering = (typeof OFFERING)[number];
+
+/**
+ * Maps a "looking for" need to the offering tags that satisfy it.
+ * Used by reciprocal matching.
+ */
+export const LOOKING_TO_OFFERING: Record<LookingFor, readonly Offering[]> = {
+  friends: ["friendship"],
+  housing: ["housing_help"],
+  work: ["job_leads"],
+  mentorship: ["mentorship"],
+  events: ["local_tips", "volunteering"],
+  language_exchange: ["language_help"],
+  business_partners: ["business_help"],
+};
+
+/** Reverse: which looking_for tags an offering can satisfy. */
+export const OFFERING_TO_LOOKING: Record<Offering, readonly LookingFor[]> = {
+  friendship: ["friends"],
+  housing_help: ["housing"],
+  job_leads: ["work"],
+  mentorship: ["mentorship"],
+  local_tips: ["events"],
+  language_help: ["language_exchange"],
+  business_help: ["business_partners"],
+  volunteering: ["events"],
+};
+
+/** Max gallery photos on a profile. */
+export const PROFILE_PHOTOS_MAX = 8;
 
 /** Illustrative pricing (real Stripe prices wired in Phase 8). */
 export const PRICING = {

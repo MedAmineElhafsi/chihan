@@ -7,7 +7,7 @@ import { AlertCircle, Loader2, MailCheck } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/client";
 import { supabaseConfigured } from "@/lib/env";
-import { Link, useRouter } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,13 +35,18 @@ function GoogleIcon({ className }: { className?: string }) {
   );
 }
 
-export function AuthForm({ mode }: { mode: "login" | "signup" }) {
+export function AuthForm({
+  mode,
+  defaultEmail = "",
+}: {
+  mode: "login" | "signup";
+  defaultEmail?: string;
+}) {
   const t = useTranslations("Auth");
   const tc = useTranslations("Common");
   const locale = useLocale();
-  const router = useRouter();
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(defaultEmail);
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -68,8 +73,10 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
           password,
         });
         if (signInError) throw signInError;
-        router.push("/dashboard");
-        router.refresh();
+        // Hard navigation so auth cookies are always sent on the next request
+        // (avoids soft-nav races when the Auth API is slow/timeouts).
+        window.location.assign(`/${locale}/dashboard`);
+        return;
       } else {
         const { data, error: signUpError } = await supabase.auth.signUp({
           email,
@@ -80,8 +87,8 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         });
         if (signUpError) throw signUpError;
         if (data.session) {
-          router.push("/dashboard");
-          router.refresh();
+          window.location.assign(`/${locale}/dashboard`);
+          return;
         } else {
           setSent(true);
         }

@@ -143,20 +143,20 @@ export function ChatShell({
     new Date(otherLastRead) >= new Date(myLastMsg.created_at);
 
   return (
-    <div className="flex h-[calc(100dvh-4rem)] w-full">
+    <div className="flex h-[calc(100dvh-4rem)] w-full overflow-hidden">
       {/* Conversation list */}
       <aside
         className={cn(
-          "w-full flex-col border-e border-border md:flex md:w-80",
+          "w-full flex-col border-e border-border bg-card/40 md:flex md:w-[22rem]",
           activeId ? "hidden md:flex" : "flex"
         )}
       >
-        <div className="border-b border-border p-4">
-          <h1 className="font-display text-xl font-semibold">{t("title")}</h1>
+        <div className="border-b border-border px-4 py-3">
+          <h1 className="font-display text-lg font-semibold">{t("title")}</h1>
         </div>
-        <div className="flex-1 overflow-y-auto p-2">
+        <div className="flex-1 overflow-y-auto">
           {sortedConvs.length === 0 ? (
-            <div className="px-3 py-10 text-center text-sm text-muted-foreground">
+            <div className="px-4 py-12 text-center text-sm text-muted-foreground">
               <p>{t("empty")}</p>
               <p className="mt-1">{t("emptyHint")}</p>
             </div>
@@ -170,31 +170,40 @@ export function ChatShell({
                   key={c.id}
                   href={`/messages/${c.id}`}
                   className={cn(
-                    "flex items-center gap-3 rounded-lg p-2.5 transition-colors hover:bg-accent",
+                    "flex items-center gap-3 border-b border-border/50 px-3.5 py-3 transition-colors hover:bg-accent/70",
                     c.id === activeId && "bg-accent"
                   )}
                 >
-                  <Avatar className="size-10">
-                    {c.partner?.avatarUrl && (
-                      <AvatarImage src={c.partner.avatarUrl} alt={name} />
+                  <span className="relative shrink-0">
+                    <Avatar className="size-12">
+                      {c.partner?.avatarUrl && (
+                        <AvatarImage src={c.partner.avatarUrl} alt={name} />
+                      )}
+                      <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-sm text-primary-foreground">
+                        {initial}
+                      </AvatarFallback>
+                    </Avatar>
+                    {unread > 0 && (
+                      <span className="absolute -end-0.5 -top-0.5 flex size-5 items-center justify-center rounded-full bg-gold text-[0.65rem] font-bold text-primary-foreground ring-2 ring-card">
+                        {unread > 9 ? "9+" : unread}
+                      </span>
                     )}
-                    <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-sm text-primary-foreground">
-                      {initial}
-                    </AvatarFallback>
-                  </Avatar>
+                  </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="truncate text-sm font-medium">{name}</span>
-                      {unread > 0 && (
-                        <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-gold text-[0.7rem] font-bold text-primary-foreground">
-                          {unread}
-                        </span>
-                      )}
+                      <span
+                        className={cn(
+                          "truncate text-sm",
+                          unread > 0 ? "font-semibold" : "font-medium"
+                        )}
+                      >
+                        {name}
+                      </span>
                     </div>
                     {c.lastMessage && (
                       <p
                         className={cn(
-                          "truncate text-xs",
+                          "mt-0.5 truncate text-xs",
                           unread > 0
                             ? "font-medium text-foreground"
                             : "text-muted-foreground"
@@ -217,7 +226,7 @@ export function ChatShell({
       {/* Thread */}
       <section
         className={cn(
-          "flex-1 flex-col",
+          "flex-1 flex-col bg-muted/15",
           activeId ? "flex" : "hidden md:flex"
         )}
       >
@@ -227,7 +236,7 @@ export function ChatShell({
           </div>
         ) : (
           <>
-            <div className="flex items-center gap-3 border-b border-border p-3">
+            <div className="flex items-center gap-3 border-b border-border bg-card/60 px-3 py-2.5 backdrop-blur-sm">
               <Button
                 asChild
                 variant="ghost"
@@ -247,12 +256,15 @@ export function ChatShell({
                   {(partnerName ?? t("partnerFallback")).charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <span className="font-display text-lg font-semibold">
+              <span className="truncate font-semibold">
                 {partnerName ?? t("partnerFallback")}
               </span>
             </div>
 
-            <div ref={scrollRef} className="flex-1 space-y-2 overflow-y-auto p-4">
+            <div
+              ref={scrollRef}
+              className="flex-1 space-y-1.5 overflow-y-auto px-3 py-3 sm:px-4"
+            >
               {messages.map((m) => {
                 const mine = m.sender_id === currentUserId;
                 return (
@@ -265,22 +277,22 @@ export function ChatShell({
                   >
                     <div
                       className={cn(
-                        "max-w-[75%] rounded-2xl px-3.5 py-2 text-sm",
+                        "max-w-[78%] rounded-[1.15rem] px-3.5 py-2 text-sm leading-snug shadow-sm",
                         mine
-                          ? "rounded-ee-sm bg-primary text-primary-foreground"
-                          : "rounded-es-sm bg-secondary text-secondary-foreground"
+                          ? "rounded-ee-md bg-primary text-primary-foreground"
+                          : "rounded-es-md bg-card text-card-foreground ring-1 ring-border/80"
                       )}
                     >
                       {m.body}
                     </div>
-                    <span className="px-1 text-[0.65rem] text-muted-foreground">
+                    <span className="px-1.5 text-[0.65rem] text-muted-foreground">
                       {timeFmt.format(new Date(m.created_at))}
                     </span>
                   </div>
                 );
               })}
               {seen && (
-                <div className="px-1 text-end text-[0.65rem] text-muted-foreground">
+                <div className="px-1.5 text-end text-[0.65rem] text-muted-foreground">
                   {t("seen")}
                 </div>
               )}
@@ -288,13 +300,13 @@ export function ChatShell({
 
             <form
               onSubmit={onSend}
-              className="flex items-center gap-2 border-t border-border p-3"
+              className="sticky bottom-0 flex items-center gap-2 border-t border-border bg-card/90 px-3 py-2.5 backdrop-blur-md"
             >
               <input
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder={t("messagePlaceholder")}
-                className="h-11 flex-1 rounded-full border border-input bg-card/40 px-4 text-sm shadow-sm focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+                className="h-11 flex-1 rounded-full border border-input bg-background px-4 text-sm shadow-sm focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
                 maxLength={2000}
               />
               <Button

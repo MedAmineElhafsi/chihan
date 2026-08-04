@@ -50,13 +50,20 @@ export async function getPeople(
       interests: Array.isArray(p.interests) ? p.interests : [],
       looking_for: Array.isArray(p.looking_for) ? p.looking_for : [],
       offering: Array.isArray(p.offering) ? p.offering : [],
+      photos: Array.isArray(p.photos) ? p.photos : [],
       is_verified: Boolean(p.is_verified),
+      is_banned: Boolean(p.is_banned),
     }));
     if (excludeUserId) {
       const hidden = await getHiddenAuthorIds(excludeUserId);
       people = people.filter(
-        (p) => p.user_id !== excludeUserId && !hidden.has(p.user_id)
+        (p) =>
+          p.user_id !== excludeUserId &&
+          !hidden.has(p.user_id) &&
+          !p.is_banned
       );
+    } else {
+      people = people.filter((p) => !p.is_banned);
     }
     return people;
   } catch {

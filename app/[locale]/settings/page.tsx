@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Ban, ChevronRight, Download } from "lucide-react";
+import { Ban, ChevronRight, Download, UserPlus } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { DeleteAccountButton } from "@/components/account/delete-account-button";
+import { PushEnableButton } from "@/components/pwa/push-enable-button";
 
 export default async function SettingsPage({
   params,
@@ -27,6 +28,7 @@ export default async function SettingsPage({
 
   const t = await getTranslations("Settings");
   const tSafety = await getTranslations("Safety");
+  const tPwa = await getTranslations("Pwa");
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-5 px-4 py-12 sm:px-6">
@@ -60,6 +62,33 @@ export default async function SettingsPage({
             </span>
             <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
           </Link>
+          <Link
+            href="/settings/invite"
+            className="flex items-center gap-3 border-t border-border/60 px-6 py-4 transition-colors hover:bg-secondary/40"
+          >
+            <span className="flex size-9 items-center justify-center rounded-full bg-gold/15 text-gold">
+              <UserPlus className="size-4" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-sm font-medium">
+                {t("inviteMenuTitle")}
+              </span>
+              <span className="block text-xs text-muted-foreground">
+                {t("inviteMenuHint")}
+              </span>
+            </span>
+            <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
+          </Link>
+        </CardContent>
+      </Card>
+
+      <Card className="glass">
+        <CardHeader>
+          <CardTitle className="font-display">{tPwa("pushTitle")}</CardTitle>
+          <CardDescription>{tPwa("pushBody")}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <PushEnableButton />
         </CardContent>
       </Card>
 

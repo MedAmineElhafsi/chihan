@@ -15,6 +15,7 @@ import {
   LOOKING_FOR,
   OFFERING,
   ORIGIN_REGIONS,
+  PROFILE_PHOTOS_MAX,
   PROFESSIONS,
   PROFESSION_STYLE,
   SPOKEN_LANGUAGES,
@@ -36,6 +37,7 @@ export function ProfileForm({
   const t = useTranslations("Onboarding");
   const router = useRouter();
   const fileInput = useRef<HTMLInputElement>(null);
+  const galleryInput = useRef<HTMLInputElement>(null);
 
   const [displayName, setDisplayName] = useState(initial?.display_name ?? "");
   const [bio, setBio] = useState(initial?.bio ?? "");
@@ -54,6 +56,7 @@ export function ProfileForm({
     initial?.looking_for ?? []
   );
   const [offering, setOffering] = useState<string[]>(initial?.offering ?? []);
+  const [photos, setPhotos] = useState<string[]>(initial?.photos ?? []);
   const [isPublic, setIsPublic] = useState(initial?.is_public ?? false);
 
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
@@ -61,6 +64,7 @@ export function ProfileForm({
     initial?.avatar_url ?? null
   );
   const [removeAvatar, setRemoveAvatar] = useState(false);
+  const [galleryUploading, setGalleryUploading] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -89,6 +93,55 @@ export function ProfileForm({
     setRemoveAvatar(true);
     setAvatarPreview(null);
     if (fileInput.current) fileInput.current.value = "";
+  }
+
+  async function onPickGallery(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? []);
+    if (galleryInput.current) galleryInput.current.value = "";
+    if (files.length === 0) return;
+
+    const remaining = PROFILE_PHOTOS_MAX - photos.length;
+    if (remaining <= 0) return;
+
+    const batch = files.slice(0, remaining);
+    for (const file of batch) {
+      if (!(AVATAR_ACCEPT as readonly string[]).includes(file.type)) {
+        setError(t("errorPhotoType"));
+        return;
+      }
+      if (file.size > AVATAR_MAX_BYTES) {
+        setError(t("errorPhotoSize"));
+        return;
+      }
+    }
+
+    setError(null);
+    setGalleryUploading(true);
+    try {
+      const supabase = createClient();
+      const uploaded: string[] = [];
+      for (const file of batch) {
+        const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+        const path = `${userId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+        const { error: uploadError } = await supabase.storage
+          .from("profile-photos")
+          .upload(path, file, { upsert: true, cacheControl: "3600" });
+        if (uploadError) throw uploadError;
+        uploaded.push(
+          supabase.storage.from("profile-photos").getPublicUrl(path).data
+            .publicUrl
+        );
+      }
+      setPhotos((prev) => [...prev, ...uploaded].slice(0, PROFILE_PHOTOS_MAX));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("errorGeneric"));
+    } finally {
+      setGalleryUploading(false);
+    }
+  }
+
+  function removeGalleryPhoto(url: string) {
+    setPhotos((prev) => prev.filter((p) => p !== url));
   }
 
   function toggleIn(
@@ -139,6 +192,7 @@ export function ProfileForm({
         interests,
         lookingFor,
         offering,
+        photos,
         avatarUrl,
         isPublic,
       });
@@ -212,6 +266,55 @@ export function ProfileForm({
             onChange={onPickFile}
           />
         </div>
+      </div>
+
+      {/* Photo gallery */}
+      <div className="flex flex-col gap-2.5">
+        <Label>{t("photosLabel")}</Label>
+        <span className="text-xs text-muted-foreground">{t("photosHint")}</span>
+        <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+          {photos.map((url) => (
+            <div
+              key={url}
+              className="group relative aspect-square overflow-hidden rounded-xl bg-secondary ring-1 ring-border"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={url} alt="" className="size-full object-cover" />
+              <button
+                type="button"
+                onClick={() => removeGalleryPhoto(url)}
+                disabled={loading}
+                className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-1 bg-black/55 py-1.5 text-xs font-medium text-white opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100"
+              >
+                <Trash2 className="size-3.5" />
+                {t("photosRemove")}
+              </button>
+            </div>
+          ))}
+          {photos.length < PROFILE_PHOTOS_MAX && (
+            <button
+              type="button"
+              onClick={() => galleryInput.current?.click()}
+              disabled={loading || galleryUploading}
+              className="flex aspect-square flex-col items-center justify-center gap-1.5 rounded-xl border border-dashed border-border bg-card/30 text-muted-foreground transition-colors hover:border-gold/40 hover:text-foreground"
+            >
+              {galleryUploading ? (
+                <Loader2 className="size-5 animate-spin" />
+              ) : (
+                <ImagePlus className="size-5" />
+              )}
+              <span className="text-xs font-medium">{t("photosAdd")}</span>
+            </button>
+          )}
+        </div>
+        <input
+          ref={galleryInput}
+          type="file"
+          accept={AVATAR_ACCEPT.join(",")}
+          multiple
+          className="hidden"
+          onChange={onPickGallery}
+        />
       </div>
 
       {/* Display name */}

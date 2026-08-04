@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { Eye, Globe2, Handshake, Heart, Languages, MapPin, Pencil, Search } from "lucide-react";
+import { Eye, Globe2, Handshake, Heart, ImageIcon, Languages, MapPin, Pencil, Search } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -115,6 +115,30 @@ export async function ProfileView({
             <span className="text-muted-foreground">{t("noBio")}</span>
           )}
         </p>
+
+        {profile.photos.length > 0 && (
+          <div className="mt-5 flex flex-col gap-3 border-t border-border/60 pt-5">
+            <span className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+              <ImageIcon className="size-4" />
+              {tOn("photosLabel")}
+            </span>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {profile.photos.map((url) => (
+                <div
+                  key={url}
+                  className="aspect-square overflow-hidden rounded-xl bg-secondary ring-1 ring-border"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={url}
+                    alt=""
+                    className="size-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {(profile.languages.length > 0 || profile.dialect) && (
           <div className="mt-5 flex flex-col gap-3 border-t border-border/60 pt-5">

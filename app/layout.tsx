@@ -1,9 +1,28 @@
 import type { Metadata } from "next";
+import { cookies, headers } from "next/headers";
+import { Fraunces, Manrope, Vazirmatn } from "next/font/google";
+
+import { getDir, locales, routing, type Locale } from "@/i18n/routing";
+import { cn } from "@/lib/utils";
 import "./globals.css";
 
-// Root layout is intentionally a pass-through: the real <html>/<body> live in
-// `app/[locale]/layout.tsx` so the document can carry the active locale + dir.
-// (Standard next-intl App Router pattern.)
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
+  display: "swap",
+});
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
+  display: "swap",
+});
+
+const vazirmatn = Vazirmatn({
+  subsets: ["arabic", "latin"],
+  variable: "--font-vazirmatn",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -30,10 +49,38 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+function resolveLocale(raw: string | null | undefined): Locale {
+  if (raw && (locales as readonly string[]).includes(raw)) {
+    return raw as Locale;
+  }
+  return routing.defaultLocale;
+}
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  const cookieStore = await cookies();
+  const headerStore = await headers();
+  const locale = resolveLocale(
+    cookieStore.get("NEXT_LOCALE")?.value ??
+      headerStore.get("x-next-intl-locale")
+  );
+
+  return (
+    <html
+      lang={locale}
+      dir={getDir(locale)}
+      suppressHydrationWarning
+      className={cn(
+        fraunces.variable,
+        manrope.variable,
+        vazirmatn.variable,
+        "antialiased"
+      )}
+    >
+      <body className="min-h-dvh">{children}</body>
+    </html>
+  );
 }

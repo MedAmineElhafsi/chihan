@@ -40,6 +40,24 @@ export async function createNotifications(
     );
     if (error) {
       console.error("[notifications] insert failed:", error.message);
+    } else {
+      // Best-effort web push (no-op if VAPID / web-push missing).
+      const { sendPushToUser } = await import("./push");
+      const titles: Record<string, string> = {
+        message: "New message",
+        group_message: "Group message",
+        like: "New like",
+        comment: "New comment",
+      };
+      await Promise.all(
+        rows.map((r) =>
+          sendPushToUser(r.userId, {
+            title: titles[r.type] ?? "Cîhan",
+            body: "Open Cîhan to see what’s new.",
+            link: r.link,
+          })
+        )
+      );
     }
   } catch (err) {
     console.error("[notifications] insert threw:", err);

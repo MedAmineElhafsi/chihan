@@ -51,6 +51,12 @@ export async function SiteHeader() {
               {t("people")}
             </Link>
             <Link
+              href="/match"
+              className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+            >
+              {t("match")}
+            </Link>
+            <Link
               href="/feed"
               className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
             >

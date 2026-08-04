@@ -10,6 +10,7 @@ import {
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import {
+  CalendarDays,
   ChevronLeft,
   Crosshair,
   Globe2,
@@ -35,7 +36,7 @@ const GlobeGL = dynamic(() => import("./globe-gl"), {
   loading: () => null,
 });
 
-type Layer = "all" | "people" | "restaurants" | "doctors";
+type Layer = "all" | "people" | "restaurants" | "doctors" | "events";
 
 export function ExploreClient({ points }: { points: GlobePoint[] }) {
   const t = useTranslations("Explore");
@@ -64,6 +65,7 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
         if (layer === "people") return p.kind === "person";
         if (layer === "restaurants") return p.category === "restaurant";
         if (layer === "doctors") return p.category === "doctor";
+        if (layer === "events") return p.kind === "event";
         return true;
       }),
     [points, layer]
@@ -126,7 +128,12 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
   const legend = useMemo(() => {
     const seen = new Map<string, { color: string; icon: string; label: string }>();
     for (const p of filtered) {
-      const key = p.kind === "person" ? p.profession || "other" : p.category;
+      const key =
+        p.kind === "person"
+          ? p.profession || "other"
+          : p.kind === "event"
+            ? "event"
+            : p.category;
       const id = `${p.kind}:${key}`;
       if (seen.has(id)) continue;
       const style = pointStyle(p.kind, key);
@@ -136,7 +143,9 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
         label:
           p.kind === "person"
             ? t(`prof_${key}` as never)
-            : t(`cat_${p.category}` as never),
+            : p.kind === "event"
+              ? t("events")
+              : t(`cat_${p.category}` as never),
       });
     }
     return [...seen.values()];
@@ -211,6 +220,7 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
     { key: "people", label: t("people"), icon: Users },
     { key: "restaurants", label: t("restaurants"), icon: Utensils },
     { key: "doctors", label: t("doctors"), icon: Stethoscope },
+    { key: "events", label: t("events"), icon: CalendarDays },
   ];
 
   return (
@@ -331,7 +341,9 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
               viewLabel={
                 selectedItem.kind === "listing"
                   ? t("viewListing")
-                  : t("viewProfile")
+                  : selectedItem.kind === "event"
+                    ? t("viewEvent")
+                    : t("viewProfile")
               }
             />
           ) : selectedCountry ? (
@@ -391,6 +403,17 @@ function ItemAvatar({ item, online }: { item: GlobePoint; online?: boolean }) {
         style={{ backgroundColor: `${color}cc` }}
       >
         <CategoryIcon category={item.category} className="size-4" />
+      </span>
+    );
+  }
+  if (item.kind === "event") {
+    const style = pointStyle("event", "event");
+    return (
+      <span
+        className="flex size-9 shrink-0 items-center justify-center rounded-full text-white"
+        style={{ backgroundColor: `${style.color}cc` }}
+      >
+        <CalendarDays className="size-4" />
       </span>
     );
   }
@@ -460,6 +483,17 @@ function ItemRow({
               {item.city && <span aria-hidden="true">·</span>}
             </>
           )}
+          {item.kind === "event" && item.eventAt && (
+            <>
+              <span className="truncate">
+                {new Date(item.eventAt).toLocaleDateString(undefined, {
+                  month: "short",
+                  day: "numeric",
+                })}
+              </span>
+              {item.city && <span aria-hidden="true">·</span>}
+            </>
+          )}
           {item.city && <span className="truncate">{item.city}</span>}
         </span>
       </span>
@@ -481,7 +515,12 @@ function ItemDetail({
   viewLabel: string;
 }) {
   const place = [item.city, item.country].filter(Boolean).join(", ");
-  const href = item.kind === "listing" ? `/directory/${item.id}` : `/u/${item.id}`;
+  const href =
+    item.kind === "listing"
+      ? `/directory/${item.id}`
+      : item.kind === "event"
+        ? "/feed"
+        : `/u/${item.id}`;
   return (
     <div className="flex flex-col gap-4 p-2">
       <button
@@ -510,12 +549,22 @@ function ItemDetail({
               <OnlineStatus online={online} />
             </div>
           )}
+          {item.kind === "event" && item.eventAt && (
+            <div className="text-sm text-muted-foreground">
+              {new Date(item.eventAt).toLocaleString(undefined, {
+                dateStyle: "medium",
+                timeStyle: "short",
+              })}
+            </div>
+          )}
         </div>
       </div>
       <Button asChild className="gap-2">
         <Link href={href}>
           {item.kind === "listing" ? (
             <CategoryIcon category={item.category} className="size-4" />
+          ) : item.kind === "event" ? (
+            <CalendarDays className="size-4" />
           ) : (
             <UserRound className="size-4" />
           )}

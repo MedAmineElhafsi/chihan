@@ -139,10 +139,10 @@ export function PostCard({
   );
 
   return (
-    <article className="glass rounded-2xl p-5">
-      <header className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <Avatar className="size-10">
+    <article className="social-surface overflow-hidden">
+      <header className="flex items-center justify-between gap-3 px-4 pt-4 sm:px-5 sm:pt-5">
+        <div className="flex min-w-0 items-center gap-3">
+          <Avatar className="size-11">
             {item.author.avatarUrl && (
               <AvatarImage src={item.author.avatarUrl} alt={name} />
             )}
@@ -150,16 +150,16 @@ export function PostCard({
               {initial}
             </AvatarFallback>
           </Avatar>
-          <div>
-            <div className="text-sm font-medium">{nameNode}</div>
+          <div className="min-w-0">
+            <div className="truncate text-base font-semibold">{nameNode}</div>
             <div className="text-xs text-muted-foreground">
               {dateFmt.format(new Date(item.created_at))}
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex shrink-0 items-center gap-1">
           {item.type === "event" && (
-            <span className="rounded-full bg-gold/15 px-2.5 py-0.5 text-xs font-medium text-gold">
+            <span className="rounded-md bg-gold/15 px-2 py-0.5 text-[11px] font-medium text-gold">
               {t("event")}
             </span>
           )}
@@ -180,29 +180,29 @@ export function PostCard({
       </header>
 
       {item.type === "event" && (
-        <div className="mt-3 rounded-xl border border-gold/30 bg-gold/5 p-3">
-          <div className="font-display text-lg font-semibold">
+        <div className="mx-4 mt-3 rounded-lg border border-gold/25 bg-gold/5 p-3.5 sm:mx-5">
+          <div className="font-display text-lg font-semibold leading-snug">
             {item.event_title}
           </div>
           {item.event_at && (
             <div className="mt-1 flex items-center gap-1.5 text-sm text-gold">
-              <CalendarDays className="size-4" />
+              <CalendarDays className="size-3.5 shrink-0" />
               {eventFmt.format(new Date(item.event_at))}
             </div>
           )}
           {item.event_location && (
             <div className="mt-0.5 flex items-center gap-1.5 text-sm text-muted-foreground">
-              <MapPin className="size-4" />
-              {item.event_location}
+              <MapPin className="size-3.5 shrink-0" />
+              <span className="min-w-0 truncate">{item.event_location}</span>
               {item.distance_km != null && (
-                <span className="text-gold">
+                <span className="shrink-0 text-gold">
                   · {t("distanceKm", { km: Math.round(item.distance_km) })}
                 </span>
               )}
             </div>
           )}
 
-          <div className="mt-3 flex flex-wrap items-center gap-2">
+          <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
             {(
               [
                 { key: "going" as const, label: t("rsvpGoing"), count: goingCount },
@@ -219,10 +219,10 @@ export function PostCard({
                 disabled={!canInteract}
                 onClick={() => onRsvp(key)}
                 className={cn(
-                  "rounded-full border px-3 py-1 text-xs font-medium transition-colors disabled:opacity-60",
+                  "rounded-md border px-2.5 py-1 text-xs font-medium transition-colors disabled:opacity-60",
                   myRsvp === key
                     ? "border-gold/50 bg-gold/20 text-gold"
-                    : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
+                    : "border-border bg-card text-muted-foreground hover:text-foreground"
                 )}
               >
                 {label}
@@ -232,7 +232,7 @@ export function PostCard({
             <button
               type="button"
               onClick={() => downloadEventIcs(item)}
-              className="inline-flex items-center gap-1 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="inline-flex items-center gap-1 rounded-md border border-border bg-card px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               <CalendarPlus className="size-3.5" />
               {t("addToCalendar")}
@@ -242,61 +242,71 @@ export function PostCard({
       )}
 
       {item.body && (
-        <p className="mt-3 whitespace-pre-wrap leading-relaxed text-foreground/90">
+        <p className="mt-3 whitespace-pre-wrap px-4 text-base leading-relaxed text-foreground/90 sm:px-5">
           {item.body}
         </p>
       )}
 
       {item.media.length > 0 && (
-        <div className="mt-3 overflow-hidden rounded-xl border border-border">
+        <div className="mt-3 overflow-hidden border-y border-border">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={item.media[0]} alt="" className="max-h-96 w-full object-cover" />
+          <img
+            src={item.media[0]}
+            alt=""
+            className="max-h-[32rem] w-full object-cover"
+          />
         </div>
       )}
 
-      <footer className="mt-4 flex items-center gap-5 border-t border-border/60 pt-3">
+      <footer className="mt-1 grid grid-cols-2 gap-1 border-t border-border/70 px-2 py-1.5">
         <button
           onClick={onLike}
           disabled={!canInteract}
           className={cn(
-            "flex items-center gap-1.5 text-sm transition-colors disabled:opacity-60",
-            liked ? "text-kurd-red" : "text-muted-foreground hover:text-foreground"
+            "flex items-center justify-center gap-2 rounded-md py-2.5 text-sm font-medium transition-colors disabled:opacity-60",
+            liked
+              ? "text-kurd-red"
+              : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
           )}
         >
-          <Heart className={cn("size-4", liked && "fill-kurd-red")} />
-          {likeCount}
+          <Heart className={cn("size-5", liked && "fill-kurd-red")} />
+          {t("like")}
+          {likeCount > 0 ? ` · ${likeCount}` : ""}
         </button>
         <button
           onClick={toggleComments}
-          className="flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          className="flex items-center justify-center gap-2 rounded-md py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
         >
-          <MessageSquare className="size-4" />
-          {item.comment_count}
+          <MessageSquare className="size-5" />
+          {t("comment")}
+          {item.comment_count > 0 ? ` · ${item.comment_count}` : ""}
         </button>
       </footer>
 
       {showComments && (
-        <div className="mt-3 flex flex-col gap-3 border-t border-border/60 pt-3">
+        <div className="flex flex-col gap-2.5 border-t border-border/70 bg-muted/20 px-4 py-3 sm:px-5">
           {comments === null ? (
             <Loader2 className="size-4 animate-spin text-muted-foreground" />
           ) : comments.length === 0 ? (
             <p className="text-sm text-muted-foreground">{t("noComments")}</p>
           ) : (
             comments.map((c) => (
-              <div key={c.id} className="text-sm">
-                <span className="font-medium">{c.author_name ?? t("member")}</span>{" "}
+              <div key={c.id} className="rounded-lg bg-card/80 px-3 py-2 text-sm">
+                <span className="font-semibold">
+                  {c.author_name ?? t("member")}
+                </span>{" "}
                 <span className="text-foreground/90">{c.body}</span>
               </div>
             ))
           )}
           {canInteract && (
-            <form onSubmit={submitComment} className="flex gap-2">
+            <form onSubmit={submitComment} className="mt-0.5 flex gap-2">
               <input
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
                 placeholder={t("commentPlaceholder")}
                 maxLength={800}
-                className="h-10 flex-1 rounded-full border border-input bg-card/40 px-4 text-sm focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+                className="h-10 flex-1 rounded-full border border-input bg-card px-4 text-sm focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
               />
               <Button
                 type="submit"

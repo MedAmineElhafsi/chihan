@@ -21,22 +21,28 @@ export async function proxy(request: NextRequest) {
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (url && anonKey) {
-    const supabase = createServerClient(url, anonKey, {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
+    try {
+      const supabase = createServerClient(url, anonKey, {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll();
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              response.cookies.set(name, value, options)
+            );
+          },
         },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            response.cookies.set(name, value, options)
-          );
-        },
-      },
-    });
+      });
 
-    // Do not insert logic between client creation and getUser(): it refreshes
-    // the session and writes any rotated cookies onto `response`.
-    await supabase.auth.getUser();
+      // Do not insert logic between client creation and getUser(): it refreshes
+      // the session and writes any rotated cookies onto `response`.
+      // Catch timeouts so a flaky network does not break every page.
+      await supabase.auth.getUser();
+    } catch {
+      // Auth refresh failed (e.g. ETIMEDOUT to Supabase). Continue with
+      // existing cookies — client components can still use the session.
+    }
   }
 
   return response;
