@@ -23,6 +23,9 @@ export default async function InviteLandingPage({
   const t = await getTranslations("Invite");
 
   const invite = await getInviteByToken(token);
+  // This is an async Server Component rendered per-request, so reading the
+  // clock here is correct — the purity rule targets client components.
+  // eslint-disable-next-line react-hooks/purity
   const now = Date.now();
   const expired =
     !invite ||

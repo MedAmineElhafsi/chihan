@@ -1,6 +1,11 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import {
+  useEffect,
+  useState,
+  useSyncExternalStore,
+  useTransition,
+} from "react";
 import { useTranslations } from "next-intl";
 import { Bell, BellOff, Loader2 } from "lucide-react";
 
@@ -16,30 +21,38 @@ function urlBase64ToUint8Array(base64String: string) {
   return out;
 }
 
+/** Push support never changes at runtime; read it SSR-safely, no state needed. */
+const subscribeNoop = () => () => {};
+const getSupportSnapshot = () =>
+  typeof window !== "undefined" &&
+  "serviceWorker" in navigator &&
+  "PushManager" in window &&
+  "Notification" in window;
+const getSupportServerSnapshot = () => false;
+
 export function PushEnableButton() {
   const t = useTranslations("Pwa");
-  const [supported, setSupported] = useState(false);
   const [enabled, setEnabled] = useState(false);
-  const [configured, setConfigured] = useState(false);
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
-    setConfigured(Boolean(pub));
-    const ok =
-      typeof window !== "undefined" &&
-      "serviceWorker" in navigator &&
-      "PushManager" in window &&
-      "Notification" in window;
-    setSupported(ok);
-    if (!ok || !pub) return;
+  // NEXT_PUBLIC_* is inlined at build time, so this is plain derived data.
+  const configured = Boolean(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY);
+  const supported = useSyncExternalStore(
+    subscribeNoop,
+    getSupportSnapshot,
+    getSupportServerSnapshot
+  );
 
+  useEffect(() => {
+    if (!supported || !configured) return;
+    // setState inside the promise callback is fine — it's the synchronous
+    // setState in an effect body that causes cascading renders.
     navigator.serviceWorker.ready
       .then((reg) => reg.pushManager.getSubscription())
       .then((sub) => setEnabled(Boolean(sub)))
       .catch(() => setEnabled(false));
-  }, []);
+  }, [supported, configured]);
 
   if (!configured) {
     return (

@@ -15,6 +15,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Standalone Node debug/probe scripts — CommonJS, not part of the app bundle.
+    "scripts/**",
+    // Service worker: plain browser JS, not linted as app source.
+    "public/sw.js",
   ]),
 ]);
 

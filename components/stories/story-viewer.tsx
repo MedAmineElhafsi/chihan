@@ -1,8 +1,8 @@
 "use client";
 
 import {
+  useCallback,
   useEffect,
-  useEffectEvent,
   useState,
   type CSSProperties,
 } from "react";
@@ -32,24 +32,27 @@ export function StoryViewer({
   const name = group?.author.displayName?.trim() || t("member");
   const initial = name.charAt(0).toUpperCase() || "?";
 
-  const advance = useEffectEvent(() => {
+  // A plain callback, not useEffectEvent: this is also called from the "next"
+  // click handler, and Effect Events may only be called from Effects.
+  const advance = useCallback(() => {
     if (index >= stories.length - 1) {
       onClose();
       return;
     }
     setIndex((i) => i + 1);
     setProgress(0);
-  });
+  }, [index, stories.length, onClose]);
 
-  useEffect(() => {
-    if (!open) {
-      setIndex(0);
-      setProgress(0);
-      return;
-    }
+  // Restart from the first story whenever the viewer opens or switches author.
+  // Adjusting state during render is React's supported pattern for this;
+  // doing it in an effect triggers a cascading re-render.
+  const resetKey = `${open ? 1 : 0}:${group?.author.userId ?? ""}`;
+  const [syncedResetKey, setSyncedResetKey] = useState(resetKey);
+  if (resetKey !== syncedResetKey) {
+    setSyncedResetKey(resetKey);
     setIndex(0);
     setProgress(0);
-  }, [open, group?.author.userId]);
+  }
 
   useEffect(() => {
     if (!open || !current) return;
@@ -60,7 +63,7 @@ export function StoryViewer({
       if (p >= 1) advance();
     }, 50);
     return () => window.clearInterval(tick);
-  }, [open, current?.id, index]);
+  }, [open, current, advance]);
 
   useEffect(() => {
     if (!open) return;
@@ -74,7 +77,7 @@ export function StoryViewer({
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
+  }, [open, onClose, advance]);
 
   if (!open || !group || !current) return null;
 
