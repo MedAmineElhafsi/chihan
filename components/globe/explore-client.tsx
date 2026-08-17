@@ -38,7 +38,17 @@ const GlobeGL = dynamic(() => import("./globe-gl"), {
 
 type Layer = "all" | "people" | "restaurants" | "doctors" | "events";
 
-export function ExploreClient({ points }: { points: GlobePoint[] }) {
+export function ExploreClient({
+  points,
+  chrome = true,
+  offsetRight = false,
+}: {
+  points: GlobePoint[];
+  /** Hide the panel/controls — used while the home hero curtain is up. */
+  chrome?: boolean;
+  /** Push the globe off-centre so hero copy gets clean space. */
+  offsetRight?: boolean;
+}) {
   const t = useTranslations("Explore");
   const globeRef = useRef<GlobeMethods | undefined>(undefined);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -227,7 +237,10 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
     <div className="relative h-[calc(100dvh-4rem)] w-full overflow-hidden">
       <div
         ref={containerRef}
-        className="absolute inset-0"
+        className={cn(
+          "absolute inset-0 transition-transform duration-1000 ease-out",
+          offsetRight && "lg:translate-x-[22%]"
+        )}
         onPointerDown={stopAutoRotate}
         onWheel={stopAutoRotate}
       >
@@ -261,13 +274,21 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
         size="icon"
         onClick={recenter}
         aria-label={t("recenter")}
-        className="panel absolute end-4 top-4 z-10"
+        className={cn(
+          "panel absolute end-4 top-4 z-10 transition-opacity duration-500",
+          !chrome && "pointer-events-none opacity-0"
+        )}
       >
         <Crosshair className="size-5" />
       </Button>
 
       {/* Results panel */}
-      <div className="panel-solid absolute inset-x-4 bottom-4 z-10 flex max-h-[55dvh] flex-col overflow-hidden rounded-2xl md:inset-x-auto md:bottom-auto md:start-4 md:top-4 md:max-h-[calc(100%-2rem)] md:w-[360px]">
+      <div
+        className={cn(
+          "panel-solid absolute inset-x-4 bottom-4 z-10 flex max-h-[55dvh] flex-col overflow-hidden rounded-md transition-opacity duration-500 md:inset-x-auto md:bottom-auto md:start-4 md:top-4 md:max-h-[calc(100%-2rem)] md:w-[340px]",
+          !chrome && "pointer-events-none opacity-0"
+        )}
+      >
         <div className="flex flex-col gap-3 border-b border-border/60 p-4">
           <div className="flex items-center justify-between">
             <h1 className="font-display text-lg font-semibold">{t("title")}</h1>

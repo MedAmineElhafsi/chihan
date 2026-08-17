@@ -38,10 +38,24 @@ export async function proxy(request: NextRequest) {
       // Do not insert logic between client creation and getUser(): it refreshes
       // the session and writes any rotated cookies onto `response`.
       // Catch timeouts so a flaky network does not break every page.
-      await supabase.auth.getUser();
+      const { error } = await supabase.auth.getUser();
+
+      // A dead session (expired/revoked refresh token) is not transient: the
+      // stale cookie would keep failing every query with "JWT expired" while
+      // the UI still looks logged in. Clear it so the user is properly signed
+      // out and can log back in. Network blips are left alone.
+      const dead =
+        error &&
+        /refresh token|jwt expired|invalid claim|session.*(missing|expired)/i.test(
+          error.message
+        );
+      if (dead) {
+        for (const c of request.cookies.getAll()) {
+          if (c.name.startsWith("sb-")) response.cookies.delete(c.name);
+        }
+      }
     } catch {
-      // Auth refresh failed (e.g. ETIMEDOUT to Supabase). Continue with
-      // existing cookies — client components can still use the session.
+      // Network-level failure (e.g. ETIMEDOUT). Keep existing cookies.
     }
   }
 

@@ -84,14 +84,16 @@ export default function GlobeGL({
     };
   }, []);
 
-  // Ocean sphere — land polygons sit on top.
+  // Ocean sphere — deep and near-black so glowing coastlines carry the form.
   const globeMaterial = useMemo(
     () =>
       new THREE.MeshPhongMaterial({
-        color: "#0d2b52",
-        emissive: "#06182f",
-        emissiveIntensity: 0.55,
-        shininess: 6,
+        color: "#001a20",
+        emissive: "#002a33",
+        emissiveIntensity: 0.35,
+        shininess: 1,
+        transparent: true,
+        opacity: 0.96,
       }),
     []
   );
@@ -108,25 +110,26 @@ export default function GlobeGL({
       animateIn={false}
       globeMaterial={globeMaterial}
       showAtmosphere
-      atmosphereColor="#7dd3fc"
-      atmosphereAltitude={0.18}
-      showGraticules
+      atmosphereColor="#50e8f4"
+      atmosphereAltitude={0.25}
       onGlobeReady={onGlobeReady}
       /* Continents & country borders */
       polygonsData={countries}
-      polygonAltitude={0.008}
+      polygonAltitude={0.006}
+      /* Landmasses read as dark plates; the luminous coastline carries the
+         form. A muddy green fill fought the cyan and flattened the sphere. */
       polygonCapColor={(d: object) => {
         const name = norm((d as CountryFeature).properties?.name);
         return highlight && name === highlight
-          ? "rgba(225,177,44,0.55)"
-          : "rgba(34,122,102,0.62)";
+          ? "rgba(80,232,244,0.22)"
+          : "rgba(0,49,58,0.92)";
       }}
-      polygonSideColor={() => "rgba(8,24,44,0.75)"}
+      polygonSideColor={() => "rgba(0,22,25,0.9)"}
       polygonStrokeColor={(d: object) => {
         const name = norm((d as CountryFeature).properties?.name);
         return highlight && name === highlight
-          ? "#f2c84b"
-          : "rgba(190,220,210,0.5)";
+          ? "#c7f8fe"
+          : "rgba(80,232,244,0.55)";
       }}
       polygonLabel={(d: object) =>
         `<div style="background:rgba(8,12,20,.88);border:1px solid rgba(255,255,255,.14);color:#e8ecf6;padding:4px 8px;border-radius:8px;font-size:12px;white-space:nowrap">${
@@ -146,9 +149,9 @@ export default function GlobeGL({
         if (p.dimmed) return "rgba(120,150,160,0.35)";
         return p.color;
       }}
-      pointRadius={(d: object) => ((d as GlobeDatum).selected ? 0.55 : 0.2)}
-      pointAltitude={(d: object) => ((d as GlobeDatum).selected ? 0.05 : 0.014)}
-      pointResolution={14}
+      pointRadius={(d: object) => ((d as GlobeDatum).selected ? 0.7 : 0.34)}
+      pointAltitude={(d: object) => ((d as GlobeDatum).selected ? 0.06 : 0.02)}
+      pointResolution={16}
       pointsMerge={false}
       pointLabel={(d: object) => {
         const p = d as GlobeDatum;
@@ -164,10 +167,11 @@ export default function GlobeGL({
       ringsData={rings}
       ringLat="lat"
       ringLng="lng"
-      ringColor={() => "#f2c84b"}
-      ringMaxRadius={4}
-      ringPropagationSpeed={1.4}
-      ringRepeatPeriod={900}
+      ringColor={() => "#50e8f4"}
+      ringMaxRadius={5}
+      ringPropagationSpeed={1.6}
+      ringRepeatPeriod={800}
+      ringAltitude={0.021}
     />
   );
 }

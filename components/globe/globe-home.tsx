@@ -33,9 +33,14 @@ export function GlobeHome({
 
   return (
     <div className="relative h-[calc(100dvh-3.5rem)] w-full overflow-hidden">
-      {/* The globe, always live underneath */}
+      {/* The globe, always live underneath. While the curtain is up it has no
+          chrome and sits off-centre so the hero copy has clean space. */}
       <div className="absolute inset-0">
-        <ExploreClient points={points} />
+        <ExploreClient
+          points={points}
+          chrome={entered}
+          offsetRight={!entered}
+        />
       </div>
 
       {/* Hero curtain */}
@@ -46,8 +51,8 @@ export function GlobeHome({
         )}
         aria-hidden={entered}
       >
-        {/* Readability scrim — only over the text side */}
-        <div className="absolute inset-0 bg-gradient-to-r from-depth-0 via-depth-0/80 to-transparent md:via-depth-0/55" />
+        {/* Readability scrim — tight to the text side so the globe stays vivid */}
+        <div className="absolute inset-0 bg-gradient-to-r from-depth-0 from-20% via-depth-0/70 via-45% to-transparent to-70%" />
 
         <div className="relative flex h-full items-center">
           <div className="mx-auto flex w-full max-w-7xl flex-col items-start gap-7 px-6 sm:px-10">
