@@ -1,84 +1,62 @@
 @import "tailwindcss";
 
-/* Enable class-based dark mode (next-themes adds `.dark` to <html>). */
-@custom-variant dark (&:is(.dark *));
-
-/* ----------------------------------------------------------------------------
-   Cîhan design tokens — "cosmic warmth"
-   Dark-first: deep night-sky base with a golden-sun accent. Kurdish red/green
-   are kept as rare sparks, never a flag-colored UI.
----------------------------------------------------------------------------- */
+/* ============================================================================
+   CÎHAN — "Bioluminescence"
+   Dark-only. Deep-water charcoal, fluorescent cyan signal, thin-air highlights.
+   The diaspora as points of light in dark water.
+============================================================================ */
 
 :root {
-  /* Light theme — warm parchment, still premium. */
-  --background: #fbf7ef;
-  --foreground: #1a1b25;
+  /* Core palette (customer-supplied) */
+  --charcoal: #001619; /* Blue Charcoal  */
+  --cyan: #50e8f4; /* Fluorescent Blue */
+  --air: #c7f8fe; /* Thin Air */
 
-  --card: #ffffff;
-  --card-foreground: #1a1b25;
-  --popover: #ffffff;
-  --popover-foreground: #1a1b25;
+  /* Depth scale — layered water */
+  --depth-0: #001013;
+  --depth-1: #001619;
+  --depth-2: #002128;
+  --depth-3: #002f38;
+  --depth-4: #00434f;
 
-  --primary: #c99a1f;
-  --primary-foreground: #20170a;
-  --secondary: #ede6d7;
-  --secondary-foreground: #2a2c3a;
-  --muted: #f0eadd;
-  --muted-foreground: #6a6d7e;
-  --accent: #ece4d4;
-  --accent-foreground: #1a1b25;
-  --destructive: #c0392b;
-  --destructive-foreground: #ffffff;
+  /* Semantic */
+  --background: var(--depth-1);
+  --foreground: var(--air);
+  --surface: var(--depth-2);
+  --surface-raised: var(--depth-3);
 
-  --border: rgba(20, 21, 30, 0.1);
-  --input: rgba(20, 21, 30, 0.14);
-  --ring: #c99a1f;
+  --card: var(--depth-2);
+  --card-foreground: var(--air);
+  --popover: var(--depth-3);
+  --popover-foreground: var(--air);
 
-  /* Brand sparks */
-  --gold: #c99a1f;
-  --gold-bright: #e1b12c;
-  --kurd-red: #c0392b;
-  --kurd-green: #1a8f5f;
-  --star: rgba(20, 21, 30, 0.55);
+  --primary: var(--cyan);
+  --primary-foreground: #00181c;
+  --secondary: var(--depth-3);
+  --secondary-foreground: var(--air);
+  --muted: var(--depth-2);
+  --muted-foreground: #6d9ba5;
+  --accent: var(--depth-3);
+  --accent-foreground: var(--air);
+  --destructive: #ff5c7a;
+  --destructive-foreground: #1a0006;
+  --success: #3ff0b2;
+  --warning: #ffd166;
 
-  --radius: 0.85rem;
-}
+  /* Hairlines — this UI is drawn with 1px lines, not heavy borders */
+  --border: rgba(80, 232, 244, 0.14);
+  --border-strong: rgba(80, 232, 244, 0.32);
+  --input: rgba(80, 232, 244, 0.22);
+  --ring: var(--cyan);
 
-.dark {
-  /* Dark theme — the signature look. */
-  --background: #070a14;
-  --foreground: #e8ecf6;
-
-  --card: #0c1220;
-  --card-foreground: #e8ecf6;
-  --popover: #0e1626;
-  --popover-foreground: #e8ecf6;
-
-  --primary: #e1b12c;
-  --primary-foreground: #1a1505;
-  --secondary: #15203a;
-  --secondary-foreground: #c7d2e8;
-  --muted: #121a2c;
-  --muted-foreground: #8a97b2;
-  --accent: #16223c;
-  --accent-foreground: #e8ecf6;
-  --destructive: #d6443b;
-  --destructive-foreground: #ffffff;
-
-  --border: rgba(232, 236, 246, 0.1);
-  --input: rgba(232, 236, 246, 0.14);
-  --ring: #e1b12c;
-
-  --gold: #e1b12c;
-  --gold-bright: #f2c84b;
-  --kurd-red: #d6443b;
-  --kurd-green: #1fa36b;
-  --star: rgba(255, 255, 255, 0.85);
+  --radius: 0.25rem; /* sharp, instrument-like — not pill-soft */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
@@ -93,36 +71,43 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --color-gold: var(--gold);
-  --color-gold-bright: var(--gold-bright);
-  --color-kurd-red: var(--kurd-red);
-  --color-kurd-green: var(--kurd-green);
+  --color-cyan: var(--cyan);
+  --color-air: var(--air);
+  --color-charcoal: var(--charcoal);
+  --color-depth-0: var(--depth-0);
+  --color-depth-1: var(--depth-1);
+  --color-depth-2: var(--depth-2);
+  --color-depth-3: var(--depth-3);
+  --color-depth-4: var(--depth-4);
 
-  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
   --font-arabic: var(--font-vazirmatn), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, monospace;
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 6px);
+  --radius-sm: 0.125rem;
+  --radius-md: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
 }
 
 @layer base {
   *,
   ::before,
   ::after {
-    border-color: var(--color-border);
+    border-color: var(--border);
   }
 
   html {
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
+    color-scheme: dark;
   }
 
   body {
@@ -131,109 +116,155 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
-  /* RTL locales render with the Arabic-capable face. */
-  [dir="rtl"] body {
-    font-family: var(--font-arabic);
-  }
+  [dir="rtl"] body,
   [dir="rtl"] .font-display {
     font-family: var(--font-arabic);
   }
 
   ::selection {
-    background-color: color-mix(in oklab, var(--gold) 35%, transparent);
-    color: var(--foreground);
+    background-color: var(--cyan);
+    color: var(--primary-foreground);
   }
 
   :focus-visible {
-    outline: 2px solid var(--ring);
+    outline: 1px solid var(--cyan);
     outline-offset: 2px;
+  }
+
+  /* Instrument-style scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--depth-0);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(80, 232, 244, 0.18);
+    border: 2px solid var(--depth-0);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(80, 232, 244, 0.38);
   }
 }
 
-/* ----------------------------------------------------------------------------
+/* ============================================================================
    Utilities
----------------------------------------------------------------------------- */
+============================================================================ */
 
 @utility font-display {
   font-family: var(--font-display);
+  font-variation-settings: "wdth" 100, "opsz" 40;
+  letter-spacing: -0.03em;
 }
 
-/* Frosted glass panel — reused for nav and, later, the globe side panels. */
-@utility glass {
-  background-color: color-mix(in oklab, var(--card) 72%, transparent);
-  backdrop-filter: blur(18px) saturate(150%);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
+/* Uppercase monospace micro-label — the "instrument readout" voice */
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* Frosted panel over the deep-water background */
+@utility panel {
+  background: color-mix(in oklab, var(--depth-2) 78%, transparent);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
   border: 1px solid var(--border);
 }
 
-@utility glass-strong {
-  background-color: color-mix(in oklab, var(--card) 88%, transparent);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
+@utility panel-solid {
+  background: var(--depth-2);
   border: 1px solid var(--border);
 }
 
-/* Opaque social card — feed posts, match suggestions (less blur than glass). */
-@utility social-surface {
-  background-color: var(--card);
-  border: 1px solid var(--border);
-  border-radius: calc(var(--radius) - 2px);
-  box-shadow: 0 1px 0 color-mix(in oklab, var(--foreground) 4%, transparent);
-}
-
-/* Soft golden halo for primary moments. */
-@utility glow-gold {
+/* Cyan signal glow */
+@utility glow {
   box-shadow:
-    0 0 0 1px color-mix(in oklab, var(--gold) 30%, transparent),
-    0 8px 40px -8px color-mix(in oklab, var(--gold) 45%, transparent);
+    0 0 0 1px rgba(80, 232, 244, 0.35),
+    0 0 24px -4px rgba(80, 232, 244, 0.5);
+}
+
+@utility glow-sm {
+  box-shadow: 0 0 12px -2px rgba(80, 232, 244, 0.55);
+}
+
+@utility text-glow {
+  text-shadow: 0 0 24px rgba(80, 232, 244, 0.55);
+}
+
+/* Hairline rules */
+@utility rule-t {
+  border-top: 1px solid var(--border);
+}
+@utility rule-b {
+  border-bottom: 1px solid var(--border);
 }
 
 @utility text-balance {
   text-wrap: balance;
 }
 
-/* ----------------------------------------------------------------------------
+/* Gradient text — thin air into fluorescent cyan */
+@utility text-signal {
+  background: linear-gradient(
+    100deg,
+    var(--air) 0%,
+    var(--cyan) 55%,
+    #2bb8c6 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ============================================================================
    Motion
----------------------------------------------------------------------------- */
+============================================================================ */
 
-@keyframes twinkle {
-  0%,
-  100% {
-    opacity: 0.15;
-  }
-  50% {
-    opacity: 0.9;
-  }
-}
-
-@keyframes aurora-drift {
+@keyframes drift {
   0% {
-    transform: translate3d(-4%, -2%, 0) scale(1);
+    transform: translate3d(-2%, -1%, 0) scale(1.04);
   }
   50% {
-    transform: translate3d(4%, 3%, 0) scale(1.08);
+    transform: translate3d(2%, 2%, 0) scale(1.12);
   }
   100% {
-    transform: translate3d(-4%, -2%, 0) scale(1);
+    transform: translate3d(-2%, -1%, 0) scale(1.04);
   }
 }
 
-@keyframes float-slow {
+@keyframes pulse-node {
   0%,
   100% {
-    transform: translateY(0);
+    opacity: 0.35;
+    transform: scale(1);
   }
   50% {
-    transform: translateY(-8px);
+    opacity: 1;
+    transform: scale(1.25);
   }
 }
 
-@keyframes fade-up {
+@keyframes sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+@keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(24px);
   }
   to {
     opacity: 1;
@@ -241,41 +272,57 @@
   }
 }
 
-@keyframes story-in {
+@keyframes reveal-clip {
   from {
-    opacity: 0;
-    transform: scale(0.96);
+    clip-path: inset(0 100% 0 0);
   }
   to {
-    opacity: 1;
-    transform: none;
+    clip-path: inset(0 0 0 0);
   }
 }
 
-.animate-fade-up {
-  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  94% {
+    opacity: 0.4;
+  }
+  96% {
+    opacity: 1;
+  }
 }
 
-.animate-story-in {
-  animation: story-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+.animate-drift {
+  animation: drift 34s ease-in-out infinite;
 }
-
-.animate-twinkle {
-  animation: twinkle 4s ease-in-out infinite;
+.animate-pulse-node {
+  animation: pulse-node 3.5s ease-in-out infinite;
 }
-.animate-aurora {
-  animation: aurora-drift 26s ease-in-out infinite;
+.animate-sweep {
+  animation: sweep 3s ease-in-out infinite;
 }
-.animate-float-slow {
-  animation: float-slow 7s ease-in-out infinite;
+.animate-rise {
+  animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.animate-reveal {
+  animation: reveal-clip 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.animate-flicker {
+  animation: flicker 6s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-twinkle,
-  .animate-aurora,
-  .animate-float-slow,
-  .animate-fade-up,
-  .animate-story-in {
+  .animate-drift,
+  .animate-pulse-node,
+  .animate-sweep,
+  .animate-rise,
+  .animate-reveal,
+  .animate-flicker {
     animation: none;
   }
 }

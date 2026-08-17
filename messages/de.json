@@ -45,7 +45,18 @@
     "feature2Body": "Restaurants, Ärzte und Unternehmen mit Bewertungen, Rezensionen und echten Kontaktdaten.",
     "feature3Title": "Echte Verbindung",
     "feature3Body": "Entdecke Menschen in deiner Nähe, schreibe in Echtzeit und teile Veranstaltungen mit der Community.",
-    "phaseNote": "Du siehst eine frühe Grundlage. Globus, Verzeichnis und Community folgen in den nächsten Phasen."
+    "phaseNote": "Du siehst eine frühe Grundlage. Globus, Verzeichnis und Community folgen in den nächsten Phasen.",
+    "titleLine1": "Lichtpunkte",
+    "titleLine2": "im dunklen Wasser.",
+    "statMembers": "Mitglieder",
+    "statPlaces": "Orte",
+    "statCountries": "Länder",
+    "coordinates": "LAT 36.19 / LNG 44.01 — ERBIL",
+    "scrollHint": "SCROLLEN",
+    "sectionTitle": "Drei Wege hinein",
+    "sectionIndex": "01 — 03",
+    "ctaTitle": "Jede Diaspora ist ein Sternbild. Füge dein Licht hinzu.",
+    "ctaBody": "Kostenlos stöbern. Kostenlos gefunden werden."
   },
   "Auth": {
     "loginTitle": "Willkommen zurück",

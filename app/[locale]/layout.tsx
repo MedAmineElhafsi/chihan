@@ -16,11 +16,10 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+// Dark-only product — one committed look.
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#070a14" },
-    { media: "(prefers-color-scheme: light)", color: "#fbf7ef" },
-  ],
+  themeColor: "#001619",
+  colorScheme: "dark",
 };
 
 export async function generateMetadata({
@@ -47,8 +46,8 @@ export default async function LocaleLayout({
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="dark"
-      enableSystem
+      forcedTheme="dark"
+      enableSystem={false}
       disableTransitionOnChange
     >
       <NextIntlClientProvider>

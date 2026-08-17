@@ -45,7 +45,18 @@
     "feature2Body": "Restaurants, doctors and businesses with ratings, reviews and real contact details.",
     "feature3Title": "Real connection",
     "feature3Body": "Discover people near you, message in real time, and share events with the community.",
-    "phaseNote": "You’re looking at an early foundation. The globe, directory and community arrive in the next phases."
+    "phaseNote": "You’re looking at an early foundation. The globe, directory and community arrive in the next phases.",
+    "titleLine1": "Points of light",
+    "titleLine2": "in dark water.",
+    "statMembers": "Members",
+    "statPlaces": "Places",
+    "statCountries": "Countries",
+    "coordinates": "LAT 36.19 / LNG 44.01 — ERBIL",
+    "scrollHint": "SCROLL",
+    "sectionTitle": "Three ways in",
+    "sectionIndex": "01 — 03",
+    "ctaTitle": "Every diaspora is a constellation. Add your light.",
+    "ctaBody": "Free to browse. Free to be found."
   },
   "Auth": {
     "loginTitle": "Welcome back",

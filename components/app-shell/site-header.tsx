@@ -9,10 +9,18 @@ import {
 } from "@/lib/notifications";
 import { BrandWordmark } from "./brand";
 import { LanguageSwitcher } from "./language-switcher";
-import { ThemeToggle } from "./theme-toggle";
 import { UserMenu } from "./user-menu";
 import { MobileMenu } from "./mobile-menu";
 import { NotificationsBell } from "@/components/notifications/notifications-bell";
+
+const NAV = [
+  { href: "/explore", key: "explore" },
+  { href: "/directory", key: "directory" },
+  { href: "/people", key: "people" },
+  { href: "/feed", key: "feed" },
+  { href: "/news", key: "news" },
+  { href: "/groups", key: "groups" },
+] as const;
 
 export async function SiteHeader() {
   const t = await getTranslations("Nav");
@@ -27,75 +35,46 @@ export async function SiteHeader() {
     : [[], 0];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border glass">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-        <div className="flex items-center gap-8">
+    <header className="sticky top-0 z-40 border-b border-border bg-depth-0/70 backdrop-blur-xl">
+      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
+        <div className="flex items-center gap-10">
           <BrandWordmark />
-          <nav className="hidden items-center gap-0.5 lg:flex">
-            <Link
-              href="/explore"
-              className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
-            >
-              {t("explore")}
-            </Link>
-            <Link
-              href="/directory"
-              className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
-            >
-              {t("directory")}
-            </Link>
-            <Link
-              href="/people"
-              className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
-            >
-              {t("people")}
-            </Link>
-            <Link
-              href="/match"
-              className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
-            >
-              {t("match")}
-            </Link>
-            <Link
-              href="/feed"
-              className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
-            >
-              {t("feed")}
-            </Link>
-            <Link
-              href="/news"
-              className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
-            >
-              {t("news")}
-            </Link>
-            <Link
-              href="/groups"
-              className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
-            >
-              {t("groups")}
-            </Link>
-            <Link
-              href="/search"
-              className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
-            >
-              {t("search")}
-            </Link>
+
+          {/* Mono nav — reads like a system index, not a marketing menu */}
+          <nav className="hidden items-center gap-7 lg:flex">
+            {NAV.map((item) => (
+              <Link
+                key={item.key}
+                href={item.href}
+                className="group relative font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground transition-colors duration-200 hover:text-cyan"
+              >
+                {t(item.key)}
+                <span className="absolute -bottom-1.5 left-0 h-px w-full scale-x-0 bg-cyan transition-transform duration-300 group-hover:scale-x-100" />
+              </Link>
+            ))}
           </nav>
         </div>
 
-        <div className="flex items-center gap-1.5">
-          <div className="hidden items-center gap-1.5 lg:flex">
+        <div className="flex items-center gap-1">
+          <div className="hidden items-center gap-1 lg:flex">
+            <Link
+              href="/search"
+              className="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-cyan"
+            >
+              {t("search")}
+            </Link>
+            <span className="mx-3 h-4 w-px bg-border" />
             <LanguageSwitcher />
-            <ThemeToggle />
             {user && (
               <NotificationsBell
                 initialItems={notifItems}
                 initialUnread={unread}
               />
             )}
-            <div className="mx-1 h-6 w-px bg-border" />
+            <span className="mx-1 h-4 w-px bg-border" />
             <UserMenu email={email} isAdmin={admin} />
           </div>
+
           <div className="flex items-center gap-0.5 lg:hidden">
             {user && (
               <NotificationsBell
@@ -103,7 +82,6 @@ export async function SiteHeader() {
                 initialUnread={unread}
               />
             )}
-            <ThemeToggle />
             <MobileMenu email={email} isAdmin={admin} />
           </div>
         </div>

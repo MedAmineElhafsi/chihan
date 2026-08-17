@@ -1,23 +1,38 @@
 import type { Metadata } from "next";
 import { cookies, headers } from "next/headers";
-import { Fraunces, Manrope, Vazirmatn } from "next/font/google";
+import {
+  Bricolage_Grotesque,
+  Instrument_Sans,
+  JetBrains_Mono,
+  Vazirmatn,
+} from "next/font/google";
 
 import { getDir, locales, routing, type Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 
-const fraunces = Fraunces({
+/** Editorial display — variable width, genuinely characterful. */
+const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
-  variable: "--font-fraunces",
+  variable: "--font-bricolage",
   display: "swap",
 });
 
-const manrope = Manrope({
+/** UI text — clean but not Inter-generic. */
+const instrument = Instrument_Sans({
   subsets: ["latin"],
-  variable: "--font-manrope",
+  variable: "--font-instrument",
   display: "swap",
 });
 
+/** Data/instrument readouts — coordinates, counters, micro-labels. */
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
+  display: "swap",
+});
+
+/** Arabic + Soranî (RTL). */
 const vazirmatn = Vazirmatn({
   subsets: ["arabic", "latin"],
   variable: "--font-vazirmatn",
@@ -74,8 +89,9 @@ export default async function RootLayout({
       dir={getDir(locale)}
       suppressHydrationWarning
       className={cn(
-        fraunces.variable,
-        manrope.variable,
+        bricolage.variable,
+        instrument.variable,
+        jetbrains.variable,
         vazirmatn.variable,
         "antialiased"
       )}
