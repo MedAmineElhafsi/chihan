@@ -12,12 +12,14 @@
   --cyan: #50e8f4; /* Fluorescent Blue */
   --air: #c7f8fe; /* Thin Air */
 
-  /* Depth scale — layered water */
-  --depth-0: #001013;
-  --depth-1: #001619;
-  --depth-2: #002128;
-  --depth-3: #002f38;
-  --depth-4: #00434f;
+  /* Depth scale — layered water.
+     #001619 anchors the deepest layer (vignette, wells); the page itself sits
+     a few steps up so the UI reads as lit water, not a black hole. */
+  --depth-0: #001619; /* deepest — extremes only */
+  --depth-1: #002b33; /* page background */
+  --depth-2: #013a44; /* panels */
+  --depth-3: #064c58; /* raised */
+  --depth-4: #0a616f; /* hover / active */
 
   /* Semantic */
   --background: var(--depth-1);
@@ -35,7 +37,7 @@
   --secondary: var(--depth-3);
   --secondary-foreground: var(--air);
   --muted: var(--depth-2);
-  --muted-foreground: #6d9ba5;
+  --muted-foreground: #9cc4cc; /* lifted for readability on lighter water */
   --accent: var(--depth-3);
   --accent-foreground: var(--air);
   --destructive: #ff5c7a;
@@ -44,8 +46,8 @@
   --warning: #ffd166;
 
   /* Hairlines — this UI is drawn with 1px lines, not heavy borders */
-  --border: rgba(80, 232, 244, 0.14);
-  --border-strong: rgba(80, 232, 244, 0.32);
+  --border: rgba(80, 232, 244, 0.2);
+  --border-strong: rgba(80, 232, 244, 0.42);
   --input: rgba(80, 232, 244, 0.22);
   --ring: var(--cyan);
 

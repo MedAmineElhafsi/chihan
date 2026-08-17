@@ -56,7 +56,9 @@
     "sectionTitle": "Three ways in",
     "sectionIndex": "01 — 03",
     "ctaTitle": "Every diaspora is a constellation. Add your light.",
-    "ctaBody": "Free to browse. Free to be found."
+    "ctaBody": "Free to browse. Free to be found.",
+    "dragHint": "DRAG THE GLOBE TO EXPLORE",
+    "aboutCihan": "About Cîhan"
   },
   "Auth": {
     "loginTitle": "Welcome back",

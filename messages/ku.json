@@ -56,7 +56,9 @@
     "sectionTitle": "Sê rê hene",
     "sectionIndex": "01 — 03",
     "ctaTitle": "Her koçberî komstêrkek e. Ronahiya xwe zêde bike.",
-    "ctaBody": "Belaş bigere. Belaş were dîtin."
+    "ctaBody": "Belaş bigere. Belaş were dîtin.",
+    "dragHint": "GERSTÊRKÊ BIKIŞÎNE DA KU VEKOLÎ",
+    "aboutCihan": "Derbarê Cîhanê"
   },
   "Auth": {
     "loginTitle": "Bi xêr hatî",

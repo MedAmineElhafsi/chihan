@@ -9,6 +9,7 @@ import { DocumentAttributes } from "@/components/providers/document-attributes";
 import { Backdrop } from "@/components/backdrop";
 import { SiteHeader } from "@/components/app-shell/site-header";
 import { SiteFooter } from "@/components/app-shell/site-footer";
+import { ShellFooter } from "@/components/app-shell/shell-footer";
 import { ServiceWorkerRegister } from "@/components/pwa/sw-register";
 import { InstallPrompt } from "@/components/pwa/install-prompt";
 
@@ -56,7 +57,9 @@ export default async function LocaleLayout({
         <div className="relative flex min-h-dvh flex-col">
           <SiteHeader />
           <main className="flex-1">{children}</main>
-          <SiteFooter />
+          <ShellFooter>
+            <SiteFooter />
+          </ShellFooter>
         </div>
         <InstallPrompt />
         <ServiceWorkerRegister />

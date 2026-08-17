@@ -56,7 +56,9 @@
     "sectionTitle": "Drei Wege hinein",
     "sectionIndex": "01 — 03",
     "ctaTitle": "Jede Diaspora ist ein Sternbild. Füge dein Licht hinzu.",
-    "ctaBody": "Kostenlos stöbern. Kostenlos gefunden werden."
+    "ctaBody": "Kostenlos stöbern. Kostenlos gefunden werden.",
+    "dragHint": "ZIEHE DEN GLOBUS ZUM ERKUNDEN",
+    "aboutCihan": "Über Cîhan"
   },
   "Auth": {
     "loginTitle": "Willkommen zurück",

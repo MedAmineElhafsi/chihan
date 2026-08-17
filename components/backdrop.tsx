@@ -1,8 +1,9 @@
 import { NetworkField } from "./visuals/network-field";
 
 /**
- * Deep-water backdrop: layered depth gradients, a live node network, and grain.
- * The visual thesis — people as points of light joined by filaments.
+ * Deep-water backdrop: a lit depth wash, a live node network, and a whisper of
+ * grain. Kept deliberately light-handed — the UI should read as illuminated
+ * water, not a black hole.
  */
 export function Backdrop() {
   return (
@@ -10,19 +11,18 @@ export function Backdrop() {
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-background"
     >
-      {/* Depth wash */}
-      <div className="animate-drift absolute -left-[20%] -top-[25%] size-[70vw] rounded-full bg-[radial-gradient(circle,rgba(80,232,244,0.16),transparent_65%)] blur-[100px]" />
-      <div className="animate-drift absolute -right-[15%] top-[15%] size-[60vw] rounded-full bg-[radial-gradient(circle,rgba(80,232,244,0.10),transparent_65%)] blur-[100px] [animation-delay:-12s]" />
-      <div className="animate-drift absolute bottom-[-30%] left-[15%] size-[65vw] rounded-full bg-[radial-gradient(circle,rgba(0,67,79,0.55),transparent_70%)] blur-[100px] [animation-delay:-22s]" />
+      {/* Depth wash — lifts the page off the deepest layer */}
+      <div className="animate-drift absolute -left-[15%] -top-[20%] size-[65vw] rounded-full bg-[radial-gradient(circle,rgba(80,232,244,0.14),transparent_68%)] blur-[110px]" />
+      <div className="animate-drift absolute -right-[10%] top-[25%] size-[55vw] rounded-full bg-[radial-gradient(circle,rgba(80,232,244,0.10),transparent_68%)] blur-[110px] [animation-delay:-14s]" />
 
       {/* Living network */}
       <NetworkField />
 
-      {/* Grain */}
-      <div className="absolute inset-0 opacity-[0.05] mix-blend-overlay [background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22140%22 height=%22140%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/></svg>')]" />
+      {/* Grain — barely there */}
+      <div className="absolute inset-0 opacity-[0.025] mix-blend-overlay [background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22140%22 height=%22140%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/></svg>')]" />
 
-      {/* Vignette — pushes focus to the centre */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,var(--depth-0)_100%)]" />
+      {/* Soft edge fade only — no heavy centre vignette */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_65%,rgba(0,22,25,0.55)_100%)]" />
     </div>
   );
 }
