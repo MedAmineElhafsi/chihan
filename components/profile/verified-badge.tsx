@@ -18,7 +18,7 @@ export function VerifiedBadge({
       title={label}
       aria-label={label}
       className={cn(
-        "inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-gold/20 text-gold",
+        "inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-cyan/20 text-cyan",
         className
       )}
     >

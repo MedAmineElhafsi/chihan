@@ -23,7 +23,7 @@ export default async function MyProfilePage({
 
   return (
     <div className="mx-auto w-full max-w-2xl px-4 py-12 sm:px-6">
-      <div className="animate-fade-up">
+      <div className="animate-rise">
         <ProfileView profile={profile} isOwner />
       </div>
     </div>

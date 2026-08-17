@@ -37,7 +37,7 @@ export default async function BlockedUsersPage({
         <p className="mt-1 text-muted-foreground">{t("blockedBody")}</p>
       </div>
 
-      <div className="glass rounded-2xl p-5">
+      <div className="panel rounded-2xl p-5">
         <BlockedList initial={blocked} />
       </div>
     </div>

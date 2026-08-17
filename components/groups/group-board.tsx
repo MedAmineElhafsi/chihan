@@ -126,17 +126,17 @@ export function GroupBoard({
   return (
     <section id="board" className="mt-10 scroll-mt-24">
       <div className="mb-4 flex items-center gap-2">
-        <Megaphone className="size-4 text-gold" />
+        <Megaphone className="size-4 text-cyan" />
         <h2 className="font-display text-xl font-semibold">{t("boardTitle")}</h2>
       </div>
       <p className="mb-4 text-sm text-muted-foreground">{t("boardSubtitle")}</p>
 
       {!canPost ? (
-        <p className="glass rounded-2xl px-4 py-8 text-center text-sm text-muted-foreground">
+        <p className="panel rounded-2xl px-4 py-8 text-center text-sm text-muted-foreground">
           {userId ? t("boardJoinHint") : t("boardSignInHint")}
         </p>
       ) : (
-        <div className="glass rounded-2xl p-4">
+        <div className="panel rounded-2xl p-4">
           <div className="mb-3 flex gap-1.5">
             {(
               [
@@ -151,7 +151,7 @@ export function GroupBoard({
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
                   tab === key
-                    ? "border-gold/50 bg-gold/15 text-gold"
+                    ? "border-cyan/50 bg-cyan/15 text-cyan"
                     : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
                 )}
               >

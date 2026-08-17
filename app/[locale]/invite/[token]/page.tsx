@@ -35,7 +35,7 @@ export default async function InviteLandingPage({
   if (!invite || expired) {
     return (
       <div className="mx-auto flex min-h-[calc(100dvh-13rem)] w-full max-w-md flex-col justify-center px-4 py-12">
-        <Card className="glass-strong border-border/70 shadow-2xl">
+        <Card className="panel-solid border-border/70 shadow-2xl">
           <CardHeader className="text-center">
             <CardTitle className="font-display text-2xl">
               {t("invalidTitle")}
@@ -58,13 +58,13 @@ export default async function InviteLandingPage({
 
   return (
     <div className="mx-auto flex min-h-[calc(100dvh-13rem)] w-full max-w-md flex-col justify-center px-4 py-12">
-      <Card className="glass-strong animate-fade-up border-border/70 shadow-2xl ring-1 ring-gold/20">
+      <Card className="panel-solid animate-rise border-border/70 shadow-2xl ring-1 ring-cyan/20">
         <CardHeader className="items-center text-center">
-          <Avatar className="mb-2 size-16 ring-2 ring-gold/50">
+          <Avatar className="mb-2 size-16 ring-2 ring-cyan/50">
             {invite.inviter.avatarUrl && (
               <AvatarImage src={invite.inviter.avatarUrl} alt={name} />
             )}
-            <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-xl text-primary-foreground">
+            <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-xl text-primary-foreground">
               {initial}
             </AvatarFallback>
           </Avatar>
@@ -79,7 +79,7 @@ export default async function InviteLandingPage({
           <p className="text-sm text-muted-foreground" dir="ltr">
             {t("emailHint", { email: invite.email })}
           </p>
-          <Button asChild className="glow-gold w-full gap-2">
+          <Button asChild className="glow w-full gap-2">
             <Link href={signupHref}>
               <UserPlus className="size-4" />
               {t("signupCta")}

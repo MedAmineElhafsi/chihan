@@ -27,9 +27,9 @@ export async function ProfileView({
     : null;
 
   return (
-    <article className="glass overflow-hidden rounded-2xl">
+    <article className="panel overflow-hidden rounded-2xl">
       {/* Banner */}
-      <div className="h-28 bg-[radial-gradient(120%_140%_at_50%_-20%,color-mix(in_oklab,var(--gold)_30%,transparent),transparent_70%)]" />
+      <div className="h-28 bg-[radial-gradient(120%_140%_at_50%_-20%,color-mix(in_oklab,var(--cyan)_30%,transparent),transparent_70%)]" />
 
       <div className="px-6 pb-6">
         <div className="-mt-12 flex items-end justify-between gap-4">
@@ -37,7 +37,7 @@ export async function ProfileView({
             {profile.avatar_url && (
               <AvatarImage src={profile.avatar_url} alt={name} />
             )}
-            <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-2xl text-primary-foreground">
+            <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-2xl text-primary-foreground">
               {initial}
             </AvatarFallback>
           </Avatar>
@@ -46,7 +46,7 @@ export async function ProfileView({
             <span
               className={
                 profile.is_public
-                  ? "inline-flex items-center gap-1.5 rounded-full bg-kurd-green/15 px-2.5 py-1 text-xs font-medium text-kurd-green"
+                  ? "inline-flex items-center gap-1.5 rounded-full bg-success/15 px-2.5 py-1 text-xs font-medium text-success"
                   : "inline-flex items-center gap-1.5 rounded-full bg-secondary px-2.5 py-1 text-xs font-medium text-muted-foreground"
               }
             >
@@ -80,14 +80,14 @@ export async function ProfileView({
           <p className="mt-1 flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
             {place && (
               <>
-                <MapPin className="size-4 text-gold" />
+                <MapPin className="size-4 text-cyan" />
                 {place}
               </>
             )}
             {originLabel && (
               <>
                 {place && <span className="text-muted-foreground/60">·</span>}
-                <span className="rounded-full bg-gold/15 px-2 py-0.5 text-xs font-medium text-gold">
+                <span className="rounded-full bg-cyan/15 px-2 py-0.5 text-xs font-medium text-cyan">
                   {originLabel}
                 </span>
               </>
@@ -163,7 +163,7 @@ export async function ProfileView({
                 <span className="font-medium text-muted-foreground">
                   {t("dialect")}:
                 </span>
-                <span className="rounded-full bg-gold/15 px-2.5 py-0.5 text-xs font-medium text-gold">
+                <span className="rounded-full bg-cyan/15 px-2.5 py-0.5 text-xs font-medium text-cyan">
                   {profile.dialect}
                 </span>
               </div>
@@ -202,7 +202,7 @@ export async function ProfileView({
                   {profile.looking_for.map((item) => (
                     <span
                       key={item}
-                      className="rounded-full bg-kurd-green/15 px-2.5 py-0.5 text-xs font-medium text-kurd-green"
+                      className="rounded-full bg-success/15 px-2.5 py-0.5 text-xs font-medium text-success"
                     >
                       {tOn(`looking_${item}` as never)}
                     </span>
@@ -220,7 +220,7 @@ export async function ProfileView({
                   {profile.offering.map((item) => (
                     <span
                       key={item}
-                      className="rounded-full bg-kurd-red/15 px-2.5 py-0.5 text-xs font-medium text-kurd-red"
+                      className="rounded-full bg-destructive/15 px-2.5 py-0.5 text-xs font-medium text-destructive"
                     >
                       {tOn(`offer_${item}` as never)}
                     </span>

@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "video:studio": "remotion studio remotion/index.ts",
+    "video:render": "remotion render remotion/index.ts HeroLoop public/video/hero.mp4 --codec=h264"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.2.0",
@@ -39,6 +41,9 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1",
+    "@remotion/bundler": "^4.0.512",
+    "@remotion/cli": "^4.0.512",
+    "@remotion/renderer": "^4.0.512",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -51,6 +56,7 @@
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.8.4",
     "prettier-plugin-tailwindcss": "^0.8.0",
+    "remotion": "^4.0.512",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

@@ -34,7 +34,7 @@ export function ReportRow({ report }: { report: Report }) {
   }
 
   return (
-    <div className="glass flex flex-col gap-3 rounded-xl p-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="panel flex flex-col gap-3 rounded-xl p-4 sm:flex-row sm:items-center sm:justify-between">
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
           <span className="rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
@@ -43,11 +43,11 @@ export function ReportRow({ report }: { report: Report }) {
           <span
             className={cn(
               "rounded-full px-2 py-0.5 text-xs font-medium",
-              report.status === "open" && "bg-gold/15 text-gold",
+              report.status === "open" && "bg-cyan/15 text-cyan",
               report.status === "dismissed" &&
                 "bg-secondary text-muted-foreground",
               report.status === "actioned" &&
-                "bg-kurd-red/15 text-kurd-red"
+                "bg-destructive/15 text-destructive"
             )}
           >
             {report.status}
@@ -55,7 +55,7 @@ export function ReportRow({ report }: { report: Report }) {
           {href ? (
             <Link
               href={href}
-              className="inline-flex items-center gap-1 truncate text-xs font-medium text-gold hover:underline"
+              className="inline-flex items-center gap-1 truncate text-xs font-medium text-cyan hover:underline"
             >
               <ExternalLink className="size-3 shrink-0" />
               {t("targetLink")}

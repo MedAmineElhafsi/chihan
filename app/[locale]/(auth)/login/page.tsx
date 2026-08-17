@@ -1,12 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { AuthForm } from "@/components/auth/auth-form";
 
 export default async function LoginPage({
@@ -19,18 +12,15 @@ export default async function LoginPage({
   const t = await getTranslations("Auth");
 
   return (
-    <div className="mx-auto flex min-h-[calc(100dvh-13rem)] w-full max-w-md flex-col justify-center px-4 py-12">
-      <Card className="glass-strong animate-fade-up border-border/70 shadow-2xl">
-        <CardHeader className="text-center">
-          <CardTitle className="font-display text-2xl">
-            {t("loginTitle")}
-          </CardTitle>
-          <CardDescription>{t("loginSubtitle")}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <AuthForm mode="login" />
-        </CardContent>
-      </Card>
+    <div className="animate-rise flex flex-col gap-8">
+      <div className="flex flex-col gap-2">
+        <span className="label-mono">{t("signInCta")}</span>
+        <h1 className="font-display text-3xl font-semibold tracking-tight text-air">
+          {t("loginTitle")}
+        </h1>
+        <p className="text-sm text-muted-foreground">{t("loginSubtitle")}</p>
+      </div>
+      <AuthForm mode="login" />
     </div>
   );
 }

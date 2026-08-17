@@ -261,13 +261,13 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
         size="icon"
         onClick={recenter}
         aria-label={t("recenter")}
-        className="glass absolute end-4 top-4 z-10"
+        className="panel absolute end-4 top-4 z-10"
       >
         <Crosshair className="size-5" />
       </Button>
 
       {/* Results panel */}
-      <div className="glass-strong absolute inset-x-4 bottom-4 z-10 flex max-h-[55dvh] flex-col overflow-hidden rounded-2xl md:inset-x-auto md:bottom-auto md:start-4 md:top-4 md:max-h-[calc(100%-2rem)] md:w-[360px]">
+      <div className="panel-solid absolute inset-x-4 bottom-4 z-10 flex max-h-[55dvh] flex-col overflow-hidden rounded-2xl md:inset-x-auto md:bottom-auto md:start-4 md:top-4 md:max-h-[calc(100%-2rem)] md:w-[360px]">
         <div className="flex flex-col gap-3 border-b border-border/60 p-4">
           <div className="flex items-center justify-between">
             <h1 className="font-display text-lg font-semibold">{t("title")}</h1>
@@ -283,7 +283,7 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors",
                   layer === key
-                    ? "border-gold/50 bg-gold/15 text-gold"
+                    ? "border-cyan/50 bg-cyan/15 text-cyan"
                     : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
                 )}
               >
@@ -324,7 +324,7 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
         <div className="min-h-0 flex-1 overflow-y-auto p-3">
           {filtered.length === 0 ? (
             <div className="flex flex-col items-center gap-2 px-4 py-10 text-center">
-              <MapPin className="size-7 text-gold" />
+              <MapPin className="size-7 text-cyan" />
               <p className="text-sm text-muted-foreground">{t("empty")}</p>
               <Button asChild size="sm" className="mt-1">
                 <Link href="/onboarding">{t("emptyCta")}</Link>
@@ -380,7 +380,7 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
                   className="flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-start transition-colors hover:bg-accent"
                 >
                   <span className="flex items-center gap-2.5 font-medium">
-                    <MapPin className="size-4 text-gold" />
+                    <MapPin className="size-4 text-cyan" />
                     {c.country}
                   </span>
                   <span className="text-sm text-muted-foreground">{c.count}</span>
@@ -423,7 +423,7 @@ function ItemAvatar({ item, online }: { item: GlobePoint; online?: boolean }) {
     <span className="relative shrink-0">
       <Avatar className="size-9">
         {item.avatarUrl && <AvatarImage src={item.avatarUrl} alt={item.name} />}
-        <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-xs text-primary-foreground">
+        <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-xs text-primary-foreground">
           {initial}
         </AvatarFallback>
       </Avatar>
@@ -540,7 +540,7 @@ function ItemDetail({
           </div>
           {place && (
             <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <MapPin className="size-3.5 text-gold" />
+              <MapPin className="size-3.5 text-cyan" />
               {place}
             </div>
           )}

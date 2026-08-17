@@ -59,7 +59,7 @@ export function LanguageSwitcher() {
             <span className="text-xs text-muted-foreground">
               {localeMeta[l].label}
             </span>
-            {l === locale && <Check className="size-4 text-gold" />}
+            {l === locale && <Check className="size-4 text-cyan" />}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

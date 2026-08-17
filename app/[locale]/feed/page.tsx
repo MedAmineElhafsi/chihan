@@ -64,7 +64,7 @@ export default async function FeedPage({
             className={cn(
               "rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
               !nearMe
-                ? "border-gold/50 bg-gold/15 text-gold"
+                ? "border-cyan/50 bg-cyan/15 text-cyan"
                 : "border-border text-muted-foreground hover:text-foreground"
             )}
           >
@@ -75,7 +75,7 @@ export default async function FeedPage({
             className={cn(
               "inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
               nearMe
-                ? "border-gold/50 bg-gold/15 text-gold"
+                ? "border-cyan/50 bg-cyan/15 text-cyan"
                 : "border-border text-muted-foreground hover:text-foreground"
             )}
           >
@@ -90,7 +90,7 @@ export default async function FeedPage({
           {t("needLocation")}{" "}
           <Link
             href="/profile/edit"
-            className="font-medium text-gold hover:underline"
+            className="font-medium text-cyan hover:underline"
           >
             {t("setLocation")}
           </Link>
@@ -114,9 +114,9 @@ export default async function FeedPage({
         ) : ent.features.createPosts ? (
           <FeedComposer userId={user.id} />
         ) : (
-          <div className="social-surface flex flex-col gap-3 border-gold/25 p-4 ring-1 ring-gold/15 sm:flex-row sm:items-center sm:justify-between">
+          <div className="social-surface flex flex-col gap-3 border-cyan/25 p-4 ring-1 ring-cyan/15 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-start gap-3">
-              <Sparkles className="mt-0.5 size-5 shrink-0 text-gold" />
+              <Sparkles className="mt-0.5 size-5 shrink-0 text-cyan" />
               <div>
                 <div className="font-medium">{t("upgradeToPostTitle")}</div>
                 <p className="text-sm text-muted-foreground">
@@ -124,7 +124,7 @@ export default async function FeedPage({
                 </p>
               </div>
             </div>
-            <Button asChild className="glow-gold">
+            <Button asChild className="glow">
               <Link href="/pricing">{t("upgrade")}</Link>
             </Button>
           </div>

@@ -59,7 +59,7 @@ export function UserMenu({
           aria-label={t("account")}
         >
           <Avatar>
-            <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-primary-foreground">
+            <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-primary-foreground">
               {initial}
             </AvatarFallback>
           </Avatar>
@@ -134,7 +134,7 @@ export function UserMenu({
         <DropdownMenuSeparator />
         <form action={signOutAction}>
           <DropdownMenuItem
-            className="text-kurd-red focus:text-kurd-red"
+            className="text-destructive focus:text-destructive"
             onSelect={(e) => {
               // Radix closes the menu on select; keep the form submit alive.
               e.preventDefault();

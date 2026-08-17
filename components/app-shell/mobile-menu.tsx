@@ -90,7 +90,7 @@ export function MobileMenu({
             dir={localeMeta[l].dir}
           >
             <span className="flex-1 font-medium">{localeMeta[l].native}</span>
-            {l === locale && <Check className="size-4 text-gold" />}
+            {l === locale && <Check className="size-4 text-cyan" />}
           </DropdownMenuItem>
         ))}
 
@@ -149,7 +149,7 @@ export function MobileMenu({
             )}
             <form action={signOutAction}>
               <DropdownMenuItem
-                className="text-kurd-red focus:text-kurd-red"
+                className="text-destructive focus:text-destructive"
                 onSelect={(e) => {
                   e.preventDefault();
                   const el = e.target as HTMLElement | null;
@@ -167,7 +167,7 @@ export function MobileMenu({
               <Link href="/login">{tNav("signIn")}</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/signup" className="font-medium text-gold">
+              <Link href="/signup" className="font-medium text-cyan">
                 {tNav("getStarted")}
               </Link>
             </DropdownMenuItem>

@@ -22,7 +22,7 @@ export function ListingCard({
   return (
     <Link
       href={`/directory/${listing.id}`}
-      className="glass group flex flex-col overflow-hidden rounded-2xl transition-colors hover:border-gold/40"
+      className="panel group flex flex-col overflow-hidden rounded-2xl transition-colors hover:border-cyan/40"
     >
       <div className="relative h-36 w-full overflow-hidden bg-secondary">
         {photo ? (
@@ -55,12 +55,12 @@ export function ListingCard({
             {listing.name}
           </h3>
           {listing.is_verified && (
-            <BadgeCheck className="mt-0.5 size-4 shrink-0 text-gold" />
+            <BadgeCheck className="mt-0.5 size-4 shrink-0 text-cyan" />
           )}
         </div>
         {place && (
           <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <MapPin className="size-3.5 text-gold" />
+            <MapPin className="size-3.5 text-cyan" />
             {place}
           </p>
         )}

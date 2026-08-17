@@ -28,7 +28,7 @@ export function UpgradeDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <div className="mb-1 inline-flex size-11 items-center justify-center rounded-xl bg-gold/15 text-gold ring-1 ring-gold/30">
+          <div className="mb-1 inline-flex size-11 items-center justify-center rounded-xl bg-cyan/15 text-cyan ring-1 ring-cyan/30">
             <Sparkles className="size-5" />
           </div>
           <DialogTitle>{t("title")}</DialogTitle>
@@ -37,7 +37,7 @@ export function UpgradeDialog({
         <ul className="mt-3 flex flex-col gap-2">
           {benefits.map((b) => (
             <li key={b} className="flex items-center gap-2.5 text-sm">
-              <Check className="size-4 shrink-0 text-gold" />
+              <Check className="size-4 shrink-0 text-cyan" />
               {t(b)}
             </li>
           ))}
@@ -50,7 +50,7 @@ export function UpgradeDialog({
           >
             {t("later")}
           </Button>
-          <Button asChild className="glow-gold">
+          <Button asChild className="glow">
             <Link href="/pricing">{t("seePlans")}</Link>
           </Button>
         </DialogFooter>

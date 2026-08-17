@@ -74,10 +74,10 @@ export function GroupInvite({
   if (!canInvite) return null;
 
   return (
-    <section className="glass mt-6 rounded-2xl p-4">
+    <section className="panel mt-6 rounded-2xl p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <UserPlus className="size-4 text-gold" />
+          <UserPlus className="size-4 text-cyan" />
           <h2 className="font-display text-lg font-semibold">{t("inviteTitle")}</h2>
         </div>
         <Button
@@ -88,7 +88,7 @@ export function GroupInvite({
           onClick={() => void copyLink()}
         >
           {copied ? (
-            <Check className="size-4 text-kurd-green" />
+            <Check className="size-4 text-success" />
           ) : (
             <Copy className="size-4" />
           )}

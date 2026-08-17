@@ -32,7 +32,7 @@ export default async function MatchPage({
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 lg:max-w-4xl lg:py-8">
       <div className="flex items-center gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-cyan/15 text-cyan">
           <Handshake className="size-5" />
         </span>
         <div className="min-w-0">

@@ -146,7 +146,7 @@ export function PostCard({
             {item.author.avatarUrl && (
               <AvatarImage src={item.author.avatarUrl} alt={name} />
             )}
-            <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-sm text-primary-foreground">
+            <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-sm text-primary-foreground">
               {initial}
             </AvatarFallback>
           </Avatar>
@@ -159,7 +159,7 @@ export function PostCard({
         </div>
         <div className="flex shrink-0 items-center gap-1">
           {item.type === "event" && (
-            <span className="rounded-md bg-gold/15 px-2 py-0.5 text-[11px] font-medium text-gold">
+            <span className="rounded-md bg-cyan/15 px-2 py-0.5 text-[11px] font-medium text-cyan">
               {t("event")}
             </span>
           )}
@@ -180,12 +180,12 @@ export function PostCard({
       </header>
 
       {item.type === "event" && (
-        <div className="mx-4 mt-3 rounded-lg border border-gold/25 bg-gold/5 p-3.5 sm:mx-5">
+        <div className="mx-4 mt-3 rounded-lg border border-cyan/25 bg-cyan/5 p-3.5 sm:mx-5">
           <div className="font-display text-lg font-semibold leading-snug">
             {item.event_title}
           </div>
           {item.event_at && (
-            <div className="mt-1 flex items-center gap-1.5 text-sm text-gold">
+            <div className="mt-1 flex items-center gap-1.5 text-sm text-cyan">
               <CalendarDays className="size-3.5 shrink-0" />
               {eventFmt.format(new Date(item.event_at))}
             </div>
@@ -195,7 +195,7 @@ export function PostCard({
               <MapPin className="size-3.5 shrink-0" />
               <span className="min-w-0 truncate">{item.event_location}</span>
               {item.distance_km != null && (
-                <span className="shrink-0 text-gold">
+                <span className="shrink-0 text-cyan">
                   · {t("distanceKm", { km: Math.round(item.distance_km) })}
                 </span>
               )}
@@ -221,7 +221,7 @@ export function PostCard({
                 className={cn(
                   "rounded-md border px-2.5 py-1 text-xs font-medium transition-colors disabled:opacity-60",
                   myRsvp === key
-                    ? "border-gold/50 bg-gold/20 text-gold"
+                    ? "border-cyan/50 bg-cyan/20 text-cyan"
                     : "border-border bg-card text-muted-foreground hover:text-foreground"
                 )}
               >
@@ -265,11 +265,11 @@ export function PostCard({
           className={cn(
             "flex items-center justify-center gap-2 rounded-md py-2.5 text-sm font-medium transition-colors disabled:opacity-60",
             liked
-              ? "text-kurd-red"
+              ? "text-destructive"
               : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
           )}
         >
-          <Heart className={cn("size-5", liked && "fill-kurd-red")} />
+          <Heart className={cn("size-5", liked && "fill-destructive")} />
           {t("like")}
           {likeCount > 0 ? ` · ${likeCount}` : ""}
         </button>

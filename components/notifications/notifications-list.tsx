@@ -100,21 +100,21 @@ export function NotificationsList({ items }: { items: AppNotification[] }) {
                     });
                 }}
                 className={cn(
-                  "glass flex items-start gap-3 rounded-xl p-4 transition-colors hover:bg-accent/40",
-                  !n.read_at && "border-gold/30"
+                  "panel flex items-start gap-3 rounded-xl p-4 transition-colors hover:bg-accent/40",
+                  !n.read_at && "border-cyan/30"
                 )}
               >
                 <Avatar className="size-10 shrink-0">
                   {n.actor_avatar && (
                     <AvatarImage src={n.actor_avatar} alt={name} />
                   )}
-                  <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-primary-foreground">
+                  <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-primary-foreground">
                     {initial}
                   </AvatarFallback>
                 </Avatar>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-start gap-2 text-sm">
-                    <Icon className="mt-0.5 size-4 shrink-0 text-gold" />
+                    <Icon className="mt-0.5 size-4 shrink-0 text-cyan" />
                     <span>{notificationCopy(t, n)}</span>
                   </div>
                   <div className="mt-1 text-xs text-muted-foreground">
@@ -122,7 +122,7 @@ export function NotificationsList({ items }: { items: AppNotification[] }) {
                   </div>
                 </div>
                 {!n.read_at && (
-                  <span className="mt-2 size-2.5 shrink-0 rounded-full bg-gold" />
+                  <span className="mt-2 size-2.5 shrink-0 rounded-full bg-cyan" />
                 )}
               </Link>
             </li>

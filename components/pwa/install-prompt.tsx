@@ -66,8 +66,8 @@ export function InstallPrompt() {
 
   return (
     <div className="fixed inset-x-0 bottom-4 z-50 flex justify-center px-4 pointer-events-none">
-      <div className="pointer-events-auto glass flex max-w-md items-start gap-3 rounded-2xl border border-gold/30 p-4 shadow-lg">
-        <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-gold/15 text-gold">
+      <div className="pointer-events-auto panel flex max-w-md items-start gap-3 rounded-2xl border border-cyan/30 p-4 shadow-lg">
+        <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-cyan/15 text-cyan">
           <Download className="size-4" />
         </span>
         <div className="min-w-0 flex-1">

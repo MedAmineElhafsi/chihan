@@ -158,9 +158,9 @@ export default async function PeoplePage({
 
       {!advanced && (
         <p className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
-          <Sparkles className="size-4 text-gold" />
+          <Sparkles className="size-4 text-cyan" />
           {t("advancedLocked")}{" "}
-          <Link href="/pricing" className="font-medium text-gold hover:underline">
+          <Link href="/pricing" className="font-medium text-cyan hover:underline">
             {t("upgrade")}
           </Link>
         </p>

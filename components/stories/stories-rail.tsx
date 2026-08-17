@@ -39,8 +39,8 @@ export function StoriesRail({
               >
                 <span
                   className={cn(
-                    "rounded-full bg-gradient-to-br from-gold via-gold-bright to-kurd-red p-[2.5px]",
-                    "transition-shadow group-hover:shadow-[0_0_0_3px_color-mix(in_oklab,var(--gold)_25%,transparent)]"
+                    "rounded-full bg-gradient-to-br from-cyan via-air to-destructive p-[2.5px]",
+                    "transition-shadow group-hover:shadow-[0_0_0_3px_color-mix(in_oklab,var(--cyan)_25%,transparent)]"
                   )}
                 >
                   <Avatar className="size-16 border-[3px] border-card">

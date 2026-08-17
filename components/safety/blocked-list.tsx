@@ -44,7 +44,7 @@ export function BlockedList({ initial }: { initial: BlockedUser[] }) {
             <div className="flex min-w-0 items-center gap-3">
               <Avatar className="size-9">
                 {u.avatarUrl && <AvatarImage src={u.avatarUrl} alt={name} />}
-                <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-sm text-primary-foreground">
+                <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-sm text-primary-foreground">
                   {initial}
                 </AvatarFallback>
               </Avatar>

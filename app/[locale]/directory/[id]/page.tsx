@@ -70,7 +70,7 @@ export default async function ListingDetailPage({
           </span>
           <h1 className="flex items-center gap-2 font-display text-3xl font-semibold tracking-tight">
             {listing.name}
-            {listing.is_verified && <BadgeCheck className="size-6 text-gold" />}
+            {listing.is_verified && <BadgeCheck className="size-6 text-cyan" />}
           </h1>
           <div className="flex items-center gap-2 text-sm">
             {listing.rating_avg != null ? (
@@ -185,31 +185,31 @@ export default async function ListingDetailPage({
 
         {/* Contact sidebar */}
         <aside className="lg:col-span-1">
-          <div className="glass sticky top-20 flex flex-col gap-3 rounded-2xl p-5">
+          <div className="panel sticky top-20 flex flex-col gap-3 rounded-2xl p-5">
             <h2 className="font-display text-lg font-semibold">{t("contact")}</h2>
             {place && (
               <div className="flex items-start gap-2.5 text-sm">
-                <MapPin className="mt-0.5 size-4 shrink-0 text-gold" />
+                <MapPin className="mt-0.5 size-4 shrink-0 text-cyan" />
                 <span>{place}</span>
               </div>
             )}
             {listing.phone && (
               <a
                 href={`tel:${listing.phone}`}
-                className="flex items-center gap-2.5 text-sm transition-colors hover:text-gold"
+                className="flex items-center gap-2.5 text-sm transition-colors hover:text-cyan"
                 dir="ltr"
               >
-                <Phone className="size-4 shrink-0 text-gold" />
+                <Phone className="size-4 shrink-0 text-cyan" />
                 {listing.phone}
               </a>
             )}
             {listing.email && (
               <a
                 href={`mailto:${listing.email}`}
-                className="flex items-center gap-2.5 break-all text-sm transition-colors hover:text-gold"
+                className="flex items-center gap-2.5 break-all text-sm transition-colors hover:text-cyan"
                 dir="ltr"
               >
-                <Mail className="size-4 shrink-0 text-gold" />
+                <Mail className="size-4 shrink-0 text-cyan" />
                 {listing.email}
               </a>
             )}
@@ -222,10 +222,10 @@ export default async function ListingDetailPage({
                 }
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2.5 break-all text-sm transition-colors hover:text-gold"
+                className="flex items-center gap-2.5 break-all text-sm transition-colors hover:text-cyan"
                 dir="ltr"
               >
-                <Globe className="size-4 shrink-0 text-gold" />
+                <Globe className="size-4 shrink-0 text-cyan" />
                 {t("visitWebsite")}
               </a>
             )}

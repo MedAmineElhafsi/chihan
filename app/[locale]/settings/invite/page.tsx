@@ -32,7 +32,7 @@ export default async function InviteSettingsPage({
           {t("backToSettings")}
         </Link>
         <div className="flex items-start gap-3">
-          <span className="mt-1 flex size-10 items-center justify-center rounded-full bg-gold/15 text-gold">
+          <span className="mt-1 flex size-10 items-center justify-center rounded-full bg-cyan/15 text-cyan">
             <UserPlus className="size-5" />
           </span>
           <div>
@@ -44,7 +44,7 @@ export default async function InviteSettingsPage({
         </div>
       </div>
 
-      <div className="glass rounded-2xl p-5">
+      <div className="panel rounded-2xl p-5">
         <InviteForm initial={invites} />
       </div>
     </div>

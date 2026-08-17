@@ -153,7 +153,7 @@ export function ListingForm({
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
                   active
-                    ? "border-gold/50 bg-gold/15 text-gold"
+                    ? "border-cyan/50 bg-cyan/15 text-cyan"
                     : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
                 )}
               >

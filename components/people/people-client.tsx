@@ -63,12 +63,12 @@ export function PeopleClient({
       {isAuthenticated && !isPremium && (
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card/40 px-4 py-3 text-sm">
           <span className="flex items-center gap-2 text-muted-foreground">
-            <Eye className="size-4 text-gold" />
+            <Eye className="size-4 text-cyan" />
             {t("revealsLeft", { count: remaining })}
           </span>
           <Link
             href="/pricing"
-            className="inline-flex items-center gap-1.5 font-medium text-gold hover:underline"
+            className="inline-flex items-center gap-1.5 font-medium text-cyan hover:underline"
           >
             <Sparkles className="size-4" />
             {t("upgrade")}
@@ -87,14 +87,14 @@ export function PeopleClient({
             return (
               <div
                 key={p.id}
-                className="glass flex flex-col gap-4 rounded-2xl p-5"
+                className="panel flex flex-col gap-4 rounded-2xl p-5"
               >
                 <div className="flex items-center gap-3">
                   <Avatar className="size-12">
                     {p.avatar_url && (
                       <AvatarImage src={p.avatar_url} alt={p.display_name ?? ""} />
                     )}
-                    <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-primary-foreground">
+                    <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-primary-foreground">
                       {initial}
                     </AvatarFallback>
                   </Avatar>
@@ -108,7 +108,7 @@ export function PeopleClient({
                     </div>
                     {place && (
                       <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <MapPin className="size-3.5 text-gold" />
+                        <MapPin className="size-3.5 text-cyan" />
                         {place}
                       </div>
                     )}
@@ -120,14 +120,14 @@ export function PeopleClient({
                   p.languages.length > 0) && (
                   <div className="flex flex-wrap gap-1.5">
                     {p.origin_region && (
-                      <span className="rounded-full bg-gold/15 px-2 py-0.5 text-xs font-medium text-gold">
+                      <span className="rounded-full bg-cyan/15 px-2 py-0.5 text-xs font-medium text-cyan">
                         {tOn(`origin_${p.origin_region}` as never)}
                       </span>
                     )}
                     {p.looking_for.slice(0, 2).map((item) => (
                       <span
                         key={item}
-                        className="rounded-full bg-kurd-green/15 px-2 py-0.5 text-xs font-medium text-kurd-green"
+                        className="rounded-full bg-success/15 px-2 py-0.5 text-xs font-medium text-success"
                       >
                         {tOn(`looking_${item}` as never)}
                       </span>

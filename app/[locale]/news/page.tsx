@@ -25,7 +25,7 @@ function ArticleCard({
 }) {
   const color = NEWS_COLORS[article.category ?? ""] ?? "#94a3b8";
   return (
-    <article className="social-surface flex flex-col overflow-hidden transition-colors hover:border-gold/25">
+    <article className="social-surface flex flex-col overflow-hidden transition-colors hover:border-cyan/25">
       <div
         className="relative flex h-40 items-center justify-center sm:h-44"
         style={{
@@ -52,7 +52,7 @@ function ArticleCard({
       <div className="flex flex-1 flex-col gap-2.5 p-5 sm:p-6">
         {article.country && (
           <span className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
-            <Globe2 className="size-4 text-gold" />
+            <Globe2 className="size-4 text-cyan" />
             {article.country}
           </span>
         )}
@@ -74,7 +74,7 @@ function ArticleCard({
               href={article.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex shrink-0 items-center gap-1 font-medium text-gold hover:underline"
+              className="inline-flex shrink-0 items-center gap-1 font-medium text-cyan hover:underline"
             >
               {readMore}
               <ExternalLink className="size-3.5" />
@@ -111,7 +111,7 @@ export default async function NewsPage({
     cn(
       "inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
       active
-        ? "border-gold/50 bg-gold/15 text-gold"
+        ? "border-cyan/50 bg-cyan/15 text-cyan"
         : "border-border bg-card text-muted-foreground hover:text-foreground"
     );
 

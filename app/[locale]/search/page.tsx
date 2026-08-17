@@ -58,9 +58,9 @@ export default async function SearchPage({
                 <li key={`${h.kind}-${h.id}`}>
                   <Link
                     href={h.href}
-                    className="glass flex items-start gap-3 rounded-xl p-4 transition-colors hover:bg-accent/40"
+                    className="panel flex items-start gap-3 rounded-xl p-4 transition-colors hover:bg-accent/40"
                   >
-                    <Icon className="mt-0.5 size-4 shrink-0 text-gold" />
+                    <Icon className="mt-0.5 size-4 shrink-0 text-cyan" />
                     <span className="min-w-0 flex-1">
                       <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
                         {t(`kind_${h.kind}`)}
