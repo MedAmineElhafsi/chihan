@@ -57,6 +57,11 @@ export function MobileMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[15rem]">
         <DropdownMenuItem asChild>
+          <Link href="/help" className="font-medium text-cyan">
+            {tNav("help")}
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <Link href="/explore">{tNav("explore")}</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>

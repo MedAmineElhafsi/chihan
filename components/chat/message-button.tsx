@@ -15,11 +15,14 @@ export function MessageButton({
   size = "default",
   variant = "default",
   className,
+  reason,
 }: {
   targetUserId: string;
   size?: "default" | "sm" | "lg" | "icon";
   variant?: "default" | "secondary" | "outline" | "ghost" | "link" | "destructive";
   className?: string;
+  /** "help" bypasses the daily cap — reaching out about a request is free. */
+  reason?: "help";
 }) {
   const t = useTranslations("Chat");
   const router = useRouter();
@@ -28,7 +31,7 @@ export function MessageButton({
 
   function onClick() {
     startT(async () => {
-      const res = await startConversation(targetUserId);
+      const res = await startConversation(targetUserId, reason);
       if (res.ok) {
         router.push(`/messages/${res.conversationId}`);
       } else if ("locked" in res && res.locked) {

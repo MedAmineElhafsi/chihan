@@ -84,13 +84,16 @@ export function GlobeHome({
               ))}
             </dl>
 
+            {/* The primary action is getting help, not sightseeing. */}
             <div className="animate-rise pointer-events-auto flex flex-wrap items-center gap-3 [animation-delay:400ms]">
-              <Button size="lg" onClick={() => setEntered(true)}>
-                {t("ctaExplore")}
-                <ArrowUpRight />
+              <Button asChild size="lg">
+                <Link href="/help">
+                  {t("ctaHelp")}
+                  <ArrowUpRight />
+                </Link>
               </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="/signup">{t("ctaJoin")}</Link>
+              <Button size="lg" variant="outline" onClick={() => setEntered(true)}>
+                {t("ctaExplore")}
               </Button>
             </div>
 

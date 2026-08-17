@@ -13,10 +13,12 @@ import { UserMenu } from "./user-menu";
 import { MobileMenu } from "./mobile-menu";
 import { NotificationsBell } from "@/components/notifications/notifications-bell";
 
+// Help leads: asking for and offering practical help is the core loop.
 const NAV = [
-  { href: "/explore", key: "explore" },
+  { href: "/help", key: "help" },
   { href: "/directory", key: "directory" },
   { href: "/people", key: "people" },
+  { href: "/explore", key: "explore" },
   { href: "/feed", key: "feed" },
   { href: "/news", key: "news" },
   { href: "/groups", key: "groups" },
