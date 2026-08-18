@@ -3,9 +3,7 @@
 import { useTranslations } from "next-intl";
 import {
   Bell,
-  Eye,
   Globe2,
-  HeartHandshake,
   LayoutDashboard,
   LogOut,
   MessageSquare,
@@ -85,18 +83,6 @@ export function UserMenu({
           <Link href="/profile">
             <UserRound />
             {t("profile")}
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/views">
-            <Eye />
-            {t("whoViewed")}
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/match">
-            <HeartHandshake />
-            {t("match")}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>

@@ -5,8 +5,6 @@ import { useLocale, useTranslations } from "next-intl";
 import {
   Bell,
   Check,
-  Eye,
-  HeartHandshake,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -68,19 +66,7 @@ export function MobileMenu({
           <Link href="/directory">{tNav("directory")}</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/people">{tNav("people")}</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/match">{tNav("match")}</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/feed">{tNav("feed")}</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
           <Link href="/news">{tNav("news")}</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/groups">{tNav("groups")}</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/search">{tNav("search")}</Link>
@@ -106,18 +92,6 @@ export function MobileMenu({
               <Link href="/profile">
                 <UserRound />
                 {tNav("profile")}
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/views">
-                <Eye />
-                {tNav("whoViewed")}
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/match">
-                <HeartHandshake />
-                {tNav("match")}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>

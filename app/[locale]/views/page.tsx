@@ -1,3 +1,8 @@
+// FEATURE-DISABLED: switched off for launch. Flip `views` in lib/features.ts
+// to bring this surface back — the code and its tables are untouched.
+import { notFound } from "next/navigation";
+import { isEnabled } from "@/lib/features";
+
 import { redirect } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Eye, Lock, MapPin, Sparkles } from "lucide-react";
@@ -15,6 +20,8 @@ export default async function WhoViewedMePage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
+  if (!isEnabled("views")) notFound();
+
   const { locale } = await params;
   setRequestLocale(locale);
 

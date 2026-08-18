@@ -1,3 +1,8 @@
+// FEATURE-DISABLED: switched off for launch. Flip `billing` in lib/features.ts
+// to bring this surface back — the code and its tables are untouched.
+import { notFound } from "next/navigation";
+import { isEnabled } from "@/lib/features";
+
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Check, Sparkles } from "lucide-react";
 
@@ -26,6 +31,8 @@ export default async function PricingPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
+  if (!isEnabled("billing")) notFound();
+
   const { locale } = await params;
   setRequestLocale(locale);
 

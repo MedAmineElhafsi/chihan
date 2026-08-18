@@ -145,3 +145,30 @@ A running log of notable technical/product decisions and their rationale.
   providers.
 - The app is built to **degrade gracefully** end-to-end: missing Supabase or Stripe keys never
   crash a page — data loaders catch and return empty, and gated actions return friendly errors.
+
+## Surface reduction: fewer things, done properly
+
+**Decision.** Groups, Feed, Stories, People, Match and Who-viewed are switched
+off for launch. Help, Directory, Explore, News, Messages and Search stay.
+Billing is off too — everyone gets full access.
+
+**Why.** Those six surfaces were ~4,200 lines carrying features that only work
+at scale. A feed with no posts, a groups tab with no groups and a match page
+with nobody to match reads as an abandoned product, not an early one. Help and
+Directory are the two surfaces that work on day one with a handful of members,
+because the value is in a single good answer, not in volume.
+
+Billing follows the same logic: with no users a paywall earns nothing and only
+adds friction to the loop we want people to try.
+
+**How.** Hidden, not deleted. `lib/features.ts` holds the flags; each route
+guards with `if (!isEnabled(...)) notFound();`. Tables, RLS policies, data and
+components are untouched — flipping a flag back brings a surface home with its
+history intact. Nothing destructive was run.
+
+**Directory wired into Help.** A health request now suggests doctors from the
+directory in the same city, legal suggests lawyers, and so on
+(`lib/help-directory.ts`). When the asker marks a request resolved, they are
+invited to add whoever solved it as a listing. The directory becomes the help
+board's memory: the second person to need a Kurdish-speaking dentist in Berlin
+finds the answer instead of asking for it.

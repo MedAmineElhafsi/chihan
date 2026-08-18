@@ -2,6 +2,7 @@ import "server-only";
 
 import { createClient } from "./supabase/server";
 import { FREE_LIMITS } from "./constants";
+import { FEATURES } from "./features";
 
 export type Tier = "free" | "premium";
 
@@ -28,6 +29,23 @@ const PREMIUM_STATUSES = ["active", "trialing"];
 export async function getEntitlements(
   userId: string | null
 ): Promise<Entitlements> {
+  // Billing is off for launch: with no users a paywall earns nothing and
+  // only adds friction. Everyone gets full access until it is switched on.
+  if (!FEATURES.billing) {
+    return {
+      tier: "premium",
+      limits: { ...FREE_LIMITS },
+      features: {
+        advancedFilters: true,
+        unlimitedReveals: true,
+        whoViewedMe: true,
+        createPosts: true,
+        createEvents: true,
+        verifiedBadge: true,
+      },
+    };
+  }
+
   let premium = false;
 
   if (userId) {

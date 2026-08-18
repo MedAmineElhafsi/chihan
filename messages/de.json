@@ -100,7 +100,10 @@
     "viewProfile": "Profil ansehen",
     "editProfile": "Profil bearbeiten",
     "premium": "Premium",
-    "upgradedBanner": "Du bist jetzt Premium — viel Spaß mit unbegrenztem Zugriff."
+    "upgradedBanner": "Du bist jetzt Premium — viel Spaß mit unbegrenztem Zugriff.",
+    "helpTitle": "Brauchst du Hilfe?",
+    "helpBody": "Frag nach Hilfe bei Papierkram, Wohnung, Arbeit oder Gesundheit — oder antworte jemandem, der sie braucht.",
+    "helpCta": "Hilfe-Board öffnen"
   },
   "Onboarding": {
     "title": "Richte dein Profil ein",
@@ -715,6 +718,12 @@
     "cat_other": "Sonstiges",
     "urg_normal": "Jederzeit",
     "urg_soon": "Bald",
-    "urg_urgent": "Dringend"
+    "urg_urgent": "Dringend",
+    "suggestedTitle": "Bereits im Verzeichnis",
+    "suggestedBody": "Orte, die andere Mitglieder schon gefunden und bewertet haben.",
+    "suggestedAll": "Alle ansehen",
+    "memoryTitle": "Für die Nächsten festhalten",
+    "memoryBody": "Wenn ein Ort, ein Amt oder eine Person das gelöst hat, trag sie ins Verzeichnis ein. Die Nächsten finden es dann, ohne zu fragen.",
+    "memoryCta": "Zum Verzeichnis hinzufügen"
   }
 }

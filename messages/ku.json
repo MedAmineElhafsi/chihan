@@ -100,7 +100,10 @@
     "viewProfile": "Profîlê bibîne",
     "editProfile": "Profîlê biguherîne",
     "premium": "Premium",
-    "upgradedBanner": "Tu niha Premium î — ji gihîştina bêsînor kêfxweş be."
+    "upgradedBanner": "Tu niha Premium î — ji gihîştina bêsînor kêfxweş be.",
+    "helpTitle": "Alîkarî hewce ye?",
+    "helpBody": "Ji bo kaxez, mal, kar an tenduristiyê alîkariyê bixwaze — an bersiva kesekî bide ku hewce ye.",
+    "helpCta": "Panoya alîkariyê veke"
   },
   "Onboarding": {
     "title": "Profîla xwe saz bike",
@@ -715,6 +718,12 @@
     "cat_other": "Yên din",
     "urg_normal": "Her dem",
     "urg_soon": "Zû",
-    "urg_urgent": "Lezgîn"
+    "urg_urgent": "Lezgîn",
+    "suggestedTitle": "Berê di rêberê de",
+    "suggestedBody": "Cihên ku endamên din berê dîtine û nirxandine.",
+    "suggestedAll": "Hemûyan bibîne",
+    "memoryTitle": "Ji bo kesê pêş de tomar bike",
+    "memoryBody": "Eger cih, ofîs an kesek ev çareser kir, wan tevlî rêberê bike. Kesê din wê bêyî pirsînê bibîne.",
+    "memoryCta": "Tevlî rêberê bike"
   }
 }

@@ -1,3 +1,8 @@
+// FEATURE-DISABLED: switched off for launch. Flip `feed` in lib/features.ts
+// to bring this surface back — the code and its tables are untouched.
+import { notFound } from "next/navigation";
+import { isEnabled } from "@/lib/features";
+
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { MapPin, Sparkles } from "lucide-react";
 
@@ -21,6 +26,8 @@ export default async function FeedPage({
   params: Promise<{ locale: string }>;
   searchParams: Promise<{ near?: string }>;
 }) {
+  if (!isEnabled("feed")) notFound();
+
   const { locale } = await params;
   setRequestLocale(locale);
   const { near } = await searchParams;

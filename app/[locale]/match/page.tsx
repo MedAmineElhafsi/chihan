@@ -1,3 +1,8 @@
+// FEATURE-DISABLED: switched off for launch. Flip `match` in lib/features.ts
+// to bring this surface back — the code and its tables are untouched.
+import { notFound } from "next/navigation";
+import { isEnabled } from "@/lib/features";
+
 import { redirect } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Handshake, Pencil } from "lucide-react";
@@ -14,6 +19,8 @@ export default async function MatchPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
+  if (!isEnabled("match")) notFound();
+
   const { locale } = await params;
   setRequestLocale(locale);
 

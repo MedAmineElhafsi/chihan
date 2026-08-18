@@ -100,7 +100,10 @@
     "viewProfile": "View profile",
     "editProfile": "Edit profile",
     "premium": "Premium",
-    "upgradedBanner": "You’re Premium now — enjoy unlimited access."
+    "upgradedBanner": "You’re Premium now — enjoy unlimited access.",
+    "helpTitle": "Need a hand?",
+    "helpBody": "Ask for help with paperwork, housing, work or health — or answer someone who needs it.",
+    "helpCta": "Open help board"
   },
   "Onboarding": {
     "title": "Set up your profile",
@@ -715,6 +718,12 @@
     "cat_other": "Other",
     "urg_normal": "Anytime",
     "urg_soon": "Soon",
-    "urg_urgent": "Urgent"
+    "urg_urgent": "Urgent",
+    "suggestedTitle": "Already in the directory",
+    "suggestedBody": "Places other members have already found and reviewed.",
+    "suggestedAll": "See all",
+    "memoryTitle": "Save this for the next person",
+    "memoryBody": "If a place, office or person solved this, add them to the directory. The next person who needs it will find it without asking.",
+    "memoryCta": "Add to directory"
   }
 }

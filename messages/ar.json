@@ -100,7 +100,10 @@
     "viewProfile": "عرض الملف",
     "editProfile": "تعديل الملف",
     "premium": "Premium",
-    "upgradedBanner": "أنت الآن Premium — استمتع بوصول غير محدود."
+    "upgradedBanner": "أنت الآن Premium — استمتع بوصول غير محدود.",
+    "helpTitle": "تحتاج مساعدة؟",
+    "helpBody": "اطلب مساعدة في الأوراق أو السكن أو العمل أو الصحة — أو ساعد من يحتاجها.",
+    "helpCta": "افتح لوحة المساعدة"
   },
   "Onboarding": {
     "title": "أنشئ ملفك الشخصي",
@@ -715,6 +718,12 @@
     "cat_other": "أخرى",
     "urg_normal": "أي وقت",
     "urg_soon": "قريبًا",
-    "urg_urgent": "عاجل"
+    "urg_urgent": "عاجل",
+    "suggestedTitle": "موجود في الدليل",
+    "suggestedBody": "أماكن وجدها أعضاء آخرون وقيّموها من قبل.",
+    "suggestedAll": "عرض الكل",
+    "memoryTitle": "احفظ هذا لمن يأتي بعدك",
+    "memoryBody": "إذا حلّ المشكلة مكان أو مكتب أو شخص، أضِفه إلى الدليل. من يحتاجه بعدك سيجده دون أن يسأل.",
+    "memoryCta": "أضِف إلى الدليل"
   }
 }

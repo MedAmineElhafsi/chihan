@@ -17,11 +17,8 @@ import { NotificationsBell } from "@/components/notifications/notifications-bell
 const NAV = [
   { href: "/help", key: "help" },
   { href: "/directory", key: "directory" },
-  { href: "/people", key: "people" },
   { href: "/explore", key: "explore" },
-  { href: "/feed", key: "feed" },
   { href: "/news", key: "news" },
-  { href: "/groups", key: "groups" },
 ] as const;
 
 export async function SiteHeader() {

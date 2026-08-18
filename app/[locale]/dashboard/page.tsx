@@ -4,7 +4,7 @@ import {
   BadgeCheck,
   Compass,
   Globe2,
-  HeartHandshake,
+  HandHeart,
   LogOut,
   Pencil,
   Sparkles,
@@ -134,26 +134,26 @@ export default async function DashboardPage({
         </CardContent>
       </Card>
 
-      {/* Matches */}
+      {/* Help — the core loop */}
       <Card className="panel animate-rise mt-5 overflow-hidden [animation-delay:200ms]">
         <CardContent className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
             <div className="inline-flex size-11 items-center justify-center rounded-xl bg-secondary text-cyan ring-1 ring-border">
-              <HeartHandshake className="size-5" />
+              <HandHeart className="size-5" />
             </div>
             <div>
               <div className="font-display text-lg font-semibold">
-                {t("matchesTitle")}
+                {t("helpTitle")}
               </div>
               <div className="max-w-md text-sm text-muted-foreground">
-                {t("matchesBody")}
+                {t("helpBody")}
               </div>
             </div>
           </div>
           <Button asChild className="gap-2">
-            <Link href="/match">
-              <HeartHandshake className="size-4" />
-              {t("matchesCta")}
+            <Link href="/help">
+              <HandHeart className="size-4" />
+              {t("helpCta")}
             </Link>
           </Button>
         </CardContent>

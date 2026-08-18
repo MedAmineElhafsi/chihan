@@ -183,3 +183,16 @@ The platform is feature-complete: auth · profiles/onboarding · the globe · di
 people discovery + freemium gating · realtime chat · feed & events · news · Stripe billing ·
 moderation + privacy. Each phase is on its own branch; everything type-checks, lints and builds.
 Remaining work is your hosted setup (run migrations, add keys, deploy).
+
+## Surface reduction (post-Phase 9)
+
+- [x] `lib/features.ts` — flags for every surface, documented reasons
+- [x] Groups / Feed / People / Match / Who-viewed / Pricing return 404
+- [x] Header, mobile menu, user menu and dashboard cleaned of dead links
+- [x] Dashboard's Matches card replaced with the Help board
+- [x] Billing off: `getEntitlements` grants everything while `FEATURES.billing` is false
+- [x] Help → Directory suggestions by category + city (`lib/help-directory.ts`)
+- [x] Resolved requests invite the asker to leave a listing behind
+- [x] 5 locales updated · `tsc`, `eslint`, `next build` all clean
+
+Reversible: flip a flag in `lib/features.ts`. No tables dropped, no data deleted.

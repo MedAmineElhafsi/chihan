@@ -5,6 +5,8 @@ import { MapPin } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getHelpOffers, getHelpRequest } from "@/lib/help";
+import { getSuggestedListings } from "@/lib/help-directory";
+import { ListingCard } from "@/components/directory/listing-card";
 import { HELP_CATEGORY_STYLE } from "@/lib/constants";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MessageButton } from "@/components/chat/message-button";
@@ -27,9 +29,11 @@ export default async function HelpRequestPage({
   const request = await getHelpRequest(id);
   if (!request) notFound();
 
-  const [offers, t] = await Promise.all([
+  const [offers, t, tDir, suggested] = await Promise.all([
     getHelpOffers(id),
     getTranslations("Help"),
+    getTranslations("Directory"),
+    getSuggestedListings(request.category, request.city),
   ]);
 
   const style =
@@ -121,6 +125,52 @@ export default async function HelpRequestPage({
           </div>
         </div>
       </article>
+
+      {/* Resolved: turn the answer into something permanent */}
+      {isAuthor && request.status === "resolved" && (
+        <section className="mt-8 panel rounded-2xl p-5">
+          <h2 className="font-display text-lg font-semibold text-air">
+            {t("memoryTitle")}
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+            {t("memoryBody")}
+          </p>
+          <Link
+            href="/directory/new"
+            className="mt-4 inline-flex items-center gap-2 rounded-sm border border-cyan/40 px-4 py-2 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-cyan transition-colors hover:bg-cyan/10"
+          >
+            {t("memoryCta")}
+          </Link>
+        </section>
+      )}
+
+      {/* Places in the directory that might already answer this */}
+      {suggested.length > 0 && (
+        <section className="mt-8 flex flex-col gap-4">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="font-display text-xl font-semibold text-air">
+              {t("suggestedTitle")}
+            </h2>
+            <Link
+              href="/directory"
+              className="label-mono transition-colors hover:text-cyan"
+            >
+              {t("suggestedAll")}
+            </Link>
+          </div>
+          <p className="text-sm text-muted-foreground">{t("suggestedBody")}</p>
+          <div className="grid gap-px bg-border sm:grid-cols-3">
+            {suggested.map((l) => (
+              <ListingCard
+                key={l.id}
+                listing={l}
+                categoryLabel={tDir(`cat_${l.category}` as never)}
+                reviewsLabel={tDir("reviewsShort")}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Offers */}
       <section className="mt-8 flex flex-col gap-4">
