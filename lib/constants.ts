@@ -245,3 +245,14 @@ export const PRICING = {
   monthly: "€5.99",
   yearly: "€49.99",
 } as const;
+
+/**
+ * Reel limits, tuned for the Supabase free tier (1 GB of storage).
+ *
+ * At roughly 8 MB a clip these caps allow about 120 reels before the plan has
+ * to grow. Raising them is a change here and nowhere else — but the database
+ * also caps duration at 120s, so lift that constraint too if you go past it.
+ */
+export const REEL_MAX_SECONDS = 30;
+export const REEL_MAX_BYTES = 20 * 1024 * 1024; // 20 MB
+export const REEL_ACCEPT = ["video/mp4", "video/quicktime", "video/webm"] as const;

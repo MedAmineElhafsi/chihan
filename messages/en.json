@@ -33,7 +33,8 @@
     "createPost": "Write a post",
     "createReel": "Record a reel",
     "createHelp": "Ask for help",
-    "createPlace": "Add a place"
+    "createPlace": "Add a place",
+    "reels": "Reels"
   },
   "Common": {
     "language": "Language",
@@ -795,5 +796,25 @@
     "errorUpload": "The upload failed. Please try again.",
     "errorPending": "You already have a request waiting.",
     "errorGeneric": "Could not send your request. Please try again."
+  },
+  "Reels": {
+    "title": "Reels",
+    "count": "{count} reels",
+    "empty": "No reels yet. Be the first — press the button above.",
+    "pick": "Choose a video",
+    "limits": "Up to {seconds} seconds · {mb} MB",
+    "duration": "{seconds} seconds",
+    "captionPlaceholder": "Say something about it (optional)",
+    "publish": "Post reel",
+    "remove": "Remove",
+    "mute": "Mute",
+    "unmute": "Unmute",
+    "someone": "Someone",
+    "errorType": "Use an MP4, MOV or WebM video.",
+    "errorSize": "That video is larger than {mb} MB. Trim it or export it smaller.",
+    "errorLength": "Reels can be up to {seconds} seconds. Trim it and try again.",
+    "errorUnreadable": "That file could not be read as a video.",
+    "errorUpload": "The upload failed. Please try again.",
+    "errorSave": "The video uploaded but the reel could not be saved."
   }
 }

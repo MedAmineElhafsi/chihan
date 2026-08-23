@@ -33,7 +33,8 @@
     "createPost": "Peyamekê binivîse",
     "createReel": "Reel tomar bike",
     "createHelp": "Alîkarî bixwaze",
-    "createPlace": "Cih zêde bike"
+    "createPlace": "Cih zêde bike",
+    "reels": "Reels"
   },
   "Common": {
     "language": "Ziman",
@@ -795,5 +796,25 @@
     "errorUpload": "Barkirin bi ser neket. Ji kerema xwe dîsa biceribîne.",
     "errorPending": "Daxwazeke te jixwe li benda kontrolê ye.",
     "errorGeneric": "Daxwaz nehat şandin. Ji kerema xwe dîsa biceribîne."
+  },
+  "Reels": {
+    "title": "Reels",
+    "count": "{count} reel",
+    "empty": "Hê reel tune. Bibe yê pêşî — bişkoja jorîn.",
+    "pick": "Vîdyoyekê hilbijêre",
+    "limits": "Heta {seconds} çirke · {mb} MB",
+    "duration": "{seconds} çirke",
+    "captionPlaceholder": "Tiştekî li ser bêje (bijarte)",
+    "publish": "Reelê biweşîne",
+    "remove": "Rake",
+    "mute": "Bêdeng",
+    "unmute": "Deng veke",
+    "someone": "Kesek",
+    "errorType": "Vîdyoyeke MP4, MOV an WebM bikar bîne.",
+    "errorSize": "Ev vîdyo ji {mb} MB mezintir e. Kurt bike an biçûktir derxe.",
+    "errorLength": "Reel dikarin heta {seconds} çirke bin. Kurt bike û dîsa biceribîne.",
+    "errorUnreadable": "Ev pel wek vîdyo nehat xwendin.",
+    "errorUpload": "Barkirin bi ser neket. Ji kerema xwe dîsa biceribîne.",
+    "errorSave": "Vîdyo hat barkirin lê reel nehat tomarkirin."
   }
 }

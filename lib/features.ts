@@ -30,8 +30,7 @@ export const FEATURES = {
   groups: true,
   people: true,
 
-  // Not built yet — the tab bar hides the compose option until it is.
-  reels: false,
+  reels: true,
 
   // Deliberately off. Matches and who-viewed are engagement machinery that
   // works against a community built on helping; billing earns nothing at

@@ -23,7 +23,7 @@ export function ComposeSheet() {
 
   const options = [
     { href: "/feed", key: "createPost", Icon: CirclePlus, on: FEATURES.feed },
-    { href: "/feed", key: "createReel", Icon: Video, on: FEATURES.reels },
+    { href: "/reels", key: "createReel", Icon: Video, on: FEATURES.reels },
     { href: "/help", key: "createHelp", Icon: HandHeart, on: FEATURES.help },
     {
       href: "/directory/new",

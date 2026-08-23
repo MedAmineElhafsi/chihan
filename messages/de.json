@@ -33,7 +33,8 @@
     "createPost": "Beitrag schreiben",
     "createReel": "Reel aufnehmen",
     "createHelp": "Um Hilfe bitten",
-    "createPlace": "Ort hinzufügen"
+    "createPlace": "Ort hinzufügen",
+    "reels": "Reels"
   },
   "Common": {
     "language": "Sprache",
@@ -795,5 +796,25 @@
     "errorUpload": "Der Upload ist fehlgeschlagen. Bitte versuch es erneut.",
     "errorPending": "Du hast bereits einen Antrag offen.",
     "errorGeneric": "Antrag konnte nicht gesendet werden. Bitte versuch es erneut."
+  },
+  "Reels": {
+    "title": "Reels",
+    "count": "{count} Reels",
+    "empty": "Noch keine Reels. Mach den Anfang — Knopf oben.",
+    "pick": "Video auswählen",
+    "limits": "Bis {seconds} Sekunden · {mb} MB",
+    "duration": "{seconds} Sekunden",
+    "captionPlaceholder": "Sag etwas dazu (optional)",
+    "publish": "Reel posten",
+    "remove": "Entfernen",
+    "mute": "Stumm",
+    "unmute": "Ton an",
+    "someone": "Jemand",
+    "errorType": "Nutze ein MP4-, MOV- oder WebM-Video.",
+    "errorSize": "Das Video ist größer als {mb} MB. Kürze es oder exportiere es kleiner.",
+    "errorLength": "Reels dürfen bis {seconds} Sekunden lang sein. Kürze es und versuch es erneut.",
+    "errorUnreadable": "Diese Datei konnte nicht als Video gelesen werden.",
+    "errorUpload": "Der Upload ist fehlgeschlagen. Bitte versuch es erneut.",
+    "errorSave": "Das Video wurde hochgeladen, das Reel konnte aber nicht gespeichert werden."
   }
 }

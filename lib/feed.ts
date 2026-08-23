@@ -7,6 +7,7 @@ import type {
   FeedItem,
   PostComment,
   RsvpStatus,
+  PostType,
 } from "@/types/post";
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
@@ -63,7 +64,7 @@ function haversineKm(
 }
 
 const POST_SELECT =
-  "id, author_id, type, body, media, event_title, event_at, event_location, event_lat, event_lng, created_at, post_likes(count), post_comments(count)";
+  "id, author_id, type, body, media, poster_url, duration_seconds, event_title, event_at, event_location, event_lat, event_lng, created_at, post_likes(count), post_comments(count)";
 
 async function loadRsvps(
   supabase: Supabase,
@@ -114,6 +115,8 @@ export async function mapPostRows(
     type: r.type as FeedItem["type"],
     body: (r.body as string | null) ?? null,
     media: (r.media as string[] | null) ?? [],
+    poster_url: (r.poster_url as string | null) ?? null,
+    duration_seconds: (r.duration_seconds as number | null) ?? null,
     event_title: (r.event_title as string | null) ?? null,
     event_at: (r.event_at as string | null) ?? null,
     event_location: (r.event_location as string | null) ?? null,
@@ -172,6 +175,8 @@ export async function getFeed(opts: {
   nearLng?: number | null;
   nearKm?: number;
   eventsOnly?: boolean;
+  /** Restrict to these kinds. Home shows posts; the reels tab shows reels. */
+  types?: PostType[];
 }): Promise<FeedItem[]> {
   try {
     const supabase = await createClient();
@@ -183,6 +188,7 @@ export async function getFeed(opts: {
       .limit(100);
 
     if (opts.eventsOnly) query = query.eq("type", "event");
+    else if (opts.types?.length) query = query.in("type", opts.types);
 
     let { data, error } = await query;
 

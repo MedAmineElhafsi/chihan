@@ -347,3 +347,29 @@ A private group, asked for by three different callers:
 The privacy chooser renders on `/groups/new` (checked for the actual
 `<fieldset>` and radio markup — grepping for translated strings is useless,
 since next-intl ships every string into every page).
+
+## Phase E — reels
+
+- [x] `supabase/migrations/0024_reels.sql` — **needs running**
+  - `posts.type` accepts 'reel'
+  - `poster_url`, `duration_seconds`
+  - check: a reel must carry media; a duration must be 1–120s
+  - index on (type, created_at desc)
+- [x] No new bucket — `post-media` is already public-read and folder-scoped,
+      and stories already share it. Reels live under `<uid>/reels/`.
+- [x] `components/reels/reel-composer.tsx` — picks a video, reads its duration,
+      and cuts a poster frame **in the browser** via canvas. No ffmpeg, nothing
+      to run server-side.
+- [x] `components/reels/reel-player.tsx` — scroll-snap, one per screen,
+      IntersectionObserver so only the visible reel plays, muted by default,
+      `preload="none"` so the page does not pull every video at once
+- [x] `lib/reel-actions.ts` — re-validates duration server-side
+- [x] `app/[locale]/reels/page.tsx`, flag `reels: true`, compose sheet entry
+- [x] Strings in 5 locales · `tsc`, `eslint`, `next build` clean
+
+Free-tier caps live in `lib/constants.ts`: `REEL_MAX_SECONDS = 30`,
+`REEL_MAX_BYTES = 20 MB`. Raising them is one edit there — but the database
+also caps duration at 120s, so lift that constraint too if you go past it.
+
+A reel is a post, not a separate system: likes, comments, reporting, blocking
+and every existing RLS policy apply to it without duplication.
