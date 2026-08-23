@@ -815,6 +815,8 @@
     "errorLength": "Reels can be up to {seconds} seconds. Trim it and try again.",
     "errorUnreadable": "That file could not be read as a video.",
     "errorUpload": "The upload failed. Please try again.",
-    "errorSave": "The video uploaded but the reel could not be saved."
+    "errorSave": "The video uploaded but the reel could not be saved.",
+    "newReel": "New reel",
+    "close": "Close"
   }
 }

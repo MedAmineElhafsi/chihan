@@ -7,20 +7,22 @@ import {
   getUnreadNotificationCount,
   listNotifications,
 } from "@/lib/notifications";
+import { getUnreadMessageCount } from "@/lib/chat";
 import { BrandWordmark } from "./brand";
 import { LanguageSwitcher } from "./language-switcher";
 import { UserMenu } from "./user-menu";
 import { MobileMenu } from "./mobile-menu";
 import { NotificationsBell } from "@/components/notifications/notifications-bell";
+import { ChatIcon } from "./chat-icon";
 
 // The same five destinations as the mobile tab bar, so the app has one
 // shape on every screen size.
 const NAV = [
   { href: "/feed", key: "home" },
   { href: "/explore", key: "explore" },
+  { href: "/reels", key: "reels" },
   { href: "/help", key: "help" },
   { href: "/directory", key: "directory" },
-  { href: "/messages", key: "chat" },
 ] as const;
 
 export async function SiteHeader() {
@@ -28,12 +30,13 @@ export async function SiteHeader() {
   const user = await getCurrentUser();
   const email = user?.email ?? null;
   const admin = user ? await isAdmin(user.id) : false;
-  const [notifItems, unread] = user
+  const [notifItems, unread, unreadMessages] = user
     ? await Promise.all([
         listNotifications(user.id, 8),
         getUnreadNotificationCount(user.id),
+        getUnreadMessageCount(user.id),
       ])
-    : [[], 0];
+    : [[], 0, 0];
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-depth-0/70 backdrop-blur-xl">
@@ -66,6 +69,7 @@ export async function SiteHeader() {
             </Link>
             <span className="mx-3 h-4 w-px bg-border" />
             <LanguageSwitcher />
+            {user && <ChatIcon unread={unreadMessages} />}
             {user && (
               <NotificationsBell
                 initialItems={notifItems}
@@ -77,6 +81,7 @@ export async function SiteHeader() {
           </div>
 
           <div className="flex items-center gap-0.5 lg:hidden">
+            {user && <ChatIcon unread={unreadMessages} />}
             {user && (
               <NotificationsBell
                 initialItems={notifItems}

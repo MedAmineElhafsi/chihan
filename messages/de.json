@@ -815,6 +815,8 @@
     "errorLength": "Reels dürfen bis {seconds} Sekunden lang sein. Kürze es und versuch es erneut.",
     "errorUnreadable": "Diese Datei konnte nicht als Video gelesen werden.",
     "errorUpload": "Der Upload ist fehlgeschlagen. Bitte versuch es erneut.",
-    "errorSave": "Das Video wurde hochgeladen, das Reel konnte aber nicht gespeichert werden."
+    "errorSave": "Das Video wurde hochgeladen, das Reel konnte aber nicht gespeichert werden.",
+    "newReel": "Neues Reel",
+    "close": "Schließen"
   }
 }

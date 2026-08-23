@@ -398,3 +398,22 @@ there are no reels.
 CHECK passes on NULL — so reels with no video were being accepted. `tsc`,
 `eslint` and `next build` were all clean throughout; only inserting a bad row
 found it. Fixed with `cardinality(media)`.
+
+### Navigation correction — Reels is a destination
+
+Reels was reachable only through the create menu, so there was no way to
+*find* it. That was the wrong model: in every app of this shape Reels is a
+place you go, and creating one is a separate act.
+
+- Tab bar is now **Home · Explore · ➕ · Reels · You** — five, symmetrical
+  around the create button
+- Messages moved to the header with an unread badge (`components/app-shell/chat-icon.tsx`),
+  which is where a DM icon belongs and is how the bar stayed at five
+- `getUnreadMessageCount()` added to `lib/chat.ts` for that badge
+- Desktop nav mirrors it: Home · Explore · Reels · Help · Directory
+- `/reels` leads with the reels; **New reel** is a button that opens the
+  composer, instead of a composer permanently pushing the reels below the fold
+
+Verified at 375px: five tabs at 72px each, no horizontal scroll, Reels marked
+`aria-current="page"`, chat icon present in the header, and the New reel button
+opens a composer that accepts mp4/mov/webm and states the 30s limit.

@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Compass, Home, MessageCircle, Plus, User } from "lucide-react";
+import { Clapperboard, Compass, Home, Plus, User } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/navigation";
@@ -9,14 +9,17 @@ import { cn } from "@/lib/utils";
 import { ComposeSheet } from "./compose-sheet";
 
 /**
- * Five tabs, not eight menu items. Home holds the feed, help and news;
- * Explore holds the globe, the directory and people; Chat holds one-to-one
- * threads and groups together. The centre button is how anything gets made.
+ * Five destinations, with create in the middle.
+ *
+ * Reels is a place you go, not a thing you make — burying it in the create
+ * menu meant nobody could find it. Chat lives in the header with an unread
+ * badge instead, which is where a messages icon belongs and keeps this bar
+ * symmetrical around the create button.
  */
 const TABS = [
   { href: "/feed", key: "home", Icon: Home },
   { href: "/explore", key: "explore", Icon: Compass },
-  { href: "/messages", key: "chat", Icon: MessageCircle },
+  { href: "/reels", key: "reels", Icon: Clapperboard },
   { href: "/profile", key: "you", Icon: User },
 ] as const;
 

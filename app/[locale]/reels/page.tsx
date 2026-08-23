@@ -7,7 +7,7 @@ import { isEnabled } from "@/lib/features";
 import { getCurrentUser } from "@/lib/auth";
 import { getFeed } from "@/lib/feed";
 import { ReelPlayer } from "@/components/reels/reel-player";
-import { ReelComposer } from "@/components/reels/reel-composer";
+import { NewReelButton } from "@/components/reels/new-reel-button";
 
 export default async function ReelsPage({
   params,
@@ -38,7 +38,7 @@ export default async function ReelsPage({
         <span className="label-mono">{t("count", { count: reels.length })}</span>
       </div>
 
-      {user && <ReelComposer userId={user.id} />}
+      {user && <NewReelButton userId={user.id} />}
 
       <ReelPlayer reels={reels} />
     </div>

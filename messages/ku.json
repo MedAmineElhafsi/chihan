@@ -815,6 +815,8 @@
     "errorLength": "Reel dikarin heta {seconds} çirke bin. Kurt bike û dîsa biceribîne.",
     "errorUnreadable": "Ev pel wek vîdyo nehat xwendin.",
     "errorUpload": "Barkirin bi ser neket. Ji kerema xwe dîsa biceribîne.",
-    "errorSave": "Vîdyo hat barkirin lê reel nehat tomarkirin."
+    "errorSave": "Vîdyo hat barkirin lê reel nehat tomarkirin.",
+    "newReel": "Reelek nû",
+    "close": "Bigire"
   }
 }
