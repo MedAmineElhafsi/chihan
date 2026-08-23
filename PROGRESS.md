@@ -324,3 +324,26 @@ businesses in the directory.
 
 Existing groups stay public. Making one private later is the owner's choice —
 this migration does not decide it for them.
+
+### Phase D — verified against the live database
+
+Migration 0023 applied. Privacy was tested with **real authenticated sessions**,
+not the service-role key, which bypasses RLS and therefore cannot test it. Two
+throwaway accounts were created, signed in, and deleted afterwards.
+
+A private group, asked for by three different callers:
+
+| caller | group | via view | members | messages |
+|---|---|---|---|---|
+| member | 1 | 1 | 1 | 1 |
+| outsider | **0** | **0** | **0** | **0** |
+| signed out | **0** | **0** | **0** | **0** |
+
+- outsider cannot add themselves to it — HTTP 403
+- a public group is still visible to everyone, unchanged
+- `decide_verification()` refuses a non-admin caller
+- probe groups and probe accounts both confirmed deleted
+
+The privacy chooser renders on `/groups/new` (checked for the actual
+`<fieldset>` and radio markup — grepping for translated strings is useless,
+since next-intl ships every string into every page).
