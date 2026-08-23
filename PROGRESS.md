@@ -299,3 +299,28 @@ Content gap, not a code gap: there are **no Berlin clinics** in the directory
 (Hamburg, Lyon, Manchester, Erbil), so those suggestions came from the
 anywhere-fallback rather than the city match. A Berlin launch needs Berlin
 businesses in the directory.
+
+## Phase D — private groups and verification
+
+- [x] `supabase/migrations/0023_private_groups_verification.sql` — **needs running**
+  - `community_groups.is_private` (defaults false so no existing group vanishes)
+  - select policy: public groups, ones you created, ones you belong to
+  - `group_members` select follows group visibility — membership of a private
+    group is itself private
+  - insert policy: you may join a public group yourself, or be added by
+    someone already inside; you cannot add yourself to a private one
+  - `verification_requests` + RLS: applicants see only their own, only admins
+    decide, and **no policy lets an applicant update their own row**
+  - `decide_verification()` — security definer, checks `is_admin` first
+  - `verification-docs` bucket, **private**, folder-per-user; admins can read
+  - stats view carries `is_private`
+- [x] `lib/verification.ts` — own request, admin queue, 5-minute signed doc links
+- [x] `lib/verification-actions.ts` — apply, withdraw, decide
+- [x] `components/profile/verification-panel.tsx` — upload + status
+- [x] `components/admin/verification-queue.tsx` — approve / reject with a note
+- [x] Group form: privacy chooser, **private preselected**
+- [x] Group cards show a lock
+- [x] Strings in 5 locales · `tsc`, `eslint`, `next build` clean
+
+Existing groups stay public. Making one private later is the owner's choice —
+this migration does not decide it for them.

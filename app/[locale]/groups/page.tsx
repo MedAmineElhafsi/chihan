@@ -153,6 +153,7 @@ export default async function GroupsPage({
               group={g}
               isJoined={joined.has(g.id)}
               joinedLabel={t("joined")}
+              privateLabel={t("privateBadge")}
               membersLabel={t("memberCount", { count: g.member_count })}
               distanceLabel={
                 g.distance_km != null

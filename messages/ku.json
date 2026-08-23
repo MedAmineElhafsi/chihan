@@ -495,7 +495,15 @@
     "open": "Vekirî",
     "all": "Hemû",
     "targetLink": "Armancê bibîne",
-    "banned": "Qedexe kirî"
+    "banned": "Qedexe kirî",
+    "verifyTitle": "Daxwazên verastkirinê ({count})",
+    "verifyEmpty": "Tiştek li bendê nîne. Nîşan tenê wateyê dide heke ev rêz bê xwendin.",
+    "verifyOpenDoc": "Belgeyê veke",
+    "verifyNoDoc": "Belge nayê gihîştin",
+    "verifyNotePlaceholder": "Sedem, heke red bikî tê nîşandan (bijarte)",
+    "verifyApprove": "Bipejirîne",
+    "verifyReject": "Red bike",
+    "verifyFailed": "Biryar nehat tomarkirin."
   },
   "Settings": {
     "title": "Sazkarî",
@@ -647,7 +655,13 @@
     "inviteOrPeople": "An jî kesekî ji rêzê vexwîne",
     "inviteSearch": "Kesan bigere…",
     "inviteEmpty": "Kesek tune bo vexwendinê.",
-    "inviteSend": "Vexwîne"
+    "inviteSend": "Vexwîne",
+    "privacyLegend": "Kî dikare vê komê bibîne",
+    "privateLabel": "Taybet — tenê bi vexwendin",
+    "privateHint": "Ew di lêgerînê de xuya nabe. Tenê endam dikarin bibînin kî tê de ye û peyaman bixwînin.",
+    "publicLabel": "Giştî",
+    "publicHint": "Her kes dikare bibîne û beşdar bibe. Ji bo koma bajêr an bûyerek vekirî baş e.",
+    "privateBadge": "Taybet"
   },
   "Views": {
     "title": "Kê min dît",
@@ -761,5 +775,25 @@
     "memoryTitle": "Ji bo kesê pêş de tomar bike",
     "memoryBody": "Eger cih, ofîs an kesek ev çareser kir, wan tevlî rêberê bike. Kesê din wê bêyî pirsînê bibîne.",
     "memoryCta": "Tevlî rêberê bike"
+  },
+  "Verification": {
+    "title": "Verastkirinê bixwaze",
+    "body": "Tiştekî bişîne ku nîşan dide tu kî yî — nasname, destûrname an tomara karsaziyê. Kesek lê dinêre.",
+    "fileHint": "JPG, PNG, WebP an PDF · heta 5 MB",
+    "notePlaceholder": "Tiştek ku divê zanibe (bijarte)",
+    "submit": "Ji bo kontrolê bişîne",
+    "privacyNote": "Belgeya te bi taybetî tê tomarkirin. Tenê tu û moderator dikarin vekin; qet li profîlê xuya nabe.",
+    "pendingTitle": "Li benda kontrolê",
+    "pendingBody": "Kesek dê li belgeya te binêre. Piştî pejirandinê nîşan li profîla te xuya dibe.",
+    "withdraw": "Daxwazê vekişîne",
+    "verifiedTitle": "Tu hatî verastkirin",
+    "verifiedBody": "Nîşan li profîla te û li kêleka navnîşa te xuya dibe.",
+    "rejected": "Daxwaza te ya dawî nehat pejirandin.",
+    "errorNoFile": "Pêşî belgeyekê hilbijêre.",
+    "errorType": "JPG, PNG, WebP an PDF bikar bîne.",
+    "errorSize": "Ew pel ji 5 MB mezintir e.",
+    "errorUpload": "Barkirin bi ser neket. Ji kerema xwe dîsa biceribîne.",
+    "errorPending": "Daxwazeke te jixwe li benda kontrolê ye.",
+    "errorGeneric": "Daxwaz nehat şandin. Ji kerema xwe dîsa biceribîne."
   }
 }

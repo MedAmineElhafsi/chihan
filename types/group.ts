@@ -9,6 +9,9 @@ export type CommunityGroup = {
   lat: number | null;
   lng: number | null;
   created_by: string;
+  /** Private groups do not appear in browse or search, and only
+   *  members can read the group, its membership or its messages. */
+  is_private: boolean;
   created_at: string;
   updated_at: string;
   member_count: number;

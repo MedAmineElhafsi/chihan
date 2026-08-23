@@ -495,7 +495,15 @@
     "open": "Offen",
     "all": "Alle",
     "targetLink": "Ziel ansehen",
-    "banned": "Gesperrt"
+    "banned": "Gesperrt",
+    "verifyTitle": "Verifizierungsanträge ({count})",
+    "verifyEmpty": "Nichts offen. Das Abzeichen bedeutet nur etwas, solange diese Liste gelesen wird.",
+    "verifyOpenDoc": "Dokument öffnen",
+    "verifyNoDoc": "Dokument nicht erreichbar",
+    "verifyNotePlaceholder": "Begründung, bei Ablehnung sichtbar (optional)",
+    "verifyApprove": "Bestätigen",
+    "verifyReject": "Ablehnen",
+    "verifyFailed": "Entscheidung konnte nicht gespeichert werden."
   },
   "Settings": {
     "title": "Einstellungen",
@@ -647,7 +655,13 @@
     "inviteOrPeople": "Oder jemanden aus dem Verzeichnis einladen",
     "inviteSearch": "Personen suchen…",
     "inviteEmpty": "Gerade niemand zum Einladen.",
-    "inviteSend": "Einladen"
+    "inviteSend": "Einladen",
+    "privacyLegend": "Wer diese Gruppe finden kann",
+    "privateLabel": "Privat — nur mit Einladung",
+    "privateHint": "Sie erscheint nicht in der Übersicht oder Suche. Nur Mitglieder sehen, wer dabei ist, und lesen die Nachrichten.",
+    "publicLabel": "Öffentlich",
+    "publicHint": "Alle können sie finden und beitreten. Gut für eine Stadtgruppe oder ein offenes Treffen.",
+    "privateBadge": "Privat"
   },
   "Views": {
     "title": "Wer hat mich angesehen",
@@ -761,5 +775,25 @@
     "memoryTitle": "Für die Nächsten festhalten",
     "memoryBody": "Wenn ein Ort, ein Amt oder eine Person das gelöst hat, trag sie ins Verzeichnis ein. Die Nächsten finden es dann, ohne zu fragen.",
     "memoryCta": "Zum Verzeichnis hinzufügen"
+  },
+  "Verification": {
+    "title": "Verifizierung beantragen",
+    "body": "Schick etwas, das zeigt, wer du bist — Ausweis, Zulassung oder Gewerbeanmeldung. Ein Mensch prüft es.",
+    "fileHint": "JPG, PNG, WebP oder PDF · bis 5 MB",
+    "notePlaceholder": "Was die Prüfung wissen sollte (optional)",
+    "submit": "Zur Prüfung senden",
+    "privacyNote": "Dein Dokument wird privat gespeichert. Nur du und die Moderation können es öffnen; im Profil erscheint es nie.",
+    "pendingTitle": "Wird geprüft",
+    "pendingBody": "Jemand sieht sich dein Dokument an. Nach der Freigabe erscheint das Abzeichen in deinem Profil.",
+    "withdraw": "Antrag zurückziehen",
+    "verifiedTitle": "Du bist verifiziert",
+    "verifiedBody": "Das Abzeichen erscheint in deinem Profil und neben deinem Eintrag.",
+    "rejected": "Dein letzter Antrag wurde nicht bestätigt.",
+    "errorNoFile": "Wähle zuerst ein Dokument.",
+    "errorType": "Nutze JPG, PNG, WebP oder PDF.",
+    "errorSize": "Die Datei ist größer als 5 MB.",
+    "errorUpload": "Der Upload ist fehlgeschlagen. Bitte versuch es erneut.",
+    "errorPending": "Du hast bereits einen Antrag offen.",
+    "errorGeneric": "Antrag konnte nicht gesendet werden. Bitte versuch es erneut."
   }
 }

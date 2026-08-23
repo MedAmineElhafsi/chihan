@@ -1,4 +1,4 @@
-import { MapPin, Users } from "lucide-react";
+import { Lock, MapPin, Users } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import type { CommunityGroup } from "@/types/group";
@@ -6,12 +6,14 @@ import type { CommunityGroup } from "@/types/group";
 export function GroupCard({
   group,
   joinedLabel,
+  privateLabel,
   membersLabel,
   distanceLabel,
   isJoined,
 }: {
   group: CommunityGroup;
   joinedLabel: string;
+  privateLabel: string;
   membersLabel: string;
   distanceLabel?: string | null;
   isJoined?: boolean;
@@ -49,6 +51,12 @@ export function GroupCard({
           <Users className="size-3.5 text-cyan" />
           {membersLabel}
         </span>
+        {group.is_private && (
+          <span className="inline-flex items-center gap-1 text-cyan">
+            <Lock className="size-3.5" />
+            {privateLabel}
+          </span>
+        )}
         {distanceLabel && <span>{distanceLabel}</span>}
       </div>
     </Link>

@@ -495,7 +495,15 @@
     "open": "Open",
     "all": "All",
     "targetLink": "View target",
-    "banned": "Banned"
+    "banned": "Banned",
+    "verifyTitle": "Verification requests ({count})",
+    "verifyEmpty": "Nothing waiting. The badge only means something while this queue stays read.",
+    "verifyOpenDoc": "Open document",
+    "verifyNoDoc": "Document unreachable",
+    "verifyNotePlaceholder": "Reason, shown to the applicant if you reject (optional)",
+    "verifyApprove": "Approve",
+    "verifyReject": "Reject",
+    "verifyFailed": "Could not save that decision."
   },
   "Settings": {
     "title": "Settings",
@@ -647,7 +655,13 @@
     "inviteOrPeople": "Or invite someone from the directory",
     "inviteSearch": "Search people…",
     "inviteEmpty": "No people to invite right now.",
-    "inviteSend": "Invite"
+    "inviteSend": "Invite",
+    "privacyLegend": "Who can find this group",
+    "privateLabel": "Private — invite only",
+    "privateHint": "It will not appear in browse or search. Only members can see who is in it or read the messages.",
+    "publicLabel": "Public",
+    "publicHint": "Anyone can find it and join. Good for a city group or an open event.",
+    "privateBadge": "Private"
   },
   "Views": {
     "title": "Who viewed me",
@@ -761,5 +775,25 @@
     "memoryTitle": "Save this for the next person",
     "memoryBody": "If a place, office or person solved this, add them to the directory. The next person who needs it will find it without asking.",
     "memoryCta": "Add to directory"
+  },
+  "Verification": {
+    "title": "Get verified",
+    "body": "Send something that shows you are who you say — an ID, a licence, or a business registration. A person reviews it.",
+    "fileHint": "JPG, PNG, WebP or PDF · up to 5 MB",
+    "notePlaceholder": "Anything the reviewer should know (optional)",
+    "submit": "Send for review",
+    "privacyNote": "Your document is stored privately. Only you and a moderator can open it, and it is never shown on your profile.",
+    "pendingTitle": "Waiting for review",
+    "pendingBody": "Someone will look at your document. The badge appears on your profile once it is approved.",
+    "withdraw": "Withdraw request",
+    "verifiedTitle": "You are verified",
+    "verifiedBody": "The badge shows on your profile and next to your listing.",
+    "rejected": "Your last request was not approved.",
+    "errorNoFile": "Choose a document first.",
+    "errorType": "Use a JPG, PNG, WebP or PDF.",
+    "errorSize": "That file is larger than 5 MB.",
+    "errorUpload": "The upload failed. Please try again.",
+    "errorPending": "You already have a request waiting.",
+    "errorGeneric": "Could not send your request. Please try again."
   }
 }
