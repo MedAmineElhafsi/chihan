@@ -373,3 +373,28 @@ also caps duration at 120s, so lift that constraint too if you go past it.
 
 A reel is a post, not a separate system: likes, comments, reporting, blocking
 and every existing RLS policy apply to it without duplication.
+
+### Phase E — verified against the live database
+
+Migration 0024 applied, including the corrected `posts_reel_has_media`.
+
+| Check | |
+|---|---|
+| reel with no video refused (`posts_reel_has_media`) | PASS |
+| over-long reel refused (`posts_duration_check`) | PASS |
+| unknown post type refused | PASS |
+| valid reel accepted | PASS |
+| comes back as `type = 'reel'` | PASS |
+| poster survives the round trip | PASS |
+| duration survives | PASS |
+| posts feed excludes reels when filtered | PASS |
+| probe reels removed | PASS |
+
+`/en/reels` renders: heading, count, composer, and the empty state while
+there are no reels.
+
+**Bug this caught:** the first version of `posts_reel_has_media` used
+`array_length(media, 1) >= 1`. On an empty array that returns NULL, and a
+CHECK passes on NULL — so reels with no video were being accepted. `tsc`,
+`eslint` and `next build` were all clean throughout; only inserting a bad row
+found it. Fixed with `cardinality(media)`.
