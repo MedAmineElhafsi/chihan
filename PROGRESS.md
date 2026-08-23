@@ -254,3 +254,27 @@ Design note: an **unclaimed** business stays reviewable by anyone signed in —
 there is no person to have dealt with, and requiring one would have silently
 killed every restaurant review. The gate applies to claimed listings and
 professionals, where there is a real person on the other side.
+
+### Phase C — verified against the live database
+
+Migrations 0021 and 0022 are applied. Checked directly, not assumed:
+
+| Check | Result |
+|---|---|
+| `listings_with_stats` exposes `kind` + `profession` | yes |
+| `can_review()` / `has_dealt_with()` / `reply_to_review()` callable | yes |
+| `reply_to_review` ownership guard fires on a forged id | yes |
+| Stranger may review a **professional** listing | **false** |
+| Owner may review **himself** | **false** |
+| Stranger may review an **unclaimed business** | **true** |
+| Stranger may review after a shared conversation exists | **true** |
+| Gate closes again once that conversation is removed | **false** |
+
+Fixed while verifying: the professional listing was only written when the
+switch was flipped, so editing your profession afterwards left the listing
+describing who you used to be. `syncProfessionalListing()` is now shared by
+the switch and by `saveProfile`.
+
+Still unseeded: `seed_help.sql` (help board is empty) and `seed_professions.sql`
+(all 26 profiles have `profession = null`, so the globe's People filter has
+only one value).
