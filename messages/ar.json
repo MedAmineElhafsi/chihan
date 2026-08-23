@@ -24,7 +24,16 @@
     "account": "الحساب",
     "openMenu": "فتح القائمة",
     "search": "بحث",
-    "help": "مساعدة"
+    "help": "مساعدة",
+    "home": "الرئيسية",
+    "chat": "الدردشة",
+    "you": "أنت",
+    "primary": "التنقل الرئيسي",
+    "create": "إنشاء",
+    "createPost": "اكتب منشورًا",
+    "createReel": "سجّل ريلز",
+    "createHelp": "اطلب مساعدة",
+    "createPlace": "أضِف مكانًا"
   },
   "Common": {
     "language": "اللغة",

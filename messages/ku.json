@@ -24,7 +24,16 @@
     "account": "Hesab",
     "openMenu": "Menûyê veke",
     "search": "Lêgerîn",
-    "help": "Alîkarî"
+    "help": "Alîkarî",
+    "home": "Malper",
+    "chat": "Chat",
+    "you": "Tu",
+    "primary": "Navîgasyona sereke",
+    "create": "Çêke",
+    "createPost": "Peyamekê binivîse",
+    "createReel": "Reel tomar bike",
+    "createHelp": "Alîkarî bixwaze",
+    "createPlace": "Cih zêde bike"
   },
   "Common": {
     "language": "Ziman",

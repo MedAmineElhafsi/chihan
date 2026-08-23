@@ -13,12 +13,14 @@ import { UserMenu } from "./user-menu";
 import { MobileMenu } from "./mobile-menu";
 import { NotificationsBell } from "@/components/notifications/notifications-bell";
 
-// Help leads: asking for and offering practical help is the core loop.
+// The same five destinations as the mobile tab bar, so the app has one
+// shape on every screen size.
 const NAV = [
+  { href: "/feed", key: "home" },
+  { href: "/explore", key: "explore" },
   { href: "/help", key: "help" },
   { href: "/directory", key: "directory" },
-  { href: "/explore", key: "explore" },
-  { href: "/news", key: "news" },
+  { href: "/messages", key: "chat" },
 ] as const;
 
 export async function SiteHeader() {

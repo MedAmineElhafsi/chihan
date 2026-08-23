@@ -18,17 +18,24 @@
  *  - billing — with no users a paywall earns nothing and only adds friction
  */
 export const FEATURES = {
+  // The five tabs and what hangs off them.
   help: true,
   directory: true,
   explore: true,
   news: true,
   messages: true,
   search: true,
+  feed: true,
+  stories: true,
+  groups: true,
+  people: true,
 
-  groups: false,
-  feed: false,
-  stories: false,
-  people: false,
+  // Not built yet — the tab bar hides the compose option until it is.
+  reels: false,
+
+  // Deliberately off. Matches and who-viewed are engagement machinery that
+  // works against a community built on helping; billing earns nothing at
+  // zero users. All three are one flag away, with their data intact.
   match: false,
   views: false,
   billing: false,

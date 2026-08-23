@@ -196,3 +196,20 @@ Remaining work is your hosted setup (run migrations, add keys, deploy).
 - [x] 5 locales updated · `tsc`, `eslint`, `next build` all clean
 
 Reversible: flip a flag in `lib/features.ts`. No tables dropped, no data deleted.
+
+## Phase A — the five-tab shell
+
+- [x] `feed`, `stories`, `groups`, `people` switched back on in `lib/features.ts`
+- [x] `reels: false` added — the compose sheet hides it until it exists
+- [x] `components/app-shell/tab-bar.tsx` — Home · Explore · + · Chat · You, mobile only
+- [x] `components/app-shell/compose-sheet.tsx` — one button: post, help, place (reel when built)
+- [x] Desktop header carries the same five destinations
+- [x] Layout mounts the bar and pads `main` so nothing hides behind it
+- [x] Nav strings in 5 locales · `tsc`, `eslint`, `next build` clean
+
+Verified in the browser at 375px and 1280px: bar pins to the bottom, active
+tab is cyan with `aria-current="page"`, header nav takes over at `lg`, no
+console errors, no sideways scroll. `/feed` and `/groups` render; `/match`
+and `/pricing` still return not-found.
+
+Still off: match, who-viewed, billing.

@@ -24,7 +24,16 @@
     "account": "Konto",
     "openMenu": "Menü öffnen",
     "search": "Suche",
-    "help": "Hilfe"
+    "help": "Hilfe",
+    "home": "Start",
+    "chat": "Chat",
+    "you": "Du",
+    "primary": "Hauptnavigation",
+    "create": "Erstellen",
+    "createPost": "Beitrag schreiben",
+    "createReel": "Reel aufnehmen",
+    "createHelp": "Um Hilfe bitten",
+    "createPlace": "Ort hinzufügen"
   },
   "Common": {
     "language": "Sprache",
