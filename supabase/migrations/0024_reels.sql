@@ -34,10 +34,14 @@ alter table public.posts
   );
 
 -- A reel must actually carry a video; a post must not pretend to be one.
+--
+-- cardinality(), not array_length(): array_length on an empty array returns
+-- NULL, and a CHECK passes on NULL, so the obvious spelling of this rule lets
+-- an empty reel straight through.
 alter table public.posts drop constraint if exists posts_reel_has_media;
 alter table public.posts
   add constraint posts_reel_has_media check (
-    type <> 'reel' or array_length(media, 1) >= 1
+    type <> 'reel' or cardinality(media) >= 1
   );
 
 -- Reels are read newest-first and filtered by type, like the feed.
