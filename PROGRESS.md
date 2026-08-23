@@ -417,3 +417,22 @@ place you go, and creating one is a separate act.
 Verified at 375px: five tabs at 72px each, no horizontal scroll, Reels marked
 `aria-current="page"`, chat icon present in the header, and the New reel button
 opens a composer that accepts mp4/mov/webm and states the 30s limit.
+
+### Home — stories confirmed, and a reel bug caught
+
+Stories were already wired into `/feed` and render correctly: the rail shows
+with "Your story" as the composer. There are simply no stories from other
+members yet, which is why it looked empty.
+
+**Bug found while checking:** `post-card.tsx` rendered every post's media as
+`<img src={media[0]}>`. A reel's media is an `.mp4`, so the first reel anyone
+posted would have shown a broken image in the Home feed. There were no reels
+in the database yet, so nothing was visibly wrong — the bug was waiting.
+
+A reel in the feed now renders its **poster** with a play badge and a duration
+chip, linking to the player. That also means the feed never downloads a video
+just to show a card.
+
+Verified by inserting a real reel row and reading the rendered page: the
+poster is used, the `.mp4` never appears in an `<img>`, the duration badge
+shows, and the card links to `/reels`. Probe row deleted afterwards.

@@ -9,6 +9,7 @@ import {
   Loader2,
   MapPin,
   MessageSquare,
+  Play,
   Send,
   Trash2,
 } from "lucide-react";
@@ -247,16 +248,45 @@ export function PostCard({
         </p>
       )}
 
-      {item.media.length > 0 && (
-        <div className="mt-3 overflow-hidden border-y border-border">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={item.media[0]}
-            alt=""
-            className="max-h-[32rem] w-full object-cover"
-          />
-        </div>
-      )}
+      {item.media.length > 0 &&
+        (item.type === "reel" ? (
+          /* A reel is a video: show its poster and send people to the player,
+             rather than pointing an <img> at an .mp4 and rendering nothing. */
+          <Link
+            href="/reels"
+            className="group relative mt-3 block overflow-hidden border-y border-border"
+          >
+            {item.poster_url ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={item.poster_url}
+                alt=""
+                className="max-h-[32rem] w-full object-cover"
+              />
+            ) : (
+              <div className="flex h-64 w-full items-center justify-center bg-secondary" />
+            )}
+            <span className="absolute inset-0 flex items-center justify-center">
+              <span className="flex size-14 items-center justify-center rounded-full bg-depth-0/70 backdrop-blur transition-transform group-hover:scale-105">
+                <Play className="size-6 translate-x-0.5 fill-air text-air" />
+              </span>
+            </span>
+            {item.duration_seconds != null && (
+              <span className="absolute end-3 top-3 rounded-sm bg-depth-0/75 px-1.5 py-0.5 font-mono text-[0.65rem] text-air backdrop-blur">
+                {item.duration_seconds}s
+              </span>
+            )}
+          </Link>
+        ) : (
+          <div className="mt-3 overflow-hidden border-y border-border">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={item.media[0]}
+              alt=""
+              className="max-h-[32rem] w-full object-cover"
+            />
+          </div>
+        ))}
 
       <footer className="mt-1 grid grid-cols-2 gap-1 border-t border-border/70 px-2 py-1.5">
         <button
