@@ -224,7 +224,15 @@
     "noBio": "Hîn bîo tune.",
     "interests": "Eleqe",
     "lookingFor": "Li digere",
-    "offering": "Pêşkêş dike"
+    "offering": "Pêşkêş dike",
+    "serviceTitle": "Xizmeta pîşeyî pêşkêş bike",
+    "serviceOnBody": "Tu di rêberê de yî û endamên ku bi te re kar kirine dikarin te binirxînin.",
+    "serviceOffBody": "Vê veke da ku wek pispor di rêberê de xuya bibî. Tenê kesên ku bi rastî bi te re kar kirine dikarin binirxînin.",
+    "serviceNoProfession": "Pêşî pîşeya xwe li profîla xwe zêde bike — ew diyar dike tu li ku derê gerdûnê xuya dibî.",
+    "serviceTurnOn": "Min wek pispor tomar bike",
+    "serviceTurnOff": "Navnîşa min rake",
+    "serviceFailed": "Navnîş nehat nûkirin. Ji kerema xwe dîsa biceribîne.",
+    "needsName": "Pêşî navekî xuyanê zêde bike."
   },
   "Explore": {
     "title": "Vekole",
@@ -339,7 +347,17 @@
     "errorName": "Ji kerema xwe navekî binivîse (herî kêm 2 tîp).",
     "errorPhotoType": "Ji kerema xwe wêneyên JPG, PNG an WebP hilbijêre.",
     "errorPhotoSize": "Her wêne divê di bin 4 MB de be.",
-    "errorGeneric": "Navnîş nehat tomarkirin. Ji kerema xwe dîsa biceribîne."
+    "errorGeneric": "Navnîş nehat tomarkirin. Ji kerema xwe dîsa biceribîne.",
+    "needsDealing": "Piştî ku we bi hev re kar kir tu dikarî nirxandinê binivîsî — peyamekê bişîne an bersiva daxwaza alîkariyê bide.",
+    "ownerCannotReview": "Ev navnîşa te ye. Tu dikarî bersiva nirxandinan bidî, lê nekarî yekê binivîsî.",
+    "ownerReply": "Bersiva xwedî",
+    "replyCta": "Bersiv bide",
+    "editReply": "Bersivê biguherîne",
+    "replyPlaceholder": "Bersiva vê nirxandinê bide…",
+    "replySave": "Bersivê bişîne",
+    "replyFailed": "Bersiv nehat şandin. Ji kerema xwe dîsa biceribîne.",
+    "cancel": "Betal",
+    "professional": "Pispor"
   },
   "People": {
     "title": "Mirov",

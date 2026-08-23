@@ -13,12 +13,17 @@ import { StarInput } from "./stars";
 export function ReviewForm({
   listingId,
   isAuthenticated,
+  mayReview,
+  isOwner,
   initialRating,
   initialBody,
   hasReview,
 }: {
   listingId: string;
   isAuthenticated: boolean;
+  /** False until you have actually dealt with this person. */
+  mayReview: boolean;
+  isOwner: boolean;
   initialRating: number;
   initialBody: string;
   hasReview: boolean;
@@ -38,6 +43,24 @@ export function ReviewForm({
           <Link href="/login">{t("signIn")}</Link>
         </Button>
       </div>
+    );
+  }
+
+  // You cannot review yourself, and you cannot review someone you have never
+  // dealt with — the database enforces both; this only explains why.
+  if (isOwner) {
+    return (
+      <p className="rounded-xl border border-dashed border-border bg-card/30 p-4 text-sm text-muted-foreground">
+        {t("ownerCannotReview")}
+      </p>
+    );
+  }
+
+  if (!mayReview) {
+    return (
+      <p className="rounded-xl border border-dashed border-border bg-card/30 p-4 text-sm text-muted-foreground">
+        {t("needsDealing")}
+      </p>
     );
   }
 

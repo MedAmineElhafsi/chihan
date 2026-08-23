@@ -229,3 +229,28 @@ committed fiber, not the stale alternate.
 
 Known, pre-existing and unrelated: Realtime presence returns 400 on /explore,
 so the online dots never light. Not touched by this phase.
+
+## Phase C — reviews for every profession and business
+
+- [x] `supabase/migrations/0022_professionals_reviews.sql` — **needs running**
+  - `profiles.offers_service` — the opt-in switch
+  - `listings.kind` ('business' | 'professional') + `listings.profession`
+  - unique index: one professional listing per person
+  - `reviews.reply` + `replied_at` — the right of reply
+  - `has_dealt_with()` / `can_review()` — security definer, answer one yes/no
+  - insert policy on `reviews` now requires `can_review`
+  - `reply_to_review()` — RLS cannot gate a single column, so replies go through
+    a function that proves the caller owns the listing
+- [x] `lib/professional-actions.ts` — opt in, opt out (listing hidden, reviews kept), reply
+- [x] `lib/reviews.ts` — `canReview` so the interface can explain itself
+- [x] `components/profile/offers-service-switch.tsx` — the switch, on /profile
+- [x] `components/directory/review-item.tsx` — name, face, reply, report
+- [x] Review form explains the gate instead of failing at submit
+- [x] "Professional" badge distinguishes a person from a shop
+- [x] `.claude/worktrees/**` added to eslint ignores
+- [x] Strings in 5 locales · `tsc`, `eslint`, `next build` clean
+
+Design note: an **unclaimed** business stays reviewable by anyone signed in —
+there is no person to have dealt with, and requiring one would have silently
+killed every restaurant review. The gate applies to claimed listings and
+professionals, where there is a real person on the other side.

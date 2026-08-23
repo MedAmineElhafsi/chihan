@@ -103,6 +103,7 @@ export default async function DirectoryPage({
               listing={l}
               categoryLabel={t(`cat_${l.category}`)}
               reviewsLabel={reviewsLabel}
+              professionalLabel={t("professional")}
             />
           ))}
         </div>

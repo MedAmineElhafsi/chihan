@@ -17,6 +17,8 @@ import { Button } from "@/components/ui/button";
 import { Stars } from "@/components/directory/stars";
 import { CategoryIcon } from "@/components/directory/category-icon";
 import { ReviewForm } from "@/components/directory/review-form";
+import { ReviewItem } from "@/components/directory/review-item";
+import { canReview } from "@/lib/reviews";
 import { ClaimButton } from "@/components/directory/claim-button";
 import { ListingMap } from "@/components/directory/listing-map";
 import { ReportButton } from "@/components/moderation/report-button";
@@ -37,6 +39,7 @@ export default async function ListingDetailPage({
   const user = await getCurrentUser();
 
   const isOwner = !!user && listing.owner_user_id === user.id;
+  const mayReview = await canReview(id, user?.id ?? null);
   const canClaim = !!user && listing.owner_user_id === null;
   const myReview = user
     ? reviews.find((r) => r.author_id === user.id)
@@ -149,6 +152,8 @@ export default async function ListingDetailPage({
             <ReviewForm
               listingId={listing.id}
               isAuthenticated={!!user}
+              mayReview={mayReview || !!myReview}
+              isOwner={isOwner}
               initialRating={myReview?.rating ?? 0}
               initialBody={myReview?.body ?? ""}
               hasReview={!!myReview}
@@ -158,25 +163,13 @@ export default async function ListingDetailPage({
             ) : (
               <ul className="flex flex-col gap-4">
                 {reviews.map((r) => (
-                  <li
+                  <ReviewItem
                     key={r.id}
-                    className="flex flex-col gap-1.5 border-b border-border/60 pb-4 last:border-0"
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-sm font-medium">
-                        {r.author_name ?? t("anonymous")}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {dateFmt.format(new Date(r.created_at))}
-                      </span>
-                    </div>
-                    <Stars value={r.rating} />
-                    {r.body && (
-                      <p className="text-sm leading-relaxed text-foreground/90">
-                        {r.body}
-                      </p>
-                    )}
-                  </li>
+                    review={r}
+                    listingId={listing.id}
+                    isOwner={isOwner}
+                    date={dateFmt.format(new Date(r.created_at))}
+                  />
                 ))}
               </ul>
             )}

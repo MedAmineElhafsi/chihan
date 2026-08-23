@@ -224,7 +224,15 @@
     "noBio": "No bio yet.",
     "interests": "Interests",
     "lookingFor": "Looking for",
-    "offering": "Can offer"
+    "offering": "Can offer",
+    "serviceTitle": "Offer a professional service",
+    "serviceOnBody": "You are listed in the directory and members you have dealt with can review you.",
+    "serviceOffBody": "Turn this on to appear in the directory as a professional. Only people you have actually dealt with can leave a review.",
+    "serviceNoProfession": "Add your profession to your profile first — it decides where you appear on the globe.",
+    "serviceTurnOn": "List me as a professional",
+    "serviceTurnOff": "Remove my listing",
+    "serviceFailed": "Could not update your listing. Please try again.",
+    "needsName": "Add a display name to your profile first."
   },
   "Explore": {
     "title": "Explore",
@@ -339,7 +347,17 @@
     "errorName": "Please enter a name (at least 2 characters).",
     "errorPhotoType": "Please choose JPG, PNG or WebP images.",
     "errorPhotoSize": "Each image must be under 4 MB.",
-    "errorGeneric": "Couldn’t save the listing. Please try again."
+    "errorGeneric": "Couldn’t save the listing. Please try again.",
+    "needsDealing": "You can review someone once you have dealt with them — message them, or answer one of their help requests, and this opens up.",
+    "ownerCannotReview": "This is your listing. You can reply to reviews, but not write one.",
+    "ownerReply": "Reply from the owner",
+    "replyCta": "Reply",
+    "editReply": "Edit reply",
+    "replyPlaceholder": "Answer this review…",
+    "replySave": "Post reply",
+    "replyFailed": "Could not post your reply. Please try again.",
+    "cancel": "Cancel",
+    "professional": "Professional"
   },
   "People": {
     "title": "People",

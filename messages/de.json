@@ -224,7 +224,15 @@
     "noBio": "Noch keine Bio.",
     "interests": "Interessen",
     "lookingFor": "Sucht",
-    "offering": "Bietet an"
+    "offering": "Bietet an",
+    "serviceTitle": "Berufliche Leistung anbieten",
+    "serviceOnBody": "Du stehst im Verzeichnis, und Mitglieder, mit denen du zu tun hattest, können dich bewerten.",
+    "serviceOffBody": "Schalte das ein, um als Fachkraft im Verzeichnis zu erscheinen. Nur wer wirklich mit dir zu tun hatte, kann bewerten.",
+    "serviceNoProfession": "Trag zuerst deinen Beruf im Profil ein — er bestimmt, wo du auf dem Globus erscheinst.",
+    "serviceTurnOn": "Als Fachkraft eintragen",
+    "serviceTurnOff": "Eintrag entfernen",
+    "serviceFailed": "Eintrag konnte nicht aktualisiert werden. Bitte versuch es erneut.",
+    "needsName": "Trag zuerst einen Anzeigenamen ein."
   },
   "Explore": {
     "title": "Entdecken",
@@ -339,7 +347,17 @@
     "errorName": "Bitte gib einen Namen ein (mindestens 2 Zeichen).",
     "errorPhotoType": "Bitte wähle JPG-, PNG- oder WebP-Bilder.",
     "errorPhotoSize": "Jedes Bild muss unter 4 MB sein.",
-    "errorGeneric": "Eintrag konnte nicht gespeichert werden. Bitte erneut versuchen."
+    "errorGeneric": "Eintrag konnte nicht gespeichert werden. Bitte erneut versuchen.",
+    "needsDealing": "Du kannst jemanden bewerten, sobald ihr miteinander zu tun hattet — schreib eine Nachricht oder beantworte eine Hilfeanfrage, dann geht das hier auf.",
+    "ownerCannotReview": "Das ist dein Eintrag. Du kannst auf Bewertungen antworten, aber keine schreiben.",
+    "ownerReply": "Antwort des Inhabers",
+    "replyCta": "Antworten",
+    "editReply": "Antwort bearbeiten",
+    "replyPlaceholder": "Auf diese Bewertung antworten…",
+    "replySave": "Antwort senden",
+    "replyFailed": "Antwort konnte nicht gesendet werden. Bitte versuch es erneut.",
+    "cancel": "Abbrechen",
+    "professional": "Fachkraft"
   },
   "People": {
     "title": "Menschen",

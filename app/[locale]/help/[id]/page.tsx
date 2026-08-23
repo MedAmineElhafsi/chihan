@@ -166,6 +166,7 @@ export default async function HelpRequestPage({
                 listing={l}
                 categoryLabel={tDir(`cat_${l.category}` as never)}
                 reviewsLabel={tDir("reviewsShort")}
+                professionalLabel={tDir("professional")}
               />
             ))}
           </div>
