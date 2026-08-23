@@ -278,3 +278,24 @@ the switch and by `saveProfile`.
 Still unseeded: `seed_help.sql` (help board is empty) and `seed_professions.sql`
 (all 26 profiles have `profession = null`, so the globe's People filter has
 only one value).
+
+## Seeds applied (2026-08-23)
+
+Run against the live database via the service key, not by hand:
+
+- **seed_professions** — 24 demo profiles now carry real trades across 11
+  professions. The two real accounts were left untouched, as intended.
+- **seed_help** — 7 requests (6 open, 1 resolved) across all 7 categories,
+  plus 3 offers. Idempotent: `on conflict (id) do nothing`.
+
+What this proved, with data, for the first time:
+
+- Explore's profession filter offers 12 values instead of 1.
+- The Help → Directory bridge works: "Looking for a Kurdish-speaking dentist"
+  now suggests **Dr. Karwan Dental**, Erbil Family Practice and Clinique
+  Dr. Aland underneath the request.
+
+Content gap, not a code gap: there are **no Berlin clinics** in the directory
+(Hamburg, Lyon, Manchester, Erbil), so those suggestions came from the
+anywhere-fallback rather than the city match. A Berlin launch needs Berlin
+businesses in the directory.
