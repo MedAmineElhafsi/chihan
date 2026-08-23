@@ -11,6 +11,9 @@ const groupSchema = z.object({
   description: z.string().trim().max(1000).optional().default(""),
   city: z.string().trim().max(80).optional().default(""),
   country: z.string().trim().max(80).optional().default(""),
+  // Private by default: a group made without thinking about privacy
+  // should not be the one that leaks.
+  isPrivate: z.boolean().optional().default(true),
 });
 
 export type CreateGroupInput = z.input<typeof groupSchema>;
@@ -48,6 +51,7 @@ export async function createGroup(
       lat: geo?.lat ?? null,
       lng: geo?.lng ?? null,
       created_by: user.id,
+      is_private: v.isPrivate,
     })
     .select("id")
     .single();

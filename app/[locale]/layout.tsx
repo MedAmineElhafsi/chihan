@@ -8,7 +8,10 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { DocumentAttributes } from "@/components/providers/document-attributes";
 import { Backdrop } from "@/components/backdrop";
 import { SiteHeader } from "@/components/app-shell/site-header";
+import { TabBar } from "@/components/app-shell/tab-bar";
+import { getCurrentUser } from "@/lib/auth";
 import { SiteFooter } from "@/components/app-shell/site-footer";
+import { ShellFooter } from "@/components/app-shell/shell-footer";
 import { ServiceWorkerRegister } from "@/components/pwa/sw-register";
 import { InstallPrompt } from "@/components/pwa/install-prompt";
 
@@ -16,11 +19,10 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+// Dark-only product — one committed look.
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#070a14" },
-    { media: "(prefers-color-scheme: light)", color: "#fbf7ef" },
-  ],
+  themeColor: "#001619",
+  colorScheme: "dark",
 };
 
 export async function generateMetadata({
@@ -43,12 +45,13 @@ export default async function LocaleLayout({
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
+  const user = await getCurrentUser();
 
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="dark"
-      enableSystem
+      forcedTheme="dark"
+      enableSystem={false}
       disableTransitionOnChange
     >
       <NextIntlClientProvider>
@@ -56,9 +59,12 @@ export default async function LocaleLayout({
         <Backdrop />
         <div className="relative flex min-h-dvh flex-col">
           <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
+          <main className="flex-1 pb-20 lg:pb-0">{children}</main>
+          <ShellFooter>
+            <SiteFooter />
+          </ShellFooter>
         </div>
+        <TabBar signedIn={Boolean(user)} />
         <InstallPrompt />
         <ServiceWorkerRegister />
       </NextIntlClientProvider>

@@ -130,9 +130,9 @@ export function GroupChat({
   }
 
   return (
-    <section className="glass mt-10 flex flex-col overflow-hidden rounded-2xl">
+    <section className="panel mt-10 flex flex-col overflow-hidden rounded-2xl">
       <div className="flex items-center gap-2 border-b border-border/60 px-4 py-3">
-        <MessageSquare className="size-4 text-gold" />
+        <MessageSquare className="size-4 text-cyan" />
         <h2 className="font-display text-lg font-semibold">{t("chatTitle")}</h2>
       </div>
 
@@ -177,12 +177,12 @@ export function GroupChat({
                       className={cn(
                         "rounded-2xl px-3 py-2 text-sm",
                         mine
-                          ? "bg-gold/20 text-foreground"
+                          ? "bg-cyan/20 text-foreground"
                           : "bg-secondary text-secondary-foreground"
                       )}
                     >
                       {!mine && (
-                        <div className="mb-0.5 text-[0.7rem] font-medium text-gold">
+                        <div className="mb-0.5 text-[0.7rem] font-medium text-cyan">
                           {name}
                         </div>
                       )}

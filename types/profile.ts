@@ -12,6 +12,8 @@ export type Profile = {
   languages: string[];
   dialect: string | null;
   profession: string | null;
+  /** Opted in to being listed and reviewable as a professional. */
+  offers_service: boolean;
   origin_region: string | null;
   interests: string[];
   looking_for: string[];
@@ -27,7 +29,7 @@ export type Profile = {
 
 /** Columns selected for profile reads (excludes the raw geography column). */
 export const PROFILE_COLUMNS =
-  "id, user_id, display_name, bio, avatar_url, city, country, lat, lng, languages, dialect, profession, origin_region, interests, looking_for, offering, photos, is_public, is_verified, is_banned, consent_at, created_at, updated_at";
+  "id, user_id, display_name, bio, avatar_url, city, country, lat, lng, languages, dialect, profession, offers_service, origin_region, interests, looking_for, offering, photos, is_public, is_verified, is_banned, consent_at, created_at, updated_at";
 
 /** Column list before optional migrations — used as a fallback. */
 export const PROFILE_COLUMNS_BASE =

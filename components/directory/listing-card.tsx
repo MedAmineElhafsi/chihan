@@ -10,19 +10,23 @@ export function ListingCard({
   listing,
   categoryLabel,
   reviewsLabel,
+  professionalLabel,
 }: {
   listing: ListingWithStats;
   categoryLabel: string;
   reviewsLabel: string;
+  /** Shown when the listing is a person rather than a business. */
+  professionalLabel: string;
 }) {
   const place = [listing.city, listing.country].filter(Boolean).join(", ");
   const color = CATEGORY_COLORS[listing.category] ?? CATEGORY_COLORS.other;
   const photo = listing.photos?.[0];
+  const isPerson = listing.kind === "professional";
 
   return (
     <Link
       href={`/directory/${listing.id}`}
-      className="glass group flex flex-col overflow-hidden rounded-2xl transition-colors hover:border-gold/40"
+      className="panel group flex flex-col overflow-hidden rounded-2xl transition-colors hover:border-cyan/40"
     >
       <div className="relative h-36 w-full overflow-hidden bg-secondary">
         {photo ? (
@@ -54,13 +58,18 @@ export function ListingCard({
           <h3 className="font-display text-lg font-semibold leading-tight">
             {listing.name}
           </h3>
+          {isPerson && (
+            <span className="label-mono shrink-0 rounded-sm border border-cyan/40 px-1.5 py-0.5 text-cyan">
+              {professionalLabel}
+            </span>
+          )}
           {listing.is_verified && (
-            <BadgeCheck className="mt-0.5 size-4 shrink-0 text-gold" />
+            <BadgeCheck className="mt-0.5 size-4 shrink-0 text-cyan" />
           )}
         </div>
         {place && (
           <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <MapPin className="size-3.5 text-gold" />
+            <MapPin className="size-3.5 text-cyan" />
             {place}
           </p>
         )}

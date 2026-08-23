@@ -3,6 +3,8 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 
+import { syncProfessionalListing } from "./professional-actions";
+
 import { createClient } from "./supabase/server";
 import { geocode } from "./geocode";
 import {
@@ -115,6 +117,10 @@ export async function saveProfile(
     .single();
 
   if (error) return { ok: false, error: error.message };
+
+  // If they are listed as a professional, the listing describes them — keep it
+  // in step rather than leaving it describing who they used to be.
+  await syncProfessionalListing(user.id);
 
   revalidatePath("/", "layout");
   return { ok: true, id: data.id as string };

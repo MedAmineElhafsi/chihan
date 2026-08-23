@@ -1,90 +1,10 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { ExternalLink, Globe2, Newspaper } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { getNews } from "@/lib/news";
-import type { NewsArticle } from "@/types/news";
+import { ArticleCard } from "@/components/news/article-card";
 import { cn } from "@/lib/utils";
 
-const NEWS_COLORS: Record<string, string> = {
-  culture: "#e1b12c",
-  community: "#1fa36b",
-  politics: "#d6443b",
-  diaspora: "#3b82f6",
-  business: "#a855f7",
-};
-
-function ArticleCard({
-  article,
-  dateLabel,
-  readMore,
-}: {
-  article: NewsArticle;
-  dateLabel: string;
-  readMore: string;
-}) {
-  const color = NEWS_COLORS[article.category ?? ""] ?? "#94a3b8";
-  return (
-    <article className="social-surface flex flex-col overflow-hidden transition-colors hover:border-gold/25">
-      <div
-        className="relative flex h-40 items-center justify-center sm:h-44"
-        style={{
-          backgroundImage: article.image_url
-            ? `url(${article.image_url})`
-            : `radial-gradient(120% 140% at 30% 0%, ${color}40, transparent 70%)`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        {!article.image_url && (
-          <Newspaper className="size-10 opacity-50" style={{ color }} />
-        )}
-        {article.category && (
-          <span
-            className="absolute start-3 top-3 rounded-md px-2.5 py-0.5 text-xs font-medium text-white"
-            style={{ backgroundColor: `${color}cc` }}
-          >
-            {article.category}
-          </span>
-        )}
-      </div>
-
-      <div className="flex flex-1 flex-col gap-2.5 p-5 sm:p-6">
-        {article.country && (
-          <span className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
-            <Globe2 className="size-4 text-gold" />
-            {article.country}
-          </span>
-        )}
-        <h2 className="font-display text-xl font-semibold leading-snug">
-          {article.title}
-        </h2>
-        {article.summary && (
-          <p className="text-[0.95rem] leading-relaxed text-muted-foreground">
-            {article.summary}
-          </p>
-        )}
-        <div className="mt-auto flex items-center justify-between gap-3 pt-3 text-sm text-muted-foreground">
-          <span className="min-w-0 truncate">
-            {article.source ? `${article.source} · ` : ""}
-            {dateLabel}
-          </span>
-          {article.url && (
-            <a
-              href={article.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex shrink-0 items-center gap-1 font-medium text-gold hover:underline"
-            >
-              {readMore}
-              <ExternalLink className="size-3.5" />
-            </a>
-          )}
-        </div>
-      </div>
-    </article>
-  );
-}
 
 export default async function NewsPage({
   params,
@@ -111,7 +31,7 @@ export default async function NewsPage({
     cn(
       "inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
       active
-        ? "border-gold/50 bg-gold/15 text-gold"
+        ? "border-cyan/50 bg-cyan/15 text-cyan"
         : "border-border bg-card text-muted-foreground hover:text-foreground"
     );
 

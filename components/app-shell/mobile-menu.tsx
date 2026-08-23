@@ -5,8 +5,6 @@ import { useLocale, useTranslations } from "next-intl";
 import {
   Bell,
   Check,
-  Eye,
-  HeartHandshake,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -57,25 +55,18 @@ export function MobileMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[15rem]">
         <DropdownMenuItem asChild>
+          <Link href="/help" className="font-medium text-cyan">
+            {tNav("help")}
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <Link href="/explore">{tNav("explore")}</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/directory">{tNav("directory")}</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/people">{tNav("people")}</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/match">{tNav("match")}</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/feed">{tNav("feed")}</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
           <Link href="/news">{tNav("news")}</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/groups">{tNav("groups")}</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/search">{tNav("search")}</Link>
@@ -90,7 +81,7 @@ export function MobileMenu({
             dir={localeMeta[l].dir}
           >
             <span className="flex-1 font-medium">{localeMeta[l].native}</span>
-            {l === locale && <Check className="size-4 text-gold" />}
+            {l === locale && <Check className="size-4 text-cyan" />}
           </DropdownMenuItem>
         ))}
 
@@ -101,18 +92,6 @@ export function MobileMenu({
               <Link href="/profile">
                 <UserRound />
                 {tNav("profile")}
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/views">
-                <Eye />
-                {tNav("whoViewed")}
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/match">
-                <HeartHandshake />
-                {tNav("match")}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
@@ -149,7 +128,7 @@ export function MobileMenu({
             )}
             <form action={signOutAction}>
               <DropdownMenuItem
-                className="text-kurd-red focus:text-kurd-red"
+                className="text-destructive focus:text-destructive"
                 onSelect={(e) => {
                   e.preventDefault();
                   const el = e.target as HTMLElement | null;
@@ -167,7 +146,7 @@ export function MobileMenu({
               <Link href="/login">{tNav("signIn")}</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/signup" className="font-medium text-gold">
+              <Link href="/signup" className="font-medium text-cyan">
                 {tNav("getStarted")}
               </Link>
             </DropdownMenuItem>

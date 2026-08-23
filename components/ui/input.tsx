@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
+/** Underline-first field — reads like an instrument input, not a chunky box. */
 const Input = React.forwardRef<
   HTMLInputElement,
   React.InputHTMLAttributes<HTMLInputElement>
@@ -11,7 +12,10 @@ const Input = React.forwardRef<
       type={type}
       ref={ref}
       className={cn(
-        "flex h-11 w-full rounded-md border border-input bg-card/40 px-3.5 py-2 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 disabled:cursor-not-allowed disabled:opacity-50",
+        "flex h-11 w-full rounded-sm border border-input bg-depth-0/60 px-3.5 text-sm text-air transition-all duration-200",
+        "placeholder:text-muted-foreground/70",
+        "focus-visible:border-cyan focus-visible:bg-depth-0 focus-visible:outline-none focus-visible:shadow-[0_0_18px_-6px_rgba(80,232,244,0.8)]",
+        "disabled:cursor-not-allowed disabled:opacity-40",
         className
       )}
       {...props}

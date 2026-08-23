@@ -203,8 +203,56 @@ export const OFFERING_TO_LOOKING: Record<Offering, readonly LookingFor[]> = {
 /** Max gallery photos on a profile. */
 export const PROFILE_PHOTOS_MAX = 8;
 
+/** The launch community. Used as the default filter on the help board. */
+export const LAUNCH_CITY = "Berlin";
+
+/** What newcomers actually need help with (matches the DB CHECK). */
+export const HELP_CATEGORIES = [
+  "housing",
+  "paperwork",
+  "work",
+  "language",
+  "health",
+  "education",
+  "family",
+  "legal",
+  "transport",
+  "other",
+] as const;
+export type HelpCategory = (typeof HELP_CATEGORIES)[number];
+
+export const HELP_CATEGORY_STYLE: Record<
+  string,
+  { color: string; icon: string }
+> = {
+  housing: { color: "#50e8f4", icon: "🏠" },
+  paperwork: { color: "#f4c150", icon: "📄" },
+  work: { color: "#7ee787", icon: "💼" },
+  language: { color: "#c792ea", icon: "💬" },
+  health: { color: "#ff7b9c", icon: "🩺" },
+  education: { color: "#79c0ff", icon: "🎓" },
+  family: { color: "#ffa657", icon: "👪" },
+  legal: { color: "#a5d6ff", icon: "⚖️" },
+  transport: { color: "#8ddb9c", icon: "🚗" },
+  other: { color: "#9cc4cc", icon: "•" },
+};
+
+export const HELP_URGENCIES = ["normal", "soon", "urgent"] as const;
+export type HelpUrgency = (typeof HELP_URGENCIES)[number];
+
 /** Illustrative pricing (real Stripe prices wired in Phase 8). */
 export const PRICING = {
   monthly: "€5.99",
   yearly: "€49.99",
 } as const;
+
+/**
+ * Reel limits, tuned for the Supabase free tier (1 GB of storage).
+ *
+ * At roughly 8 MB a clip these caps allow about 120 reels before the plan has
+ * to grow. Raising them is a change here and nowhere else — but the database
+ * also caps duration at 120s, so lift that constraint too if you go past it.
+ */
+export const REEL_MAX_SECONDS = 30;
+export const REEL_MAX_BYTES = 20 * 1024 * 1024; // 20 MB
+export const REEL_ACCEPT = ["video/mp4", "video/quicktime", "video/webm"] as const;

@@ -29,6 +29,7 @@ function mapGroup(row: Record<string, unknown>): CommunityGroup {
     lat: row.lat != null ? Number(row.lat) : null,
     lng: row.lng != null ? Number(row.lng) : null,
     created_by: String(row.created_by),
+    is_private: row.is_private === true,
     created_at: String(row.created_at),
     updated_at: String(row.updated_at),
     member_count: Number(row.member_count ?? 0),
@@ -46,7 +47,7 @@ export async function getGroups(opts?: {
     let q = supabase
       .from("community_groups_with_stats")
       .select(
-        "id, name, description, city, country, lat, lng, created_by, created_at, updated_at, member_count"
+        "id, name, description, city, country, lat, lng, created_by, created_at, updated_at, member_count, is_private"
       )
       .order("member_count", { ascending: false })
       .limit(200);
@@ -93,7 +94,7 @@ export async function getGroup(id: string): Promise<CommunityGroup | null> {
     const { data, error } = await supabase
       .from("community_groups_with_stats")
       .select(
-        "id, name, description, city, country, lat, lng, created_by, created_at, updated_at, member_count"
+        "id, name, description, city, country, lat, lng, created_by, created_at, updated_at, member_count, is_private"
       )
       .eq("id", id)
       .maybeSingle();

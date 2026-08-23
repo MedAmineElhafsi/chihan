@@ -1,4 +1,8 @@
+// FEATURE-DISABLED: switched off for launch. Flip `groups` in lib/features.ts
+// to bring this surface back — the code and its tables are untouched.
 import { notFound } from "next/navigation";
+import { isEnabled } from "@/lib/features";
+
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { MapPin, Users } from "lucide-react";
 
@@ -19,6 +23,8 @@ export default async function GroupDetailPage({
 }: {
   params: Promise<{ locale: string; id: string }>;
 }) {
+  if (!isEnabled("groups")) notFound();
+
   const { locale, id } = await params;
   setRequestLocale(locale);
 
@@ -49,12 +55,12 @@ export default async function GroupDetailPage({
           </h1>
           {place && (
             <p className="mt-2 flex items-center gap-1.5 text-muted-foreground">
-              <MapPin className="size-4 text-gold" />
+              <MapPin className="size-4 text-cyan" />
               {place}
             </p>
           )}
           <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
-            <Users className="size-3.5 text-gold" />
+            <Users className="size-3.5 text-cyan" />
             {t("memberCount", { count: group.member_count })}
           </p>
         </div>
@@ -97,7 +103,7 @@ export default async function GroupDetailPage({
           canChat={isMember}
         />
       ) : (
-        <section className="glass mt-10 rounded-2xl px-4 py-10 text-center text-sm text-muted-foreground">
+        <section className="panel mt-10 rounded-2xl px-4 py-10 text-center text-sm text-muted-foreground">
           {t("chatSignInHint")}
         </section>
       )}
@@ -118,7 +124,7 @@ export default async function GroupDetailPage({
                     {m.avatar_url && (
                       <AvatarImage src={m.avatar_url} alt={name} />
                     )}
-                    <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-primary-foreground">
+                    <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-primary-foreground">
                       {initial}
                     </AvatarFallback>
                   </Avatar>
@@ -140,12 +146,12 @@ export default async function GroupDetailPage({
                   {m.profile_id ? (
                     <Link
                       href={`/u/${m.profile_id}`}
-                      className="glass flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-accent/40"
+                      className="panel flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-accent/40"
                     >
                       {inner}
                     </Link>
                   ) : (
-                    <div className="glass flex items-center gap-3 rounded-xl p-3">
+                    <div className="panel flex items-center gap-3 rounded-xl p-3">
                       {inner}
                     </div>
                   )}

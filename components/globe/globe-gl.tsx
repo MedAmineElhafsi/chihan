@@ -28,11 +28,16 @@ type CountryFeature = {
   geometry: unknown;
 };
 
-/**
- * Above this many visible points we fall back to lightweight 3D dots instead of
- * DOM pins — the brief (§7) calls out not rendering thousands of DOM nodes.
- */
-const HTML_MARKER_LIMIT = 300;
+function escapeHtml(s: string) {
+  return s.replace(
+    /[&<>"]/g,
+    (c) =>
+      (({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }) as Record<
+        string,
+        string
+      >)[c]
+  );
+}
 
 export default function GlobeGL({
   globeRef,
@@ -79,21 +84,22 @@ export default function GlobeGL({
     };
   }, []);
 
-  // Ocean sphere — land polygons sit on top.
+  // Ocean sphere — deep and near-black so glowing coastlines carry the form.
   const globeMaterial = useMemo(
     () =>
       new THREE.MeshPhongMaterial({
-        color: "#0d2b52",
-        emissive: "#06182f",
-        emissiveIntensity: 0.55,
-        shininess: 6,
+        color: "#001a20",
+        emissive: "#002a33",
+        emissiveIntensity: 0.35,
+        shininess: 1,
+        transparent: true,
+        opacity: 0.96,
       }),
     []
   );
 
   const norm = (s?: string) => (s ?? "").toLowerCase();
   const highlight = norm(highlightCountry ?? undefined);
-  const useHtmlMarkers = points.length <= HTML_MARKER_LIMIT;
 
   return (
     <Globe
@@ -104,118 +110,68 @@ export default function GlobeGL({
       animateIn={false}
       globeMaterial={globeMaterial}
       showAtmosphere
-      atmosphereColor="#7dd3fc"
-      atmosphereAltitude={0.18}
-      showGraticules
+      atmosphereColor="#50e8f4"
+      atmosphereAltitude={0.25}
       onGlobeReady={onGlobeReady}
       /* Continents & country borders */
       polygonsData={countries}
-      polygonAltitude={0.008}
+      polygonAltitude={0.006}
+      /* Landmasses read as dark plates; the luminous coastline carries the
+         form. A muddy green fill fought the cyan and flattened the sphere. */
       polygonCapColor={(d: object) => {
         const name = norm((d as CountryFeature).properties?.name);
         return highlight && name === highlight
-          ? "rgba(225,177,44,0.55)"
-          : "rgba(34,122,102,0.62)";
+          ? "rgba(80,232,244,0.22)"
+          : "rgba(0,49,58,0.92)";
       }}
-      polygonSideColor={() => "rgba(8,24,44,0.75)"}
+      polygonSideColor={() => "rgba(0,22,25,0.9)"}
       polygonStrokeColor={(d: object) => {
         const name = norm((d as CountryFeature).properties?.name);
         return highlight && name === highlight
-          ? "#f2c84b"
-          : "rgba(190,220,210,0.5)";
+          ? "#c7f8fe"
+          : "rgba(80,232,244,0.55)";
       }}
       polygonLabel={(d: object) =>
         `<div style="background:rgba(8,12,20,.88);border:1px solid rgba(255,255,255,.14);color:#e8ecf6;padding:4px 8px;border-radius:8px;font-size:12px;white-space:nowrap">${
           (d as CountryFeature).properties?.name ?? ""
         }</div>`
       }
-      /* Icon pins — crisp, always face the camera, never z-fight */
-      htmlElementsData={useHtmlMarkers ? points : []}
-      htmlLat="lat"
-      htmlLng="lng"
-      htmlAltitude={0.02}
-      htmlTransitionDuration={250}
-      htmlElementVisibilityModifier={(el: HTMLElement, isVisible: boolean) => {
-        el.style.opacity = isVisible ? "1" : "0";
-        el.style.pointerEvents = isVisible ? "auto" : "none";
-      }}
-      htmlElement={(obj: object) => {
-        const d = obj as GlobeDatum;
-        const size = d.selected ? 30 : 22;
-        const el = document.createElement("div");
-        const status =
-          d.kind === "person"
-            ? d.online
-              ? " · Online"
-              : " · Offline"
-            : "";
-        el.title = `${d.name}${d.subtitle ? ` · ${d.subtitle}` : ""}${status}`;
-        el.style.cssText = [
-          "position:relative",
-          "display:flex",
-          "align-items:center",
-          "justify-content:center",
-          `width:${size}px`,
-          `height:${size}px`,
-          "border-radius:9999px",
-          `background:${d.color}`,
-          `border:2px solid ${d.selected ? "#ffffff" : "rgba(255,255,255,.75)"}`,
-          `box-shadow:0 0 0 2px rgba(6,12,22,.55), 0 3px 10px rgba(0,0,0,.5)${
-            d.selected
-              ? `, 0 0 16px ${d.color}`
-              : d.online
-                ? ", 0 0 10px rgba(16,185,129,.85)"
-                : ""
-          }`,
-          `font-size:${d.selected ? 15 : 11}px`,
-          "line-height:1",
-          "cursor:pointer",
-          `opacity:${d.dimmed ? 0.28 : 1}`,
-          "transition:opacity .2s, width .2s, height .2s",
-          "user-select:none",
-        ].join(";");
-        el.textContent = d.icon;
-
-        // Presence pip for people (green = online, muted = offline).
-        if (d.kind === "person") {
-          const pip = document.createElement("span");
-          const pipSize = d.selected ? 9 : 7;
-          pip.style.cssText = [
-            "position:absolute",
-            "top:-1px",
-            "right:-1px",
-            `width:${pipSize}px`,
-            `height:${pipSize}px`,
-            "border-radius:9999px",
-            `background:${d.online ? "#10b981" : "rgba(148,163,184,.7)"}`,
-            "border:1.5px solid rgba(6,12,22,.9)",
-            d.online ? "box-shadow:0 0 6px rgba(16,185,129,.9)" : "",
-          ]
-            .filter(Boolean)
-            .join(";");
-          el.appendChild(pip);
-        }
-
-        el.onclick = () => onPointClick(d.id);
-        return el;
-      }}
-      /* Fallback for very large datasets */
-      pointsData={useHtmlMarkers ? [] : points}
+      /* Signal nodes.
+         Small, low-profile discs rather than fat spheres: at city scale several
+         entries share almost identical coordinates, and large markers turned
+         into overlapping multi-coloured blobs. Radius scales only on selection,
+         and the results panel + legend carry identification. */
+      pointsData={points}
       pointLat="lat"
       pointLng="lng"
-      pointColor="color"
-      pointRadius="radius"
-      pointAltitude={0.02}
-      pointResolution={12}
-      pointLabel="name"
+      pointColor={(d: object) => {
+        const p = d as GlobeDatum;
+        if (p.dimmed) return "rgba(120,150,160,0.35)";
+        return p.color;
+      }}
+      pointRadius={(d: object) => ((d as GlobeDatum).selected ? 0.7 : 0.34)}
+      pointAltitude={(d: object) => ((d as GlobeDatum).selected ? 0.06 : 0.02)}
+      pointResolution={16}
+      pointsMerge={false}
+      pointLabel={(d: object) => {
+        const p = d as GlobeDatum;
+        const status =
+          p.kind === "person" ? (p.online ? " · Online" : "") : "";
+        return `<div style="background:rgba(0,22,25,.92);border:1px solid rgba(80,232,244,.35);color:#c7f8fe;padding:5px 9px;border-radius:4px;font-size:12px;font-family:ui-monospace,monospace;white-space:nowrap;box-shadow:0 0 18px -4px rgba(80,232,244,.6)">
+          <span style="color:${p.color}">${p.icon}</span> ${escapeHtml(p.name)}${
+            p.subtitle ? ` · ${escapeHtml(p.subtitle)}` : ""
+          }${status}
+        </div>`;
+      }}
       onPointClick={(d: object) => onPointClick((d as GlobeDatum).id)}
       ringsData={rings}
       ringLat="lat"
       ringLng="lng"
-      ringColor={() => "#f2c84b"}
-      ringMaxRadius={4}
-      ringPropagationSpeed={1.4}
-      ringRepeatPeriod={900}
+      ringColor={() => "#50e8f4"}
+      ringMaxRadius={5}
+      ringPropagationSpeed={1.6}
+      ringRepeatPeriod={800}
+      ringAltitude={0.021}
     />
   );
 }

@@ -1,4 +1,4 @@
-export type PostType = "post" | "event";
+export type PostType = "post" | "event" | "reel";
 
 export type RsvpStatus = "going" | "interested" | "declined";
 
@@ -15,6 +15,9 @@ export type FeedItem = {
   type: PostType;
   body: string | null;
   media: string[];
+  /** Still frame for a reel, so the feed does not download the video. */
+  poster_url: string | null;
+  duration_seconds: number | null;
   event_title: string | null;
   event_at: string | null;
   event_location: string | null;

@@ -53,7 +53,7 @@ export default async function DirectoryPage({
           className={cn(
             "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
             !category
-              ? "border-gold/50 bg-gold/15 text-gold"
+              ? "border-cyan/50 bg-cyan/15 text-cyan"
               : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
           )}
         >
@@ -66,7 +66,7 @@ export default async function DirectoryPage({
             className={cn(
               "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
               category === c
-                ? "border-gold/50 bg-gold/15 text-gold"
+                ? "border-cyan/50 bg-cyan/15 text-cyan"
                 : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
             )}
           >
@@ -81,7 +81,7 @@ export default async function DirectoryPage({
           {t("filteredByCountry", { country })}{" "}
           <Link
             href={category ? `/directory?category=${category}` : "/directory"}
-            className="text-gold hover:underline"
+            className="text-cyan hover:underline"
           >
             {t("clearFilter")}
           </Link>
@@ -103,6 +103,7 @@ export default async function DirectoryPage({
               listing={l}
               categoryLabel={t(`cat_${l.category}`)}
               reviewsLabel={reviewsLabel}
+              professionalLabel={t("professional")}
             />
           ))}
         </div>

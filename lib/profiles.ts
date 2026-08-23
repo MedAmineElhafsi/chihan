@@ -21,6 +21,7 @@ function normalizeProfile(data: Record<string, unknown> | null): Profile | null 
     ...(data as unknown as Profile),
     languages: asStringArray(data.languages),
     profession: (data.profession as string | null) ?? null,
+    offers_service: data.offers_service === true,
     origin_region: (data.origin_region as string | null) ?? null,
     interests: asStringArray(data.interests),
     looking_for: asStringArray(data.looking_for),

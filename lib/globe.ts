@@ -1,6 +1,6 @@
 import "server-only";
 
-import { createClient } from "./supabase/server";
+import { createPublicClient } from "./supabase/public";
 
 export type GlobePoint = {
   id: string;
@@ -24,7 +24,8 @@ export type GlobePoint = {
  */
 export async function getGlobePoints(): Promise<GlobePoint[]> {
   try {
-    const supabase = await createClient();
+    // Public data only — deliberately not bound to the visitor's session.
+    const supabase = createPublicClient();
     const PROFILE_PT = "id, display_name, city, country, lat, lng, avatar_url";
     const profileQuery = (cols: string) =>
       supabase
@@ -58,6 +59,18 @@ export async function getGlobePoints(): Promise<GlobePoint[]> {
     ]);
     const listingsRes = results[1];
     const eventsRes = results[2];
+
+    // Surface query failures. A blanket catch used to swallow these, which hid
+    // an auth-only RLS failure that silently emptied the whole globe.
+    for (const [name, res] of [
+      ["profiles", results[0]],
+      ["listings", listingsRes],
+      ["events", eventsRes],
+    ] as const) {
+      if (res.error) {
+        console.error(`[globe] ${name} query failed:`, res.error.message);
+      }
+    }
 
     const profilesRes = results[0].error
       ? await profileQuery(PROFILE_PT)
@@ -120,7 +133,8 @@ export async function getGlobePoints(): Promise<GlobePoint[]> {
     }
 
     return points;
-  } catch {
+  } catch (err) {
+    console.error("[globe] getGlobePoints threw:", err);
     return [];
   }
 }

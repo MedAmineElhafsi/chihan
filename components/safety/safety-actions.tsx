@@ -73,7 +73,7 @@ export function SafetyActions({
           size="sm"
           className={cn(
             "gap-1.5",
-            muted && !blocked && "border-gold/40 text-gold"
+            muted && !blocked && "border-cyan/40 text-cyan"
           )}
           disabled={pending || blocked}
           onClick={onMute}

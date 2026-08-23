@@ -35,7 +35,7 @@ export function ThemeToggle() {
           <DropdownMenuItem key={value} onClick={() => setTheme(value)}>
             <Icon />
             <span className="flex-1">{label}</span>
-            {theme === value && <Check className="size-4 text-gold" />}
+            {theme === value && <Check className="size-4 text-cyan" />}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

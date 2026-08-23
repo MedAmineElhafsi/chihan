@@ -17,6 +17,8 @@ import { Button } from "@/components/ui/button";
 import { Stars } from "@/components/directory/stars";
 import { CategoryIcon } from "@/components/directory/category-icon";
 import { ReviewForm } from "@/components/directory/review-form";
+import { ReviewItem } from "@/components/directory/review-item";
+import { canReview } from "@/lib/reviews";
 import { ClaimButton } from "@/components/directory/claim-button";
 import { ListingMap } from "@/components/directory/listing-map";
 import { ReportButton } from "@/components/moderation/report-button";
@@ -37,6 +39,7 @@ export default async function ListingDetailPage({
   const user = await getCurrentUser();
 
   const isOwner = !!user && listing.owner_user_id === user.id;
+  const mayReview = await canReview(id, user?.id ?? null);
   const canClaim = !!user && listing.owner_user_id === null;
   const myReview = user
     ? reviews.find((r) => r.author_id === user.id)
@@ -70,7 +73,7 @@ export default async function ListingDetailPage({
           </span>
           <h1 className="flex items-center gap-2 font-display text-3xl font-semibold tracking-tight">
             {listing.name}
-            {listing.is_verified && <BadgeCheck className="size-6 text-gold" />}
+            {listing.is_verified && <BadgeCheck className="size-6 text-cyan" />}
           </h1>
           <div className="flex items-center gap-2 text-sm">
             {listing.rating_avg != null ? (
@@ -149,6 +152,8 @@ export default async function ListingDetailPage({
             <ReviewForm
               listingId={listing.id}
               isAuthenticated={!!user}
+              mayReview={mayReview || !!myReview}
+              isOwner={isOwner}
               initialRating={myReview?.rating ?? 0}
               initialBody={myReview?.body ?? ""}
               hasReview={!!myReview}
@@ -158,25 +163,13 @@ export default async function ListingDetailPage({
             ) : (
               <ul className="flex flex-col gap-4">
                 {reviews.map((r) => (
-                  <li
+                  <ReviewItem
                     key={r.id}
-                    className="flex flex-col gap-1.5 border-b border-border/60 pb-4 last:border-0"
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-sm font-medium">
-                        {r.author_name ?? t("anonymous")}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {dateFmt.format(new Date(r.created_at))}
-                      </span>
-                    </div>
-                    <Stars value={r.rating} />
-                    {r.body && (
-                      <p className="text-sm leading-relaxed text-foreground/90">
-                        {r.body}
-                      </p>
-                    )}
-                  </li>
+                    review={r}
+                    listingId={listing.id}
+                    isOwner={isOwner}
+                    date={dateFmt.format(new Date(r.created_at))}
+                  />
                 ))}
               </ul>
             )}
@@ -185,31 +178,31 @@ export default async function ListingDetailPage({
 
         {/* Contact sidebar */}
         <aside className="lg:col-span-1">
-          <div className="glass sticky top-20 flex flex-col gap-3 rounded-2xl p-5">
+          <div className="panel sticky top-20 flex flex-col gap-3 rounded-2xl p-5">
             <h2 className="font-display text-lg font-semibold">{t("contact")}</h2>
             {place && (
               <div className="flex items-start gap-2.5 text-sm">
-                <MapPin className="mt-0.5 size-4 shrink-0 text-gold" />
+                <MapPin className="mt-0.5 size-4 shrink-0 text-cyan" />
                 <span>{place}</span>
               </div>
             )}
             {listing.phone && (
               <a
                 href={`tel:${listing.phone}`}
-                className="flex items-center gap-2.5 text-sm transition-colors hover:text-gold"
+                className="flex items-center gap-2.5 text-sm transition-colors hover:text-cyan"
                 dir="ltr"
               >
-                <Phone className="size-4 shrink-0 text-gold" />
+                <Phone className="size-4 shrink-0 text-cyan" />
                 {listing.phone}
               </a>
             )}
             {listing.email && (
               <a
                 href={`mailto:${listing.email}`}
-                className="flex items-center gap-2.5 break-all text-sm transition-colors hover:text-gold"
+                className="flex items-center gap-2.5 break-all text-sm transition-colors hover:text-cyan"
                 dir="ltr"
               >
-                <Mail className="size-4 shrink-0 text-gold" />
+                <Mail className="size-4 shrink-0 text-cyan" />
                 {listing.email}
               </a>
             )}
@@ -222,10 +215,10 @@ export default async function ListingDetailPage({
                 }
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2.5 break-all text-sm transition-colors hover:text-gold"
+                className="flex items-center gap-2.5 break-all text-sm transition-colors hover:text-cyan"
                 dir="ltr"
               >
-                <Globe className="size-4 shrink-0 text-gold" />
+                <Globe className="size-4 shrink-0 text-cyan" />
                 {t("visitWebsite")}
               </a>
             )}

@@ -178,3 +178,14 @@ export async function getConversationPartner(
     return { partner: null, otherLastReadAt: null };
   }
 }
+
+
+/** Total unread messages, for the badge on the chat icon in the header. */
+export async function getUnreadMessageCount(userId: string): Promise<number> {
+  try {
+    const convs = await getConversations(userId);
+    return convs.reduce((n, c) => n + c.unread, 0);
+  } catch {
+    return 0;
+  }
+}

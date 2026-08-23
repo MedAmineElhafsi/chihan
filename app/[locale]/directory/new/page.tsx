@@ -26,7 +26,7 @@ export default async function NewListingPage({
 
   return (
     <div className="mx-auto w-full max-w-2xl px-4 py-12 sm:px-6">
-      <Card className="glass animate-fade-up">
+      <Card className="panel animate-rise">
         <CardHeader>
           <CardTitle className="font-display text-2xl">
             {t("formNewTitle")}

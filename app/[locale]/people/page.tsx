@@ -1,3 +1,8 @@
+// FEATURE-DISABLED: switched off for launch. Flip `people` in lib/features.ts
+// to bring this surface back — the code and its tables are untouched.
+import { notFound } from "next/navigation";
+import { isEnabled } from "@/lib/features";
+
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Lock, Search, Sparkles } from "lucide-react";
 
@@ -33,6 +38,8 @@ export default async function PeoplePage({
     looking?: string;
   }>;
 }) {
+  if (!isEnabled("people")) notFound();
+
   const { locale } = await params;
   setRequestLocale(locale);
   const sp = await searchParams;
@@ -158,9 +165,9 @@ export default async function PeoplePage({
 
       {!advanced && (
         <p className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
-          <Sparkles className="size-4 text-gold" />
+          <Sparkles className="size-4 text-cyan" />
           {t("advancedLocked")}{" "}
-          <Link href="/pricing" className="font-medium text-gold hover:underline">
+          <Link href="/pricing" className="font-medium text-cyan hover:underline">
             {t("upgrade")}
           </Link>
         </p>

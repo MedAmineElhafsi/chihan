@@ -4,7 +4,7 @@ import {
   BadgeCheck,
   Compass,
   Globe2,
-  HeartHandshake,
+  HandHeart,
   LogOut,
   Pencil,
   Sparkles,
@@ -49,14 +49,14 @@ export default async function DashboardPage({
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-16 sm:px-6">
       {upgraded && isPremium && (
-        <div className="animate-fade-up mb-5 flex items-center gap-2 rounded-xl border border-gold/40 bg-gold/10 px-4 py-3 text-sm">
-          <Sparkles className="size-4 text-gold" />
+        <div className="animate-rise mb-5 flex items-center gap-2 rounded-xl border border-cyan/40 bg-cyan/10 px-4 py-3 text-sm">
+          <Sparkles className="size-4 text-cyan" />
           {t("upgradedBanner")}
         </div>
       )}
-      <div className="animate-fade-up flex flex-col gap-2">
+      <div className="animate-rise flex flex-col gap-2">
         <span className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium text-muted-foreground">
-          <Compass className="size-3.5 text-gold" />
+          <Compass className="size-3.5 text-cyan" />
           {t("signedInAs")} {user.email}
         </span>
         <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
@@ -66,14 +66,14 @@ export default async function DashboardPage({
       </div>
 
       {/* Profile summary */}
-      <Card className="glass animate-fade-up mt-8 [animation-delay:80ms]">
+      <Card className="panel animate-rise mt-8 [animation-delay:80ms]">
         <CardContent className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
             <Avatar className="size-14">
               {profile.avatar_url && (
                 <AvatarImage src={profile.avatar_url} alt={name} />
               )}
-              <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-primary-foreground">
+              <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-primary-foreground">
                 {initial}
               </AvatarFallback>
             </Avatar>
@@ -81,7 +81,7 @@ export default async function DashboardPage({
               <div className="flex items-center gap-2">
                 <span className="font-display text-lg font-semibold">{name}</span>
                 {isPremium && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-gold/15 px-2 py-0.5 text-xs font-medium text-gold">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-cyan/15 px-2 py-0.5 text-xs font-medium text-cyan">
                     <BadgeCheck className="size-3.5" />
                     {t("premium")}
                   </span>
@@ -110,10 +110,10 @@ export default async function DashboardPage({
       </Card>
 
       {/* Explore the globe */}
-      <Card className="glass animate-fade-up mt-5 overflow-hidden [animation-delay:120ms]">
+      <Card className="panel animate-rise mt-5 overflow-hidden [animation-delay:120ms]">
         <CardContent className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <div className="inline-flex size-11 items-center justify-center rounded-xl bg-secondary text-gold ring-1 ring-border">
+            <div className="inline-flex size-11 items-center justify-center rounded-xl bg-secondary text-cyan ring-1 ring-border">
               <Globe2 className="size-5" />
             </div>
             <div>
@@ -125,7 +125,7 @@ export default async function DashboardPage({
               </div>
             </div>
           </div>
-          <Button asChild className="gap-2 glow-gold">
+          <Button asChild className="gap-2 glow">
             <Link href="/explore">
               <Globe2 className="size-4" />
               {t("openGlobe")}
@@ -134,26 +134,26 @@ export default async function DashboardPage({
         </CardContent>
       </Card>
 
-      {/* Matches */}
-      <Card className="glass animate-fade-up mt-5 overflow-hidden [animation-delay:200ms]">
+      {/* Help — the core loop */}
+      <Card className="panel animate-rise mt-5 overflow-hidden [animation-delay:200ms]">
         <CardContent className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <div className="inline-flex size-11 items-center justify-center rounded-xl bg-secondary text-gold ring-1 ring-border">
-              <HeartHandshake className="size-5" />
+            <div className="inline-flex size-11 items-center justify-center rounded-xl bg-secondary text-cyan ring-1 ring-border">
+              <HandHeart className="size-5" />
             </div>
             <div>
               <div className="font-display text-lg font-semibold">
-                {t("matchesTitle")}
+                {t("helpTitle")}
               </div>
               <div className="max-w-md text-sm text-muted-foreground">
-                {t("matchesBody")}
+                {t("helpBody")}
               </div>
             </div>
           </div>
           <Button asChild className="gap-2">
-            <Link href="/match">
-              <HeartHandshake className="size-4" />
-              {t("matchesCta")}
+            <Link href="/help">
+              <HandHeart className="size-4" />
+              {t("helpCta")}
             </Link>
           </Button>
         </CardContent>

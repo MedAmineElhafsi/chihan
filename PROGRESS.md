@@ -183,3 +183,278 @@ The platform is feature-complete: auth · profiles/onboarding · the globe · di
 people discovery + freemium gating · realtime chat · feed & events · news · Stripe billing ·
 moderation + privacy. Each phase is on its own branch; everything type-checks, lints and builds.
 Remaining work is your hosted setup (run migrations, add keys, deploy).
+
+## Surface reduction (post-Phase 9)
+
+- [x] `lib/features.ts` — flags for every surface, documented reasons
+- [x] Groups / Feed / People / Match / Who-viewed / Pricing return 404
+- [x] Header, mobile menu, user menu and dashboard cleaned of dead links
+- [x] Dashboard's Matches card replaced with the Help board
+- [x] Billing off: `getEntitlements` grants everything while `FEATURES.billing` is false
+- [x] Help → Directory suggestions by category + city (`lib/help-directory.ts`)
+- [x] Resolved requests invite the asker to leave a listing behind
+- [x] 5 locales updated · `tsc`, `eslint`, `next build` all clean
+
+Reversible: flip a flag in `lib/features.ts`. No tables dropped, no data deleted.
+
+## Phase A — the five-tab shell
+
+- [x] `feed`, `stories`, `groups`, `people` switched back on in `lib/features.ts`
+- [x] `reels: false` added — the compose sheet hides it until it exists
+- [x] `components/app-shell/tab-bar.tsx` — Home · Explore · + · Chat · You, mobile only
+- [x] `components/app-shell/compose-sheet.tsx` — one button: post, help, place (reel when built)
+- [x] Desktop header carries the same five destinations
+- [x] Layout mounts the bar and pads `main` so nothing hides behind it
+- [x] Nav strings in 5 locales · `tsc`, `eslint`, `next build` clean
+
+Verified in the browser at 375px and 1280px: bar pins to the bottom, active
+tab is cyan with `aria-current="page"`, header nav takes over at `lg`, no
+console errors, no sideways scroll. `/feed` and `/groups` render; `/match`
+and `/pricing` still return not-found.
+
+Still off: match, who-viewed, billing.
+
+## Phase B — search over the globe
+
+- [x] `components/globe/globe-search.tsx` — text box, country chip, profession chip, match count, clear
+- [x] Profession chip groups People (professions) and Places (categories) in one dropdown
+- [x] Layer stays a hard filter; search is soft — non-matches dim instead of vanishing
+- [x] Matching points grow (0.45 → 0.62); the globe turns to the centroid of the results
+- [x] Dropdown options come from the whole layer, so they never collapse to the current selection
+- [x] Search strings in 5 locales · `tsc`, `eslint`, `next build` clean
+
+Verified in the browser: 46 points → Germany 10 → "berlin" + Germany 4, with the
+globe still drawing all 46 and dimming 42. Clear returns to 46. Read from the
+committed fiber, not the stale alternate.
+
+Known, pre-existing and unrelated: Realtime presence returns 400 on /explore,
+so the online dots never light. Not touched by this phase.
+
+## Phase C — reviews for every profession and business
+
+- [x] `supabase/migrations/0022_professionals_reviews.sql` — **needs running**
+  - `profiles.offers_service` — the opt-in switch
+  - `listings.kind` ('business' | 'professional') + `listings.profession`
+  - unique index: one professional listing per person
+  - `reviews.reply` + `replied_at` — the right of reply
+  - `has_dealt_with()` / `can_review()` — security definer, answer one yes/no
+  - insert policy on `reviews` now requires `can_review`
+  - `reply_to_review()` — RLS cannot gate a single column, so replies go through
+    a function that proves the caller owns the listing
+- [x] `lib/professional-actions.ts` — opt in, opt out (listing hidden, reviews kept), reply
+- [x] `lib/reviews.ts` — `canReview` so the interface can explain itself
+- [x] `components/profile/offers-service-switch.tsx` — the switch, on /profile
+- [x] `components/directory/review-item.tsx` — name, face, reply, report
+- [x] Review form explains the gate instead of failing at submit
+- [x] "Professional" badge distinguishes a person from a shop
+- [x] `.claude/worktrees/**` added to eslint ignores
+- [x] Strings in 5 locales · `tsc`, `eslint`, `next build` clean
+
+Design note: an **unclaimed** business stays reviewable by anyone signed in —
+there is no person to have dealt with, and requiring one would have silently
+killed every restaurant review. The gate applies to claimed listings and
+professionals, where there is a real person on the other side.
+
+### Phase C — verified against the live database
+
+Migrations 0021 and 0022 are applied. Checked directly, not assumed:
+
+| Check | Result |
+|---|---|
+| `listings_with_stats` exposes `kind` + `profession` | yes |
+| `can_review()` / `has_dealt_with()` / `reply_to_review()` callable | yes |
+| `reply_to_review` ownership guard fires on a forged id | yes |
+| Stranger may review a **professional** listing | **false** |
+| Owner may review **himself** | **false** |
+| Stranger may review an **unclaimed business** | **true** |
+| Stranger may review after a shared conversation exists | **true** |
+| Gate closes again once that conversation is removed | **false** |
+
+Fixed while verifying: the professional listing was only written when the
+switch was flipped, so editing your profession afterwards left the listing
+describing who you used to be. `syncProfessionalListing()` is now shared by
+the switch and by `saveProfile`.
+
+Still unseeded: `seed_help.sql` (help board is empty) and `seed_professions.sql`
+(all 26 profiles have `profession = null`, so the globe's People filter has
+only one value).
+
+## Seeds applied (2026-08-23)
+
+Run against the live database via the service key, not by hand:
+
+- **seed_professions** — 24 demo profiles now carry real trades across 11
+  professions. The two real accounts were left untouched, as intended.
+- **seed_help** — 7 requests (6 open, 1 resolved) across all 7 categories,
+  plus 3 offers. Idempotent: `on conflict (id) do nothing`.
+
+What this proved, with data, for the first time:
+
+- Explore's profession filter offers 12 values instead of 1.
+- The Help → Directory bridge works: "Looking for a Kurdish-speaking dentist"
+  now suggests **Dr. Karwan Dental**, Erbil Family Practice and Clinique
+  Dr. Aland underneath the request.
+
+Content gap, not a code gap: there are **no Berlin clinics** in the directory
+(Hamburg, Lyon, Manchester, Erbil), so those suggestions came from the
+anywhere-fallback rather than the city match. A Berlin launch needs Berlin
+businesses in the directory.
+
+## Phase D — private groups and verification
+
+- [x] `supabase/migrations/0023_private_groups_verification.sql` — **needs running**
+  - `community_groups.is_private` (defaults false so no existing group vanishes)
+  - select policy: public groups, ones you created, ones you belong to
+  - `group_members` select follows group visibility — membership of a private
+    group is itself private
+  - insert policy: you may join a public group yourself, or be added by
+    someone already inside; you cannot add yourself to a private one
+  - `verification_requests` + RLS: applicants see only their own, only admins
+    decide, and **no policy lets an applicant update their own row**
+  - `decide_verification()` — security definer, checks `is_admin` first
+  - `verification-docs` bucket, **private**, folder-per-user; admins can read
+  - stats view carries `is_private`
+- [x] `lib/verification.ts` — own request, admin queue, 5-minute signed doc links
+- [x] `lib/verification-actions.ts` — apply, withdraw, decide
+- [x] `components/profile/verification-panel.tsx` — upload + status
+- [x] `components/admin/verification-queue.tsx` — approve / reject with a note
+- [x] Group form: privacy chooser, **private preselected**
+- [x] Group cards show a lock
+- [x] Strings in 5 locales · `tsc`, `eslint`, `next build` clean
+
+Existing groups stay public. Making one private later is the owner's choice —
+this migration does not decide it for them.
+
+### Phase D — verified against the live database
+
+Migration 0023 applied. Privacy was tested with **real authenticated sessions**,
+not the service-role key, which bypasses RLS and therefore cannot test it. Two
+throwaway accounts were created, signed in, and deleted afterwards.
+
+A private group, asked for by three different callers:
+
+| caller | group | via view | members | messages |
+|---|---|---|---|---|
+| member | 1 | 1 | 1 | 1 |
+| outsider | **0** | **0** | **0** | **0** |
+| signed out | **0** | **0** | **0** | **0** |
+
+- outsider cannot add themselves to it — HTTP 403
+- a public group is still visible to everyone, unchanged
+- `decide_verification()` refuses a non-admin caller
+- probe groups and probe accounts both confirmed deleted
+
+The privacy chooser renders on `/groups/new` (checked for the actual
+`<fieldset>` and radio markup — grepping for translated strings is useless,
+since next-intl ships every string into every page).
+
+## Phase E — reels
+
+- [x] `supabase/migrations/0024_reels.sql` — **needs running**
+  - `posts.type` accepts 'reel'
+  - `poster_url`, `duration_seconds`
+  - check: a reel must carry media; a duration must be 1–120s
+  - index on (type, created_at desc)
+- [x] No new bucket — `post-media` is already public-read and folder-scoped,
+      and stories already share it. Reels live under `<uid>/reels/`.
+- [x] `components/reels/reel-composer.tsx` — picks a video, reads its duration,
+      and cuts a poster frame **in the browser** via canvas. No ffmpeg, nothing
+      to run server-side.
+- [x] `components/reels/reel-player.tsx` — scroll-snap, one per screen,
+      IntersectionObserver so only the visible reel plays, muted by default,
+      `preload="none"` so the page does not pull every video at once
+- [x] `lib/reel-actions.ts` — re-validates duration server-side
+- [x] `app/[locale]/reels/page.tsx`, flag `reels: true`, compose sheet entry
+- [x] Strings in 5 locales · `tsc`, `eslint`, `next build` clean
+
+Free-tier caps live in `lib/constants.ts`: `REEL_MAX_SECONDS = 30`,
+`REEL_MAX_BYTES = 20 MB`. Raising them is one edit there — but the database
+also caps duration at 120s, so lift that constraint too if you go past it.
+
+A reel is a post, not a separate system: likes, comments, reporting, blocking
+and every existing RLS policy apply to it without duplication.
+
+### Phase E — verified against the live database
+
+Migration 0024 applied, including the corrected `posts_reel_has_media`.
+
+| Check | |
+|---|---|
+| reel with no video refused (`posts_reel_has_media`) | PASS |
+| over-long reel refused (`posts_duration_check`) | PASS |
+| unknown post type refused | PASS |
+| valid reel accepted | PASS |
+| comes back as `type = 'reel'` | PASS |
+| poster survives the round trip | PASS |
+| duration survives | PASS |
+| posts feed excludes reels when filtered | PASS |
+| probe reels removed | PASS |
+
+`/en/reels` renders: heading, count, composer, and the empty state while
+there are no reels.
+
+**Bug this caught:** the first version of `posts_reel_has_media` used
+`array_length(media, 1) >= 1`. On an empty array that returns NULL, and a
+CHECK passes on NULL — so reels with no video were being accepted. `tsc`,
+`eslint` and `next build` were all clean throughout; only inserting a bad row
+found it. Fixed with `cardinality(media)`.
+
+### Navigation correction — Reels is a destination
+
+Reels was reachable only through the create menu, so there was no way to
+*find* it. That was the wrong model: in every app of this shape Reels is a
+place you go, and creating one is a separate act.
+
+- Tab bar is now **Home · Explore · ➕ · Reels · You** — five, symmetrical
+  around the create button
+- Messages moved to the header with an unread badge (`components/app-shell/chat-icon.tsx`),
+  which is where a DM icon belongs and is how the bar stayed at five
+- `getUnreadMessageCount()` added to `lib/chat.ts` for that badge
+- Desktop nav mirrors it: Home · Explore · Reels · Help · Directory
+- `/reels` leads with the reels; **New reel** is a button that opens the
+  composer, instead of a composer permanently pushing the reels below the fold
+
+Verified at 375px: five tabs at 72px each, no horizontal scroll, Reels marked
+`aria-current="page"`, chat icon present in the header, and the New reel button
+opens a composer that accepts mp4/mov/webm and states the 30s limit.
+
+### Home — stories confirmed, and a reel bug caught
+
+Stories were already wired into `/feed` and render correctly: the rail shows
+with "Your story" as the composer. There are simply no stories from other
+members yet, which is why it looked empty.
+
+**Bug found while checking:** `post-card.tsx` rendered every post's media as
+`<img src={media[0]}>`. A reel's media is an `.mp4`, so the first reel anyone
+posted would have shown a broken image in the Home feed. There were no reels
+in the database yet, so nothing was visibly wrong — the bug was waiting.
+
+A reel in the feed now renders its **poster** with a play badge and a duration
+chip, linking to the player. That also means the feed never downloads a video
+just to show a card.
+
+Verified by inserting a real reel row and reading the rendered page: the
+poster is used, the `.mp4` never appears in an `<img>`, the duration badge
+shows, and the card links to `/reels`. Probe row deleted afterwards.
+
+## Home — Posts · Help · News
+
+The blueprint's segmented Home is in. Three things people read, one place:
+
+- `components/app-shell/home-tabs.tsx` — a strip of **links**, not client
+  state, driven by `?tab=`. A tab can be shared, bookmarked and opened in a
+  new window, and it renders on the server.
+- **Posts** keeps the stories rail, the composer and the near-me filter.
+- **Help** shows open requests using the existing `RequestCard`.
+- **News** shows articles using `ArticleCard`, which was extracted out of
+  `app/[locale]/news/page.tsx` so both pages share one component.
+- Each tab fetches only its own data — opening Home does not query the help
+  board and the news table as well.
+
+Verified by loading all three:
+
+| tab | active | stories | help cards | news cards |
+|---|---|---|---|---|
+| posts | Posts | yes | 0 | 0 |
+| help | Help | no | **6** | 0 |
+| news | News | no | 0 | **12** |

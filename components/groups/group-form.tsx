@@ -18,6 +18,9 @@ export function GroupForm() {
   const [description, setDescription] = useState("");
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
+  // Private by default — a group made without a thought about privacy
+  // should not be the one that leaks.
+  const [isPrivate, setIsPrivate] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,7 +28,7 @@ export function GroupForm() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    const res = await createGroup({ name, description, city, country });
+    const res = await createGroup({ name, description, city, country, isPrivate });
     setLoading(false);
     if (!res.ok) {
       setError(res.error);
@@ -82,6 +85,36 @@ export function GroupForm() {
           />
         </div>
       </div>
+
+      <fieldset className="flex flex-col gap-3 rounded-xl border border-border p-4">
+        <legend className="label-mono px-1">{t("privacyLegend")}</legend>
+        <label className="flex cursor-pointer items-start gap-3">
+          <input
+            type="radio"
+            name="privacy"
+            checked={isPrivate}
+            onChange={() => setIsPrivate(true)}
+            className="mt-1 accent-cyan"
+          />
+          <span className="flex flex-col gap-0.5">
+            <span className="text-sm font-medium text-air">{t("privateLabel")}</span>
+            <span className="text-xs text-muted-foreground">{t("privateHint")}</span>
+          </span>
+        </label>
+        <label className="flex cursor-pointer items-start gap-3">
+          <input
+            type="radio"
+            name="privacy"
+            checked={!isPrivate}
+            onChange={() => setIsPrivate(false)}
+            className="mt-1 accent-cyan"
+          />
+          <span className="flex flex-col gap-0.5">
+            <span className="text-sm font-medium text-air">{t("publicLabel")}</span>
+            <span className="text-xs text-muted-foreground">{t("publicHint")}</span>
+          </span>
+        </label>
+      </fieldset>
 
       {error && (
         <p className="flex items-center gap-2 text-sm text-destructive">

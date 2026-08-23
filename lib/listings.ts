@@ -49,7 +49,7 @@ export async function getReviews(listingId: string): Promise<Review[]> {
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("reviews")
-      .select("id, listing_id, author_id, rating, body, created_at")
+      .select("id, listing_id, author_id, rating, body, created_at, reply, replied_at")
       .eq("listing_id", listingId)
       .order("created_at", { ascending: false });
     if (error || !data) return [];
@@ -60,13 +60,15 @@ export async function getReviews(listingId: string): Promise<Review[]> {
     // Author names come from public profiles only (RLS); private reviewers stay
     // anonymous.
     const names: Record<string, string> = {};
+    const avatars: Record<string, string> = {};
     if (authorIds.length) {
       const { data: profs } = await supabase
         .from("profiles")
-        .select("user_id, display_name")
+        .select("user_id, display_name, avatar_url")
         .in("user_id", authorIds);
       for (const p of (profs ?? []) as Array<Record<string, unknown>>) {
         if (p.display_name) names[String(p.user_id)] = String(p.display_name);
+        if (p.avatar_url) avatars[String(p.user_id)] = String(p.avatar_url);
       }
     }
 
@@ -78,6 +80,9 @@ export async function getReviews(listingId: string): Promise<Review[]> {
       body: (r.body as string | null) ?? null,
       created_at: String(r.created_at),
       author_name: names[String(r.author_id)] ?? null,
+      author_avatar: avatars[String(r.author_id)] ?? null,
+      reply: (r.reply as string | null) ?? null,
+      replied_at: (r.replied_at as string | null) ?? null,
     }));
   } catch {
     return [];

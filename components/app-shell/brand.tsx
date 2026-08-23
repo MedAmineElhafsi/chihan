@@ -2,52 +2,64 @@ import { Link } from "@/i18n/navigation";
 import { BRAND } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-const RAYS = Array.from({ length: 12 }, (_, i) => {
-  const angle = (i * Math.PI) / 6;
-  const cos = Math.cos(angle);
-  const sin = Math.sin(angle);
-  return {
-    x1: 18 + 13.5 * cos,
-    y1: 18 + 13.5 * sin,
-    x2: 18 + 16.8 * cos,
-    y2: 18 + 16.8 * sin,
-  };
+// Nodes arranged on a sphere silhouette — a world drawn as a network.
+const RING = Array.from({ length: 8 }, (_, i) => {
+  const a = (i * Math.PI * 2) / 8 - Math.PI / 2;
+  return { x: 18 + 12.5 * Math.cos(a), y: 18 + 12.5 * Math.sin(a) };
 });
 
-/** A golden sun-over-globe — Kurdish sun motif meets the cosmic globe. */
 export function BrandMark({ className }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 36 36"
-      fill="none"
-      role="img"
-      aria-hidden="true"
-      className={className}
-    >
+    <svg viewBox="0 0 36 36" fill="none" aria-hidden="true" className={className}>
       <defs>
-        <radialGradient id="cihan-sun" cx="50%" cy="42%" r="62%">
-          <stop offset="0%" stopColor="var(--gold-bright)" />
-          <stop offset="100%" stopColor="var(--gold)" />
+        <radialGradient id="brand-core">
+          <stop offset="0%" stopColor="#c7f8fe" />
+          <stop offset="60%" stopColor="#50e8f4" />
+          <stop offset="100%" stopColor="#50e8f4" stopOpacity="0.2" />
         </radialGradient>
       </defs>
-      <g stroke="var(--gold)" strokeWidth="1.4" strokeLinecap="round">
-        {RAYS.map((r, i) => (
-          <line key={i} x1={r.x1} y1={r.y1} x2={r.x2} y2={r.y2} />
+
+      {/* Filaments from the core to each node */}
+      <g stroke="#50e8f4" strokeOpacity="0.45" strokeWidth="0.9">
+        {RING.map((p, i) => (
+          <line key={i} x1="18" y1="18" x2={p.x} y2={p.y} />
         ))}
       </g>
-      <circle cx="18" cy="18" r="11" fill="url(#cihan-sun)" />
-      <g
-        stroke="var(--primary-foreground)"
-        strokeOpacity="0.55"
-        strokeWidth="1"
+
+      {/* Orbit */}
+      <circle
+        cx="18"
+        cy="18"
+        r="12.5"
+        stroke="#50e8f4"
+        strokeOpacity="0.35"
+        strokeWidth="0.9"
         fill="none"
-        strokeLinecap="round"
-      >
-        <ellipse cx="18" cy="18" rx="4.6" ry="11" />
-        <line x1="7.2" y1="18" x2="28.8" y2="18" />
-        <path d="M9 12.5 Q18 15.5 27 12.5" />
-        <path d="M9 23.5 Q18 20.5 27 23.5" />
-      </g>
+      />
+      <ellipse
+        cx="18"
+        cy="18"
+        rx="5.5"
+        ry="12.5"
+        stroke="#50e8f4"
+        strokeOpacity="0.25"
+        strokeWidth="0.9"
+        fill="none"
+      />
+
+      {/* Nodes */}
+      {RING.map((p, i) => (
+        <circle
+          key={i}
+          cx={p.x}
+          cy={p.y}
+          r={i % 3 === 0 ? 2 : 1.4}
+          fill={i % 3 === 0 ? "#c7f8fe" : "#50e8f4"}
+        />
+      ))}
+
+      {/* Core */}
+      <circle cx="18" cy="18" r="5" fill="url(#brand-core)" />
     </svg>
   );
 }
@@ -56,13 +68,11 @@ export function BrandWordmark({ className }: { className?: string }) {
   return (
     <Link
       href="/"
-      className={cn(
-        "group flex items-center gap-2.5 transition-opacity hover:opacity-90",
-        className
-      )}
+      className={cn("group flex items-center gap-2.5", className)}
+      aria-label={BRAND.name}
     >
-      <BrandMark className="size-8 drop-shadow-[0_0_12px_color-mix(in_oklab,var(--gold)_45%,transparent)] transition-transform duration-500 group-hover:rotate-[18deg]" />
-      <span className="font-display text-xl font-semibold tracking-tight">
+      <BrandMark className="size-7 transition-transform duration-700 ease-out group-hover:rotate-180" />
+      <span className="font-display text-lg font-semibold tracking-tight text-air">
         {BRAND.name}
       </span>
     </Link>

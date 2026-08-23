@@ -1,5 +1,14 @@
 import { getTranslations } from "next-intl/server";
-import { Eye, Globe2, Handshake, Heart, ImageIcon, Languages, MapPin, Pencil, Search } from "lucide-react";
+import {
+  Globe2,
+  Handshake,
+  Heart,
+  ImageIcon,
+  Languages,
+  MapPin,
+  Pencil,
+  Search,
+} from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -27,17 +36,17 @@ export async function ProfileView({
     : null;
 
   return (
-    <article className="glass overflow-hidden rounded-2xl">
+    <article className="panel overflow-hidden rounded-2xl">
       {/* Banner */}
-      <div className="h-28 bg-[radial-gradient(120%_140%_at_50%_-20%,color-mix(in_oklab,var(--gold)_30%,transparent),transparent_70%)]" />
+      <div className="h-28 bg-[radial-gradient(120%_140%_at_50%_-20%,color-mix(in_oklab,var(--cyan)_30%,transparent),transparent_70%)]" />
 
       <div className="px-6 pb-6">
         <div className="-mt-12 flex items-end justify-between gap-4">
-          <Avatar className="size-24 ring-4 ring-card">
+          <Avatar className="ring-card size-24 ring-4">
             {profile.avatar_url && (
               <AvatarImage src={profile.avatar_url} alt={name} />
             )}
-            <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-2xl text-primary-foreground">
+            <AvatarFallback className="from-cyan to-depth-4 text-primary-foreground bg-gradient-to-br text-2xl">
               {initial}
             </AvatarFallback>
           </Avatar>
@@ -46,20 +55,14 @@ export async function ProfileView({
             <span
               className={
                 profile.is_public
-                  ? "inline-flex items-center gap-1.5 rounded-full bg-kurd-green/15 px-2.5 py-1 text-xs font-medium text-kurd-green"
-                  : "inline-flex items-center gap-1.5 rounded-full bg-secondary px-2.5 py-1 text-xs font-medium text-muted-foreground"
+                  ? "bg-success/15 text-success inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
+                  : "bg-secondary text-muted-foreground inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
               }
             >
               {profile.is_public ? t("public") : t("private")}
             </span>
             {isOwner && (
               <>
-                <Button asChild size="sm" variant="outline" className="gap-1.5">
-                  <Link href="/views">
-                    <Eye className="size-3.5" />
-                    {t("whoViewed")}
-                  </Link>
-                </Button>
                 <Button asChild size="sm" variant="outline" className="gap-1.5">
                   <Link href="/profile/edit">
                     <Pencil className="size-3.5" />
@@ -71,23 +74,23 @@ export async function ProfileView({
           </div>
         </div>
 
-        <h1 className="mt-3 flex items-center gap-2 font-display text-2xl font-semibold tracking-tight">
+        <h1 className="font-display mt-3 flex items-center gap-2 text-2xl font-semibold tracking-tight">
           {name}
           <VerifiedBadge verified={profile.is_verified} label={t("verified")} />
         </h1>
 
         {(place || originLabel) && (
-          <p className="mt-1 flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-1 flex flex-wrap items-center gap-1.5 text-sm">
             {place && (
               <>
-                <MapPin className="size-4 text-gold" />
+                <MapPin className="text-cyan size-4" />
                 {place}
               </>
             )}
             {originLabel && (
               <>
                 {place && <span className="text-muted-foreground/60">·</span>}
-                <span className="rounded-full bg-gold/15 px-2 py-0.5 text-xs font-medium text-gold">
+                <span className="bg-cyan/15 text-cyan rounded-full px-2 py-0.5 text-xs font-medium">
                   {originLabel}
                 </span>
               </>
@@ -105,20 +108,20 @@ export async function ProfileView({
         )}
 
         {isOwner && !profile.is_public && (
-          <p className="mt-4 rounded-lg border border-dashed border-border bg-card/30 px-4 py-3 text-sm text-muted-foreground">
+          <p className="border-border bg-card/30 text-muted-foreground mt-4 rounded-lg border border-dashed px-4 py-3 text-sm">
             {t("privateNote")}
           </p>
         )}
 
-        <p className="mt-4 leading-relaxed text-foreground/90">
+        <p className="text-foreground/90 mt-4 leading-relaxed">
           {profile.bio || (
             <span className="text-muted-foreground">{t("noBio")}</span>
           )}
         </p>
 
         {profile.photos.length > 0 && (
-          <div className="mt-5 flex flex-col gap-3 border-t border-border/60 pt-5">
-            <span className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+          <div className="border-border/60 mt-5 flex flex-col gap-3 border-t pt-5">
+            <span className="text-muted-foreground flex items-center gap-1.5 text-sm font-medium">
               <ImageIcon className="size-4" />
               {tOn("photosLabel")}
             </span>
@@ -126,14 +129,10 @@ export async function ProfileView({
               {profile.photos.map((url) => (
                 <div
                   key={url}
-                  className="aspect-square overflow-hidden rounded-xl bg-secondary ring-1 ring-border"
+                  className="bg-secondary ring-border aspect-square overflow-hidden rounded-xl ring-1"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={url}
-                    alt=""
-                    className="size-full object-cover"
-                  />
+                  <img src={url} alt="" className="size-full object-cover" />
                 </div>
               ))}
             </div>
@@ -141,17 +140,17 @@ export async function ProfileView({
         )}
 
         {(profile.languages.length > 0 || profile.dialect) && (
-          <div className="mt-5 flex flex-col gap-3 border-t border-border/60 pt-5">
+          <div className="border-border/60 mt-5 flex flex-col gap-3 border-t pt-5">
             {profile.languages.length > 0 && (
               <div className="flex flex-wrap items-center gap-2">
-                <span className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+                <span className="text-muted-foreground flex items-center gap-1.5 text-sm font-medium">
                   <Languages className="size-4" />
                   {t("speaks")}
                 </span>
                 {profile.languages.map((l) => (
                   <span
                     key={l}
-                    className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground"
+                    className="bg-secondary text-secondary-foreground rounded-full px-2.5 py-0.5 text-xs font-medium"
                   >
                     {l}
                   </span>
@@ -160,10 +159,10 @@ export async function ProfileView({
             )}
             {profile.dialect && (
               <div className="flex items-center gap-2 text-sm">
-                <span className="font-medium text-muted-foreground">
+                <span className="text-muted-foreground font-medium">
                   {t("dialect")}:
                 </span>
-                <span className="rounded-full bg-gold/15 px-2.5 py-0.5 text-xs font-medium text-gold">
+                <span className="bg-cyan/15 text-cyan rounded-full px-2.5 py-0.5 text-xs font-medium">
                   {profile.dialect}
                 </span>
               </div>
@@ -172,8 +171,8 @@ export async function ProfileView({
         )}
 
         {profile.interests.length > 0 && (
-          <div className="mt-5 flex flex-col gap-2 border-t border-border/60 pt-5">
-            <span className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+          <div className="border-border/60 mt-5 flex flex-col gap-2 border-t pt-5">
+            <span className="text-muted-foreground flex items-center gap-1.5 text-sm font-medium">
               <Heart className="size-4" />
               {t("interests")}
             </span>
@@ -181,7 +180,7 @@ export async function ProfileView({
               {profile.interests.map((item) => (
                 <span
                   key={item}
-                  className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground"
+                  className="bg-secondary text-secondary-foreground rounded-full px-2.5 py-0.5 text-xs font-medium"
                 >
                   {tOn(`int_${item}` as never)}
                 </span>
@@ -191,10 +190,10 @@ export async function ProfileView({
         )}
 
         {(profile.looking_for.length > 0 || profile.offering.length > 0) && (
-          <div className="mt-5 flex flex-col gap-4 border-t border-border/60 pt-5">
+          <div className="border-border/60 mt-5 flex flex-col gap-4 border-t pt-5">
             {profile.looking_for.length > 0 && (
               <div className="flex flex-col gap-2">
-                <span className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+                <span className="text-muted-foreground flex items-center gap-1.5 text-sm font-medium">
                   <Search className="size-4" />
                   {t("lookingFor")}
                 </span>
@@ -202,7 +201,7 @@ export async function ProfileView({
                   {profile.looking_for.map((item) => (
                     <span
                       key={item}
-                      className="rounded-full bg-kurd-green/15 px-2.5 py-0.5 text-xs font-medium text-kurd-green"
+                      className="bg-success/15 text-success rounded-full px-2.5 py-0.5 text-xs font-medium"
                     >
                       {tOn(`looking_${item}` as never)}
                     </span>
@@ -212,7 +211,7 @@ export async function ProfileView({
             )}
             {profile.offering.length > 0 && (
               <div className="flex flex-col gap-2">
-                <span className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+                <span className="text-muted-foreground flex items-center gap-1.5 text-sm font-medium">
                   <Handshake className="size-4" />
                   {t("offering")}
                 </span>
@@ -220,7 +219,7 @@ export async function ProfileView({
                   {profile.offering.map((item) => (
                     <span
                       key={item}
-                      className="rounded-full bg-kurd-red/15 px-2.5 py-0.5 text-xs font-medium text-kurd-red"
+                      className="bg-destructive/15 text-destructive rounded-full px-2.5 py-0.5 text-xs font-medium"
                     >
                       {tOn(`offer_${item}` as never)}
                     </span>

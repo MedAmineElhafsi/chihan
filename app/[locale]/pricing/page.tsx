@@ -1,3 +1,8 @@
+// FEATURE-DISABLED: switched off for launch. Flip `billing` in lib/features.ts
+// to bring this surface back — the code and its tables are untouched.
+import { notFound } from "next/navigation";
+import { isEnabled } from "@/lib/features";
+
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Check, Sparkles } from "lucide-react";
 
@@ -26,6 +31,8 @@ export default async function PricingPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
+  if (!isEnabled("billing")) notFound();
+
   const { locale } = await params;
   setRequestLocale(locale);
 
@@ -46,7 +53,7 @@ export default async function PricingPage({
 
       <div className="mt-10 grid gap-5 md:grid-cols-2">
         {/* Free */}
-        <div className="glass flex flex-col rounded-2xl p-6">
+        <div className="panel flex flex-col rounded-2xl p-6">
           <div className="flex items-center justify-between">
             <h2 className="font-display text-xl font-semibold">
               {t("freeName")}
@@ -71,14 +78,14 @@ export default async function PricingPage({
         </div>
 
         {/* Premium */}
-        <div className="glass-strong relative flex flex-col rounded-2xl border-gold/40 p-6 ring-1 ring-gold/30">
+        <div className="panel-solid relative flex flex-col rounded-2xl border-cyan/40 p-6 ring-1 ring-cyan/30">
           <div className="flex items-center justify-between">
             <h2 className="flex items-center gap-2 font-display text-xl font-semibold">
-              <Sparkles className="size-5 text-gold" />
+              <Sparkles className="size-5 text-cyan" />
               {t("premiumName")}
             </h2>
             {ent.tier === "premium" && (
-              <span className="rounded-full bg-gold/15 px-2.5 py-0.5 text-xs font-medium text-gold">
+              <span className="rounded-full bg-cyan/15 px-2.5 py-0.5 text-xs font-medium text-cyan">
                 {t("currentPlan")}
               </span>
             )}
@@ -92,7 +99,7 @@ export default async function PricingPage({
           <ul className="mt-5 flex flex-1 flex-col gap-2.5">
             {PREMIUM_FEATURES.map((f) => (
               <li key={f} className="flex items-start gap-2.5 text-sm">
-                <Check className="mt-0.5 size-4 shrink-0 text-gold" />
+                <Check className="mt-0.5 size-4 shrink-0 text-cyan" />
                 {t(f)}
               </li>
             ))}

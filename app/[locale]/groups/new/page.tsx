@@ -1,3 +1,8 @@
+// FEATURE-DISABLED: switched off for launch. Flip `groups` in lib/features.ts
+// to bring this surface back — the code and its tables are untouched.
+import { notFound } from "next/navigation";
+import { isEnabled } from "@/lib/features";
+
 import { redirect } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
@@ -9,6 +14,8 @@ export default async function NewGroupPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
+  if (!isEnabled("groups")) notFound();
+
   const { locale } = await params;
   setRequestLocale(locale);
 

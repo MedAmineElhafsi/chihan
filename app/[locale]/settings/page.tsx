@@ -39,7 +39,7 @@ export default async function SettingsPage({
         <p className="mt-1 text-muted-foreground">{t("subtitle")}</p>
       </div>
 
-      <Card className="glass">
+      <Card className="panel">
         <CardHeader>
           <CardTitle className="font-display">{t("menuTitle")}</CardTitle>
           <CardDescription>{t("menuBody")}</CardDescription>
@@ -66,7 +66,7 @@ export default async function SettingsPage({
             href="/settings/invite"
             className="flex items-center gap-3 border-t border-border/60 px-6 py-4 transition-colors hover:bg-secondary/40"
           >
-            <span className="flex size-9 items-center justify-center rounded-full bg-gold/15 text-gold">
+            <span className="flex size-9 items-center justify-center rounded-full bg-cyan/15 text-cyan">
               <UserPlus className="size-4" />
             </span>
             <span className="min-w-0 flex-1">
@@ -82,7 +82,7 @@ export default async function SettingsPage({
         </CardContent>
       </Card>
 
-      <Card className="glass">
+      <Card className="panel">
         <CardHeader>
           <CardTitle className="font-display">{tPwa("pushTitle")}</CardTitle>
           <CardDescription>{tPwa("pushBody")}</CardDescription>
@@ -92,7 +92,7 @@ export default async function SettingsPage({
         </CardContent>
       </Card>
 
-      <Card className="glass">
+      <Card className="panel">
         <CardHeader>
           <CardTitle className="font-display">{t("exportTitle")}</CardTitle>
           <CardDescription>{t("exportBody")}</CardDescription>
@@ -107,7 +107,7 @@ export default async function SettingsPage({
         </CardContent>
       </Card>
 
-      <Card className="glass border-destructive/30">
+      <Card className="panel border-destructive/30">
         <CardHeader>
           <CardTitle className="font-display text-destructive">
             {t("dangerTitle")}

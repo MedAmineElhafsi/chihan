@@ -24,7 +24,7 @@ export function Stars({
           className={cn(
             "size-4",
             i <= rounded
-              ? "fill-gold text-gold"
+              ? "fill-cyan text-cyan"
               : "fill-transparent text-muted-foreground/40",
             starClassName
           )}
@@ -63,7 +63,7 @@ export function StarInput({
             className={cn(
               "size-7",
               i <= active
-                ? "fill-gold text-gold"
+                ? "fill-cyan text-cyan"
                 : "fill-transparent text-muted-foreground/40"
             )}
           />

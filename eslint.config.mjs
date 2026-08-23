@@ -17,6 +17,9 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Standalone Node debug/probe scripts — CommonJS, not part of the app bundle.
     "scripts/**",
+    // Task worktrees hold their own checkout of this repo — linting them
+    // reports the same files twice and picks up work in progress.
+    ".claude/worktrees/**",
     // Service worker: plain browser JS, not linted as app source.
     "public/sw.js",
   ]),

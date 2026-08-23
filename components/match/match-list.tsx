@@ -23,14 +23,14 @@ export async function MatchList({ matches }: { matches: ProfileMatch[] }) {
         return (
           <li
             key={p.id}
-            className="social-surface flex flex-col gap-3.5 p-4 transition-colors hover:border-gold/25 sm:p-5"
+            className="social-surface flex flex-col gap-3.5 p-4 transition-colors hover:border-cyan/25 sm:p-5"
           >
             <div className="flex items-start gap-4">
               <Avatar className="size-[4.5rem] shrink-0 sm:size-20">
                 {p.avatar_url && (
                   <AvatarImage src={p.avatar_url} alt={name} />
                 )}
-                <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-xl text-primary-foreground">
+                <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-xl text-primary-foreground">
                   {initial}
                 </AvatarFallback>
               </Avatar>
@@ -44,7 +44,7 @@ export async function MatchList({ matches }: { matches: ProfileMatch[] }) {
                     label={tProfile("verified")}
                   />
                   {mutual && (
-                    <span className="inline-flex items-center gap-1 rounded-md bg-gold/15 px-2 py-0.5 text-xs font-medium text-gold">
+                    <span className="inline-flex items-center gap-1 rounded-md bg-cyan/15 px-2 py-0.5 text-xs font-medium text-cyan">
                       <Sparkles className="size-3" />
                       {t("mutual")}
                     </span>
@@ -52,7 +52,7 @@ export async function MatchList({ matches }: { matches: ProfileMatch[] }) {
                 </div>
                 {place && (
                   <div className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
-                    <MapPin className="size-3.5 shrink-0 text-gold" />
+                    <MapPin className="size-3.5 shrink-0 text-cyan" />
                     <span className="truncate">{place}</span>
                   </div>
                 )}
@@ -61,10 +61,10 @@ export async function MatchList({ matches }: { matches: ProfileMatch[] }) {
                     {reasons.map((r) => (
                       <span
                         key={`${r.looking}-${r.offering}`}
-                        className="rounded-md bg-kurd-green/12 px-2.5 py-0.5 text-xs font-medium text-kurd-green"
+                        className="rounded-md bg-success/12 px-2.5 py-0.5 text-xs font-medium text-success"
                       >
                         {tOn(`looking_${r.looking}` as never)}
-                        <span className="mx-1 text-kurd-green/45">·</span>
+                        <span className="mx-1 text-success/45">·</span>
                         {tOn(`offer_${r.offering}` as never)}
                       </span>
                     ))}

@@ -21,12 +21,17 @@ export type StartConversationResult =
   | { ok: false; error: string };
 
 /**
- * Get-or-create a 1:1 conversation. Existing conversations always open. New
- * conversations count against the free daily limit (premium = unlimited);
- * replying to existing threads is always free.
+ * Get-or-create a 1:1 conversation. Existing conversations always open, and
+ * replying is always free.
+ *
+ * `reason: "help"` bypasses the daily cap entirely: reaching out about a help
+ * request is the core loop of the product. A newcomer who hits "upgrade to
+ * message" while asking for housing simply leaves, so helping is never
+ * paywalled — premium sells reach, not access.
  */
 export async function startConversation(
-  otherUserId: string
+  otherUserId: string,
+  reason?: "help"
 ): Promise<StartConversationResult> {
   const supabase = await createClient();
   const {
@@ -44,16 +49,19 @@ export async function startConversation(
   });
   if (existing) return { ok: true, conversationId: String(existing) };
 
-  const ent = await getEntitlements(user.id);
-  if (!ent.features.unlimitedReveals) {
-    const { data: todays } = await supabase
-      .from("usage_events")
-      .select("id")
-      .eq("user_id", user.id)
-      .eq("feature", "new_conversation")
-      .gte("created_at", startOfTodayISO());
-    if ((todays?.length ?? 0) >= FREE_LIMITS.newConversationsPerDay) {
-      return { ok: false, locked: true };
+  // Helping is never rate-limited.
+  if (reason !== "help") {
+    const ent = await getEntitlements(user.id);
+    if (!ent.features.unlimitedReveals) {
+      const { data: todays } = await supabase
+        .from("usage_events")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("feature", "new_conversation")
+        .gte("created_at", startOfTodayISO());
+      if ((todays?.length ?? 0) >= FREE_LIMITS.newConversationsPerDay) {
+        return { ok: false, locked: true };
+      }
     }
   }
 

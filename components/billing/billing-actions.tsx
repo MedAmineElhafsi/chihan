@@ -67,7 +67,7 @@ export function BillingActions({
             className={cn(
               "flex-1 rounded-full px-3 py-1.5 text-sm font-medium transition-colors",
               interval === i
-                ? "bg-gold/15 text-gold"
+                ? "bg-cyan/15 text-cyan"
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
@@ -78,7 +78,7 @@ export function BillingActions({
       <Button
         onClick={checkout}
         disabled={pending || !configured}
-        className="w-full gap-2 glow-gold"
+        className="w-full gap-2 glow"
       >
         {pending && <Loader2 className="size-4 animate-spin" />}
         {t("upgradeCta")} ·{" "}

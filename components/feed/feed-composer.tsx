@@ -118,7 +118,7 @@ export function FeedComposer({ userId }: { userId: string }) {
             className={cn(
               "inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
               tab === key
-                ? "border-gold/50 bg-gold/15 text-gold"
+                ? "border-cyan/50 bg-cyan/15 text-cyan"
                 : "border-border bg-muted/40 text-muted-foreground hover:text-foreground"
             )}
           >

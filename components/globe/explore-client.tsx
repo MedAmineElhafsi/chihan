@@ -30,6 +30,7 @@ import { CATEGORY_COLORS, pointStyle } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useOnlineProfiles } from "@/lib/use-online";
 import type { GlobePoint } from "@/lib/globe";
+import { GlobeSearch, type TagOption } from "./globe-search";
 
 const GlobeGL = dynamic(() => import("./globe-gl"), {
   ssr: false,
@@ -38,13 +39,33 @@ const GlobeGL = dynamic(() => import("./globe-gl"), {
 
 type Layer = "all" | "people" | "restaurants" | "doctors" | "events";
 
-export function ExploreClient({ points }: { points: GlobePoint[] }) {
+/** One key covering both a person's profession and a place's category. */
+function tagOf(p: GlobePoint): string {
+  if (p.kind === "person") return `person:${p.profession || "other"}`;
+  if (p.kind === "event") return "event:event";
+  return `listing:${p.category}`;
+}
+
+export function ExploreClient({
+  points,
+  chrome = true,
+  offsetRight = false,
+}: {
+  points: GlobePoint[];
+  /** Hide the panel/controls — used while the home hero curtain is up. */
+  chrome?: boolean;
+  /** Push the globe off-centre so hero copy gets clean space. */
+  offsetRight?: boolean;
+}) {
   const t = useTranslations("Explore");
   const globeRef = useRef<GlobeMethods | undefined>(undefined);
   const containerRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
 
   const [layer, setLayer] = useState<Layer>("all");
+  const [query, setQuery] = useState("");
+  const [country, setCountry] = useState("");
+  const [tag, setTag] = useState("");
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const online = useOnlineProfiles();
@@ -59,7 +80,8 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
     return () => ro.disconnect();
   }, []);
 
-  const filtered = useMemo(
+  /** Layer is a hard filter: "show me people" means only people. */
+  const layerPoints = useMemo(
     () =>
       points.filter((p) => {
         if (layer === "people") return p.kind === "person";
@@ -71,12 +93,58 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
     [points, layer]
   );
 
+  const searching = Boolean(query.trim() || country || tag);
+
+  /** Search is a soft filter: non-matches stay on the globe, dimmed. */
+  const matches = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return layerPoints.filter((p) => {
+      if (country && (p.country || "—") !== country) return false;
+      if (tag && tagOf(p) !== tag) return false;
+      if (!q) return true;
+      return [p.name, p.city, p.country, p.profession, p.category]
+        .filter(Boolean)
+        .some((f) => String(f).toLowerCase().includes(q));
+    });
+  }, [layerPoints, query, country, tag]);
+
+  const matchIds = useMemo(() => new Set(matches.map((p) => p.id)), [matches]);
+
+  /** Countries and professions offered come from the whole layer, so the
+   *  dropdowns never collapse to whatever is already selected. */
+  const countryOptions = useMemo(
+    () =>
+      [...new Set(layerPoints.map((p) => p.country || "—"))].sort((a, b) =>
+        a.localeCompare(b)
+      ),
+    [layerPoints]
+  );
+
+  const tagOptions = useMemo<TagOption[]>(() => {
+    const seen = new Map<string, TagOption>();
+    for (const p of layerPoints) {
+      const value = tagOf(p);
+      if (seen.has(value)) continue;
+      seen.set(value, {
+        value,
+        group: p.kind === "person" ? "people" : "places",
+        label:
+          p.kind === "person"
+            ? t(`prof_${p.profession || "other"}` as never)
+            : p.kind === "event"
+              ? t("events")
+              : t(`cat_${p.category}` as never),
+      });
+    }
+    return [...seen.values()].sort((a, b) => a.label.localeCompare(b.label));
+  }, [layerPoints, t]);
+
   const countries = useMemo(() => {
     const map = new Map<
       string,
       { country: string; count: number; lat: number; lng: number }
     >();
-    for (const p of filtered) {
+    for (const p of matches) {
       const key = p.country || "—";
       const e = map.get(key) ?? { country: key, count: 0, lat: 0, lng: 0 };
       e.count += 1;
@@ -87,23 +155,23 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
     return [...map.values()]
       .map((e) => ({ ...e, lat: e.lat / e.count, lng: e.lng / e.count }))
       .sort((a, b) => b.count - a.count);
-  }, [filtered]);
+  }, [matches]);
 
   const selectedItem = useMemo(
-    () => filtered.find((p) => p.id === selectedId) ?? null,
-    [filtered, selectedId]
+    () => matches.find((p) => p.id === selectedId) ?? null,
+    [matches, selectedId]
   );
   const countryItems = useMemo(
     () =>
       selectedCountry
-        ? filtered.filter((p) => (p.country || "—") === selectedCountry)
+        ? matches.filter((p) => (p.country || "—") === selectedCountry)
         : [],
-    [filtered, selectedCountry]
+    [matches, selectedCountry]
   );
 
   const globeData = useMemo(
     () =>
-      filtered.map((p) => {
+      layerPoints.map((p) => {
         const style = pointStyle(p.kind, p.kind === "person" ? p.profession : p.category);
         return {
           id: p.id,
@@ -112,22 +180,23 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
           lng: p.lng,
           color: style.color,
           icon: style.icon,
-          radius: p.id === selectedId ? 0.9 : 0.45,
+          radius: p.id === selectedId ? 0.9 : searching && matchIds.has(p.id) ? 0.62 : 0.45,
           selected: p.id === selectedId,
           dimmed:
-            selectedCountry != null && (p.country || "—") !== selectedCountry,
+            (searching && !matchIds.has(p.id)) ||
+            (selectedCountry != null && (p.country || "—") !== selectedCountry),
           subtitle: p.city ?? "",
           kind: p.kind,
           online: p.kind === "person" ? online.has(p.id) : undefined,
         };
       }),
-    [filtered, selectedId, selectedCountry, online]
+    [layerPoints, matchIds, searching, selectedId, selectedCountry, online]
   );
 
   /** Colour key for whatever is currently on screen. */
   const legend = useMemo(() => {
     const seen = new Map<string, { color: string; icon: string; label: string }>();
-    for (const p of filtered) {
+    for (const p of matches) {
       const key =
         p.kind === "person"
           ? p.profession || "other"
@@ -149,13 +218,39 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
       });
     }
     return [...seen.values()];
-  }, [filtered, t]);
+  }, [matches, t]);
 
   const rings = useMemo(
     () =>
       selectedItem ? [{ lat: selectedItem.lat, lng: selectedItem.lng }] : [],
     [selectedItem]
   );
+
+  /** Point the globe at the results as the search narrows. */
+  const aim = useMemo(() => {
+    if (!searching || matches.length === 0) return null;
+    if (matches.length === 1) {
+      return { lat: matches[0].lat, lng: matches[0].lng, altitude: 1.1 };
+    }
+    const lat = matches.reduce((a, p) => a + p.lat, 0) / matches.length;
+    const lng = matches.reduce((a, p) => a + p.lng, 0) / matches.length;
+    const spread = Math.max(
+      ...matches.map((p) => Math.abs(p.lat - lat) + Math.abs(p.lng - lng))
+    );
+    return { lat, lng, altitude: Math.min(2.5, Math.max(1.2, spread / 22)) };
+  }, [searching, matches]);
+
+  const aimKey = aim ? `${aim.lat.toFixed(2)}:${aim.lng.toFixed(2)}:${aim.altitude.toFixed(2)}` : "";
+
+  useEffect(() => {
+    if (!aim) return;
+    const g = globeRef.current;
+    if (!g) return;
+    const controls = g.controls() as { autoRotate?: boolean };
+    if (controls) controls.autoRotate = false;
+    g.pointOfView({ lat: aim.lat, lng: aim.lng, altitude: aim.altitude }, 1200);
+    // aimKey is the stable signature of aim — re-run only when it really moves.
+  }, [aimKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /** Hand control to the user the moment they touch the globe. */
   function stopAutoRotate() {
@@ -192,11 +287,19 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
   }
 
   function selectItem(id: string) {
-    const p = filtered.find((x) => x.id === id);
+    const p = matches.find((x) => x.id === id);
     if (!p) return;
     setSelectedId(id);
     setSelectedCountry(p.country || "—");
     flyTo(p.lat, p.lng, 1.1);
+  }
+
+  function clearSearch() {
+    setQuery("");
+    setCountry("");
+    setTag("");
+    setSelectedCountry(null);
+    setSelectedId(null);
   }
 
   function changeLayer(next: Layer) {
@@ -227,7 +330,10 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
     <div className="relative h-[calc(100dvh-4rem)] w-full overflow-hidden">
       <div
         ref={containerRef}
-        className="absolute inset-0"
+        className={cn(
+          "absolute inset-0 transition-transform duration-1000 ease-out",
+          offsetRight && "lg:translate-x-[22%]"
+        )}
         onPointerDown={stopAutoRotate}
         onWheel={stopAutoRotate}
       >
@@ -245,6 +351,25 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
         )}
       </div>
 
+      {/* Search sits over the globe, centred on desktop, full width on phones */}
+      <GlobeSearch
+        query={query}
+        onQuery={setQuery}
+        country={country}
+        onCountry={setCountry}
+        countries={countryOptions}
+        tag={tag}
+        onTag={setTag}
+        tags={tagOptions}
+        matches={matches.length}
+        active={searching}
+        onClear={clearSearch}
+        className={cn(
+          "absolute inset-x-4 top-4 z-20 transition-opacity duration-500 md:inset-x-auto md:start-1/2 md:w-[420px] md:-translate-x-1/2",
+          !chrome && "pointer-events-none opacity-0"
+        )}
+      />
+
       {/* Center reticle */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <svg width="46" height="46" viewBox="0 0 46 46" className="opacity-70">
@@ -261,18 +386,26 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
         size="icon"
         onClick={recenter}
         aria-label={t("recenter")}
-        className="glass absolute end-4 top-4 z-10"
+        className={cn(
+          "panel absolute end-4 top-4 z-10 transition-opacity duration-500",
+          !chrome && "pointer-events-none opacity-0"
+        )}
       >
         <Crosshair className="size-5" />
       </Button>
 
       {/* Results panel */}
-      <div className="glass-strong absolute inset-x-4 bottom-4 z-10 flex max-h-[55dvh] flex-col overflow-hidden rounded-2xl md:inset-x-auto md:bottom-auto md:start-4 md:top-4 md:max-h-[calc(100%-2rem)] md:w-[360px]">
+      <div
+        className={cn(
+          "panel-solid absolute inset-x-4 bottom-4 z-10 flex max-h-[55dvh] flex-col overflow-hidden rounded-md transition-opacity duration-500 md:inset-x-auto md:bottom-auto md:start-4 md:top-4 md:max-h-[calc(100%-2rem)] md:w-[340px]",
+          !chrome && "pointer-events-none opacity-0"
+        )}
+      >
         <div className="flex flex-col gap-3 border-b border-border/60 p-4">
           <div className="flex items-center justify-between">
             <h1 className="font-display text-lg font-semibold">{t("title")}</h1>
             <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-              {t("memberCount", { count: filtered.length })}
+              {t("memberCount", { count: matches.length })}
             </span>
           </div>
           <div className="flex flex-wrap gap-1.5">
@@ -283,7 +416,7 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors",
                   layer === key
-                    ? "border-gold/50 bg-gold/15 text-gold"
+                    ? "border-cyan/50 bg-cyan/15 text-cyan"
                     : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
                 )}
               >
@@ -322,9 +455,9 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto p-3">
-          {filtered.length === 0 ? (
+          {matches.length === 0 ? (
             <div className="flex flex-col items-center gap-2 px-4 py-10 text-center">
-              <MapPin className="size-7 text-gold" />
+              <MapPin className="size-7 text-cyan" />
               <p className="text-sm text-muted-foreground">{t("empty")}</p>
               <Button asChild size="sm" className="mt-1">
                 <Link href="/onboarding">{t("emptyCta")}</Link>
@@ -380,7 +513,7 @@ export function ExploreClient({ points }: { points: GlobePoint[] }) {
                   className="flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-start transition-colors hover:bg-accent"
                 >
                   <span className="flex items-center gap-2.5 font-medium">
-                    <MapPin className="size-4 text-gold" />
+                    <MapPin className="size-4 text-cyan" />
                     {c.country}
                   </span>
                   <span className="text-sm text-muted-foreground">{c.count}</span>
@@ -423,7 +556,7 @@ function ItemAvatar({ item, online }: { item: GlobePoint; online?: boolean }) {
     <span className="relative shrink-0">
       <Avatar className="size-9">
         {item.avatarUrl && <AvatarImage src={item.avatarUrl} alt={item.name} />}
-        <AvatarFallback className="bg-gradient-to-br from-gold to-kurd-red text-xs text-primary-foreground">
+        <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-xs text-primary-foreground">
           {initial}
         </AvatarFallback>
       </Avatar>
@@ -540,7 +673,7 @@ function ItemDetail({
           </div>
           {place && (
             <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <MapPin className="size-3.5 text-gold" />
+              <MapPin className="size-3.5 text-cyan" />
               {place}
             </div>
           )}
