@@ -213,3 +213,19 @@ console errors, no sideways scroll. `/feed` and `/groups` render; `/match`
 and `/pricing` still return not-found.
 
 Still off: match, who-viewed, billing.
+
+## Phase B — search over the globe
+
+- [x] `components/globe/globe-search.tsx` — text box, country chip, profession chip, match count, clear
+- [x] Profession chip groups People (professions) and Places (categories) in one dropdown
+- [x] Layer stays a hard filter; search is soft — non-matches dim instead of vanishing
+- [x] Matching points grow (0.45 → 0.62); the globe turns to the centroid of the results
+- [x] Dropdown options come from the whole layer, so they never collapse to the current selection
+- [x] Search strings in 5 locales · `tsc`, `eslint`, `next build` clean
+
+Verified in the browser: 46 points → Germany 10 → "berlin" + Germany 4, with the
+globe still drawing all 46 and dimming 42. Clear returns to 46. Read from the
+committed fiber, not the stale alternate.
+
+Known, pre-existing and unrelated: Realtime presence returns 400 on /explore,
+so the online dots never light. Not touched by this phase.

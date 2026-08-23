@@ -264,7 +264,16 @@
     "cat_lawyer": "Nivîsgeha hiqûqî",
     "cat_hairdresser": "Berber",
     "cat_community": "Civak",
-    "cat_other": "Karsazî"
+    "cat_other": "Karsazî",
+    "searchPlaceholder": "Kes, cih, bajar bigere…",
+    "searchLabel": "Li gerdûnê bigere",
+    "anyCountry": "Hemû welat",
+    "anyProfession": "Hemû pîşe",
+    "filterCountry": "Li gorî welat",
+    "filterProfession": "Li gorî pîşe",
+    "places": "Cih",
+    "clear": "Lêgerînê paqij bike",
+    "matchCount": "{count} hatin dîtin"
   },
   "Directory": {
     "title": "Rêber",

@@ -264,7 +264,16 @@
     "cat_lawyer": "Kanzlei",
     "cat_hairdresser": "Friseur",
     "cat_community": "Gemeinschaft",
-    "cat_other": "Betrieb"
+    "cat_other": "Betrieb",
+    "searchPlaceholder": "Menschen, Orte, Städte suchen…",
+    "searchLabel": "Globus durchsuchen",
+    "anyCountry": "Alle Länder",
+    "anyProfession": "Alle Berufe",
+    "filterCountry": "Nach Land filtern",
+    "filterProfession": "Nach Beruf filtern",
+    "places": "Orte",
+    "clear": "Suche löschen",
+    "matchCount": "{count} gefunden"
   },
   "Directory": {
     "title": "Verzeichnis",

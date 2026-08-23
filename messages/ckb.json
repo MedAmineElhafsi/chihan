@@ -264,7 +264,16 @@
     "cat_lawyer": "نووسینگەی یاسایی",
     "cat_hairdresser": "ئارایشتگە",
     "cat_community": "کۆمەڵگا",
-    "cat_other": "بازرگانی"
+    "cat_other": "بازرگانی",
+    "searchPlaceholder": "بەدوای کەس، شوێن، شاردا بگەڕێ…",
+    "searchLabel": "گەڕان لە گۆدا",
+    "anyCountry": "هەموو وڵاتان",
+    "anyProfession": "هەموو پیشەکان",
+    "filterCountry": "بەپێی وڵات",
+    "filterProfession": "بەپێی پیشە",
+    "places": "شوێنەکان",
+    "clear": "سڕینەوەی گەڕان",
+    "matchCount": "{count} دۆزرایەوە"
   },
   "Directory": {
     "title": "ڕێنوێنی",

@@ -264,7 +264,16 @@
     "cat_lawyer": "Law office",
     "cat_hairdresser": "Hairdresser",
     "cat_community": "Community",
-    "cat_other": "Business"
+    "cat_other": "Business",
+    "searchPlaceholder": "Search people, places, cities…",
+    "searchLabel": "Search the globe",
+    "anyCountry": "Any country",
+    "anyProfession": "Any profession",
+    "filterCountry": "Filter by country",
+    "filterProfession": "Filter by profession",
+    "places": "Places",
+    "clear": "Clear search",
+    "matchCount": "{count} found"
   },
   "Directory": {
     "title": "Directory",

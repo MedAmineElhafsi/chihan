@@ -264,7 +264,16 @@
     "cat_lawyer": "مكتب محاماة",
     "cat_hairdresser": "حلاق",
     "cat_community": "مجتمع",
-    "cat_other": "نشاط"
+    "cat_other": "نشاط",
+    "searchPlaceholder": "ابحث عن أشخاص أو أماكن أو مدن…",
+    "searchLabel": "ابحث في الكرة الأرضية",
+    "anyCountry": "كل البلدان",
+    "anyProfession": "كل المهن",
+    "filterCountry": "تصفية حسب البلد",
+    "filterProfession": "تصفية حسب المهنة",
+    "places": "الأماكن",
+    "clear": "مسح البحث",
+    "matchCount": "{count} نتيجة"
   },
   "Directory": {
     "title": "الدليل",
