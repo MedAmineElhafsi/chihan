@@ -436,3 +436,25 @@ just to show a card.
 Verified by inserting a real reel row and reading the rendered page: the
 poster is used, the `.mp4` never appears in an `<img>`, the duration badge
 shows, and the card links to `/reels`. Probe row deleted afterwards.
+
+## Home — Posts · Help · News
+
+The blueprint's segmented Home is in. Three things people read, one place:
+
+- `components/app-shell/home-tabs.tsx` — a strip of **links**, not client
+  state, driven by `?tab=`. A tab can be shared, bookmarked and opened in a
+  new window, and it renders on the server.
+- **Posts** keeps the stories rail, the composer and the near-me filter.
+- **Help** shows open requests using the existing `RequestCard`.
+- **News** shows articles using `ArticleCard`, which was extracted out of
+  `app/[locale]/news/page.tsx` so both pages share one component.
+- Each tab fetches only its own data — opening Home does not query the help
+  board and the news table as well.
+
+Verified by loading all three:
+
+| tab | active | stories | help cards | news cards |
+|---|---|---|---|---|
+| posts | Posts | yes | 0 | 0 |
+| help | Help | no | **6** | 0 |
+| news | News | no | 0 | **12** |

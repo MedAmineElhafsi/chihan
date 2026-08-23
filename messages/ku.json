@@ -818,5 +818,11 @@
     "errorSave": "Vîdyo hat barkirin lê reel nehat tomarkirin.",
     "newReel": "Reelek nû",
     "close": "Bigire"
+  },
+  "Home": {
+    "tabsLabel": "Çi bixwînî",
+    "posts": "Peyam",
+    "help": "Alîkarî",
+    "news": "Nûçe"
   }
 }

@@ -818,5 +818,11 @@
     "errorSave": "Das Video wurde hochgeladen, das Reel konnte aber nicht gespeichert werden.",
     "newReel": "Neues Reel",
     "close": "Schließen"
+  },
+  "Home": {
+    "tabsLabel": "Was zu lesen ist",
+    "posts": "Beiträge",
+    "help": "Hilfe",
+    "news": "Nachrichten"
   }
 }

@@ -818,5 +818,11 @@
     "errorSave": "The video uploaded but the reel could not be saved.",
     "newReel": "New reel",
     "close": "Close"
+  },
+  "Home": {
+    "tabsLabel": "What to read",
+    "posts": "Posts",
+    "help": "Help",
+    "news": "News"
   }
 }
