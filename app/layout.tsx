@@ -93,7 +93,8 @@ export default async function RootLayout({
         instrument.variable,
         jetbrains.variable,
         vazirmatn.variable,
-        "antialiased"
+        // Cîhan is a dark product by design; there is no light theme to switch to.
+        "dark antialiased"
       )}
     >
       <body className="min-h-dvh">{children}</body>

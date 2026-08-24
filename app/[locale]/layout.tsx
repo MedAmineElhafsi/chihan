@@ -4,7 +4,6 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 import { routing } from "@/i18n/routing";
-import { ThemeProvider } from "@/components/providers/theme-provider";
 import { DocumentAttributes } from "@/components/providers/document-attributes";
 import { Backdrop } from "@/components/backdrop";
 import { SiteHeader } from "@/components/app-shell/site-header";
@@ -48,26 +47,19 @@ export default async function LocaleLayout({
   const user = await getCurrentUser();
 
   return (
-    <ThemeProvider
-      attribute="class"
-      forcedTheme="dark"
-      enableSystem={false}
-      disableTransitionOnChange
-    >
-      <NextIntlClientProvider>
-        <DocumentAttributes />
-        <Backdrop />
-        <div className="relative flex min-h-dvh flex-col">
-          <SiteHeader />
-          <main className="flex-1 pb-20 lg:pb-0">{children}</main>
-          <ShellFooter>
-            <SiteFooter />
-          </ShellFooter>
-        </div>
-        <TabBar signedIn={Boolean(user)} />
-        <InstallPrompt />
-        <ServiceWorkerRegister />
-      </NextIntlClientProvider>
-    </ThemeProvider>
+    <NextIntlClientProvider>
+      <DocumentAttributes />
+      <Backdrop />
+      <div className="relative flex min-h-dvh flex-col">
+        <SiteHeader />
+        <main className="flex-1 pb-20 lg:pb-0">{children}</main>
+        <ShellFooter>
+          <SiteFooter />
+        </ShellFooter>
+      </div>
+      <TabBar signedIn={Boolean(user)} />
+      <InstallPrompt />
+      <ServiceWorkerRegister />
+    </NextIntlClientProvider>
   );
 }

@@ -479,3 +479,46 @@ still contained the pre-redesign `--gold` palette and no `--cyan`, so
 `.next` and restarting fixed it. If the palette ever looks wrong again, check
 `getComputedStyle(document.documentElement).getPropertyValue('--cyan')` before
 suspecting the CSS.
+
+## Codebase cleanup
+
+Removed 21 files and ~1,170 lines. Nothing that a feature flag might bring
+back was touched.
+
+**Dead code**
+- `components/app-shell/theme-toggle.tsx` — nothing rendered it; the app is
+  `forcedTheme="dark"`.
+- `types/db.ts` — a Phase 0 placeholder for generated Supabase types that were
+  never generated and never imported.
+
+**next-themes removed entirely.** It existed only to force a theme that never
+changes. `dark` is now a static class on `<html>`. This also removes
+`components/providers/theme-provider.tsx`, which globally monkey-patched
+`console.error` to hide one next-themes warning — a patch that could just as
+easily have hidden a real error.
+
+**Debug scripts** — `scripts/probe-curl.js`, `probe-supabase.js`,
+`probe-supabase-timeout.js`. One of them had a **Supabase key hardcoded and
+committed**, against the project rule that keys live only in `.env.local`.
+
+**14 duplicate SQL files** — every `supabase/apply_*.sql` was a copy of a
+numbered migration, kept for pasting into the dashboard. Verified each one is
+covered by `supabase/migrations/` before deleting; `npm run db:migrate`
+replaces the workflow they existed for.
+
+**Dead CSS** — `glow-sm`, `text-glow`, `animate-sweep`, `animate-reveal` and
+the `sweep` / `reveal-clip` keyframes: zero uses between them.
+
+**95 translation entries** (19 keys × 5 locales) for the rejected first
+landing page, the theme switcher, and three orphans. All five locales still
+match `en` exactly.
+
+**Kept deliberately:** `Dashboard.matches*` and `*.whoViewed`. Those belong to
+the `match` and `views` flags, which are documented as reversible — deleting
+their strings would mean flipping a flag back no longer restores the surface
+whole.
+
+**e2e** — `login-match-message.spec.ts` drove `/match`, which now returns
+404, so it could never pass. Replaced with `core-loop.spec.ts`: sign in, open
+the help board, message the asker, plus a check that the five tabs render
+signed out.
