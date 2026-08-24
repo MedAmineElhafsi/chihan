@@ -365,7 +365,9 @@ export function ExploreClient({
         active={searching}
         onClear={clearSearch}
         className={cn(
-          "absolute inset-x-4 top-4 z-20 transition-opacity duration-500 md:inset-x-auto md:start-1/2 md:w-[420px] md:-translate-x-1/2",
+          // Sits clear of the results panel on the left and the recenter button on
+          // the right, rather than centring on the viewport and colliding with both.
+          "absolute inset-x-4 top-4 z-20 transition-opacity duration-500 md:start-[23rem] md:end-16 md:w-auto md:max-w-[460px]",
           !chrome && "pointer-events-none opacity-0"
         )}
       />

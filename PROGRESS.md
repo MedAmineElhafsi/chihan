@@ -458,3 +458,24 @@ Verified by loading all three:
 | posts | Posts | yes | 0 | 0 |
 | help | Help | no | **6** | 0 |
 | news | News | no | 0 | **12** |
+
+## Explore — search bar no longer collides with the results panel
+
+On a desktop viewport the search bar was centred on the window while the
+results panel occupies the left 356px, so the two overlapped. The bar now
+starts clear of the panel and stops short of the recenter button.
+
+| viewport | panel ends | search starts | overlap |
+|---|---|---|---|
+| 375 | (bottom-docked) | top | none |
+| 768 | 356 | 368 | none |
+| 1100 | 356 | 368 | none |
+
+Note for future sessions: the "Get started" button rendering as dark-on-dark,
+and Explore's panels looking transparent, were **not** code faults. Switching
+branches under a running dev server left Turbopack serving a stylesheet that
+still contained the pre-redesign `--gold` palette and no `--cyan`, so
+`bg-cyan` and `panel-solid` produced nothing. Stopping the server, deleting
+`.next` and restarting fixed it. If the palette ever looks wrong again, check
+`getComputedStyle(document.documentElement).getPropertyValue('--cyan')` before
+suspecting the CSS.
