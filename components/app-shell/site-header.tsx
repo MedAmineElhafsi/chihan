@@ -39,7 +39,7 @@ export async function SiteHeader() {
     : [[], 0, 0];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-depth-0/70 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 bg-depth-0/70 backdrop-blur-xl after:pointer-events-none after:absolute after:inset-x-0 after:top-full after:h-6 after:bg-gradient-to-b after:from-depth-0/60 after:to-transparent">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <div className="flex items-center gap-10">
           <BrandWordmark />

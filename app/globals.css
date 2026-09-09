@@ -290,7 +290,82 @@
 
 @media (prefers-reduced-motion: reduce) {
   .animate-drift,
-  .animate-pulse-node,  .animate-rise,  .animate-flicker {
+  .animate-pulse-node,
+  .animate-rise,
+  .animate-flicker {
     animation: none;
   }
+
+  /* Reduced motion is not "no feedback" — keep the press response, drop the
+     travel. A cross-fade still tells you something happened. */
+  *,
+  *::before,
+  *::after {
+    transition-duration: 120ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Translucency is decoration here, never the only thing carrying meaning.
+   When it is turned off the panels become solid rather than disappearing. */
+@media (prefers-reduced-transparency: reduce) {
+  .panel,
+  .panel-solid,
+  .social-surface,
+  header,
+  nav[aria-label] {
+    background-color: var(--depth-2) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+/* Higher contrast: solid grounds and a border that is actually visible. */
+@media (prefers-contrast: more) {
+  :root {
+    --border: rgba(199, 248, 254, 0.45);
+    --border-strong: rgba(199, 248, 254, 0.7);
+    --muted-foreground: #c2e4ea;
+  }
+
+  .panel,
+  .panel-solid,
+  .social-surface {
+    background-color: var(--depth-1);
+    backdrop-filter: none;
+    border-width: 1px;
+  }
+}
+
+/* --- size-specific tracking (apple-design §15) -----------------------------
+   One letter-spacing value cannot be right at every size: as type grows the
+   letters read too far apart, and as it shrinks they crowd. These track the
+   size instead of fighting it. */
+.text-display,
+h1 {
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+}
+
+h2 {
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+}
+
+h3 {
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+/* Body sits at zero — it is already tuned by the typeface. */
+body {
+  letter-spacing: 0;
+}
+
+/* Small print needs a little air to stay legible, the opposite of display. */
+.text-xs,
+small {
+  letter-spacing: 0.01em;
 }
