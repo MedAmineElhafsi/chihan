@@ -369,3 +369,25 @@ body {
 small {
   letter-spacing: 0.01em;
 }
+
+/* --- motion tokens ---------------------------------------------------------
+   Values taken from Apple's shipped interaction table (WWDC 2018,
+   Designing Fluid Interfaces), not invented. Response is how quickly the
+   value reaches its target — not a duration; a spring has no fixed one.
+
+     interaction        damping   response
+     move / reposition    1.0       0.4
+     rotation             0.8       0.4
+     drawer / sheet       0.8       0.3
+
+   Motion expresses the same pair as bounce + duration: bounce 0 is
+   critically damped (damping 1.0), bounce 0.2 is about damping 0.8. */
+:root {
+  /* Press feedback has to read as instant. */
+  --press-duration: 75ms;
+
+  /* Entrances and exits that carry no momentum. */
+  --ease-out-quint: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+}
