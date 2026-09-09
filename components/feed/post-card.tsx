@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { motion } from "motion/react";
 import {
   CalendarDays,
   CalendarPlus,
@@ -27,6 +28,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ReportButton } from "@/components/moderation/report-button";
 import { cn } from "@/lib/utils";
+import { springFlick } from "@/lib/motion";
 import type { FeedItem, PostComment, RsvpStatus } from "@/types/post";
 
 export function PostCard({
@@ -299,7 +301,19 @@ export function PostCard({
               : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
           )}
         >
-          <Heart className={cn("size-5", liked && "fill-destructive")} />
+          {/* A like is occasional and meaningful, so it earns a real spring — and
+              bounce is warranted here because the press itself is the momentum.
+              The heart only springs on the way in; unliking is a quiet correction,
+              not a celebration. */}
+          <motion.span
+            key={liked ? "liked" : "unliked"}
+            initial={false}
+            animate={{ scale: liked ? [1, 1.28, 1] : 1 }}
+            transition={liked ? springFlick : { duration: 0 }}
+            className="inline-flex"
+          >
+            <Heart className={cn("size-5", liked && "fill-destructive")} />
+          </motion.span>
           {t("like")}
           {likeCount > 0 ? ` · ${likeCount}` : ""}
         </button>

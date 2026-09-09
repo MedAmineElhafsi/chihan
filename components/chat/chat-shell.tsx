@@ -43,7 +43,8 @@ export function ChatShell({
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const timeFmt = useMemo(
-    () => new Intl.DateTimeFormat(locale, { hour: "2-digit", minute: "2-digit" }),
+    () =>
+      new Intl.DateTimeFormat(locale, { hour: "2-digit", minute: "2-digit" }),
     [locale]
   );
 
@@ -79,7 +80,8 @@ export function ChatShell({
                       sender_id: m.sender_id,
                     },
                     unread:
-                      m.conversation_id === activeId || m.sender_id === currentUserId
+                      m.conversation_id === activeId ||
+                      m.sender_id === currentUserId
                         ? c.unread
                         : c.unread + 1,
                   }
@@ -90,14 +92,21 @@ export function ChatShell({
       )
       .on(
         "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "conversation_participants" },
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "conversation_participants",
+        },
         (payload) => {
           const row = payload.new as {
             conversation_id: string;
             user_id: string;
             last_read_at: string | null;
           };
-          if (row.conversation_id === activeId && row.user_id === partnerUserId) {
+          if (
+            row.conversation_id === activeId &&
+            row.user_id === partnerUserId
+          ) {
             setOtherLastRead(row.last_read_at);
           }
         }
@@ -117,21 +126,44 @@ export function ChatShell({
     e.preventDefault();
     const body = text.trim();
     if (!body || !activeId) return;
-    setSending(true);
+
+    // Show it immediately. Waiting for the round trip leaves the sender
+    // staring at an empty box wondering whether it went — feedback has to be
+    // continuous, not only at the end.
+    const pendingId = `pending-${Date.now()}`;
+    const optimistic: ChatMessage = {
+      id: pendingId,
+      conversation_id: activeId,
+      sender_id: currentUserId,
+      body,
+      created_at: new Date().toISOString(),
+    };
+    setMessages((prev) => [...prev, optimistic]);
     setText("");
+    setSending(true);
+
     const res = await sendMessage(activeId, body);
     setSending(false);
+
     if (res.ok) {
-      setMessages((prev) =>
-        prev.some((x) => x.id === res.message.id) ? prev : [...prev, res.message]
-      );
+      // Swap the placeholder for the real row, unless realtime beat us to it.
+      setMessages((prev) => {
+        const settled = prev.filter((x) => x.id !== pendingId);
+        return settled.some((x) => x.id === res.message.id)
+          ? settled
+          : [...settled, res.message];
+      });
     } else {
+      // Take it back and hand the text back, so nothing is silently lost.
+      setMessages((prev) => prev.filter((x) => x.id !== pendingId));
       setText(body);
     }
   }
 
   const sortedConvs = [...convs].sort((a, b) =>
-    (b.lastMessage?.created_at ?? "").localeCompare(a.lastMessage?.created_at ?? "")
+    (b.lastMessage?.created_at ?? "").localeCompare(
+      a.lastMessage?.created_at ?? ""
+    )
   );
 
   const myLastMsg = [...messages]
@@ -147,16 +179,16 @@ export function ChatShell({
       {/* Conversation list */}
       <aside
         className={cn(
-          "w-full flex-col border-e border-border bg-card/40 md:flex md:w-[22rem]",
+          "border-border bg-card/40 w-full flex-col border-e md:flex md:w-[22rem]",
           activeId ? "hidden md:flex" : "flex"
         )}
       >
-        <div className="border-b border-border px-4 py-3">
+        <div className="border-border border-b px-4 py-3">
           <h1 className="font-display text-lg font-semibold">{t("title")}</h1>
         </div>
         <div className="flex-1 overflow-y-auto">
           {sortedConvs.length === 0 ? (
-            <div className="px-4 py-12 text-center text-sm text-muted-foreground">
+            <div className="text-muted-foreground px-4 py-12 text-center text-sm">
               <p>{t("empty")}</p>
               <p className="mt-1">{t("emptyHint")}</p>
             </div>
@@ -170,7 +202,7 @@ export function ChatShell({
                   key={c.id}
                   href={`/messages/${c.id}`}
                   className={cn(
-                    "flex items-center gap-3 border-b border-border/50 px-3.5 py-3 transition-colors hover:bg-accent/70",
+                    "border-border/50 hover:bg-accent/70 flex items-center gap-3 border-b px-3.5 py-3 transition-colors",
                     c.id === activeId && "bg-accent"
                   )}
                 >
@@ -179,12 +211,12 @@ export function ChatShell({
                       {c.partner?.avatarUrl && (
                         <AvatarImage src={c.partner.avatarUrl} alt={name} />
                       )}
-                      <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-sm text-primary-foreground">
+                      <AvatarFallback className="from-cyan to-depth-4 text-primary-foreground bg-gradient-to-br text-sm">
                         {initial}
                       </AvatarFallback>
                     </Avatar>
                     {unread > 0 && (
-                      <span className="absolute -end-0.5 -top-0.5 flex size-5 items-center justify-center rounded-full bg-cyan text-[0.65rem] font-bold text-primary-foreground ring-2 ring-card">
+                      <span className="bg-cyan text-primary-foreground ring-card absolute -end-0.5 -top-0.5 flex size-5 items-center justify-center rounded-full text-[0.65rem] font-bold ring-2">
                         {unread > 9 ? "9+" : unread}
                       </span>
                     )}
@@ -205,7 +237,7 @@ export function ChatShell({
                         className={cn(
                           "mt-0.5 truncate text-xs",
                           unread > 0
-                            ? "font-medium text-foreground"
+                            ? "text-foreground font-medium"
                             : "text-muted-foreground"
                         )}
                       >
@@ -226,17 +258,17 @@ export function ChatShell({
       {/* Thread */}
       <section
         className={cn(
-          "flex-1 flex-col bg-muted/15",
+          "bg-muted/15 flex-1 flex-col",
           activeId ? "flex" : "hidden md:flex"
         )}
       >
         {!activeId ? (
-          <div className="flex h-full items-center justify-center p-6 text-center text-muted-foreground">
+          <div className="text-muted-foreground flex h-full items-center justify-center p-6 text-center">
             {t("selectConversation")}
           </div>
         ) : (
           <>
-            <div className="flex items-center gap-3 border-b border-border bg-card/60 px-3 py-2.5 backdrop-blur-sm">
+            <div className="border-border bg-card/60 flex items-center gap-3 border-b px-3 py-2.5 backdrop-blur-sm">
               <Button
                 asChild
                 variant="ghost"
@@ -252,8 +284,10 @@ export function ChatShell({
                 {partnerAvatar && (
                   <AvatarImage src={partnerAvatar} alt={partnerName ?? ""} />
                 )}
-                <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-sm text-primary-foreground">
-                  {(partnerName ?? t("partnerFallback")).charAt(0).toUpperCase()}
+                <AvatarFallback className="from-cyan to-depth-4 text-primary-foreground bg-gradient-to-br text-sm">
+                  {(partnerName ?? t("partnerFallback"))
+                    .charAt(0)
+                    .toUpperCase()}
                 </AvatarFallback>
               </Avatar>
               <span className="truncate font-semibold">
@@ -267,6 +301,8 @@ export function ChatShell({
             >
               {messages.map((m) => {
                 const mine = m.sender_id === currentUserId;
+                // Still in flight. Say so rather than let it look delivered.
+                const pending = m.id.startsWith("pending-");
                 return (
                   <div
                     key={m.id}
@@ -279,20 +315,23 @@ export function ChatShell({
                       className={cn(
                         "max-w-[78%] rounded-[1.15rem] px-3.5 py-2 text-sm leading-snug shadow-sm",
                         mine
-                          ? "rounded-ee-md bg-primary text-primary-foreground"
-                          : "rounded-es-md bg-card text-card-foreground ring-1 ring-border/80"
+                          ? cn(
+                              "bg-primary text-primary-foreground rounded-ee-md",
+                              pending && "opacity-60"
+                            )
+                          : "bg-card text-card-foreground ring-border/80 rounded-es-md ring-1"
                       )}
                     >
                       {m.body}
                     </div>
-                    <span className="px-1.5 text-[0.65rem] text-muted-foreground">
+                    <span className="text-muted-foreground px-1.5 text-[0.65rem]">
                       {timeFmt.format(new Date(m.created_at))}
                     </span>
                   </div>
                 );
               })}
               {seen && (
-                <div className="px-1.5 text-end text-[0.65rem] text-muted-foreground">
+                <div className="text-muted-foreground px-1.5 text-end text-[0.65rem]">
                   {t("seen")}
                 </div>
               )}
@@ -300,13 +339,13 @@ export function ChatShell({
 
             <form
               onSubmit={onSend}
-              className="sticky bottom-0 flex items-center gap-2 border-t border-border bg-card/90 px-3 py-2.5 backdrop-blur-md"
+              className="border-border bg-card/90 sticky bottom-0 flex items-center gap-2 border-t px-3 py-2.5 backdrop-blur-md"
             >
               <input
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder={t("messagePlaceholder")}
-                className="h-11 flex-1 rounded-full border border-input bg-background px-4 text-sm shadow-sm focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+                className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/60 h-11 flex-1 rounded-full border px-4 text-sm shadow-sm focus-visible:ring-2 focus-visible:outline-none"
                 maxLength={2000}
               />
               <Button
