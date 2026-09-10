@@ -36,7 +36,7 @@ export function TabBar({ signedIn }: { signedIn: boolean }) {
   return (
     <nav
       aria-label={t("primary")}
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-depth-0/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl lg:hidden"
+      className="bg-depth-0/75 before:from-depth-0/70 fixed inset-x-0 bottom-0 z-50 pb-[env(safe-area-inset-bottom)] backdrop-blur-2xl before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-6 before:bg-gradient-to-t before:to-transparent lg:hidden"
     >
       <div className="mx-auto grid max-w-lg grid-cols-5 items-center px-2">
         {left.map((tab) => (

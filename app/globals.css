@@ -411,3 +411,12 @@ small {
   --duration-fast: 150ms;
   --duration-base: 250ms;
 }
+
+/* A filter row scrolls sideways on a phone; its scrollbar would be chrome
+   sitting on top of content, so it is hidden there and only there. */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

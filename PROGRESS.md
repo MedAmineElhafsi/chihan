@@ -562,3 +562,19 @@ the loudest "unconsidered product" signal an interface carries.
 Guidance came from the installed ui-ux-pro-max data — "Modern Dark (Cinema
 Mobile)", tagged premium/layered/frosted-glass — and apple-design's rule to
 spend boldness in one place and keep everything else quiet.
+
+### Density pass
+
+- **A card with no photo no longer pretends to have one.** Every listing
+  reserved 144px for an image most do not have, so the grid was mostly empty
+  gradient. Without a photo the card is content-led, marked by a hairline in
+  the category colour with the label inline.
+- **The grid sizes cards to their content** (`items-start`) rather than
+  stretching every card to match the tallest in its row — that padding was
+  the dead space returning by another route.
+- **Filter chips scroll on a phone** instead of wrapping to four rows. Eight
+  chips were spending half the viewport before any listing appeared; two full
+  cards are visible now where one was. They still wrap once there is room.
+- **The tab bar got the header's treatment**: the hard 1px divider became a
+  fade, so content passes under the material instead of stopping at a line.
+  Leaving one and not the other was an inconsistency I introduced.

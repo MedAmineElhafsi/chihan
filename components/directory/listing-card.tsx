@@ -27,38 +27,48 @@ export function ListingCard({
       href={`/directory/${listing.id}`}
       className="panel group hover:border-cyan/40 flex flex-col overflow-hidden rounded-lg transition-colors"
     >
-      <div className="bg-secondary relative h-36 w-full overflow-hidden">
-        {photo ? (
-          // eslint-disable-next-line @next/next/no-img-element
+      {/* A card with no photo should not pretend to have one. Reserving 144px
+          for an image most listings do not have left the grid mostly empty
+          gradient — a photo-shaped hole is a promise the content cannot keep. */}
+      {photo ? (
+        <div className="bg-secondary relative h-36 w-full overflow-hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={photo}
             alt=""
             className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
-        ) : (
-          // No photo: a faint wash tinted by the category, rather than a
-          // large icon sitting on a flat panel like missing artwork.
-          <div
-            className="size-full"
-            style={{
-              background: `radial-gradient(120% 120% at 30% 0%, ${color}22, transparent 70%)`,
-            }}
-          />
-        )}
-        <span className="bg-depth-0/70 text-foreground/90 absolute start-3 top-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium backdrop-blur">
-          {/* The category colour survives as a dot. On the globe it separates
-              hundreds of points and earns its place; here the word already
-              says it, so the colour is a mark, not a fill. */}
-          <span
-            aria-hidden="true"
-            className="size-1.5 rounded-full"
-            style={{ backgroundColor: color }}
-          />
-          {categoryLabel}
-        </span>
-      </div>
+          <span className="bg-depth-0/70 text-foreground/90 absolute start-3 top-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium backdrop-blur">
+            {/* The category colour survives as a dot. On the globe it separates
+                hundreds of points and earns its place; here the word already
+                says it, so the colour is a mark, not a fill. */}
+            <span
+              aria-hidden="true"
+              className="size-1.5 rounded-full"
+              style={{ backgroundColor: color }}
+            />
+            {categoryLabel}
+          </span>
+        </div>
+      ) : (
+        <span
+          aria-hidden="true"
+          className="h-0.5 w-full shrink-0"
+          style={{ backgroundColor: color, opacity: 0.5 }}
+        />
+      )}
 
       <div className="flex flex-1 flex-col gap-2 p-4">
+        {!photo && (
+          <span className="text-muted-foreground inline-flex items-center gap-1.5 text-xs font-medium">
+            <span
+              aria-hidden="true"
+              className="size-1.5 rounded-full"
+              style={{ backgroundColor: color }}
+            />
+            {categoryLabel}
+          </span>
+        )}
         <div className="flex items-start justify-between gap-2">
           <h3 className="font-display text-lg leading-tight font-semibold">
             {listing.name}

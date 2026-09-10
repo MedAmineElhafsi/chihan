@@ -47,11 +47,11 @@ export default async function DirectoryPage({
         </Button>
       </div>
 
-      <div className="mt-6 flex flex-wrap gap-2">
+      <div className="scrollbar-none -mx-4 mt-6 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
         <Link
           href={country ? `/directory?country=${country}` : "/directory"}
           className={cn(
-            "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+            "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
             !category
               ? "border-cyan/50 bg-cyan/15 text-cyan"
               : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
@@ -64,7 +64,7 @@ export default async function DirectoryPage({
             key={c}
             href={`/directory?category=${c}${countryQ}`}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+              "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
               category === c
                 ? "border-cyan/50 bg-cyan/15 text-cyan"
                 : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
@@ -96,7 +96,7 @@ export default async function DirectoryPage({
           </Button>
         </div>
       ) : (
-        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid items-start gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {listings.map((l) => (
             <ListingCard
               key={l.id}
