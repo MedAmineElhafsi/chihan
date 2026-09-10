@@ -18,8 +18,8 @@ import { ChatIcon } from "./chat-icon";
 // The same five destinations as the mobile tab bar, so the app has one
 // shape on every screen size.
 const NAV = [
-  { href: "/feed", key: "home" },
-  { href: "/explore", key: "explore" },
+  { href: "/explore", key: "home" },
+  { href: "/feed", key: "explore" },
   { href: "/reels", key: "reels" },
   { href: "/help", key: "help" },
   { href: "/directory", key: "directory" },

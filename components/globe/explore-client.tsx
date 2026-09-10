@@ -435,12 +435,15 @@ export function ExploreClient({
                   key={l.label + l.color}
                   className="inline-flex items-center gap-1.5 text-xs text-muted-foreground"
                 >
+                  {/* The dot on the globe is a coloured sphere, so the key is
+                      a coloured dot. It used to carry an emoji, which matched
+                      nothing on the map and rendered differently on every
+                      platform. */}
                   <span
-                    className="flex size-3.5 items-center justify-center rounded-full text-[0.625rem] ring-1 ring-white/40"
+                    aria-hidden="true"
+                    className="size-2 rounded-full"
                     style={{ backgroundColor: l.color }}
-                  >
-                    {l.icon}
-                  </span>
+                  />
                   {l.label}
                 </span>
               ))}

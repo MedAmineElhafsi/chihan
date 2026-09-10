@@ -672,3 +672,25 @@ glow keeps darkness to rise off:
 
 Contrast re-measured after lifting, since a lighter ground costs it:
 heading **15.7:1**, body copy **5.9:1**, against a 4.5 floor.
+
+## Home opens the globe; the feed moves under Explore
+
+Customer's call. The routes keep their honest names — `/explore` is the globe,
+`/feed` is the feed — so only the tabs pointing at them changed, in both the
+mobile bar and the desktop header.
+
+| tab | goes to |
+|---|---|
+| Home | `/explore` — the globe |
+| Explore | `/feed` — posts, help, news |
+
+Fixed while the globe was becoming the front door: **the map legend still
+used emoji** (🩺 🍽 🛒 …), the same defect already removed from the help
+categories. The globe's own markers are coloured spheres, so the key is a
+coloured dot now — it matches what is actually on the map, and the legend
+dropped from six rows to four.
+
+**Worth revisiting:** a compass icon labelled "Explore" that opens a
+chronological feed is backwards — every app uses Explore for discovery, and
+apple-design's own rule is to name a nav item for its contents. Renaming that
+tab to "Feed" with a feed icon is a two-line change whenever you want it.

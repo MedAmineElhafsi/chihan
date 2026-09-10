@@ -17,8 +17,8 @@ import { ComposeSheet } from "./compose-sheet";
  * symmetrical around the create button.
  */
 const TABS = [
-  { href: "/feed", key: "home", Icon: Home },
-  { href: "/explore", key: "explore", Icon: Compass },
+  { href: "/explore", key: "home", Icon: Home },
+  { href: "/feed", key: "explore", Icon: Compass },
   { href: "/reels", key: "reels", Icon: Clapperboard },
   { href: "/profile", key: "you", Icon: User },
 ] as const;
