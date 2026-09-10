@@ -655,3 +655,20 @@ guide assumes the React canary Next's own examples run on. The config flag and
 the `::view-transition-*` CSS would have been dead code that looked live, so
 all three edits were reverted. Worth revisiting when React ships it stable;
 not worth putting a canary React under a product about to launch.
+
+### Ground lifted a step
+
+`#001013` read as a hole rather than deep water. The whole depth scale moves
+up one measured step — still well below the original `#002b33` wash, so the
+glow keeps darkness to rise off:
+
+| | before | after |
+|---|---|---|
+| depth-0 (vignette) | #000709 | #000c0f |
+| depth-1 (page) | #001013 | #00191e |
+| depth-2 (panels) | #001619 | #002027 |
+| depth-3 (raised) | #002028 | #002a33 |
+| depth-4 (hover) | #002c36 | #003742 |
+
+Contrast re-measured after lifting, since a lighter ground costs it:
+heading **15.7:1**, body copy **5.9:1**, against a 4.5 floor.

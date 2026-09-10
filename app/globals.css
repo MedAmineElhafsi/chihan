@@ -16,11 +16,11 @@
      The old page ground (#002b33) sat high enough that a cyan glow had
      nothing to glow against; everything read as one lit teal wash. Charcoal
      is the page now, with two steps below it for wells and vignette. */
-  --depth-0: #000709; /* deepest — vignette, wells */
-  --depth-1: #001013; /* page background */
-  --depth-2: var(--charcoal); /* panels */
-  --depth-3: #002028; /* raised */
-  --depth-4: #002c36; /* hover / active */
+  --depth-0: #000c0f; /* deepest — vignette, wells */
+  --depth-1: #00191e; /* page background */
+  --depth-2: #002027; /* panels */
+  --depth-3: #002a33; /* raised */
+  --depth-4: #003742; /* hover / active */
 
   /* Semantic */
   --background: var(--depth-1);
