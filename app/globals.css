@@ -53,6 +53,13 @@
   --input: rgba(199, 248, 254, 0.12);
   --ring: var(--cyan);
 
+  /* Atmosphere only — never used on a control. A single hue cannot make a
+     gradient travel anywhere, so the field gets somewhere to go: the brand
+     cyan, an indigo, and a violet held furthest back. */
+  --aurora-1: rgba(80, 232, 244, 0.5); /* Fluorescent Blue, the brand */
+  --aurora-2: rgba(76, 111, 232, 0.46); /* indigo — depth */
+  --aurora-3: rgba(155, 92, 240, 0.36); /* violet — the far edge, faintest */
+
   --radius: 0.25rem; /* sharp, instrument-like */
 
   /* --- one elevation scale ------------------------------------------------
@@ -420,3 +427,72 @@ small {
     display: none;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Aurora field.
+
+   Each body drifts on its own long cycle and breathes slightly as it goes.
+   Only transform and opacity animate, so the compositor carries all of it and
+   the main thread never sees a frame.
+
+   Depth comes from three things moving together, the way it does in weather:
+   a near body is bigger, sharper and travels further; a far body is small,
+   heavily blurred and barely moves.
+--------------------------------------------------------------------------- */
+.aurora-blob {
+  position: absolute;
+  display: block;
+  border-radius: 9999px;
+  will-change: transform;
+  animation-name: aurora-drift;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.aurora-far {
+  filter: blur(120px);
+  opacity: 0.55;
+  --drift-x: 4%;
+  --drift-y: 3%;
+  --drift-scale: 1.06;
+}
+
+.aurora-mid {
+  filter: blur(90px);
+  opacity: 0.7;
+  --drift-x: 8%;
+  --drift-y: 6%;
+  --drift-scale: 1.12;
+}
+
+.aurora-near {
+  filter: blur(64px);
+  opacity: 0.8;
+  --drift-x: 14%;
+  --drift-y: 10%;
+  --drift-scale: 1.18;
+}
+
+@keyframes aurora-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(var(--drift-x), var(--drift-y), 0)
+      scale(var(--drift-scale));
+  }
+}
+
+/* A slow full-viewport wash is exactly what the reduced-motion setting exists
+   to stop. The colour stays; the movement does not. */
+@media (prefers-reduced-motion: reduce) {
+  .aurora-blob {
+    animation: none;
+  }
+}
+
+
+/* The outgoing frame leaves slightly faster than the incoming one arrives, so
+   the two never both sit at full strength and wash the page out. */
+

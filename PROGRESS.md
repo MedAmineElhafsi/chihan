@@ -619,3 +619,39 @@ Measured against the real database afterwards:
 
 Guard rails all pass: no city means nobody is notified, the asker is never
 told about their own request, and the cap holds.
+
+## The backdrop is weather now, not a diagram
+
+The background was a field of dots joined by lines — a literal network
+diagram. It described the idea rather than creating a feeling, and it pulled
+the eye to the background instead of the content.
+
+`components/visuals/aurora-field.tsx` replaces it with five soft bodies of
+light drifting at different depths. Depth is read from parallax and scale
+rather than a perspective transform: a near body is larger, sharper and
+travels further; a far body is small, heavily blurred and barely moves — the
+same cue the eye uses looking at real weather. Only `transform` and `opacity`
+animate, so the whole field lives on the compositor and the main thread never
+sees a frame.
+
+**The palette gained somewhere to travel.** Cyan alone cannot make a gradient
+— a gradient needs a journey. Two hues were added, `--aurora-2` (indigo) and
+`--aurora-3` (violet), used **only** in the atmosphere. Cyan remains the
+interface's single accent, so the background is rich while the controls stay
+disciplined.
+
+First attempt was invisible: alpha 0.2 spread over a 120px blur arrives at
+roughly 0.07 on screen. Raised to 0.36–0.5, and the vignette pushed from 58%
+to 72% because it was eating the light exactly where the bodies sit.
+
+Contrast measured after, not assumed: heading 16.8:1, body copy 6.3:1 against
+a 4.5 floor.
+
+### View transitions: attempted, reverted
+
+Next 16 documents route crossfades via `experimental.viewTransition` plus
+React's `<ViewTransition>`. **React 19.2.4 exports no such component** — the
+guide assumes the React canary Next's own examples run on. The config flag and
+the `::view-transition-*` CSS would have been dead code that looked live, so
+all three edits were reverted. Worth revisiting when React ships it stable;
+not worth putting a canary React under a product about to launch.
