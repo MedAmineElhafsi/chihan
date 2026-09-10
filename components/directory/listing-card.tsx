@@ -3,7 +3,6 @@ import { BadgeCheck, MapPin } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { CATEGORY_COLORS } from "@/lib/constants";
 import type { ListingWithStats } from "@/types/listing";
-import { CategoryIcon } from "./category-icon";
 import { Stars } from "./stars";
 
 export function ListingCard({
@@ -26,9 +25,9 @@ export function ListingCard({
   return (
     <Link
       href={`/directory/${listing.id}`}
-      className="panel group flex flex-col overflow-hidden rounded-2xl transition-colors hover:border-cyan/40"
+      className="panel group hover:border-cyan/40 flex flex-col overflow-hidden rounded-lg transition-colors"
     >
-      <div className="relative h-36 w-full overflow-hidden bg-secondary">
+      <div className="bg-secondary relative h-36 w-full overflow-hidden">
         {photo ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -37,39 +36,45 @@ export function ListingCard({
             className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="flex size-full items-center justify-center">
-            <CategoryIcon
-              category={listing.category}
-              className="size-10 opacity-60"
-            />
-          </div>
+          // No photo: a faint wash tinted by the category, rather than a
+          // large icon sitting on a flat panel like missing artwork.
+          <div
+            className="size-full"
+            style={{
+              background: `radial-gradient(120% 120% at 30% 0%, ${color}22, transparent 70%)`,
+            }}
+          />
         )}
-        <span
-          className="absolute start-3 top-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium text-white backdrop-blur"
-          style={{ backgroundColor: `${color}cc` }}
-        >
-          <CategoryIcon category={listing.category} className="size-3.5" />
+        <span className="bg-depth-0/70 text-foreground/90 absolute start-3 top-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium backdrop-blur">
+          {/* The category colour survives as a dot. On the globe it separates
+              hundreds of points and earns its place; here the word already
+              says it, so the colour is a mark, not a fill. */}
+          <span
+            aria-hidden="true"
+            className="size-1.5 rounded-full"
+            style={{ backgroundColor: color }}
+          />
           {categoryLabel}
         </span>
       </div>
 
       <div className="flex flex-1 flex-col gap-2 p-4">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-display text-lg font-semibold leading-tight">
+          <h3 className="font-display text-lg leading-tight font-semibold">
             {listing.name}
           </h3>
           {isPerson && (
-            <span className="label-mono shrink-0 rounded-sm border border-cyan/40 px-1.5 py-0.5 text-cyan">
+            <span className="label-mono border-cyan/40 text-cyan shrink-0 rounded-sm border px-1.5 py-0.5">
               {professionalLabel}
             </span>
           )}
           {listing.is_verified && (
-            <BadgeCheck className="mt-0.5 size-4 shrink-0 text-cyan" />
+            <BadgeCheck className="text-cyan mt-0.5 size-4 shrink-0" />
           )}
         </div>
         {place && (
-          <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <MapPin className="size-3.5 text-cyan" />
+          <p className="text-muted-foreground flex items-center gap-1.5 text-sm">
+            <MapPin className="text-cyan size-3.5" />
             {place}
           </p>
         )}
@@ -77,14 +82,14 @@ export function ListingCard({
           {listing.rating_avg != null ? (
             <>
               <Stars value={listing.rating_avg} />
-              <span className="font-medium">{listing.rating_avg.toFixed(1)}</span>
+              <span className="font-medium">
+                {listing.rating_avg.toFixed(1)}
+              </span>
               <span className="text-muted-foreground">
                 · {listing.review_count} {reviewsLabel}
               </span>
             </>
-          ) : (
-            <span className="text-muted-foreground">{reviewsLabel}: 0</span>
-          )}
+          ) : null}
         </div>
       </div>
     </Link>

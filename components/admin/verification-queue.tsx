@@ -81,7 +81,7 @@ function QueueRow({
             href={documentUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-sm border border-border px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-[0.12em] transition-colors hover:border-cyan/50 hover:text-cyan"
+            className="inline-flex items-center gap-1.5 rounded-sm border border-border px-2.5 py-1 font-mono text-[0.625rem] uppercase tracking-[0.12em] transition-colors hover:border-cyan/50 hover:text-cyan"
           >
             <ExternalLink className="size-3" />
             {t("verifyOpenDoc")}

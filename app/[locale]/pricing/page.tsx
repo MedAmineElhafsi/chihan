@@ -53,7 +53,7 @@ export default async function PricingPage({
 
       <div className="mt-10 grid gap-5 md:grid-cols-2">
         {/* Free */}
-        <div className="panel flex flex-col rounded-2xl p-6">
+        <div className="panel flex flex-col rounded-lg p-6">
           <div className="flex items-center justify-between">
             <h2 className="font-display text-xl font-semibold">
               {t("freeName")}
@@ -78,7 +78,7 @@ export default async function PricingPage({
         </div>
 
         {/* Premium */}
-        <div className="panel-solid relative flex flex-col rounded-2xl border-cyan/40 p-6 ring-1 ring-cyan/30">
+        <div className="panel-solid relative flex flex-col rounded-lg border-cyan/40 p-6 ring-1 ring-cyan/30">
           <div className="flex items-center justify-between">
             <h2 className="flex items-center gap-2 font-display text-xl font-semibold">
               <Sparkles className="size-5 text-cyan" />

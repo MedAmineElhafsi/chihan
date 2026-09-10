@@ -57,7 +57,7 @@ export function ArticleCard({
           {article.title}
         </h2>
         {article.summary && (
-          <p className="text-muted-foreground text-[0.95rem] leading-relaxed">
+          <p className="text-muted-foreground text-base leading-relaxed">
             {article.summary}
           </p>
         )}

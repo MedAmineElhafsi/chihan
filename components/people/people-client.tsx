@@ -87,7 +87,7 @@ export function PeopleClient({
             return (
               <div
                 key={p.id}
-                className="panel flex flex-col gap-4 rounded-2xl p-5"
+                className="panel flex flex-col gap-4 rounded-lg p-5"
               >
                 <div className="flex items-center gap-3">
                   <Avatar className="size-12">

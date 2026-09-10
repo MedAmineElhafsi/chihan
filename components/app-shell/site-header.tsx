@@ -50,7 +50,7 @@ export async function SiteHeader() {
               <Link
                 key={item.key}
                 href={item.href}
-                className="group relative font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground transition-colors duration-200 hover:text-cyan"
+                className="group relative font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors duration-200 hover:text-cyan"
               >
                 {t(item.key)}
                 <span className="absolute -bottom-1.5 left-0 h-px w-full scale-x-0 bg-cyan transition-transform duration-300 group-hover:scale-x-100" />
@@ -63,7 +63,7 @@ export async function SiteHeader() {
           <div className="hidden items-center gap-1 lg:flex">
             <Link
               href="/search"
-              className="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-cyan"
+              className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-cyan"
             >
               {t("search")}
             </Link>

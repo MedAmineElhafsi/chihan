@@ -162,7 +162,7 @@ export function VerificationPanel({
 
 function Panel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="panel flex flex-col gap-3 rounded-2xl p-5">{children}</div>
+    <div className="panel flex flex-col gap-3 rounded-lg p-5">{children}</div>
   );
 }
 

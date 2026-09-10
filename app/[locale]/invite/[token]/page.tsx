@@ -35,7 +35,7 @@ export default async function InviteLandingPage({
   if (!invite || expired) {
     return (
       <div className="mx-auto flex min-h-[calc(100dvh-13rem)] w-full max-w-md flex-col justify-center px-4 py-12">
-        <Card className="panel-solid border-border/70 shadow-2xl">
+        <Card className="panel-solid border-border/70 shadow-elev-3">
           <CardHeader className="text-center">
             <CardTitle className="font-display text-2xl">
               {t("invalidTitle")}
@@ -58,7 +58,7 @@ export default async function InviteLandingPage({
 
   return (
     <div className="mx-auto flex min-h-[calc(100dvh-13rem)] w-full max-w-md flex-col justify-center px-4 py-12">
-      <Card className="panel-solid animate-rise border-border/70 shadow-2xl ring-1 ring-cyan/20">
+      <Card className="panel-solid animate-rise border-border/70 shadow-elev-3 ring-1 ring-cyan/20">
         <CardHeader className="items-center text-center">
           <Avatar className="mb-2 size-16 ring-2 ring-cyan/50">
             {invite.inviter.avatarUrl && (

@@ -522,3 +522,43 @@ whole.
 404, so it could never pass. Replaced with `core-loop.spec.ts`: sign in, open
 the help board, message the asker, plus a check that the five tabs render
 signed out.
+
+## Restyle — making it read as expensive
+
+"Expensive" is mostly restraint and consistency, and both were measurable.
+Before:
+
+| | before | after |
+|---|---|---|
+| distinct font sizes | 19 (6 arbitrary) | 12 |
+| distinct shadows | 12 (8 hand-written) | 5 |
+| border radii | 6 + a one-off | one scale |
+| cyan mentions | 284 | borders no longer spend it |
+
+**The ground dropped.** The page was `#002b33`, a mid-teal light enough that a
+cyan glow had nothing to glow against — everything read as one lit wash. The
+page is `#001013` now with Blue Charcoal as the panel colour, so the signal
+rises off darkness. The three customer-supplied brand colours are unchanged.
+
+**Hairlines stopped spending the accent.** Borders were cyan at 20%, so every
+panel edge was accent-coloured; an accent spent everywhere is just the base
+colour. They are air-tinted white at 8% now.
+
+**Muted text was teal.** `#9cc4cc` → `#7f979d`: quiet text should be quiet.
+
+**One elevation scale** (`shadow-elev-1/2/3`) and one glow reserved for the
+accent, replacing 8 hand-written shadow values.
+
+**Directory cards.** Six saturated category chip colours became one glass chip
+with the colour reduced to a dot — colour still carries information on the
+globe, where it separates hundreds of points, but on a card the word already
+says it. Large placeholder icons became a faint category-tinted wash. `reviews:
+0` is gone: an empty metric is worse than no metric.
+
+**Emoji replaced with the icon set.** Help categories used 🏠 📄 💼. Emoji
+render differently on every platform, cannot inherit colour or weight, and are
+the loudest "unconsidered product" signal an interface carries.
+
+Guidance came from the installed ui-ux-pro-max data — "Modern Dark (Cinema
+Mobile)", tagged premium/layered/frosted-glass — and apple-design's rule to
+spend boldness in one place and keep everything else quiet.

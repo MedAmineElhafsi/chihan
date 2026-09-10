@@ -103,7 +103,7 @@ export default async function GroupDetailPage({
           canChat={isMember}
         />
       ) : (
-        <section className="panel mt-10 rounded-2xl px-4 py-10 text-center text-sm text-muted-foreground">
+        <section className="panel mt-10 rounded-lg px-4 py-10 text-center text-sm text-muted-foreground">
           {t("chatSignInHint")}
         </section>
       )}

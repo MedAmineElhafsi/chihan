@@ -162,7 +162,7 @@ export function PostCard({
         </div>
         <div className="flex shrink-0 items-center gap-1">
           {item.type === "event" && (
-            <span className="rounded-md bg-cyan/15 px-2 py-0.5 text-[11px] font-medium text-cyan">
+            <span className="rounded-md bg-cyan/15 px-2 py-0.5 text-[0.625rem] font-medium text-cyan">
               {t("event")}
             </span>
           )}
@@ -274,7 +274,7 @@ export function PostCard({
               </span>
             </span>
             {item.duration_seconds != null && (
-              <span className="absolute end-3 top-3 rounded-sm bg-depth-0/75 px-1.5 py-0.5 font-mono text-[0.65rem] text-air backdrop-blur">
+              <span className="absolute end-3 top-3 rounded-sm bg-depth-0/75 px-1.5 py-0.5 font-mono text-[0.625rem] text-air backdrop-blur">
                 {item.duration_seconds}s
               </span>
             )}

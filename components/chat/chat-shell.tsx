@@ -216,7 +216,7 @@ export function ChatShell({
                       </AvatarFallback>
                     </Avatar>
                     {unread > 0 && (
-                      <span className="bg-cyan text-primary-foreground ring-card absolute -end-0.5 -top-0.5 flex size-5 items-center justify-center rounded-full text-[0.65rem] font-bold ring-2">
+                      <span className="bg-cyan text-primary-foreground ring-card absolute -end-0.5 -top-0.5 flex size-5 items-center justify-center rounded-full text-[0.625rem] font-bold ring-2">
                         {unread > 9 ? "9+" : unread}
                       </span>
                     )}
@@ -313,7 +313,7 @@ export function ChatShell({
                   >
                     <div
                       className={cn(
-                        "max-w-[78%] rounded-[1.15rem] px-3.5 py-2 text-sm leading-snug shadow-sm",
+                        "max-w-[78%] rounded-lg px-3.5 py-2 text-sm leading-snug shadow-elev-1",
                         mine
                           ? cn(
                               "bg-primary text-primary-foreground rounded-ee-md",
@@ -324,14 +324,14 @@ export function ChatShell({
                     >
                       {m.body}
                     </div>
-                    <span className="text-muted-foreground px-1.5 text-[0.65rem]">
+                    <span className="text-muted-foreground px-1.5 text-[0.625rem]">
                       {timeFmt.format(new Date(m.created_at))}
                     </span>
                   </div>
                 );
               })}
               {seen && (
-                <div className="text-muted-foreground px-1.5 text-end text-[0.65rem]">
+                <div className="text-muted-foreground px-1.5 text-end text-[0.625rem]">
                   {t("seen")}
                 </div>
               )}
@@ -345,7 +345,7 @@ export function ChatShell({
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder={t("messagePlaceholder")}
-                className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/60 h-11 flex-1 rounded-full border px-4 text-sm shadow-sm focus-visible:ring-2 focus-visible:outline-none"
+                className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/60 h-11 flex-1 rounded-full border px-4 text-sm shadow-elev-1 focus-visible:ring-2 focus-visible:outline-none"
                 maxLength={2000}
               />
               <Button

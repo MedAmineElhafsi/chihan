@@ -23,14 +23,14 @@ export function GroupCard({
   return (
     <Link
       href={`/groups/${group.id}`}
-      className="panel flex flex-col gap-3 rounded-2xl p-5 transition-colors hover:bg-accent/30"
+      className="panel flex flex-col gap-3 rounded-lg p-5 transition-colors hover:bg-accent/30"
     >
       <div className="flex items-start justify-between gap-3">
         <h2 className="font-display text-lg font-semibold leading-snug">
           {group.name}
         </h2>
         {isJoined && (
-          <span className="shrink-0 rounded-full bg-cyan/15 px-2 py-0.5 text-[0.7rem] font-medium text-cyan">
+          <span className="shrink-0 rounded-full bg-cyan/15 px-2 py-0.5 text-xs font-medium text-cyan">
             {joinedLabel}
           </span>
         )}

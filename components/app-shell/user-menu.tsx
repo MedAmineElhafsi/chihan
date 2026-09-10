@@ -65,7 +65,7 @@ export function UserMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[15rem]">
         <DropdownMenuLabel className="normal-case">
-          <div className="text-[0.7rem] text-muted-foreground">
+          <div className="text-xs text-muted-foreground">
             {t("account")}
           </div>
           <div className="truncate text-sm font-medium text-foreground">

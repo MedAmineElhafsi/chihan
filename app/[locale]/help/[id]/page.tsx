@@ -13,6 +13,7 @@ import { MessageButton } from "@/components/chat/message-button";
 import { ReportButton } from "@/components/moderation/report-button";
 import { OfferForm } from "@/components/help/offer-form";
 import { ResolveButton } from "@/components/help/resolve-button";
+import { HelpCategoryIcon } from "@/components/help/category-icon";
 
 export default async function HelpRequestPage({
   params,
@@ -55,14 +56,14 @@ export default async function HelpRequestPage({
       <article className="mt-5 flex flex-col gap-5">
         <div className="flex flex-wrap items-center gap-2">
           <span
-            className="inline-flex items-center gap-1.5 rounded-sm px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-[0.14em]"
+            className="inline-flex items-center gap-1.5 rounded-sm px-2.5 py-1 font-mono text-[0.625rem] uppercase tracking-[0.14em]"
             style={{ backgroundColor: `${style.color}1f`, color: style.color }}
           >
-            <span aria-hidden="true">{style.icon}</span>
+            <HelpCategoryIcon category={request.category} />
             {t(`cat_${request.category}` as never)}
           </span>
           {request.urgency === "urgent" && (
-            <span className="rounded-sm bg-destructive/20 px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-destructive">
+            <span className="rounded-sm bg-destructive/20 px-2.5 py-1 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-destructive">
               {t("urgent")}
             </span>
           )}
@@ -128,7 +129,7 @@ export default async function HelpRequestPage({
 
       {/* Resolved: turn the answer into something permanent */}
       {isAuthor && request.status === "resolved" && (
-        <section className="mt-8 panel rounded-2xl p-5">
+        <section className="mt-8 panel rounded-lg p-5">
           <h2 className="font-display text-lg font-semibold text-air">
             {t("memoryTitle")}
           </h2>
@@ -137,7 +138,7 @@ export default async function HelpRequestPage({
           </p>
           <Link
             href="/directory/new"
-            className="mt-4 inline-flex items-center gap-2 rounded-sm border border-cyan/40 px-4 py-2 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-cyan transition-colors hover:bg-cyan/10"
+            className="mt-4 inline-flex items-center gap-2 rounded-sm border border-cyan/40 px-4 py-2 font-mono text-xs uppercase tracking-[0.14em] text-cyan transition-colors hover:bg-cyan/10"
           >
             {t("memoryCta")}
           </Link>
@@ -197,7 +198,7 @@ export default async function HelpRequestPage({
                         {o.author.avatarUrl && (
                           <AvatarImage src={o.author.avatarUrl} alt={oName} />
                         )}
-                        <AvatarFallback className="bg-depth-4 text-[0.65rem] text-air">
+                        <AvatarFallback className="bg-depth-4 text-[0.625rem] text-air">
                           {oInitial}
                         </AvatarFallback>
                       </Avatar>

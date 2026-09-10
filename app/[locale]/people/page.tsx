@@ -22,7 +22,7 @@ import { Input } from "@/components/ui/input";
 import { PeopleClient } from "@/components/people/people-client";
 
 const selectClass =
-  "h-11 w-full rounded-md border border-input bg-card/40 px-3 text-sm shadow-sm transition-colors focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 disabled:cursor-not-allowed disabled:opacity-50";
+  "h-11 w-full rounded-md border border-input bg-card/40 px-3 text-sm shadow-elev-1 transition-colors focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 disabled:cursor-not-allowed disabled:opacity-50";
 
 export default async function PeoplePage({
   params,

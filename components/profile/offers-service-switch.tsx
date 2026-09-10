@@ -40,7 +40,7 @@ export function OffersServiceSwitch({
   }
 
   return (
-    <div className="panel flex flex-col gap-3 rounded-2xl p-5">
+    <div className="panel flex flex-col gap-3 rounded-lg p-5">
       <div className="flex items-start gap-3">
         <div className="inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-cyan ring-1 ring-border">
           <BriefcaseBusiness className="size-4" />

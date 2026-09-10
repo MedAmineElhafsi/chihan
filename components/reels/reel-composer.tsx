@@ -147,7 +147,7 @@ export function ReelComposer({ userId }: { userId: string }) {
   }
 
   return (
-    <div className="panel flex flex-col gap-3 rounded-2xl p-4">
+    <div className="panel flex flex-col gap-3 rounded-lg p-4">
       {!picked ? (
         <>
           <label className="border-border hover:border-cyan/50 flex cursor-pointer flex-col items-center gap-2 rounded-xl border border-dashed p-8 text-center transition-colors">
@@ -187,7 +187,7 @@ export function ReelComposer({ userId }: { userId: string }) {
             </button>
           </div>
 
-          <p className="text-muted-foreground text-center font-mono text-[0.65rem] tracking-[0.12em] uppercase">
+          <p className="text-muted-foreground text-center font-mono text-[0.625rem] tracking-[0.12em] uppercase">
             {t("duration", { seconds: Math.round(picked.duration) })}
           </p>
 

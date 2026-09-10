@@ -108,7 +108,7 @@ export function GlobeHome({
       {entered && (
         <button
           onClick={() => setEntered(false)}
-          className="absolute bottom-5 start-5 z-20 rounded-sm border border-border bg-depth-1/80 px-3 py-2 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground backdrop-blur transition-colors hover:border-cyan hover:text-cyan"
+          className="absolute bottom-5 start-5 z-20 rounded-sm border border-border bg-depth-1/80 px-3 py-2 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted-foreground backdrop-blur transition-colors hover:border-cyan hover:text-cyan"
         >
           {t("aboutCihan")}
         </button>

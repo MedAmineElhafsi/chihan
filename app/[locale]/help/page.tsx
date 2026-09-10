@@ -5,11 +5,12 @@ import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getOwnProfile } from "@/lib/profiles";
 import { getHelpRequests } from "@/lib/help";
-import { HELP_CATEGORIES, HELP_CATEGORY_STYLE, LAUNCH_CITY } from "@/lib/constants";
+import { HELP_CATEGORIES, LAUNCH_CITY } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { RequestCard } from "@/components/help/request-card";
 import { RequestComposer } from "@/components/help/request-composer";
 import { cn } from "@/lib/utils";
+import { HelpCategoryIcon } from "@/components/help/category-icon";
 
 export default async function HelpPage({
   params,
@@ -63,10 +64,10 @@ export default async function HelpPage({
         <span className="label-mono">
           {city || LAUNCH_CITY} — {t("index", { count: requests.length })}
         </span>
-        <h1 className="font-display text-[clamp(2rem,5vw,3.25rem)] font-semibold leading-[0.95] tracking-tight text-air">
+        <h1 className="font-display text-air text-[clamp(2rem,5vw,3.25rem)] leading-[0.95] font-semibold tracking-tight">
           {t("title")}
         </h1>
-        <p className="max-w-xl text-muted-foreground">{t("subtitle")}</p>
+        <p className="text-muted-foreground max-w-xl">{t("subtitle")}</p>
       </div>
 
       {/* Ask */}
@@ -75,7 +76,7 @@ export default async function HelpPage({
           <RequestComposer defaultCity={profile?.city ?? LAUNCH_CITY} />
         ) : (
           <div className="panel flex flex-wrap items-center justify-between gap-3 rounded-md p-5">
-            <p className="text-sm text-muted-foreground">{t("signInToAsk")}</p>
+            <p className="text-muted-foreground text-sm">{t("signInToAsk")}</p>
             <Button asChild className="gap-2">
               <Link href="/signup">
                 <HandHeart className="size-4" />
@@ -87,27 +88,27 @@ export default async function HelpPage({
       </div>
 
       {/* Filters */}
-      <div className="mt-8 flex flex-col gap-3 border-b border-border pb-5">
+      <div className="border-border mt-8 flex flex-col gap-3 border-b pb-5">
         <div className="flex flex-wrap gap-2">
           <Link href={qs({ category: undefined })} className={chip(!category)}>
             {t("allCategories")}
           </Link>
-          {HELP_CATEGORIES.map((c) => {
-            const s = HELP_CATEGORY_STYLE[c];
-            return (
-              <Link
-                key={c}
-                href={qs({ category: c })}
-                className={chip(category === c)}
-              >
-                <span aria-hidden="true">{s.icon}</span>
-                {t(`cat_${c}` as never)}
-              </Link>
-            );
-          })}
+          {HELP_CATEGORIES.map((c) => (
+            <Link
+              key={c}
+              href={qs({ category: c })}
+              className={chip(category === c)}
+            >
+              <HelpCategoryIcon category={c} />
+              {t(`cat_${c}` as never)}
+            </Link>
+          ))}
         </div>
         <div className="flex gap-2">
-          <Link href={qs({ status: "open" })} className={chip(status === "open")}>
+          <Link
+            href={qs({ status: "open" })}
+            className={chip(status === "open")}
+          >
             {t("openOnly")}
           </Link>
           <Link
@@ -122,11 +123,11 @@ export default async function HelpPage({
       {/* Board */}
       {requests.length === 0 ? (
         <div className="flex flex-col items-center gap-3 py-20 text-center">
-          <HandHeart className="size-8 text-cyan" />
+          <HandHeart className="text-cyan size-8" />
           <p className="text-muted-foreground">{t("empty")}</p>
         </div>
       ) : (
-        <div className="mt-6 grid gap-px bg-border sm:grid-cols-2">
+        <div className="bg-border mt-6 grid gap-px sm:grid-cols-2">
           {requests.map((r) => (
             <RequestCard key={r.id} request={r} />
           ))}

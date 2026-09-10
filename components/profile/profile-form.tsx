@@ -401,7 +401,7 @@ export function ProfileForm({
                 }
               >
                 <span
-                  className="flex size-4 items-center justify-center rounded-full text-[0.6rem]"
+                  className="flex size-4 items-center justify-center rounded-full text-[0.625rem]"
                   style={{ backgroundColor: style.color }}
                 >
                   {style.icon}

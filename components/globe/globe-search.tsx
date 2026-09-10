@@ -106,7 +106,7 @@ export function GlobeSearch({
           )}
         </Chip>
 
-        <span className="ms-auto pe-1 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-muted-foreground">
+        <span className="ms-auto pe-1 font-mono text-[0.625rem] uppercase tracking-[0.12em] text-muted-foreground">
           {t("matchCount", { count: matches })}
         </span>
       </div>

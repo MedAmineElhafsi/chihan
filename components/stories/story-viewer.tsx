@@ -95,7 +95,7 @@ export function StoryViewer({
         onClick={onClose}
       />
 
-      <div className="animate-story-in relative z-10 flex h-dvh w-full max-w-md flex-col overflow-hidden bg-black shadow-2xl sm:h-auto sm:max-h-[90dvh] sm:rounded-2xl sm:ring-1 sm:ring-white/10">
+      <div className="animate-story-in relative z-10 flex h-dvh w-full max-w-md flex-col overflow-hidden bg-black shadow-elev-3 sm:h-auto sm:max-h-[90dvh] sm:rounded-lg sm:ring-1 sm:ring-white/10">
         <div className="absolute inset-x-0 top-0 z-20 flex gap-1 px-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
           {stories.map((s, i) => (
             <div
@@ -128,7 +128,7 @@ export function StoryViewer({
               {initial}
             </AvatarFallback>
           </Avatar>
-          <span className="min-w-0 flex-1 truncate text-sm font-semibold text-white drop-shadow-md">
+          <span className="min-w-0 flex-1 truncate text-sm font-semibold text-white drop-shadow-elev-2">
             {name}
           </span>
           <button

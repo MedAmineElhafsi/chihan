@@ -178,7 +178,7 @@ export default async function ListingDetailPage({
 
         {/* Contact sidebar */}
         <aside className="lg:col-span-1">
-          <div className="panel sticky top-20 flex flex-col gap-3 rounded-2xl p-5">
+          <div className="panel sticky top-20 flex flex-col gap-3 rounded-lg p-5">
             <h2 className="font-display text-lg font-semibold">{t("contact")}</h2>
             {place && (
               <div className="flex items-start gap-2.5 text-sm">

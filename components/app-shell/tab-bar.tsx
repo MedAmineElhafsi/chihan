@@ -56,7 +56,7 @@ export function TabBar({ signedIn }: { signedIn: boolean }) {
             <Link
               href="/signup"
               aria-label={t("getStarted")}
-              className="flex size-11 items-center justify-center rounded-xl bg-cyan text-depth-0 shadow-[0_0_22px_-4px] shadow-cyan transition-transform active:scale-95"
+              className="flex size-11 items-center justify-center rounded-xl bg-cyan text-depth-0 shadow-glow transition-transform active:scale-95"
             >
               <Plus className="size-5" strokeWidth={2.2} />
             </Link>
@@ -98,7 +98,7 @@ function TabLink({
       )}
     >
       <Icon className="size-5" strokeWidth={active ? 2.1 : 1.7} />
-      <span className="font-mono text-[0.58rem] uppercase tracking-[0.1em]">
+      <span className="font-mono text-[0.625rem] uppercase tracking-[0.1em]">
         {label}
       </span>
     </Link>

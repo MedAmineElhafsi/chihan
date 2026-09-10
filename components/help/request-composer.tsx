@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { HelpCategoryIcon } from "./category-icon";
 
 export function RequestComposer({ defaultCity }: { defaultCity?: string }) {
   const t = useTranslations("Help");
@@ -124,7 +125,7 @@ export function RequestComposer({ defaultCity }: { defaultCity?: string }) {
                     : undefined
                 }
               >
-                <span aria-hidden="true">{s.icon}</span>
+                <HelpCategoryIcon category={c} />
                 {t(`cat_${c}` as never)}
               </button>
             );

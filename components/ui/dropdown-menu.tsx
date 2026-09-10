@@ -19,7 +19,7 @@ const DropdownMenuContent = React.forwardRef<
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
-        "panel-solid z-50 min-w-[12rem] overflow-hidden rounded-lg p-1.5 text-popover-foreground shadow-xl",
+        "panel-solid z-50 min-w-[12rem] overflow-hidden rounded-lg p-1.5 text-popover-foreground shadow-elev-3",
         "data-[state=closed]:pointer-events-none",
         className
       )}

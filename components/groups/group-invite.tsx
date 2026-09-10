@@ -74,7 +74,7 @@ export function GroupInvite({
   if (!canInvite) return null;
 
   return (
-    <section className="panel mt-6 rounded-2xl p-4">
+    <section className="panel mt-6 rounded-lg p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <UserPlus className="size-4 text-cyan" />

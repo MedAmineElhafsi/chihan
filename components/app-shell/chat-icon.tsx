@@ -21,7 +21,7 @@ export async function ChatIcon({ unread }: { unread: number }) {
     >
       <MessageCircle className="size-5" />
       {unread > 0 && (
-        <span className="absolute end-1.5 top-1.5 flex min-w-[1.05rem] items-center justify-center rounded-full bg-cyan px-1 text-[0.6rem] font-semibold leading-4 text-depth-0">
+        <span className="absolute end-1.5 top-1.5 flex min-w-[1.05rem] items-center justify-center rounded-full bg-cyan px-1 text-[0.625rem] font-semibold leading-4 text-depth-0">
           {unread > 99 ? "99+" : unread}
         </span>
       )}

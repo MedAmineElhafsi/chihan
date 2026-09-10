@@ -20,7 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
 const fieldClass =
-  "h-11 w-full rounded-md border border-input bg-card/40 px-3.5 text-sm shadow-sm focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60";
+  "h-11 w-full rounded-md border border-input bg-card/40 px-3.5 text-sm shadow-elev-1 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60";
 
 export function FeedComposer({ userId }: { userId: string }) {
   const t = useTranslations("Feed");

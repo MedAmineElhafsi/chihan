@@ -44,7 +44,7 @@ export function ComposeSheet() {
     <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
       <DialogPrimitive.Trigger
         aria-label={t("create")}
-        className="flex size-11 items-center justify-center rounded-xl bg-cyan text-depth-0 shadow-[0_0_22px_-4px] shadow-cyan transition-transform duration-[var(--press-duration)] active:scale-95 data-[state=open]:rotate-45 motion-reduce:active:scale-100 motion-reduce:data-[state=open]:rotate-0"
+        className="flex size-11 items-center justify-center rounded-xl bg-cyan text-depth-0 shadow-glow transition-transform duration-[var(--press-duration)] active:scale-95 data-[state=open]:rotate-45 motion-reduce:active:scale-100 motion-reduce:data-[state=open]:rotate-0"
       >
         <Plus className="size-5" strokeWidth={2.2} />
       </DialogPrimitive.Trigger>
@@ -107,7 +107,7 @@ function Sheet({
       <DialogPrimitive.Content asChild forceMount aria-describedby={undefined}>
         <motion.div
           role="dialog"
-          className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-lg touch-none rounded-t-3xl border-t border-cyan/25 bg-depth-2/85 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-[0_-24px_60px_-20px_rgba(0,0,0,0.8)] backdrop-blur-2xl"
+          className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-lg touch-none rounded-t-3xl border-t border-cyan/25 bg-depth-2/85 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-elev-3 backdrop-blur-2xl"
           style={{ y }}
           // Enters and leaves along the same path — up from the bottom edge,
           // back down to it.
@@ -137,7 +137,7 @@ function Sheet({
             />
           </div>
 
-          <DialogPrimitive.Title className="px-6 pt-2 pb-3 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">
+          <DialogPrimitive.Title className="px-6 pt-2 pb-3 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-muted-foreground">
             {title}
           </DialogPrimitive.Title>
 
@@ -146,12 +146,12 @@ function Sheet({
               <DialogPrimitive.Close asChild key={key}>
                 <Link
                   href={href}
-                  className="flex items-center gap-4 rounded-2xl px-3 py-3.5 text-air transition-colors duration-[var(--press-duration)] active:bg-cyan/15"
+                  className="flex items-center gap-4 rounded-lg px-3 py-3.5 text-air transition-colors duration-[var(--press-duration)] active:bg-cyan/15"
                 >
                   <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-cyan/12 text-cyan ring-1 ring-cyan/25">
                     <Icon className="size-5" />
                   </span>
-                  <span className="text-[0.95rem] font-medium">
+                  <span className="text-base font-medium">
                     {label(key)}
                   </span>
                 </Link>

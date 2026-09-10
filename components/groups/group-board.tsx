@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
 import type { FeedItem } from "@/types/post";
 
 const fieldClass =
-  "h-11 w-full rounded-md border border-input bg-card/40 px-3.5 text-sm shadow-sm focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60";
+  "h-11 w-full rounded-md border border-input bg-card/40 px-3.5 text-sm shadow-elev-1 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60";
 
 export function GroupBoard({
   groupId,
@@ -132,11 +132,11 @@ export function GroupBoard({
       <p className="mb-4 text-sm text-muted-foreground">{t("boardSubtitle")}</p>
 
       {!canPost ? (
-        <p className="panel rounded-2xl px-4 py-8 text-center text-sm text-muted-foreground">
+        <p className="panel rounded-lg px-4 py-8 text-center text-sm text-muted-foreground">
           {userId ? t("boardJoinHint") : t("boardSignInHint")}
         </p>
       ) : (
-        <div className="panel rounded-2xl p-4">
+        <div className="panel rounded-lg p-4">
           <div className="mb-3 flex gap-1.5">
             {(
               [

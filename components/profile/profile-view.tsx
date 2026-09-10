@@ -36,7 +36,7 @@ export async function ProfileView({
     : null;
 
   return (
-    <article className="panel overflow-hidden rounded-2xl">
+    <article className="panel overflow-hidden rounded-lg">
       {/* Banner */}
       <div className="h-28 bg-[radial-gradient(120%_140%_at_50%_-20%,color-mix(in_oklab,var(--cyan)_30%,transparent),transparent_70%)]" />
 

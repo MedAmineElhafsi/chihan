@@ -7,51 +7,61 @@
 ============================================================================ */
 
 :root {
-  /* Core palette (customer-supplied) */
+  /* Core palette (customer-supplied) — unchanged. */
   --charcoal: #001619; /* Blue Charcoal  */
   --cyan: #50e8f4; /* Fluorescent Blue */
   --air: #c7f8fe; /* Thin Air */
 
-  /* Depth scale — layered water.
-     #001619 anchors the deepest layer (vignette, wells); the page itself sits
-     a few steps up so the UI reads as lit water, not a black hole. */
-  --depth-0: #001619; /* deepest — extremes only */
-  --depth-1: #002b33; /* page background */
-  --depth-2: #013a44; /* panels */
-  --depth-3: #064c58; /* raised */
-  --depth-4: #0a616f; /* hover / active */
+  /* Depth scale — the ground drops so the signal can rise off it.
+     The old page ground (#002b33) sat high enough that a cyan glow had
+     nothing to glow against; everything read as one lit teal wash. Charcoal
+     is the page now, with two steps below it for wells and vignette. */
+  --depth-0: #000709; /* deepest — vignette, wells */
+  --depth-1: #001013; /* page background */
+  --depth-2: var(--charcoal); /* panels */
+  --depth-3: #002028; /* raised */
+  --depth-4: #002c36; /* hover / active */
 
   /* Semantic */
   --background: var(--depth-1);
-  --foreground: var(--air);
+  --foreground: #e4f1f3; /* near-white with a breath of the brand */
   --surface: var(--depth-2);
   --surface-raised: var(--depth-3);
 
   --card: var(--depth-2);
-  --card-foreground: var(--air);
+  --card-foreground: var(--foreground);
   --popover: var(--depth-3);
-  --popover-foreground: var(--air);
+  --popover-foreground: var(--foreground);
 
   --primary: var(--cyan);
   --primary-foreground: #00181c;
   --secondary: var(--depth-3);
-  --secondary-foreground: var(--air);
+  --secondary-foreground: var(--foreground);
   --muted: var(--depth-2);
-  --muted-foreground: #9cc4cc; /* lifted for readability on lighter water */
+  --muted-foreground: #7f979d; /* desaturated: quiet text should not be teal */
   --accent: var(--depth-3);
-  --accent-foreground: var(--air);
+  --accent-foreground: var(--foreground);
   --destructive: #ff5c7a;
   --destructive-foreground: #1a0006;
   --success: #3ff0b2;
   --warning: #ffd166;
 
-  /* Hairlines — this UI is drawn with 1px lines, not heavy borders */
-  --border: rgba(80, 232, 244, 0.2);
-  --border-strong: rgba(80, 232, 244, 0.42);
-  --input: rgba(80, 232, 244, 0.22);
+  /* Hairlines are light, not accent. Cyan borders meant every panel edge
+     spent the accent; an accent spent everywhere is just the base colour. */
+  --border: rgba(199, 248, 254, 0.08);
+  --border-strong: rgba(199, 248, 254, 0.16);
+  --input: rgba(199, 248, 254, 0.12);
   --ring: var(--cyan);
 
-  --radius: 0.25rem; /* sharp, instrument-like — not pill-soft */
+  --radius: 0.25rem; /* sharp, instrument-like */
+
+  /* --- one elevation scale ------------------------------------------------
+     Bigger surfaces read as thicker: more blur and a deeper shadow than a
+     small chip. Never a glow — glow is reserved for the accent itself. */
+  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --elev-2: 0 8px 24px -12px rgba(0, 0, 0, 0.65);
+  --elev-3: 0 24px 60px -24px rgba(0, 0, 0, 0.8);
+  --glow-accent: 0 0 24px -6px rgba(80, 232, 244, 0.55);
 }
 
 @theme inline {
@@ -93,10 +103,20 @@
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
   --font-arabic: var(--font-vazirmatn), ui-sans-serif, system-ui, sans-serif;
 
-  --radius-sm: 0.125rem;
-  --radius-md: 0.25rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
+  /* One radius scale. Six ad-hoc radii read as six different products;
+     four, used consistently, read as one. */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  /* One elevation scale, as utilities: shadow-elev-1/2/3 and shadow-glow.
+     Bigger surfaces read as thicker. Glow is reserved for the accent —
+     it is not an elevation. */
+  --shadow-elev-1: var(--elev-1);
+  --shadow-elev-2: var(--elev-2);
+  --shadow-elev-3: var(--elev-3);
+  --shadow-glow: var(--glow-accent);
 }
 
 @layer base {

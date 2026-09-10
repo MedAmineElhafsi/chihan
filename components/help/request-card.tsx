@@ -6,6 +6,7 @@ import { HELP_CATEGORY_STYLE } from "@/lib/constants";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { HelpRequest } from "@/types/help";
 import { cn } from "@/lib/utils";
+import { HelpCategoryIcon } from "./category-icon";
 
 export async function RequestCard({ request }: { request: HelpRequest }) {
   const t = await getTranslations("Help");
@@ -24,15 +25,15 @@ export async function RequestCard({ request }: { request: HelpRequest }) {
 
       <div className="flex items-center justify-between gap-3">
         <span
-          className="inline-flex items-center gap-1.5 rounded-sm px-2 py-1 font-mono text-[0.65rem] uppercase tracking-[0.14em]"
+          className="inline-flex items-center gap-1.5 rounded-sm px-2 py-1 font-mono text-[0.625rem] uppercase tracking-[0.14em]"
           style={{ backgroundColor: `${style.color}1f`, color: style.color }}
         >
-          <span aria-hidden="true">{style.icon}</span>
+          <HelpCategoryIcon category={request.category} />
           {t(`cat_${request.category}` as never)}
         </span>
 
         {urgent && (
-          <span className="animate-flicker rounded-sm bg-destructive/20 px-2 py-1 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-destructive">
+          <span className="animate-flicker rounded-sm bg-destructive/20 px-2 py-1 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-destructive">
             {t("urgent")}
           </span>
         )}
@@ -54,7 +55,7 @@ export async function RequestCard({ request }: { request: HelpRequest }) {
             {request.author.avatarUrl && (
               <AvatarImage src={request.author.avatarUrl} alt={name} />
             )}
-            <AvatarFallback className="bg-depth-4 text-[0.6rem] text-air">
+            <AvatarFallback className="bg-depth-4 text-[0.625rem] text-air">
               {initial}
             </AvatarFallback>
           </Avatar>

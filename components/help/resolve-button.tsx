@@ -21,7 +21,7 @@ export function ResolveButton({
 
   if (status !== "open") {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-sm bg-success/15 px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-success">
+      <span className="inline-flex items-center gap-1.5 rounded-sm bg-success/15 px-2.5 py-1 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-success">
         <CheckCircle2 className="size-3.5" />
         {t("resolved")}
       </span>

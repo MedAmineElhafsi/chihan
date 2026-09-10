@@ -11,7 +11,7 @@ const buttonVariants = cva(
       variant: {
         // Signal — the one loud element on a page
         default:
-          "bg-cyan text-primary-foreground font-semibold shadow-[0_0_20px_-4px_rgba(80,232,244,0.6)] hover:shadow-[0_0_28px_-2px_rgba(80,232,244,0.85)] hover:brightness-110 active:brightness-95 active:shadow-[0_0_12px_-6px_rgba(80,232,244,0.6)]",
+          "bg-cyan text-primary-foreground font-semibold shadow-glow hover:shadow-glow hover:brightness-110 active:brightness-95 active:shadow-glow",
         // Hairline outline — the default for most actions
         outline:
           "border border-[color:var(--border-strong)] bg-transparent text-air hover:border-cyan hover:bg-cyan/10 hover:text-cyan active:border-cyan active:bg-cyan/20",
@@ -25,7 +25,7 @@ const buttonVariants = cva(
       size: {
         default: "h-10 px-5",
         sm: "h-8 px-3 text-xs",
-        lg: "h-12 px-8 text-[0.95rem]",
+        lg: "h-12 px-8 text-base",
         icon: "size-10",
       },
     },

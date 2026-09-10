@@ -92,7 +92,7 @@ export function ReviewItem({
       {isOwner && !open && (
         <button
           onClick={() => setOpen(true)}
-          className="self-start font-mono text-[0.65rem] uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:text-cyan"
+          className="self-start font-mono text-[0.625rem] uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:text-cyan"
         >
           {review.reply ? t("editReply") : t("replyCta")}
         </button>

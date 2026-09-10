@@ -433,10 +433,10 @@ export function ExploreClient({
               {legend.map((l) => (
                 <span
                   key={l.label + l.color}
-                  className="inline-flex items-center gap-1.5 text-[0.7rem] text-muted-foreground"
+                  className="inline-flex items-center gap-1.5 text-xs text-muted-foreground"
                 >
                   <span
-                    className="flex size-3.5 items-center justify-center rounded-full text-[0.5rem] ring-1 ring-white/40"
+                    className="flex size-3.5 items-center justify-center rounded-full text-[0.625rem] ring-1 ring-white/40"
                     style={{ backgroundColor: l.color }}
                   >
                     {l.icon}
@@ -444,11 +444,11 @@ export function ExploreClient({
                   {l.label}
                 </span>
               ))}
-              <span className="inline-flex items-center gap-1.5 text-[0.7rem] text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
                 <span className="size-2.5 rounded-full bg-emerald-500 ring-1 ring-white/40" />
                 {t("online")}
               </span>
-              <span className="inline-flex items-center gap-1.5 text-[0.7rem] text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
                 <span className="size-2.5 rounded-full bg-muted-foreground/50 ring-1 ring-white/40" />
                 {t("offline")}
               </span>
@@ -563,7 +563,7 @@ function ItemAvatar({ item, online }: { item: GlobePoint; online?: boolean }) {
         </AvatarFallback>
       </Avatar>
       <span
-        className="absolute -bottom-0.5 -end-0.5 flex size-4 items-center justify-center rounded-full text-[0.55rem] ring-2 ring-card"
+        className="absolute -bottom-0.5 -end-0.5 flex size-4 items-center justify-center rounded-full text-[0.625rem] ring-2 ring-card"
         style={{ backgroundColor: style.color }}
         aria-hidden="true"
       >

@@ -225,16 +225,20 @@ export const HELP_CATEGORY_STYLE: Record<
   string,
   { color: string; icon: string }
 > = {
-  housing: { color: "#50e8f4", icon: "🏠" },
-  paperwork: { color: "#f4c150", icon: "📄" },
-  work: { color: "#7ee787", icon: "💼" },
-  language: { color: "#c792ea", icon: "💬" },
-  health: { color: "#ff7b9c", icon: "🩺" },
-  education: { color: "#79c0ff", icon: "🎓" },
-  family: { color: "#ffa657", icon: "👪" },
-  legal: { color: "#a5d6ff", icon: "⚖️" },
-  transport: { color: "#8ddb9c", icon: "🚗" },
-  other: { color: "#9cc4cc", icon: "•" },
+  // `icon` names a lucide component, resolved by components/help/category-icon.
+  // Emoji were replaced: they render differently on every platform, cannot
+  // inherit colour or weight, and are the loudest "unconsidered product"
+  // signal an interface can carry.
+  housing: { color: "#50e8f4", icon: "House" },
+  paperwork: { color: "#f4c150", icon: "FileText" },
+  work: { color: "#7ee787", icon: "Briefcase" },
+  language: { color: "#c792ea", icon: "MessagesSquare" },
+  health: { color: "#ff7b9c", icon: "Stethoscope" },
+  education: { color: "#79c0ff", icon: "GraduationCap" },
+  family: { color: "#ffa657", icon: "Users" },
+  legal: { color: "#a5d6ff", icon: "Scale" },
+  transport: { color: "#8ddb9c", icon: "Car" },
+  other: { color: "#9cc4cc", icon: "Circle" },
 };
 
 export const HELP_URGENCIES = ["normal", "soon", "urgent"] as const;

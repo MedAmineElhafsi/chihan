@@ -44,7 +44,7 @@ export default async function InviteSettingsPage({
         </div>
       </div>
 
-      <div className="panel rounded-2xl p-5">
+      <div className="panel rounded-lg p-5">
         <InviteForm initial={invites} />
       </div>
     </div>
