@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { Bell, Heart, MessageCircle, MessageSquare, Users } from "lucide-react";
+import { Bell, Heart, MessageCircle, MessageSquare, Users, HandHeart } from "lucide-react";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 
 import { Link } from "@/i18n/navigation";
@@ -40,6 +40,7 @@ function groupNotifKind(n: AppNotification): "chat" | "board" | "invite" {
 }
 
 function typeIcon(type: AppNotification["type"], isGroup = false, kind?: "chat" | "board" | "invite") {
+  if (type === "help_match") return HandHeart;
   if (type === "like") return Heart;
   if (type === "comment") return MessageSquare;
   if (kind === "board") return MessageSquare;
@@ -59,6 +60,7 @@ function notificationCopy(
     if (kind === "invite") return t("group_invite", { name, group });
     return t("group_message", { name, group });
   }
+  if (n.type === "help_match") return t("help_match", { name });
   if (n.type === "like" || n.type === "comment" || n.type === "message") {
     return t(n.type, { name });
   }

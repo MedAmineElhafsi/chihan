@@ -5,7 +5,12 @@ import { revalidatePath } from "next/cache";
 
 import { createClient } from "./supabase/server";
 import { createNotification } from "./notifications";
-import { HELP_CATEGORIES, HELP_URGENCIES } from "./constants";
+import {
+  HELP_CATEGORIES,
+  HELP_URGENCIES,
+  type HelpCategory,
+} from "./constants";
+import { notifyPossibleHelpers } from "./help-matching";
 
 /**
  * Asking for help and replying to it are NEVER paywalled. This is the reason
@@ -65,6 +70,15 @@ export async function createHelpRequest(
     .select("id")
     .single();
   if (error) return { ok: false, error: error.message };
+
+  // Tap the people who said they could help with exactly this, in this city.
+  // Best-effort: a request must still be created if the tap fails.
+  await notifyPossibleHelpers({
+    requestId: String(data.id),
+    askerId: user.id,
+    category: v.category as HelpCategory,
+    city: v.city || null,
+  });
 
   revalidatePath("/help");
   return { ok: true, id: String(data.id) };

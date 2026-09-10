@@ -581,7 +581,8 @@
     "group_message": "أرسل {name} رسالة في {group}",
     "aGroup": "مجموعة",
     "group_post": "نشر {name} في {group}",
-    "group_invite": "دعاك {name} إلى {group}"
+    "group_invite": "دعاك {name} إلى {group}",
+    "help_match": "{name} يحتاج مساعدة في شيء عرضتَه"
   },
   "Groups": {
     "title": "المجموعات",

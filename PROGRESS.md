@@ -578,3 +578,44 @@ spend boldness in one place and keep everything else quiet.
 - **The tab bar got the header's treatment**: the hard 1px divider became a
   fade, so content passes under the material instead of stopping at a line.
   Leaving one and not the other was an inconsistency I introduced.
+
+## Help requests now reach the people who offered that help
+
+Onboarding has always asked "I can offer: housing help, job leads, local
+tips, language help…" and **nothing ever read the answer**. A request sat on a
+board hoping to be noticed — which is the difference between a noticeboard and
+a network, and the way a help board dies: one person asks, nobody happens to
+look, they never come back.
+
+- `supabase/migrations/0025_help_match_notifications.sql` — **needs running**:
+  adds the `help_match` notification type and an index for city+offering lookup.
+- `lib/help-matching.ts` — maps each help category to the offering tags that
+  actually answer it, finds members in the same city who offer one, and taps
+  up to **12** of them. Reuses `createNotifications`, so block/mute filtering
+  and web push come for free.
+- Same city only. Help with an Ausländerbehörde appointment is worthless from
+  another country, and a request with no city notifies nobody rather than
+  spraying everyone.
+- Best effort: the request is still created if the tap fails.
+
+**Two data problems this uncovered**, both fixed in `supabase/seed_offering.sql`:
+
+1. Every profile had `offering = '{}'`. The field was collected and never set,
+   so matching had nobody to tap — the same shape as the `profession` gap.
+2. The demo data modelled **24 cities with one person each**. That is reach,
+   not density, and density is what a community needs. Berlin was the launch
+   city with exactly one member while carrying all seven help requests. Four
+   people moved there.
+
+Measured against the real database afterwards:
+
+| request | taps |
+|---|---|
+| Room in Neukölln (housing) | Rojda, Aram, Awaz |
+| Ausländerbehörde (paperwork) | Aram, Awaz |
+| Kurdish-speaking dentist (health) | **Rojda — a doctor in Berlin**, Aram, Awaz |
+| Warehouse job (work) | Rojda, Zozan |
+| German conversation (language) | Dîlan |
+
+Guard rails all pass: no city means nobody is notified, the asker is never
+told about their own request, and the cap holds.

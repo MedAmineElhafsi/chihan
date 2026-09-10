@@ -581,7 +581,8 @@
     "group_message": "{name} hat in {group} eine Nachricht gesendet",
     "aGroup": "einer Gruppe",
     "group_post": "{name} hat in {group} gepostet",
-    "group_invite": "{name} hat dich zu {group} eingeladen"
+    "group_invite": "{name} hat dich zu {group} eingeladen",
+    "help_match": "{name} braucht Hilfe bei etwas, das du angeboten hast"
   },
   "Groups": {
     "title": "Gruppen",

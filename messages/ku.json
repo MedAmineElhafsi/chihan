@@ -581,7 +581,8 @@
     "group_message": "{name} di {group} de peyamek şand",
     "aGroup": "komê",
     "group_post": "{name} di {group} de post kir",
-    "group_invite": "{name} te vexwendî {group}"
+    "group_invite": "{name} te vexwendî {group}",
+    "help_match": "{name} ji bo tiştekî ku te pêşkêş kiribû alîkariyê dixwaze"
   },
   "Groups": {
     "title": "Kom",

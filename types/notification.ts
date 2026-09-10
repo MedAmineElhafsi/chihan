@@ -2,6 +2,7 @@ export type NotificationType =
   | "message"
   | "group_message"
   | "like"
+  | "help_match"
   | "comment";
 
 export type AppNotification = {

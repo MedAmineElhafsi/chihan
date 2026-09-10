@@ -581,7 +581,8 @@
     "group_message": "{name} لە {group} نامەی نارد",
     "aGroup": "گرووپێک",
     "group_post": "{name} لە {group} پۆستی کرد",
-    "group_invite": "{name} بانگێشتی کردیت بۆ {group}"
+    "group_invite": "{name} بانگێشتی کردیت بۆ {group}",
+    "help_match": "{name} پێویستی بە یارمەتییە لەو شتەی تۆ پێشکەشت کردبوو"
   },
   "Groups": {
     "title": "گرووپەکان",
