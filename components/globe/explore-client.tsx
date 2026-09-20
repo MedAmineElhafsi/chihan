@@ -30,11 +30,12 @@ import { CATEGORY_COLORS, pointStyle } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useOnlineProfiles } from "@/lib/use-online";
 import type { GlobePoint } from "@/lib/globe";
+import { GlobePlaceholder } from "./globe-placeholder";
 import { GlobeSearch, type TagOption } from "./globe-search";
 
 const GlobeGL = dynamic(() => import("./globe-gl"), {
   ssr: false,
-  loading: () => null,
+  loading: () => <GlobePlaceholder />,
 });
 
 type Layer = "all" | "people" | "restaurants" | "doctors" | "events";
@@ -337,6 +338,9 @@ export function ExploreClient({
         onPointerDown={stopAutoRotate}
         onWheel={stopAutoRotate}
       >
+        {/* Two gaps to cover: before the container is measured, and while
+            ~2.8 MB of Three.js is still in flight. */}
+        {size.w === 0 && <GlobePlaceholder />}
         {size.w > 0 && (
           <GlobeGL
             globeRef={globeRef as MutableRefObject<GlobeMethods | undefined>}

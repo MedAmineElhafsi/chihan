@@ -496,3 +496,29 @@ small {
 /* The outgoing frame leaves slightly faster than the incoming one arrives, so
    the two never both sit at full strength and wash the page out. */
 
+
+/* The globe placeholder breathes while ~2.8 MB of Three.js arrives. The
+   motion IS the loading signal — without it a static disc looks like a
+   finished, broken globe. Transform and opacity only. */
+.globe-pending {
+  animation: globe-breathe 2.8s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  will-change: transform, opacity;
+}
+
+@keyframes globe-breathe {
+  from {
+    transform: scale(0.97);
+    opacity: 0.55;
+  }
+  to {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .globe-pending {
+    animation: none;
+    opacity: 0.8;
+  }
+}
