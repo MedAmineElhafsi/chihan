@@ -1,6 +1,7 @@
 import "server-only";
 
 import { createClient } from "./supabase/server";
+import { createServiceClient } from "./supabase/service";
 import { getHiddenAuthorIds } from "./blocks";
 import type { HelpAuthor, HelpOffer, HelpRequest } from "@/types/help";
 
@@ -157,5 +158,36 @@ export async function getHelpOffers(requestId: string): Promise<HelpOffer[]> {
     }));
   } catch {
     return [];
+  }
+}
+
+/**
+ * How many open requests exist, as a number and nothing else.
+ *
+ * Reading a request is restricted to members on purpose — asking for help
+ * reveals that you need it. But telling a signed-out visitor "no requests
+ * here yet" when seven people are waiting is a lie that costs us the visitor
+ * and the askers at once.
+ *
+ * This uses the service client deliberately: it must see past the policy to
+ * count, and it returns only the count, so nothing a member wrote can leak.
+ */
+export async function countOpenHelpRequests(city?: string | null): Promise<number> {
+  try {
+    const supabase = createServiceClient();
+    let q = supabase
+      .from("help_requests")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "open");
+    if (city) q = q.ilike("city", city);
+    const { count, error } = await q;
+    if (error) {
+      console.error("[help] count failed:", error.message);
+      return 0;
+    }
+    return count ?? 0;
+  } catch (err) {
+    console.error("[help] count threw:", err);
+    return 0;
   }
 }

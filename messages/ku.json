@@ -757,7 +757,9 @@
     "suggestedAll": "Hemûyan bibîne",
     "memoryTitle": "Ji bo kesê pêş de tomar bike",
     "memoryBody": "Eger cih, ofîs an kesek ev çareser kir, wan tevlî rêberê bike. Kesê din wê bêyî pirsînê bibîne.",
-    "memoryCta": "Tevlî rêberê bike"
+    "memoryCta": "Tevlî rêberê bike",
+    "hiddenTitle": "{count, plural, one {Kesek niha li vir alîkariyê dixwaze} other {# kes niha li vir alîkariyê dixwazin}}",
+    "hiddenBody": "Daxwaz di navbera endaman de dimînin — xwestina alîkariyê bi xwe têra xwe giran e. Beşdar bibe da ku bixwînî û bersiv bidî."
   },
   "Verification": {
     "title": "Verastkirinê bixwaze",

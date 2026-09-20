@@ -4,7 +4,7 @@ import { HandHeart } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getOwnProfile } from "@/lib/profiles";
-import { getHelpRequests } from "@/lib/help";
+import { countOpenHelpRequests, getHelpRequests } from "@/lib/help";
 import { HELP_CATEGORIES, LAUNCH_CITY } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { RequestCard } from "@/components/help/request-card";
@@ -34,6 +34,9 @@ export default async function HelpPage({
   const city = sp.city ?? "";
   const status = sp.status === "resolved" ? "resolved" : "open";
 
+  // Counted past the policy, deliberately: a number leaks nothing.
+  const openCount = await countOpenHelpRequests(city || LAUNCH_CITY);
+
   const requests = await getHelpRequests(
     { category, city: city || undefined, status },
     user?.id
@@ -62,7 +65,11 @@ export default async function HelpPage({
       {/* Header */}
       <div className="flex flex-col gap-3">
         <span className="label-mono">
-          {city || LAUNCH_CITY} — {t("index", { count: requests.length })}
+          {/* The true count, not the number this viewer is allowed to read.
+              Requests are members-only on purpose; saying "0 open" to a
+              visitor when seven people are waiting is a different thing
+              from keeping them private. */}
+          {city || LAUNCH_CITY} — {t("index", { count: openCount })}
         </span>
         <h1 className="font-display text-air text-[clamp(2rem,5vw,3.25rem)] leading-[0.95] font-semibold tracking-tight">
           {t("title")}
@@ -124,7 +131,21 @@ export default async function HelpPage({
       {requests.length === 0 ? (
         <div className="flex flex-col items-center gap-3 py-20 text-center">
           <HandHeart className="text-cyan size-8" />
-          <p className="text-muted-foreground">{t("empty")}</p>
+          {/* Two different absences, said differently. "Nothing here" and
+              "hidden from you" are not the same sentence, and telling a
+              visitor the first when the second is true loses them. */}
+          {!user && openCount > 0 ? (
+            <>
+              <p className="text-air max-w-sm text-balance">
+                {t("hiddenTitle", { count: openCount })}
+              </p>
+              <p className="text-muted-foreground max-w-sm text-sm text-balance">
+                {t("hiddenBody")}
+              </p>
+            </>
+          ) : (
+            <p className="text-muted-foreground">{t("empty")}</p>
+          )}
         </div>
       ) : (
         <div className="bg-border mt-6 grid gap-px sm:grid-cols-2">

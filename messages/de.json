@@ -757,7 +757,9 @@
     "suggestedAll": "Alle ansehen",
     "memoryTitle": "Für die Nächsten festhalten",
     "memoryBody": "Wenn ein Ort, ein Amt oder eine Person das gelöst hat, trag sie ins Verzeichnis ein. Die Nächsten finden es dann, ohne zu fragen.",
-    "memoryCta": "Zum Verzeichnis hinzufügen"
+    "memoryCta": "Zum Verzeichnis hinzufügen",
+    "hiddenTitle": "{count, plural, one {Eine Person bittet hier gerade um Hilfe} other {# Menschen bitten hier gerade um Hilfe}}",
+    "hiddenBody": "Anfragen bleiben unter Mitgliedern — um Hilfe zu bitten kostet schon genug. Tritt bei, um sie zu lesen und zu antworten."
   },
   "Verification": {
     "title": "Verifizierung beantragen",

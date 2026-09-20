@@ -757,7 +757,9 @@
     "suggestedAll": "See all",
     "memoryTitle": "Save this for the next person",
     "memoryBody": "If a place, office or person solved this, add them to the directory. The next person who needs it will find it without asking.",
-    "memoryCta": "Add to directory"
+    "memoryCta": "Add to directory",
+    "hiddenTitle": "{count, plural, one {One person is asking for help here right now} other {# people are asking for help here right now}}",
+    "hiddenBody": "Requests stay between members — asking for help already takes enough. Join to read them and answer."
   },
   "Verification": {
     "title": "Get verified",
