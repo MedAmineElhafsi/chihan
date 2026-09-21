@@ -784,7 +784,7 @@
   "Reels": {
     "title": "Reels",
     "count": "{count} reel",
-    "empty": "Hê reel tune. Bibe yê pêşî — bişkoja jorîn.",
+    "empty": "Hê reel tune.",
     "pick": "Vîdyoyekê hilbijêre",
     "limits": "Heta {seconds} çirke · {mb} MB",
     "duration": "{seconds} çirke",
@@ -801,7 +801,12 @@
     "errorUpload": "Barkirin bi ser neket. Ji kerema xwe dîsa biceribîne.",
     "errorSave": "Vîdyo hat barkirin lê reel nehat tomarkirin.",
     "newReel": "Reelek nû",
-    "close": "Bigire"
+    "close": "Bigire",
+    "emptyTitle": "Reelên pêşî hê nehatine",
+    "emptyBody": "Heta {seconds} çirkeyên stûnî ji cihê ku tu lê yî — kolanek, metbexek, dawetek, dîmenek ji pencereyê.",
+    "emptySeconds": "{seconds} çr",
+    "emptyMember": "Bi \"Reelek nû\" ya jorîn yê pêşî biweşîne.",
+    "emptyJoin": "Beşdar bibe û yê pêşî biweşîne"
   },
   "Home": {
     "tabsLabel": "Çi bixwînî",

@@ -784,7 +784,7 @@
   "Reels": {
     "title": "Reels",
     "count": "{count} Reels",
-    "empty": "Noch keine Reels. Mach den Anfang — Knopf oben.",
+    "empty": "Noch keine Reels.",
     "pick": "Video auswählen",
     "limits": "Bis {seconds} Sekunden · {mb} MB",
     "duration": "{seconds} Sekunden",
@@ -801,7 +801,12 @@
     "errorUpload": "Der Upload ist fehlgeschlagen. Bitte versuch es erneut.",
     "errorSave": "Das Video wurde hochgeladen, das Reel konnte aber nicht gespeichert werden.",
     "newReel": "Neues Reel",
-    "close": "Schließen"
+    "close": "Schließen",
+    "emptyTitle": "Die ersten Reels kommen noch",
+    "emptyBody": "Bis zu {seconds} Sekunden hochkant, von wo du gerade bist — eine Straße, eine Küche, eine Hochzeit, der Blick aus dem Fenster.",
+    "emptySeconds": "{seconds} Sek.",
+    "emptyMember": "Mit „Neues Reel“ oben postest du das erste.",
+    "emptyJoin": "Tritt bei und poste das erste"
   },
   "Home": {
     "tabsLabel": "Was zu lesen ist",

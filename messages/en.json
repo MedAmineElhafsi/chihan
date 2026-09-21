@@ -784,7 +784,7 @@
   "Reels": {
     "title": "Reels",
     "count": "{count} reels",
-    "empty": "No reels yet. Be the first — press the button above.",
+    "empty": "No reels yet.",
     "pick": "Choose a video",
     "limits": "Up to {seconds} seconds · {mb} MB",
     "duration": "{seconds} seconds",
@@ -801,7 +801,12 @@
     "errorUpload": "The upload failed. Please try again.",
     "errorSave": "The video uploaded but the reel could not be saved.",
     "newReel": "New reel",
-    "close": "Close"
+    "close": "Close",
+    "emptyTitle": "The first reels are still to come",
+    "emptyBody": "Up to {seconds} vertical seconds from wherever you are — a street, a kitchen, a wedding, a view from a window.",
+    "emptySeconds": "{seconds} sec",
+    "emptyMember": "Use “New reel” above to post the first one.",
+    "emptyJoin": "Join to post the first one"
   },
   "Home": {
     "tabsLabel": "What to read",
