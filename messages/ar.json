@@ -485,7 +485,14 @@
     "verifyNotePlaceholder": "السبب، يظهر لمقدّم الطلب عند الرفض (اختياري)",
     "verifyApprove": "موافقة",
     "verifyReject": "رفض",
-    "verifyFailed": "تعذّر حفظ القرار."
+    "verifyFailed": "تعذّر حفظ القرار.",
+    "adsTitle": "إعلانات للمراجعة ({count})",
+    "adsEmpty": "لا إعلانات في الانتظار.",
+    "adsFrom": "من {name} · {date}",
+    "adsOpenListing": "فتح الإدراج",
+    "adsNotePlaceholder": "ملاحظة للمالك (تظهر إذا رفضت)",
+    "adsApprove": "موافقة · لمدة 7 أيام",
+    "adsDecline": "رفض"
   },
   "Settings": {
     "title": "الإعدادات",
@@ -582,7 +589,10 @@
     "aGroup": "مجموعة",
     "group_post": "نشر {name} في {group}",
     "group_invite": "دعاك {name} إلى {group}",
-    "help_match": "{name} يحتاج مساعدة في شيء عرضتَه"
+    "help_match": "{name} يحتاج مساعدة في شيء عرضتَه",
+    "ad_approved": "إعلانك لـ{listing} معروض في استكشاف لمدة 7 أيام",
+    "ad_rejected": "لم تتم الموافقة على إعلانك لـ{listing} — اضغط لمعرفة السبب",
+    "yourListing": "إدراجك"
   },
   "Groups": {
     "title": "المجموعات",
@@ -818,5 +828,41 @@
   "Loading": {
     "label": "جارٍ التحميل…",
     "globe": "جارٍ تحميل الكرة الأرضية"
+  },
+  "Ads": {
+    "sponsored": "ممول",
+    "view": "عرض",
+    "verified": "موثّق",
+    "cardLabel": "ممول: {name}. {headline}",
+    "promoteTitle": "روّج في استكشاف",
+    "promoteBody": "مجاني خلال فترة الإطلاق. بعد موافقة أحد المشرفين، يظهر إعلانك في استكشاف لمدة 7 أيام بين المنشورات، مع علامة «ممول».",
+    "headlineLabel": "العنوان",
+    "headlinePlaceholder": "خبز كردي طازج كل صباح",
+    "bodyLabel": "تفاصيل (اختياري)",
+    "bodyPlaceholder": "ساعات العمل، عرض خاص، ما يميّزك…",
+    "preview": "معاينة",
+    "submit": "أرسل للمراجعة",
+    "submitAgain": "روّج مرة أخرى",
+    "pendingTitle": "بانتظار الموافقة",
+    "pendingBody": "سيراجعه أحد المشرفين قريبًا. سيصلك إشعار عندما يبدأ عرضه.",
+    "runningTitle": "معروض في استكشاف حتى {date}",
+    "runningBody": "يراه الناس بين المنشورات مع علامة «ممول».",
+    "withdraw": "سحب",
+    "stop": "إيقاف الآن",
+    "views": "{count, plural, zero {لا مشاهدات} one {مشاهدة واحدة} two {مشاهدتان} few {# مشاهدات} many {# مشاهدة} other {# مشاهدة}}",
+    "taps": "{count, plural, zero {لا نقرات} one {نقرة واحدة} two {نقرتان} few {# نقرات} many {# نقرة} other {# نقرة}}",
+    "endedTitle": "انتهى إعلانك الأخير في {date}",
+    "rejectedTitle": "لم تتم الموافقة على إعلانك الأخير",
+    "rejectedNote": "من المراجِع: {note}",
+    "rejectedNoNote": "لم يُذكر سبب. يمكنك تعديله وإرساله مجددًا.",
+    "error_not_signed_in": "سجّل الدخول للترويج لإدراجك.",
+    "error_not_owner": "يمكن لمالك هذا الإدراج فقط الترويج له.",
+    "error_already_active": "لهذا الإدراج إعلان قيد الانتظار أو معروض بالفعل.",
+    "error_headline": "اكتب عنوانًا من 3 إلى 80 حرفًا.",
+    "error_body": "اجعل التفاصيل أقل من 280 حرفًا.",
+    "error_not_withdrawable": "لم يعد بالإمكان سحب هذا الإعلان.",
+    "error_not_admin": "يمكن للمشرف فقط البتّ في الإعلانات.",
+    "error_not_pending": "تم البتّ في هذا الإعلان بالفعل.",
+    "error_failed": "حدث خطأ ما. يُرجى المحاولة مرة أخرى."
   }
 }

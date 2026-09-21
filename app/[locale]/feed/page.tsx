@@ -16,12 +16,15 @@ import { FREE_LIMITS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { FeedComposer } from "@/components/feed/feed-composer";
 import { PostCard } from "@/components/feed/post-card";
+import { SponsoredCard } from "@/components/feed/sponsored-card";
 import { StoriesRail } from "@/components/stories/stories-rail";
 import { HomeTabs, parseHomeTab } from "@/components/app-shell/home-tabs";
 import { RequestCard } from "@/components/help/request-card";
 import { ArticleCard } from "@/components/news/article-card";
 import { getHelpRequests } from "@/lib/help";
 import { getNews } from "@/lib/news";
+import { getSponsored } from "@/lib/ads";
+import { withSponsored } from "@/lib/sponsored";
 import { navTitle } from "@/lib/page-title";
 import { cn } from "@/lib/utils";
 
@@ -70,6 +73,14 @@ export default async function FeedPage({
           nearLng: nearMe && hasLocation ? profile!.lng : null,
         })
       : [];
+
+  // Promoted listings ride along in Posts only, one after every five posts,
+  // businesses in the viewer's own city first.
+  const sponsored =
+    activeTab === "posts"
+      ? await getSponsored({ city: profile?.city, country: profile?.country })
+      : [];
+  const entries = withSponsored(items, sponsored);
 
   const helpRequests =
     activeTab === "help" ? await getHelpRequests({ status: "open" }) : [];
@@ -179,14 +190,21 @@ export default async function FeedPage({
                 {nearMe ? t("emptyNear") : t("empty")}
               </p>
             ) : (
-              items.map((it) => (
-                <PostCard
-                  key={it.id}
-                  item={it}
-                  currentUserId={user?.id ?? null}
-                  canInteract={!!user}
-                />
-              ))
+              entries.map((entry) =>
+                entry.kind === "ad" ? (
+                  <SponsoredCard
+                    key={`ad-${entry.item.id}`}
+                    item={entry.item}
+                  />
+                ) : (
+                  <PostCard
+                    key={entry.item.id}
+                    item={entry.item}
+                    currentUserId={user?.id ?? null}
+                    canInteract={!!user}
+                  />
+                )
+              )
             )}
           </div>
         </>

@@ -485,7 +485,14 @@
     "verifyNotePlaceholder": "Reason, shown to the applicant if you reject (optional)",
     "verifyApprove": "Approve",
     "verifyReject": "Reject",
-    "verifyFailed": "Could not save that decision."
+    "verifyFailed": "Could not save that decision.",
+    "adsTitle": "Ads to review ({count})",
+    "adsEmpty": "No ads waiting.",
+    "adsFrom": "From {name} · {date}",
+    "adsOpenListing": "Open listing",
+    "adsNotePlaceholder": "Note for the owner (shown if you decline)",
+    "adsApprove": "Approve · runs 7 days",
+    "adsDecline": "Decline"
   },
   "Settings": {
     "title": "Settings",
@@ -582,7 +589,10 @@
     "aGroup": "a group",
     "group_post": "{name} posted in {group}",
     "group_invite": "{name} invited you to {group}",
-    "help_match": "{name} needs help with something you offered"
+    "help_match": "{name} needs help with something you offered",
+    "ad_approved": "Your ad for {listing} is live in Explore for 7 days",
+    "ad_rejected": "Your ad for {listing} wasn't approved — tap to see why",
+    "yourListing": "your listing"
   },
   "Groups": {
     "title": "Groups",
@@ -818,5 +828,41 @@
   "Loading": {
     "label": "Loading…",
     "globe": "Loading the globe"
+  },
+  "Ads": {
+    "sponsored": "Sponsored",
+    "view": "View",
+    "verified": "Verified",
+    "cardLabel": "Sponsored: {name}. {headline}",
+    "promoteTitle": "Promote in Explore",
+    "promoteBody": "Free during launch. Once an admin approves it, your ad appears in Explore for 7 days, between posts, marked Sponsored.",
+    "headlineLabel": "Headline",
+    "headlinePlaceholder": "Fresh Kurdish bread every morning",
+    "bodyLabel": "Details (optional)",
+    "bodyPlaceholder": "Opening hours, an offer, what makes you different…",
+    "preview": "Preview",
+    "submit": "Send for review",
+    "submitAgain": "Promote again",
+    "pendingTitle": "Waiting for approval",
+    "pendingBody": "An admin will look at it soon. You'll get a notification when it goes live.",
+    "runningTitle": "Live in Explore until {date}",
+    "runningBody": "People see it between posts, marked Sponsored.",
+    "withdraw": "Withdraw",
+    "stop": "Stop now",
+    "views": "{count, plural, one {# view} other {# views}}",
+    "taps": "{count, plural, one {# tap} other {# taps}}",
+    "endedTitle": "Your last ad ended on {date}",
+    "rejectedTitle": "Your last ad wasn't approved",
+    "rejectedNote": "From the reviewer: {note}",
+    "rejectedNoNote": "No reason was given. You can adjust it and send it again.",
+    "error_not_signed_in": "Sign in to promote your listing.",
+    "error_not_owner": "Only the owner of this listing can promote it.",
+    "error_already_active": "This listing already has an ad waiting or running.",
+    "error_headline": "Write a headline of 3 to 80 characters.",
+    "error_body": "Keep the details under 280 characters.",
+    "error_not_withdrawable": "This ad can no longer be withdrawn.",
+    "error_not_admin": "Only an admin can decide on ads.",
+    "error_not_pending": "This ad has already been decided.",
+    "error_failed": "Something went wrong. Please try again."
   }
 }

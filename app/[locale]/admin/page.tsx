@@ -6,6 +6,9 @@ import { getCurrentUser } from "@/lib/auth";
 import { getReports, isAdmin, type ReportStatusFilter } from "@/lib/moderation";
 import { getDocumentUrl, getVerificationQueue } from "@/lib/verification";
 import { VerificationQueue } from "@/components/admin/verification-queue";
+import { AdQueue } from "@/components/admin/ad-queue";
+import { getPendingAds } from "@/lib/ads";
+import { isEnabled } from "@/lib/features";
 import { ReportRow } from "@/components/moderation/report-row";
 import { cn } from "@/lib/utils";
 
@@ -29,6 +32,8 @@ export default async function AdminPage({
   const t = await getTranslations("Admin");
   const reports = await getReports(statusFilter);
 
+  const pendingAds = isEnabled("ads") ? await getPendingAds() : [];
+
   // Signed links expire in five minutes — these are identity documents.
   const pending = await getVerificationQueue("pending");
   const documentUrls: Record<string, string | null> = {};
@@ -44,6 +49,15 @@ export default async function AdminPage({
         {t("title")}
       </h1>
       <p className="mt-1 text-muted-foreground">{t("subtitle")}</p>
+
+      {isEnabled("ads") && (
+        <section className="mt-8 flex flex-col gap-3">
+          <h2 className="font-display text-xl font-semibold">
+            {t("adsTitle", { count: pendingAds.length })}
+          </h2>
+          <AdQueue items={pendingAds} />
+        </section>
+      )}
 
       <section className="mt-8 flex flex-col gap-3">
         <h2 className="font-display text-xl font-semibold">

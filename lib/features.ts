@@ -32,6 +32,11 @@ export const FEATURES = {
 
   reels: true,
 
+  // Sponsored listings in Explore: owners promote, an administrator approves.
+  // Off hides the cards, the owner's promote panel and the review queue; the
+  // ads table and its history stay.
+  ads: true,
+
   // Deliberately off. Matches and who-viewed are engagement machinery that
   // works against a community built on helping; billing earns nothing at
   // zero users. All three are one flag away, with their data intact.

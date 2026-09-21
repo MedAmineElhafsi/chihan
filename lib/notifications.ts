@@ -125,6 +125,27 @@ export async function listNotifications(
       }
     }
 
+    // An ad decision points at the listing, so the note can name it.
+    const isAd = (type: unknown) =>
+      type === "ad_approved" || type === "ad_rejected";
+    const listingIds = [
+      ...new Set(
+        data
+          .filter((n) => isAd(n.type) && n.entity_id)
+          .map((n) => String(n.entity_id))
+      ),
+    ];
+    const listingNames = new Map<string, string>();
+    if (listingIds.length > 0) {
+      const { data: listings } = await supabase
+        .from("listings")
+        .select("id, name")
+        .in("id", listingIds);
+      for (const l of listings ?? []) {
+        listingNames.set(String(l.id), String(l.name));
+      }
+    }
+
     return data.map((n) => {
       const actor = n.actor_id ? actors.get(String(n.actor_id)) : undefined;
       const type = n.type as NotificationType;
@@ -142,10 +163,13 @@ export async function listNotifications(
           created_at: String(n.created_at),
           actor_name: actor?.display_name ?? null,
           actor_avatar: actor?.avatar_url ?? null,
-          context_label:
-            isGroup && n.entity_id
+          context_label: !n.entity_id
+            ? null
+            : isGroup
               ? (groupNames.get(String(n.entity_id)) ?? null)
-              : null,
+              : isAd(type)
+                ? (listingNames.get(String(n.entity_id)) ?? null)
+                : null,
         };
     });
   } catch {

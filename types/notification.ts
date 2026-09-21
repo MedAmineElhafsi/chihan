@@ -3,7 +3,9 @@ export type NotificationType =
   | "group_message"
   | "like"
   | "help_match"
-  | "comment";
+  | "comment"
+  | "ad_approved"
+  | "ad_rejected";
 
 export type AppNotification = {
   id: string;
@@ -16,6 +18,6 @@ export type AppNotification = {
   created_at: string;
   actor_name: string | null;
   actor_avatar: string | null;
-  /** Group name for `group_message`, when available. */
+  /** Group name for `group_message`, listing name for `ad_*`, when available. */
   context_label: string | null;
 };

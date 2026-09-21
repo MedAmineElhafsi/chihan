@@ -485,7 +485,14 @@
     "verifyNotePlaceholder": "Begründung, bei Ablehnung sichtbar (optional)",
     "verifyApprove": "Bestätigen",
     "verifyReject": "Ablehnen",
-    "verifyFailed": "Entscheidung konnte nicht gespeichert werden."
+    "verifyFailed": "Entscheidung konnte nicht gespeichert werden.",
+    "adsTitle": "Anzeigen zur Prüfung ({count})",
+    "adsEmpty": "Keine Anzeigen offen.",
+    "adsFrom": "Von {name} · {date}",
+    "adsOpenListing": "Eintrag öffnen",
+    "adsNotePlaceholder": "Notiz für den Inhaber (sichtbar bei Ablehnung)",
+    "adsApprove": "Freigeben · läuft 7 Tage",
+    "adsDecline": "Ablehnen"
   },
   "Settings": {
     "title": "Einstellungen",
@@ -582,7 +589,10 @@
     "aGroup": "einer Gruppe",
     "group_post": "{name} hat in {group} gepostet",
     "group_invite": "{name} hat dich zu {group} eingeladen",
-    "help_match": "{name} braucht Hilfe bei etwas, das du angeboten hast"
+    "help_match": "{name} braucht Hilfe bei etwas, das du angeboten hast",
+    "ad_approved": "Deine Anzeige für {listing} läuft 7 Tage in Entdecken",
+    "ad_rejected": "Deine Anzeige für {listing} wurde nicht freigegeben — tippe für den Grund",
+    "yourListing": "deinen Eintrag"
   },
   "Groups": {
     "title": "Gruppen",
@@ -818,5 +828,41 @@
   "Loading": {
     "label": "Wird geladen…",
     "globe": "Globus wird geladen"
+  },
+  "Ads": {
+    "sponsored": "Gesponsert",
+    "view": "Ansehen",
+    "verified": "Verifiziert",
+    "cardLabel": "Gesponsert: {name}. {headline}",
+    "promoteTitle": "In Entdecken bewerben",
+    "promoteBody": "Während des Starts kostenlos. Sobald ein Admin sie freigibt, erscheint deine Anzeige 7 Tage lang in Entdecken zwischen den Beiträgen, als „Gesponsert“ markiert.",
+    "headlineLabel": "Überschrift",
+    "headlinePlaceholder": "Jeden Morgen frisches kurdisches Brot",
+    "bodyLabel": "Details (optional)",
+    "bodyPlaceholder": "Öffnungszeiten, ein Angebot, was dich besonders macht…",
+    "preview": "Vorschau",
+    "submit": "Zur Prüfung senden",
+    "submitAgain": "Erneut bewerben",
+    "pendingTitle": "Wartet auf Freigabe",
+    "pendingBody": "Ein Admin sieht sie sich bald an. Du bekommst eine Benachrichtigung, sobald sie live ist.",
+    "runningTitle": "Live in Entdecken bis {date}",
+    "runningBody": "Menschen sehen sie zwischen den Beiträgen, als „Gesponsert“ markiert.",
+    "withdraw": "Zurückziehen",
+    "stop": "Jetzt beenden",
+    "views": "{count, plural, one {# Aufruf} other {# Aufrufe}}",
+    "taps": "{count, plural, one {# Klick} other {# Klicks}}",
+    "endedTitle": "Deine letzte Anzeige endete am {date}",
+    "rejectedTitle": "Deine letzte Anzeige wurde nicht freigegeben",
+    "rejectedNote": "Vom Prüfer: {note}",
+    "rejectedNoNote": "Es wurde kein Grund angegeben. Du kannst sie anpassen und erneut senden.",
+    "error_not_signed_in": "Melde dich an, um deinen Eintrag zu bewerben.",
+    "error_not_owner": "Nur der Inhaber dieses Eintrags kann ihn bewerben.",
+    "error_already_active": "Für diesen Eintrag wartet oder läuft bereits eine Anzeige.",
+    "error_headline": "Schreibe eine Überschrift mit 3 bis 80 Zeichen.",
+    "error_body": "Halte die Details unter 280 Zeichen.",
+    "error_not_withdrawable": "Diese Anzeige kann nicht mehr zurückgezogen werden.",
+    "error_not_admin": "Nur ein Admin kann über Anzeigen entscheiden.",
+    "error_not_pending": "Über diese Anzeige wurde bereits entschieden.",
+    "error_failed": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
   }
 }

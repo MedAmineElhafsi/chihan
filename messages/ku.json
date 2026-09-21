@@ -485,7 +485,14 @@
     "verifyNotePlaceholder": "Sedem, heke red bikî tê nîşandan (bijarte)",
     "verifyApprove": "Bipejirîne",
     "verifyReject": "Red bike",
-    "verifyFailed": "Biryar nehat tomarkirin."
+    "verifyFailed": "Biryar nehat tomarkirin.",
+    "adsTitle": "Reklamên ji bo nirxandinê ({count})",
+    "adsEmpty": "Tu reklam li bendê nîn e.",
+    "adsFrom": "Ji {name} · {date}",
+    "adsOpenListing": "Tomarê veke",
+    "adsNotePlaceholder": "Nîşe ji bo xwedî (ger tu red bikî xuya dibe)",
+    "adsApprove": "Bipejirîne · 7 rojan",
+    "adsDecline": "Red bike"
   },
   "Settings": {
     "title": "Sazkarî",
@@ -582,7 +589,10 @@
     "aGroup": "komê",
     "group_post": "{name} di {group} de post kir",
     "group_invite": "{name} te vexwendî {group}",
-    "help_match": "{name} ji bo tiştekî ku te pêşkêş kiribû alîkariyê dixwaze"
+    "help_match": "{name} ji bo tiştekî ku te pêşkêş kiribû alîkariyê dixwaze",
+    "ad_approved": "Reklama te ji bo {listing} 7 rojan di Vekolê de çalak e",
+    "ad_rejected": "Reklama te ji bo {listing} nehat pejirandin — ji bo sedemê bitikîne",
+    "yourListing": "tomara te"
   },
   "Groups": {
     "title": "Kom",
@@ -818,5 +828,41 @@
   "Loading": {
     "label": "Tê barkirin…",
     "globe": "Gerstêrk tê barkirin"
+  },
+  "Ads": {
+    "sponsored": "Sponsorkirî",
+    "view": "Bibîne",
+    "verified": "Piştrastkirî",
+    "cardLabel": "Sponsorkirî: {name}. {headline}",
+    "promoteTitle": "Di Vekolê de reklam bike",
+    "promoteBody": "Di dema destpêkê de belaş e. Piştî ku rêveberek wê bipejirîne, reklama te 7 rojan di Vekolê de, di navbera şandiyan de, bi nîşana Sponsorkirî xuya dibe.",
+    "headlineLabel": "Sernav",
+    "headlinePlaceholder": "Her sibe nanê kurdî yê teze",
+    "bodyLabel": "Hûrgilî (ne mecbûrî)",
+    "bodyPlaceholder": "Demjimêrên vekirinê, pêşniyarek, çi te cuda dike…",
+    "preview": "Pêşdîtin",
+    "submit": "Ji bo nirxandinê bişîne",
+    "submitAgain": "Dîsa reklam bike",
+    "pendingTitle": "Li benda pejirandinê",
+    "pendingBody": "Rêveberek dê di demeke nêzîk de lê binêre. Dema ku çalak bibe, tu yê agahdariyekê bistînî.",
+    "runningTitle": "Heta {date} di Vekolê de çalak e",
+    "runningBody": "Mirov wê di navbera şandiyan de, bi nîşana Sponsorkirî, dibînin.",
+    "withdraw": "Vekişîne",
+    "stop": "Niha rawestîne",
+    "views": "{count, plural, one {# dîtin} other {# dîtin}}",
+    "taps": "{count, plural, one {# pêlêkirin} other {# pêlêkirin}}",
+    "endedTitle": "Reklama te ya dawî di {date} de qediya",
+    "rejectedTitle": "Reklama te ya dawî nehat pejirandin",
+    "rejectedNote": "Ji nirxîner: {note}",
+    "rejectedNoNote": "Sedemek nehat dayîn. Tu dikarî wê biguherînî û dîsa bişînî.",
+    "error_not_signed_in": "Ji bo reklamkirina tomara xwe têkeve.",
+    "error_not_owner": "Tenê xwediyê vê tomarê dikare reklama wê bike.",
+    "error_already_active": "Ji bo vê tomarê jixwe reklamek li bendê ye an çalak e.",
+    "error_headline": "Sernavekê ji 3 heta 80 tîpan binivîse.",
+    "error_body": "Hûrgiliyan di bin 280 tîpan de bihêle.",
+    "error_not_withdrawable": "Êdî ev reklam nayê vekişandin.",
+    "error_not_admin": "Tenê rêveberek dikare li ser reklaman biryar bide.",
+    "error_not_pending": "Li ser vê reklamê jixwe biryar hatiye dayîn.",
+    "error_failed": "Tiştek xelet çû. Ji kerema xwe dîsa biceribîne."
   }
 }

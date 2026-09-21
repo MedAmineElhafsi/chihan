@@ -2,7 +2,15 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { Bell, Heart, MessageCircle, MessageSquare, Users, HandHeart } from "lucide-react";
+import {
+  Bell,
+  Heart,
+  MessageCircle,
+  MessageSquare,
+  Users,
+  HandHeart,
+  Megaphone,
+} from "lucide-react";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 
 import { Link } from "@/i18n/navigation";
@@ -24,6 +32,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { isolate } from "@/lib/bidi";
 
 function isGroupNotification(n: AppNotification) {
   return (
@@ -41,6 +50,7 @@ function groupNotifKind(n: AppNotification): "chat" | "board" | "invite" {
 
 function typeIcon(type: AppNotification["type"], isGroup = false, kind?: "chat" | "board" | "invite") {
   if (type === "help_match") return HandHeart;
+  if (type === "ad_approved" || type === "ad_rejected") return Megaphone;
   if (type === "like") return Heart;
   if (type === "comment") return MessageSquare;
   if (kind === "board") return MessageSquare;
@@ -61,6 +71,11 @@ function notificationCopy(
     return t("group_message", { name, group });
   }
   if (n.type === "help_match") return t("help_match", { name });
+  if (n.type === "ad_approved" || n.type === "ad_rejected") {
+    return t(n.type, {
+      listing: isolate(n.context_label || t("yourListing")),
+    });
+  }
   if (n.type === "like" || n.type === "comment" || n.type === "message") {
     return t(n.type, { name });
   }

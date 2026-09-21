@@ -22,6 +22,9 @@ import { canReview } from "@/lib/reviews";
 import { ClaimButton } from "@/components/directory/claim-button";
 import { ListingMap } from "@/components/directory/listing-map";
 import { ReportButton } from "@/components/moderation/report-button";
+import { ListingPromotion } from "@/components/directory/listing-promotion";
+import { getLatestAd } from "@/lib/ads";
+import { isEnabled } from "@/lib/features";
 
 export default async function ListingDetailPage({
   params,
@@ -39,6 +42,8 @@ export default async function ListingDetailPage({
   const user = await getCurrentUser();
 
   const isOwner = !!user && listing.owner_user_id === user.id;
+  const latestAd =
+    isOwner && isEnabled("ads") ? await getLatestAd(listing.id) : null;
   const mayReview = await canReview(id, user?.id ?? null);
   const canClaim = !!user && listing.owner_user_id === null;
   const myReview = user
@@ -129,6 +134,10 @@ export default async function ListingDetailPage({
       <div className="mt-8 grid gap-8 lg:grid-cols-3">
         {/* Main */}
         <div className="flex flex-col gap-8 lg:col-span-2">
+          {isOwner && isEnabled("ads") && (
+            <ListingPromotion listing={listing} ad={latestAd} />
+          )}
+
           {listing.description && (
             <p className="leading-relaxed text-foreground/90">
               {listing.description}
