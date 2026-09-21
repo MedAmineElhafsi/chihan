@@ -188,3 +188,22 @@ lighter). The aurora's blur moved from px to vmax so light no longer pools
 harder on bigger screens. Indigo and violet gained alpha to keep the desktop
 atmosphere as bright as before. Primary text keeps a 1.7× step over muted
 text, so the hierarchy survives. Details and numbers are in PROGRESS.md.
+
+## One loading boundary, at the root, shaped by destination
+
+**Decision.** The app keeps a single `loading.tsx`, at `app/[locale]`. It
+reads the destination's pathname and draws that section's skeleton, or a
+spinner for anything without one. There is no `loading.tsx` inside a section.
+
+**Why.** A section's `loading.tsx` also stands in for its filter links and
+sub-pages: a help category chip would blank the board into a skeleton, and a
+request's own page would load under the board's shape. At the root, the
+fallback shows only when you move between sections, which is exactly when
+nothing of the destination is on screen yet; within a section the router
+keeps the current page until the next one is ready.
+
+**How to keep it honest.** Each skeleton in
+`components/loading/section-skeletons.tsx` copies its page's container and
+spacing and names the page it mirrors; change them together. Member-only and
+visitor-only parts switch on the layout's `data-viewer` attribute with CSS,
+so a skeleton never promises what this viewer will not get.

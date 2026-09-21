@@ -713,9 +713,35 @@ at 375 and 1280, RTL checked, contrast measured — then stop for a go.
 - [x] **3. Reels empty tab** (`a201d36`) — "0 REELS" in the header and "press
       the button above" with no button above for a visitor. Now a 9:16 frame,
       a line on what a reel is, and an action that matches who is looking.
-- [ ] 4. Loading states — one `loading.tsx` for 35 routes; spinners, no
-      skeletons.
+- [x] **4. Loading states** (`9536dc2`) — every route shared one cyan
+      spinner, so a tap on any tab looked the same whatever was coming. The
+      root `loading.tsx` now draws the destination: the globe's silhouette
+      for Home and the landing, a skeleton of the page for the feed, Reels,
+      You, Help, Directory, Messages and Search; the spinner stays for
+      everything else, sign-in included. (The audit's "39 spinners" was
+      wrong: 37 are pending states inside buttons, which is right.)
 - [ ] 5. Nav naming — the compass "Explore" tab opens the chronological feed.
+
+### Loading states, verified (`9536dc2`)
+
+On a production build with the server's answer held back 3s: every section
+shows its loading state 33–51ms after the tap at 375 and 1280; the title
+moves 0px when the page replaces its skeleton; filter chips and feed tabs
+keep the page on screen with no flash; reduced motion stops the breathing
+and the spinner. Member and visitor variants and Arabic RTL checked. Text
+inside the loading states, on rendered pixels: lowest 5.74 (Help subtitle).
+
+Found on the way and fixed (`5e40498`): since the Aug 17 redesign, posts,
+the composer, news cards and the stories rail had no card at all — the
+`social-surface` utility they ask for had been renamed away. Restored.
+
+Still open:
+
+- A filter chip or feed tab gives no sign it was tapped while the server
+  answers (the page stays, which is right, but nothing acknowledges the
+  tap). `useLinkStatus` would put a pending mark on the tapped chip.
+- A visitor tapping You sees a spinner, then sign-in. Pointing that tab at
+  sign-in for visitors belongs with the nav naming pass.
 
 ### Contrast, measured on the rendered page (`c853f81`)
 
