@@ -207,3 +207,20 @@ keeps the current page until the next one is ready.
 spacing and names the page it mirrors; change them together. Member-only and
 visitor-only parts switch on the layout's `data-viewer` attribute with CSS,
 so a skeleton never promises what this viewer will not get.
+
+## One name per place
+
+**Decision.** A destination is called the same thing everywhere: tab bar,
+header, menus, its own heading and its document title. The names are the
+customer's: the globe (`/explore`) is **Home**, the feed (`/feed`) is
+**Explore**. The routes keep their old names; renaming a route would break
+links already shared, and the URL is not where people read the name.
+
+**How.** A section's document title comes from its nav label through
+`lib/page-title.ts`, and the feed's heading reads `Nav.explore` directly, so
+renaming a tab renames its page. Headings that describe content rather than
+name a place (the globe panel's "On the globe") must not reuse another
+place's name.
+
+**Why it matters.** Next announces a navigation to screen readers only when
+the document title changes; one title for every page meant silence.

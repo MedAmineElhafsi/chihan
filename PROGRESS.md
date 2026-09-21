@@ -720,7 +720,16 @@ at 375 and 1280, RTL checked, contrast measured — then stop for a go.
       You, Help, Directory, Messages and Search; the spinner stays for
       everything else, sign-in included. (The audit's "39 spinners" was
       wrong: 37 are pending states inside buttons, which is right.)
-- [ ] 5. Nav naming — the compass "Explore" tab opens the chronological feed.
+- [x] **5. Navigation** (`7015159`) — Home landed on a page headed
+      "Explore", Explore on one headed "Feed", and both menus sent "Explore"
+      to the globe. The customer's arrangement stays (globe = Home, feed =
+      Explore); everything else now agrees with it. Every page shared one
+      document title, so screen readers announced nothing between tabs; each
+      section now titles itself from its nav label. A visitor's last tab is
+      "Sign in". Keyboard: a skip link; the landing's globe controls no
+      longer sit invisible in the tab order behind the hero, and the lifted
+      hero no longer leaves invisible, clickable buttons over the results
+      panel (a click on a country row could open /help).
 
 ### Loading states, verified (`9536dc2`)
 
@@ -740,8 +749,12 @@ Still open:
 - A filter chip or feed tab gives no sign it was tapped while the server
   answers (the page stays, which is right, but nothing acknowledges the
   tap). `useLinkStatus` would put a pending mark on the tapped chip.
-- A visitor tapping You sees a spinner, then sign-in. Pointing that tab at
-  sign-in for visitors belongs with the nav naming pass.
+- Detail pages (a request, a listing, a thread, a person) have no document
+  title of their own yet, so opening one is not announced.
+- New strings in ku and ckb want a native speaker's eye, above all the
+  Sorani Explore (دۆزینەوە), which replaced a collision with Search.
+- The account menu's relabelled link was checked by the build only; its
+  menu appears for members, and no member session was available.
 
 ### Contrast, measured on the rendered page (`c853f81`)
 
