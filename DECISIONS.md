@@ -172,3 +172,19 @@ directory in the same city, legal suggests lawyers, and so on
 invited to add whoever solved it as a listing. The directory becomes the help
 board's memory: the second person to need a Kurdish-speaking dentist in Berlin
 finds the answer instead of asking for it.
+
+## Contrast is measured on the rendered page
+
+**Decision.** Text contrast is checked against the pixels actually rendered
+behind the glyphs — the worst pixel, across several moments of the aurora's
+drift — not against the page's background colour. The floor stays 4.5:1.
+
+**Why.** The aurora is part of the ground. Against the flat colour, quiet text
+passed at 5.89; against what was really behind it on a 1280 screen, the same
+text was 3.14. The flat number described a page nobody sees.
+
+**What it changed.** Muted text went from `#7f979d` to `#a4bcc3` (same hue,
+lighter). The aurora's blur moved from px to vmax so light no longer pools
+harder on bigger screens. Indigo and violet gained alpha to keep the desktop
+atmosphere as bright as before. Primary text keeps a 1.7× step over muted
+text, so the hierarchy survives. Details and numbers are in PROGRESS.md.

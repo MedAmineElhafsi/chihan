@@ -694,3 +694,59 @@ dropped from six rows to four.
 chronological feed is backwards — every app uses Explore for discovery, and
 apple-design's own rule is to name a nav item for its contents. Renaming that
 tab to "Feed" with a feed icon is a two-line change whenever you want it.
+
+## Redesign pass: candour before polish
+
+Direction: fix the places where the interface says something untrue before
+polishing anything else. One surface at a time, each verified in the browser
+at 375 and 1280, RTL checked, contrast measured — then stop for a go.
+
+- [x] **1. Help board** (`760a6df`) — signed-out visitors were told there
+      were no requests while six were open; RLS hides them from anon, so the
+      page read the silence as emptiness. A content-free count (service role,
+      `head: true`) now says how many people are asking and why requests stay
+      between members. No request content reaches a visitor.
+- [x] **2. Home globe fallback** (`5a11655`) — ~2.8 MB of Three.js arrived
+      into `null`, so on a phone the first screen was empty for seconds. A
+      silhouette of the globe, lit from the same side, is in the initial HTML
+      and breathes while it loads; it holds still under reduced motion.
+- [x] **3. Reels empty tab** (`a201d36`) — "0 REELS" in the header and "press
+      the button above" with no button above for a visitor. Now a 9:16 frame,
+      a line on what a reel is, and an action that matches who is looking.
+- [ ] 4. Loading states — one `loading.tsx` for 35 routes; spinners, no
+      skeletons.
+- [ ] 5. Nav naming — the compass "Explore" tab opens the chronological feed.
+
+### Contrast, measured on the rendered page (`c853f81`)
+
+Every contrast figure above this point was measured against the body's flat
+background colour. The aurora lifts the ground unevenly, so those figures
+described a page nobody sees. From here on, contrast is measured against the
+pixels actually rendered behind the glyphs — scrolled into view, sampled over
+several moments of the drift, worst pixel wins (Playwright on system Edge).
+
+Measured that way, quiet text failed the floor where the light pooled. Two
+causes: the aurora's blur was in px while its bodies are sized in vmax, so
+the bigger the screen the harder the light pooled (brightest pixel L 0.047
+on a phone, 0.086 at 1280, 0.119 at 1920); and muted text `#7f979d` was only
+light enough for the flat ground.
+
+- Blur is in vmax now — the same picture at every size, unchanged on a phone.
+  Brightest pixel: 0.060 at 1280, 0.063 at 1920.
+- Muted text `#7f979d` → `#a4bcc3`, same OKLCH hue and chroma, lightness 0.66
+  → 0.78. Primary text keeps a 1.7× step over it.
+- Indigo and violet alpha up (0.46 → 0.58, 0.36 → 0.48): they carry colour
+  rather than light, and put back the brightness the wider blur spread thin.
+  Mean at 1280 is 0.0200 against 0.0205 before; the peak did not move.
+
+| text (worst rendered pixel) | before 375 / 1280 | after 375 / 1280 |
+|---|---|---|
+| Help — "Requests stay between members" | **4.00 / 3.14** | 6.10 / 5.50 |
+| Help — subtitle | **3.81** / 5.02 | 5.82 / 7.62 |
+| Reels — empty-state body | **3.99 / 3.75** | 5.99 / 6.09 |
+| Reels — "30 sec" frame label | **3.74** / 5.13 | 5.62 / 7.26 |
+| Home — globe panel labels (solid panel) | 4.94–5.51 | 7.66–8.54 |
+
+Not measured yet: seven places that put extra transparency on muted text —
+input and textarea placeholders (`/70`), two profile labels (`/60`), the
+globe's offline status (`/70`) and empty rating stars (`/40`).
