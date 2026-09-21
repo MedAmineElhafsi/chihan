@@ -223,6 +223,17 @@
   border: 1px solid var(--border);
 }
 
+/* The card social content sits on — posts, the composer, news, stories.
+   Opaque rather than frosted: a feed scrolls, and a frosted card would
+   re-blur the aurora behind it on every frame. The same 1rem corners as the
+   directory's cards, so a post and a listing read as the same kind of
+   object. */
+@utility social-surface {
+  background: var(--depth-2);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+}
+
 /* Cyan signal glow */
 @utility glow {
   box-shadow:
