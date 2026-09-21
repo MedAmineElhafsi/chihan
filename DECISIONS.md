@@ -224,3 +224,15 @@ place's name.
 
 **Why it matters.** Next announces a navigation to screen readers only when
 the document title changes; one title for every page meant silence.
+
+## Sharing follows the privacy of what is shared
+
+**Decision.** Listings, public posts and events share with a real preview:
+name, photo, date, place. A help request shares only "someone on Cîhan is
+asking for help", in the preview and — unless the sharer is the one who
+asked — in the message too. Group posts have no Share at all.
+
+**Why.** Requests are members-only because asking for help is exposing, and
+a link preview is drawn by an anonymous crawler for anyone in the group chat
+to see. The share button is how Cîhan reaches the WhatsApp groups the
+community already lives in; it must not be how a request leaks into them.

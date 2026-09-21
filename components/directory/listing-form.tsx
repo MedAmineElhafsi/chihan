@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { AlertCircle, ImagePlus, Loader2, X } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/client";
@@ -12,7 +12,14 @@ import {
   LISTING_PHOTO_MAX_BYTES,
   AVATAR_ACCEPT,
 } from "@/lib/constants";
-import type { Listing } from "@/types/listing";
+import {
+  WEEKDAYS,
+  type Listing,
+  type ListingDetails,
+  type OpeningHours,
+  type Weekday,
+} from "@/types/listing";
+import { normaliseWhatsapp } from "@/lib/opening-hours";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,16 +27,66 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { CategoryIcon } from "./category-icon";
 
+type DayDraft = { closed: boolean; open: string; close: string };
+
+/** The editor keeps every day as three plain fields; they become the stored
+ *  shape only on save, so half-typed times are never saved. */
+function toDrafts(hours: OpeningHours | null | undefined) {
+  return Object.fromEntries(
+    WEEKDAYS.map((d) => {
+      const h = hours?.[d];
+      return [
+        d,
+        h === null
+          ? { closed: true, open: "", close: "" }
+          : { closed: false, open: h?.open ?? "", close: h?.close ?? "" },
+      ];
+    })
+  ) as Record<Weekday, DayDraft>;
+}
+
+function fromDrafts(drafts: Record<Weekday, DayDraft>): OpeningHours | null {
+  const out: OpeningHours = {};
+  for (const d of WEEKDAYS) {
+    const v = drafts[d];
+    if (v.closed) out[d] = null;
+    else if (v.open && v.close && v.open !== v.close) {
+      out[d] = { open: v.open, close: v.close };
+    }
+  }
+  return Object.keys(out).length > 0 ? out : null;
+}
+
 export function ListingForm({
   initial,
   userId,
+  details = null,
+  detailsReady = false,
 }: {
   initial: Listing | null;
   userId: string;
+  /** Hours, WhatsApp and services already saved (migration 0027). */
+  details?: ListingDetails | null;
+  /** Whether migration 0027 has run; until then those fields are hidden. */
+  detailsReady?: boolean;
 }) {
   const t = useTranslations("Directory");
+  const locale = useLocale();
   const router = useRouter();
   const fileInput = useRef<HTMLInputElement>(null);
+
+  const [whatsapp, setWhatsapp] = useState(details?.whatsapp ?? "");
+  const [services, setServices] = useState(
+    (details?.services ?? []).join(", ")
+  );
+  const [hours, setHours] = useState(() => toDrafts(details?.opening_hours));
+  const setDay = (d: Weekday, patch: Partial<DayDraft>) =>
+    setHours((prev) => ({ ...prev, [d]: { ...prev[d], ...patch } }));
+  const dayName = (d: Weekday) =>
+    new Intl.DateTimeFormat(locale, {
+      weekday: "long",
+      timeZone: "UTC",
+    }).format(new Date(Date.UTC(2024, 0, 1 + WEEKDAYS.indexOf(d))));
 
   const [name, setName] = useState(initial?.name ?? "");
   const [category, setCategory] = useState(initial?.category ?? "restaurant");
@@ -79,6 +136,12 @@ export function ListingForm({
       setError(t("errorName"));
       return;
     }
+    const wa = whatsapp.trim();
+    const waNumber = wa ? normaliseWhatsapp(wa) : null;
+    if (detailsReady && wa && !waNumber) {
+      setError(t("whatsappInvalid"));
+      return;
+    }
     setLoading(true);
     try {
       const supabase = createClient();
@@ -110,6 +173,23 @@ export function ListingForm({
         email,
         website,
         photos: [...existingPhotos, ...uploaded],
+        details: detailsReady
+          ? {
+              whatsapp: waNumber ?? "",
+              services: [
+                ...new Set(
+                  services
+                    .split(",")
+                    .map((s) => s.trim())
+                    .filter(Boolean)
+                ),
+              ].slice(0, 12),
+              opening_hours: fromDrafts(hours),
+              // The hours are in the owner's time, and the owner is almost
+              // always where the business is.
+              timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            }
+          : undefined,
       });
 
       if (!res.ok) {
@@ -142,7 +222,10 @@ export function ListingForm({
       <div className="flex flex-col gap-2.5">
         <Label>{t("categoryLabel")}</Label>
         <div className="flex flex-wrap gap-2">
-          {LISTING_CATEGORIES.map((c) => {
+          {/* "classes" needs migration 0027's category rule to be saved. */}
+          {LISTING_CATEGORIES.filter(
+            (c) => detailsReady || c !== "classes"
+          ).map((c) => {
             const active = category === c;
             return (
               <button
@@ -311,6 +394,116 @@ export function ListingForm({
           />
         </div>
       </div>
+
+      {detailsReady && (
+        <>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="whatsapp">{t("whatsappLabel")}</Label>
+            <Input
+              id="whatsapp"
+              type="tel"
+              inputMode="tel"
+              value={whatsapp}
+              onChange={(e) => setWhatsapp(e.target.value)}
+              placeholder="+49 151 2345678"
+              aria-describedby="whatsapp-hint"
+              disabled={loading}
+              dir="ltr"
+            />
+            <span id="whatsapp-hint" className="text-muted-foreground text-xs">
+              {t("whatsappHint")}
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="services">{t("servicesLabel")}</Label>
+            <Input
+              id="services"
+              value={services}
+              onChange={(e) => setServices(e.target.value)}
+              placeholder={t("servicesPlaceholder")}
+              aria-describedby="services-hint"
+              disabled={loading}
+            />
+            <span id="services-hint" className="text-muted-foreground text-xs">
+              {t("servicesHint")}
+            </span>
+          </div>
+
+          <fieldset className="flex flex-col gap-3" disabled={loading}>
+            <legend className="text-sm font-medium">{t("hoursLabel")}</legend>
+            <p className="text-muted-foreground text-xs">
+              {t("hoursHint")}
+            </p>
+            <div className="flex flex-col gap-2">
+              {WEEKDAYS.map((d) => {
+                const v = hours[d];
+                return (
+                  // On a phone the two times drop under the day; from sm up
+                  // the wrapper dissolves and all four share one row.
+                  <div
+                    key={d}
+                    className="grid grid-cols-[1fr_auto] items-center gap-x-2 gap-y-1.5 sm:grid-cols-[minmax(5.5rem,auto)_auto_1fr_1fr]"
+                  >
+                    <span className="text-sm">{dayName(d)}</span>
+                    <label className="text-muted-foreground flex items-center gap-1.5 text-xs">
+                      <input
+                        type="checkbox"
+                        checked={v.closed}
+                        onChange={(e) => setDay(d, { closed: e.target.checked })}
+                        className="accent-cyan size-4"
+                      />
+                      {t("hoursClosed")}
+                    </label>
+                    <div className="col-span-2 grid grid-cols-2 gap-2 sm:contents">
+                      <Input
+                        type="time"
+                        value={v.open}
+                        onChange={(e) => setDay(d, { open: e.target.value })}
+                        disabled={v.closed}
+                        aria-label={`${dayName(d)}: ${t("hoursOpens")}`}
+                        dir="ltr"
+                      />
+                      <Input
+                        type="time"
+                        value={v.close}
+                        onChange={(e) => setDay(d, { close: e.target.value })}
+                        disabled={v.closed}
+                        aria-label={`${dayName(d)}: ${t("hoursCloses")}`}
+                        dir="ltr"
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="self-start"
+              disabled={!hours.mon.open || !hours.mon.close}
+              onClick={() =>
+                setHours(
+                  (prev) =>
+                    Object.fromEntries(
+                      WEEKDAYS.map((d) => [
+                        d,
+                        {
+                          closed: false,
+                          open: prev.mon.open,
+                          close: prev.mon.close,
+                        },
+                      ])
+                    ) as Record<Weekday, DayDraft>
+                )
+              }
+            >
+              {t("hoursCopy", { day: dayName("mon") })}
+            </Button>
+          </fieldset>
+        </>
+      )}
 
       {error && (
         <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">

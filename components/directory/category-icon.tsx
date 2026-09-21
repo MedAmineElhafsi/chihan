@@ -1,4 +1,5 @@
 import {
+  GraduationCap,
   Landmark,
   Scale,
   Scissors,
@@ -16,6 +17,7 @@ const ICONS: Record<string, LucideIcon> = {
   lawyer: Scale,
   hairdresser: Scissors,
   community: Landmark,
+  classes: GraduationCap,
   other: Store,
 };
 

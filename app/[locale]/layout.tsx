@@ -9,6 +9,7 @@ import { Backdrop } from "@/components/backdrop";
 import { SiteHeader } from "@/components/app-shell/site-header";
 import { TabBar } from "@/components/app-shell/tab-bar";
 import { getCurrentUser } from "@/lib/auth";
+import { preview } from "@/lib/og";
 import { SiteFooter } from "@/components/app-shell/site-footer";
 import { ShellFooter } from "@/components/app-shell/shell-footer";
 import { ServiceWorkerRegister } from "@/components/pwa/sw-register";
@@ -36,6 +37,9 @@ export async function generateMetadata({
     // the whole title for pages that do not.
     title: { default: t("title"), template: t("titleTemplate") },
     description: t("description"),
+    // What a shared link shows in WhatsApp and elsewhere, until a page says
+    // something more specific about itself.
+    ...preview({ title: t("title"), description: t("description"), locale }),
   };
 }
 

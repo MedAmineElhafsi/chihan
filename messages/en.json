@@ -266,7 +266,8 @@
     "filterProfession": "Filter by profession",
     "places": "Places",
     "clear": "Clear search",
-    "matchCount": "{count} found"
+    "matchCount": "{count} found",
+    "cat_classes": "Classes & teachers"
   },
   "Directory": {
     "title": "Directory",
@@ -342,7 +343,26 @@
     "replySave": "Post reply",
     "replyFailed": "Could not post your reply. Please try again.",
     "cancel": "Cancel",
-    "professional": "Professional"
+    "professional": "Professional",
+    "cat_classes": "Classes & teachers",
+    "servicesTitle": "Services",
+    "hoursTitle": "Opening hours",
+    "openNow": "Open now",
+    "closedNow": "Closed now",
+    "closedDay": "Closed",
+    "whatsappButton": "Message on WhatsApp",
+    "whatsappLabel": "WhatsApp number (optional)",
+    "whatsappHint": "With the country code — customers tap it to message you directly.",
+    "whatsappInvalid": "Write the WhatsApp number with its country code, like +49 151 2345678.",
+    "servicesLabel": "Services (optional)",
+    "servicesPlaceholder": "Haircut, Beard trim, Kids' cuts",
+    "servicesHint": "Separate with commas — up to 12.",
+    "hoursLabel": "Opening hours (optional)",
+    "hoursHint": "Leave a day empty if you're not sure; tick Closed for days you're shut.",
+    "hoursClosed": "Closed",
+    "hoursOpens": "opens",
+    "hoursCloses": "closes",
+    "hoursCopy": "Use {day}'s hours every day"
   },
   "People": {
     "title": "People",
@@ -770,7 +790,9 @@
     "memoryBody": "If a place, office or person solved this, add them to the directory. The next person who needs it will find it without asking.",
     "memoryCta": "Add to directory",
     "hiddenTitle": "{count, plural, one {One person is asking for help here right now} other {# people are asking for help here right now}}",
-    "hiddenBody": "Requests stay between members — asking for help already takes enough. Join to read them and answer."
+    "hiddenBody": "Requests stay between members — asking for help already takes enough. Join to read them and answer.",
+    "shareTitle": "Someone on Cîhan is asking for help — can you help?",
+    "shareBody": "Requests stay between members. Join Cîhan to read it and answer."
   },
   "Verification": {
     "title": "Get verified",
@@ -864,5 +886,11 @@
     "error_not_admin": "Only an admin can decide on ads.",
     "error_not_pending": "This ad has already been decided.",
     "error_failed": "Something went wrong. Please try again."
+  },
+  "Share": {
+    "share": "Share",
+    "copy": "Copy link",
+    "copied": "Link copied",
+    "more": "More apps…"
   }
 }

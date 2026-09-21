@@ -44,5 +44,31 @@ export type Review = {
   replied_at: string | null;
 };
 
+export const WEEKDAYS = [
+  "mon",
+  "tue",
+  "wed",
+  "thu",
+  "fri",
+  "sat",
+  "sun",
+] as const;
+export type Weekday = (typeof WEEKDAYS)[number];
+
+/** `null` for a day means closed; a missing day means not given. Times are
+ *  "HH:MM", 24-hour; a close at or before the open runs past midnight. */
+export type OpeningHours = Partial<
+  Record<Weekday, { open: string; close: string } | null>
+>;
+
+/** Migration 0027. Read separately from the listing, only where shown. */
+export type ListingDetails = {
+  whatsapp: string | null;
+  opening_hours: OpeningHours | null;
+  /** IANA zone the hours are in, captured from the owner's device. */
+  timezone: string | null;
+  services: string[];
+};
+
 export const LISTING_STATS_COLUMNS =
   "id, owner_user_id, name, category, description, address, city, country, lat, lng, phone, email, website, photos, is_verified, created_at, updated_at, review_count, rating_avg, kind, profession";

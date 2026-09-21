@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { getCurrentUser } from "@/lib/auth";
+import { listingDetailsReady } from "@/lib/listing-details";
 import {
   Card,
   CardContent,
@@ -21,6 +22,7 @@ export default async function NewListingPage({
 
   const user = await getCurrentUser();
   if (!user) redirect(`/${locale}/login`);
+  const detailsReady = await listingDetailsReady();
 
   const t = await getTranslations("Directory");
 
@@ -34,7 +36,11 @@ export default async function NewListingPage({
           <CardDescription>{t("formNewSubtitle")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <ListingForm initial={null} userId={user.id} />
+          <ListingForm
+            initial={null}
+            userId={user.id}
+            detailsReady={detailsReady}
+          />
         </CardContent>
       </Card>
     </div>

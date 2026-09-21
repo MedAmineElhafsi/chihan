@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { getCurrentUser } from "@/lib/auth";
 import { getListingById } from "@/lib/listings";
+import { getListingDetails, listingDetailsReady } from "@/lib/listing-details";
 import {
   Card,
   CardContent,
@@ -26,6 +27,10 @@ export default async function EditListingPage({
   const listing = await getListingById(id);
   if (!listing) notFound();
   if (listing.owner_user_id !== user.id) redirect(`/${locale}/directory/${id}`);
+  const [detailsReady, details] = await Promise.all([
+    listingDetailsReady(),
+    getListingDetails(id),
+  ]);
 
   const t = await getTranslations("Directory");
 
@@ -39,7 +44,12 @@ export default async function EditListingPage({
           <CardDescription>{t("formEditSubtitle")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <ListingForm initial={listing} userId={user.id} />
+          <ListingForm
+            initial={listing}
+            userId={user.id}
+            details={details}
+            detailsReady={detailsReady}
+          />
         </CardContent>
       </Card>
     </div>

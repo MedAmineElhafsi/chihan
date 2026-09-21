@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
@@ -25,6 +27,44 @@ import { ReportButton } from "@/components/moderation/report-button";
 import { ListingPromotion } from "@/components/directory/listing-promotion";
 import { getLatestAd } from "@/lib/ads";
 import { isEnabled } from "@/lib/features";
+import { ShareButton } from "@/components/share/share-button";
+import { WhatsAppGlyph } from "@/components/icons/whatsapp-glyph";
+import { preview, snippet } from "@/lib/og";
+import { getListingDetails } from "@/lib/listing-details";
+import { isOpenNow, localWeekday } from "@/lib/opening-hours";
+import { cn } from "@/lib/utils";
+import { WEEKDAYS, type Weekday } from "@/types/listing";
+
+/** A shared listing previews as itself: its name, what and where it is,
+ *  and its first photo. */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; id: string }>;
+}): Promise<Metadata> {
+  const { locale, id } = await params;
+  const listing = await getListingById(id);
+  if (!listing) return {};
+  const t = await getTranslations({ locale, namespace: "Directory" });
+  const where = [listing.city, listing.country].filter(Boolean).join(", ");
+  const description =
+    [
+      [t(`cat_${listing.category}`), where].filter(Boolean).join(" · "),
+      snippet(listing.description, 140),
+    ]
+      .filter(Boolean)
+      .join(" — ") || undefined;
+  return {
+    title: listing.name,
+    description,
+    ...preview({
+      title: listing.name,
+      description,
+      image: listing.photos[0] ?? null,
+      locale,
+    }),
+  };
+}
 
 export default async function ListingDetailPage({
   params,
@@ -56,6 +96,23 @@ export default async function ListingDetailPage({
   const located = listing.lat != null && listing.lng != null;
   const color = CATEGORY_COLORS[listing.category] ?? CATEGORY_COLORS.other;
   const dateFmt = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
+
+  // Hours, WhatsApp and services (migration 0027); null until it has run.
+  const details = await getListingDetails(listing.id);
+  const hours = details?.opening_hours ?? null;
+  const open = isOpenNow(hours, details?.timezone ?? null);
+  const today = localWeekday(details?.timezone ?? null);
+  const dayName = (d: Weekday) =>
+    new Intl.DateTimeFormat(locale, {
+      weekday: "long",
+      timeZone: "UTC",
+    }).format(
+      // 1 January 2024 was a Monday.
+      new Date(Date.UTC(2024, 0, 1 + WEEKDAYS.indexOf(d)))
+    );
+  const whatsappHref = details?.whatsapp
+    ? `https://wa.me/${details.whatsapp.replace(/^\+/, "")}`
+    : null;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
@@ -96,7 +153,12 @@ export default async function ListingDetailPage({
             )}
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          <ShareButton
+            path={`/directory/${listing.id}`}
+            title={listing.name}
+            size="default"
+          />
           {isOwner && (
             <Button asChild variant="outline" className="gap-1.5">
               <Link href={`/directory/${listing.id}/edit`}>
@@ -144,6 +206,25 @@ export default async function ListingDetailPage({
             </p>
           )}
 
+          {details && details.services.length > 0 && (
+            <div className="flex flex-col gap-2">
+              <h2 className="font-display text-lg font-semibold">
+                {t("servicesTitle")}
+              </h2>
+              <ul className="flex flex-wrap gap-2">
+                {details.services.map((s) => (
+                  <li
+                    key={s}
+                    dir="auto"
+                    className="border-border bg-card/40 rounded-full border px-3 py-1 text-sm"
+                  >
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {located && (
             <div className="flex flex-col gap-2">
               <h2 className="font-display text-lg font-semibold">
@@ -189,6 +270,19 @@ export default async function ListingDetailPage({
         <aside className="lg:col-span-1">
           <div className="panel sticky top-20 flex flex-col gap-3 rounded-lg p-5">
             <h2 className="font-display text-lg font-semibold">{t("contact")}</h2>
+            {/* Most of this community reaches a business on WhatsApp first. */}
+            {whatsappHref && (
+              <Button asChild variant="outline" className="w-full gap-2">
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <WhatsAppGlyph className="size-4 text-[#25d366]" />
+                  {t("whatsappButton")}
+                </a>
+              </Button>
+            )}
             {place && (
               <div className="flex items-start gap-2.5 text-sm">
                 <MapPin className="mt-0.5 size-4 shrink-0 text-cyan" />
@@ -234,11 +328,70 @@ export default async function ListingDetailPage({
             {!place &&
               !listing.phone &&
               !listing.email &&
-              !listing.website && (
+              !listing.website &&
+              !whatsappHref && (
                 <p className="text-sm text-muted-foreground">
                   {t("noContact")}
                 </p>
               )}
+
+            {hours && (
+              <div className="border-border mt-1 flex flex-col gap-2 border-t pt-4">
+                <div className="flex items-center justify-between gap-2">
+                  <h3 className="text-sm font-semibold">{t("hoursTitle")}</h3>
+                  {/* Worked out in the listing's own time zone, so it is right
+                      for someone looking from another country. */}
+                  {open !== null && (
+                    <span
+                      className={cn(
+                        "rounded-full px-2 py-0.5 text-xs font-medium",
+                        open
+                          ? "bg-success/15 text-success"
+                          : "bg-secondary text-muted-foreground"
+                      )}
+                    >
+                      {open ? t("openNow") : t("closedNow")}
+                    </span>
+                  )}
+                </div>
+                <dl className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-1 text-sm">
+                  {WEEKDAYS.map((d) => {
+                    const h = hours[d];
+                    if (h === undefined) return null;
+                    const isToday = d === today;
+                    return (
+                      <Fragment key={d}>
+                        <dt
+                          className={cn(
+                            isToday
+                              ? "text-foreground font-medium"
+                              : "text-muted-foreground"
+                          )}
+                        >
+                          {dayName(d)}
+                        </dt>
+                        <dd
+                          className={cn(
+                            "text-end tabular-nums",
+                            isToday && "font-medium"
+                          )}
+                        >
+                          {h ? (
+                            // A time range reads left to right in every
+                            // language; the column still aligns to the page.
+                            <span dir="ltr">
+                              {h.open}–{h.close}
+                            </span>
+                          ) : (
+                            t("closedDay")
+                          )}
+                        </dd>
+                      </Fragment>
+                    );
+                  })}
+                </dl>
+              </div>
+            )}
           </div>
         </aside>
       </div>

@@ -789,3 +789,32 @@ light enough for the flat ground.
 Not measured yet: seven places that put extra transparency on muted text —
 input and textarea placeholders (`/70`), two profile labels (`/60`), the
 globe's offline status (`/70`) and empty rating stars (`/40`).
+
+## After the redesign: ads, sharing, business details
+
+- [x] **Ads** (`bf44cdc`) — listing owners promote in Explore (every fifth
+      post, labelled Sponsored, nearest first); an admin approves; owners
+      see views and taps. Needs migration **0026**; until it runs, nothing
+      shows and nothing breaks.
+- [x] **Share to WhatsApp** — a Share menu (WhatsApp first, copy link, the
+      phone's own sheet) on listings, feed posts and help requests. Posts
+      and events got their own page (`/feed/<id>`) so there is something to
+      link to. Group posts are never shareable.
+- [x] **Link previews** — every page has an Open Graph preview; listings
+      show their photo, events their date and place, and a help request only
+      ever the generic "someone needs help" (the crawler is anonymous and
+      requests are members-only). Brand image at `public/og/cihan.jpg`.
+      `NEXT_PUBLIC_SITE_URL` must be the real domain in production, or the
+      preview image URLs point at localhost.
+- [x] **Business details** — opening hours with "Open now" worked out in
+      the listing's own time zone, a WhatsApp button, a list of services.
+- [x] **Classes & teachers** — an eighth directory category (Kurdish classes
+      for children, German courses, tutors); language and education help
+      requests now suggest it first.
+
+Details and the new category need migration **0027**; until it runs the
+form hides the new fields and listings look as before.
+
+Found on the way, not fixed: the listing map's CARTO tiles now come back
+watermarked "API KEY REQUIRED" — the basemap needs a new free provider or a
+key.

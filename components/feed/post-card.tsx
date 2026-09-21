@@ -26,6 +26,7 @@ import { downloadEventIcs } from "@/lib/event-ics";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ShareButton } from "@/components/share/share-button";
 import { ReportButton } from "@/components/moderation/report-button";
 import { cn } from "@/lib/utils";
 import { springFlick } from "@/lib/motion";
@@ -35,10 +36,13 @@ export function PostCard({
   item,
   currentUserId,
   canInteract,
+  shareable = false,
 }: {
   item: FeedItem;
   currentUserId: string | null;
   canInteract: boolean;
+  /** Public feed posts only: a group's posts stay inside the group. */
+  shareable?: boolean;
 }) {
   const t = useTranslations("Feed");
   const tLoading = useTranslations("Loading");
@@ -291,7 +295,12 @@ export function PostCard({
           </div>
         ))}
 
-      <footer className="mt-1 grid grid-cols-2 gap-1 border-t border-border/70 px-2 py-1.5">
+      <footer
+        className={cn(
+          "border-border/70 mt-1 grid gap-1 border-t px-2 py-1.5",
+          shareable ? "grid-cols-3" : "grid-cols-2"
+        )}
+      >
         <button
           onClick={onLike}
           disabled={!canInteract}
@@ -326,6 +335,18 @@ export function PostCard({
           {t("comment")}
           {item.comment_count > 0 ? ` · ${item.comment_count}` : ""}
         </button>
+        {shareable && (
+          <ShareButton
+            variant="bare"
+            path={`/feed/${item.id}`}
+            title={
+              item.event_title ||
+              item.body?.replace(/\s+/g, " ").trim().slice(0, 100) ||
+              name
+            }
+            className="text-muted-foreground hover:bg-muted/50 hover:text-foreground flex items-center justify-center gap-2 rounded-md py-2.5 text-sm font-medium transition-colors"
+          />
+        )}
       </footer>
 
       {showComments && (

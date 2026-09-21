@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "./supabase/server";
 import { geocode } from "./geocode";
 import { LISTING_CATEGORIES } from "./constants";
+import { cleanHours, normaliseWhatsapp } from "./opening-hours";
 
 const listingSchema = z.object({
   id: z.string().optional().nullable(),
@@ -19,7 +20,32 @@ const listingSchema = z.object({
   email: z.string().trim().max(120).optional().default(""),
   website: z.string().trim().max(200).optional().default(""),
   photos: z.array(z.string()).max(8).optional().default([]),
+  // Migration 0027. Sent only once it has run; checked again here rather
+  // than trusted from the form.
+  details: z
+    .object({
+      whatsapp: z.string().trim().max(40).optional().default(""),
+      services: z
+        .array(z.string().trim().min(1).max(40))
+        .max(12)
+        .optional()
+        .default([]),
+      opening_hours: z.unknown().optional(),
+      timezone: z.string().max(64).optional().nullable(),
+    })
+    .optional(),
 });
+
+/** A zone name the runtime actually knows, or nothing. */
+function validZone(zone: string | null | undefined): string | null {
+  if (!zone) return null;
+  try {
+    new Intl.DateTimeFormat("en", { timeZone: zone });
+    return zone;
+  } catch {
+    return null;
+  }
+}
 
 export type SaveListingInput = z.input<typeof listingSchema>;
 export type SaveListingResult =
@@ -52,6 +78,22 @@ export async function saveListing(
     v.country
   );
 
+  let details = {};
+  if (v.details) {
+    const whatsapp = v.details.whatsapp
+      ? normaliseWhatsapp(v.details.whatsapp)
+      : null;
+    if (v.details.whatsapp && !whatsapp) {
+      return { ok: false, error: "Invalid WhatsApp number." };
+    }
+    details = {
+      whatsapp,
+      services: v.details.services,
+      opening_hours: cleanHours(v.details.opening_hours),
+      timezone: validZone(v.details.timezone),
+    };
+  }
+
   const row = {
     name: v.name,
     category: v.category,
@@ -65,6 +107,7 @@ export async function saveListing(
     email: v.email || null,
     website: v.website || null,
     photos: v.photos,
+    ...details,
   };
 
   if (v.id) {

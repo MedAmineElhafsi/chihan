@@ -51,6 +51,8 @@ export const LISTING_CATEGORIES = [
   "lawyer",
   "hairdresser",
   "community",
+  // Kurdish classes for children, German courses, tutors (migration 0027).
+  "classes",
   "other",
 ] as const;
 export type ListingCategory = (typeof LISTING_CATEGORIES)[number];
@@ -96,6 +98,8 @@ export const CATEGORY_STYLE: Record<string, { color: string; icon: string }> = {
   lawyer: { color: "#a855f7", icon: "🏛️" },
   hairdresser: { color: "#ec4899", icon: "✂️" },
   community: { color: "#14b8a6", icon: "🤝" },
+  // Lime: the one hue no listing or profession marker already uses.
+  classes: { color: "#84cc16", icon: "📚" },
   other: { color: "#94a3b8", icon: "🏪" },
 };
 

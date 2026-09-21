@@ -202,6 +202,7 @@ export default async function FeedPage({
                     item={entry.item}
                     currentUserId={user?.id ?? null}
                     canInteract={!!user}
+                    shareable
                   />
                 )
               )

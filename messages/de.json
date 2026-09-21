@@ -266,7 +266,8 @@
     "filterProfession": "Nach Beruf filtern",
     "places": "Orte",
     "clear": "Suche löschen",
-    "matchCount": "{count} gefunden"
+    "matchCount": "{count} gefunden",
+    "cat_classes": "Kurse & Lehrkräfte"
   },
   "Directory": {
     "title": "Verzeichnis",
@@ -342,7 +343,26 @@
     "replySave": "Antwort senden",
     "replyFailed": "Antwort konnte nicht gesendet werden. Bitte versuch es erneut.",
     "cancel": "Abbrechen",
-    "professional": "Fachkraft"
+    "professional": "Fachkraft",
+    "cat_classes": "Kurse & Lehrkräfte",
+    "servicesTitle": "Leistungen",
+    "hoursTitle": "Öffnungszeiten",
+    "openNow": "Jetzt geöffnet",
+    "closedNow": "Jetzt geschlossen",
+    "closedDay": "Geschlossen",
+    "whatsappButton": "Auf WhatsApp schreiben",
+    "whatsappLabel": "WhatsApp-Nummer (optional)",
+    "whatsappHint": "Mit Ländervorwahl — Kund:innen tippen darauf, um dir direkt zu schreiben.",
+    "whatsappInvalid": "Gib die WhatsApp-Nummer mit Ländervorwahl an, z. B. +49 151 2345678.",
+    "servicesLabel": "Leistungen (optional)",
+    "servicesPlaceholder": "Haarschnitt, Bartpflege, Kinderschnitt",
+    "servicesHint": "Mit Kommas trennen — bis zu 12.",
+    "hoursLabel": "Öffnungszeiten (optional)",
+    "hoursHint": "Lass einen Tag leer, wenn du unsicher bist; hake „Geschlossen“ für Ruhetage an.",
+    "hoursClosed": "Geschlossen",
+    "hoursOpens": "öffnet",
+    "hoursCloses": "schließt",
+    "hoursCopy": "Zeiten von {day} für jeden Tag"
   },
   "People": {
     "title": "Menschen",
@@ -770,7 +790,9 @@
     "memoryBody": "Wenn ein Ort, ein Amt oder eine Person das gelöst hat, trag sie ins Verzeichnis ein. Die Nächsten finden es dann, ohne zu fragen.",
     "memoryCta": "Zum Verzeichnis hinzufügen",
     "hiddenTitle": "{count, plural, one {Eine Person bittet hier gerade um Hilfe} other {# Menschen bitten hier gerade um Hilfe}}",
-    "hiddenBody": "Anfragen bleiben unter Mitgliedern — um Hilfe zu bitten kostet schon genug. Tritt bei, um sie zu lesen und zu antworten."
+    "hiddenBody": "Anfragen bleiben unter Mitgliedern — um Hilfe zu bitten kostet schon genug. Tritt bei, um sie zu lesen und zu antworten.",
+    "shareTitle": "Jemand auf Cîhan bittet um Hilfe — kannst du helfen?",
+    "shareBody": "Anfragen bleiben unter Mitgliedern. Tritt Cîhan bei, um sie zu lesen und zu antworten."
   },
   "Verification": {
     "title": "Verifizierung beantragen",
@@ -864,5 +886,11 @@
     "error_not_admin": "Nur ein Admin kann über Anzeigen entscheiden.",
     "error_not_pending": "Über diese Anzeige wurde bereits entschieden.",
     "error_failed": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+  },
+  "Share": {
+    "share": "Teilen",
+    "copy": "Link kopieren",
+    "copied": "Link kopiert",
+    "more": "Weitere Apps…"
   }
 }

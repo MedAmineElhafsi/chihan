@@ -259,6 +259,41 @@ export async function getFeed(opts: {
   }
 }
 
+/**
+ * One public post, for its own page — what a shared link opens. Group posts
+ * never come back (they stay inside the group), nor reels, which have their
+ * own tab, nor anything by someone the viewer has blocked.
+ */
+export async function getPost(
+  id: string,
+  viewerId?: string | null
+): Promise<FeedItem | null> {
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("posts")
+      .select(POST_SELECT)
+      .eq("id", id)
+      .is("group_id", null)
+      .in("type", ["post", "event"])
+      .maybeSingle();
+    if (error || !data) return null;
+
+    const [item] = await mapPostRows(
+      supabase,
+      [data as Record<string, unknown>],
+      viewerId
+    );
+    if (!item) return null;
+    if (viewerId && (await getHiddenAuthorIds(viewerId)).has(item.author_id)) {
+      return null;
+    }
+    return item;
+  } catch {
+    return null;
+  }
+}
+
 export async function getComments(postId: string): Promise<PostComment[]> {
   try {
     const supabase = await createClient();

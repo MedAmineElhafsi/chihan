@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { MapPin } from "lucide-react";
@@ -14,6 +15,28 @@ import { ReportButton } from "@/components/moderation/report-button";
 import { OfferForm } from "@/components/help/offer-form";
 import { ResolveButton } from "@/components/help/resolve-button";
 import { HelpCategoryIcon } from "@/components/help/category-icon";
+import { ShareButton } from "@/components/share/share-button";
+import { preview } from "@/lib/og";
+
+/**
+ * Requests are members-only, and a link preview is drawn by an anonymous
+ * crawler, so the preview never names the request — it says that someone
+ * needs help and how to see it. Only the member's own browser tab shows the
+ * request's title.
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; id: string }>;
+}): Promise<Metadata> {
+  const { locale, id } = await params;
+  const t = await getTranslations({ locale, namespace: "Help" });
+  const request = await getHelpRequest(id);
+  return {
+    title: request?.title ?? t("shareTitle"),
+    ...preview({ title: t("shareTitle"), description: t("shareBody"), locale }),
+  };
+}
 
 export default async function HelpRequestPage({
   params,
@@ -70,6 +93,13 @@ export default async function HelpRequestPage({
           {isAuthor && (
             <ResolveButton requestId={request.id} status={request.status} />
           )}
+          {/* The asker may say what they need; anyone else sharing it says
+              only that someone needs help — the details stay for members. */}
+          <ShareButton
+            path={`/help/${request.id}`}
+            title={isAuthor ? request.title : t("shareTitle")}
+            className="ms-auto"
+          />
         </div>
 
         <h1 className="font-display text-[clamp(1.75rem,4vw,2.75rem)] font-semibold leading-tight tracking-tight text-air">

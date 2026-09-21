@@ -14,8 +14,9 @@ const CATEGORY_BRIDGE: Record<string, string[]> = {
   legal: ["lawyer"],
   paperwork: ["lawyer", "community"],
   work: ["community"],
-  language: ["community"],
-  education: ["community"],
+  // A teacher or a course is the real answer here (migration 0027).
+  language: ["classes", "community"],
+  education: ["classes", "community"],
   family: ["community"],
   housing: ["community"],
   transport: ["other"],

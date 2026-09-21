@@ -376,7 +376,7 @@ export function DirectoryLoading() {
 
       <div className="-mx-4 mt-6 flex gap-2 overflow-hidden px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
         <ChipRow
-          widths={[43, 124, 98, 109, 99, 128, 124, 84]}
+          widths={[43, 124, 98, 109, 99, 128, 124, 169, 84]}
           className="h-[2.125rem] shrink-0 rounded-full"
         />
       </div>

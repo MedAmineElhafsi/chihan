@@ -266,7 +266,8 @@
     "filterProfession": "Li gorî pîşe",
     "places": "Cih",
     "clear": "Lêgerînê paqij bike",
-    "matchCount": "{count} hatin dîtin"
+    "matchCount": "{count} hatin dîtin",
+    "cat_classes": "Ders û mamoste"
   },
   "Directory": {
     "title": "Rêber",
@@ -342,7 +343,26 @@
     "replySave": "Bersivê bişîne",
     "replyFailed": "Bersiv nehat şandin. Ji kerema xwe dîsa biceribîne.",
     "cancel": "Betal",
-    "professional": "Pispor"
+    "professional": "Pispor",
+    "cat_classes": "Ders û mamoste",
+    "servicesTitle": "Xizmet",
+    "hoursTitle": "Demjimêrên vekirinê",
+    "openNow": "Niha vekirî ye",
+    "closedNow": "Niha girtî ye",
+    "closedDay": "Girtî",
+    "whatsappButton": "Li WhatsAppê binivîse",
+    "whatsappLabel": "Hejmara WhatsAppê (ne mecbûrî)",
+    "whatsappHint": "Bi koda welêt — xerîdar pê dikevin da ku rasterast ji te re binivîsin.",
+    "whatsappInvalid": "Hejmara WhatsAppê bi koda welêt binivîse, wek +49 151 2345678.",
+    "servicesLabel": "Xizmet (ne mecbûrî)",
+    "servicesPlaceholder": "Porbirîn, Rîhbirîn, Porê zarokan",
+    "servicesHint": "Bi bêhnokan ji hev veqetîne — heta 12.",
+    "hoursLabel": "Demjimêrên vekirinê (ne mecbûrî)",
+    "hoursHint": "Ger ne ewle yî rojekê vala bihêle; ji bo rojên girtî Girtî nîşan bike.",
+    "hoursClosed": "Girtî",
+    "hoursOpens": "vedibe",
+    "hoursCloses": "tê girtin",
+    "hoursCopy": "Demjimêrên {day} ji bo her rojê"
   },
   "People": {
     "title": "Mirov",
@@ -770,7 +790,9 @@
     "memoryBody": "Eger cih, ofîs an kesek ev çareser kir, wan tevlî rêberê bike. Kesê din wê bêyî pirsînê bibîne.",
     "memoryCta": "Tevlî rêberê bike",
     "hiddenTitle": "{count, plural, one {Kesek niha li vir alîkariyê dixwaze} other {# kes niha li vir alîkariyê dixwazin}}",
-    "hiddenBody": "Daxwaz di navbera endaman de dimînin — xwestina alîkariyê bi xwe têra xwe giran e. Beşdar bibe da ku bixwînî û bersiv bidî."
+    "hiddenBody": "Daxwaz di navbera endaman de dimînin — xwestina alîkariyê bi xwe têra xwe giran e. Beşdar bibe da ku bixwînî û bersiv bidî.",
+    "shareTitle": "Kesek li ser Cîhanê alîkariyê dixwaze — tu dikarî alîkariyê bikî?",
+    "shareBody": "Daxwaz di navbera endaman de dimînin. Beşdarî Cîhanê bibe da ku bixwînî û bersiv bidî."
   },
   "Verification": {
     "title": "Verastkirinê bixwaze",
@@ -864,5 +886,11 @@
     "error_not_admin": "Tenê rêveberek dikare li ser reklaman biryar bide.",
     "error_not_pending": "Li ser vê reklamê jixwe biryar hatiye dayîn.",
     "error_failed": "Tiştek xelet çû. Ji kerema xwe dîsa biceribîne."
+  },
+  "Share": {
+    "share": "Parve bike",
+    "copy": "Girêdanê kopî bike",
+    "copied": "Girêdan hate kopîkirin",
+    "more": "Sepanên din…"
   }
 }
