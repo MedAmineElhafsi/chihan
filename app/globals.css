@@ -38,7 +38,11 @@
   --secondary: var(--depth-3);
   --secondary-foreground: var(--foreground);
   --muted: var(--depth-2);
-  --muted-foreground: #7f979d; /* desaturated: quiet text should not be teal */
+  /* Desaturated: quiet text should not be teal. And light enough to hold
+     4.5:1 on the brightest pixel the aurora reaches, measured, not just on the
+     flat page colour — #7f979d passed the flat colour at 5.89 and fell to 3.1
+     where the light pooled behind it. */
+  --muted-foreground: #a4bcc3;
   --accent: var(--depth-3);
   --accent-foreground: var(--foreground);
   --destructive: #ff5c7a;
@@ -55,10 +59,14 @@
 
   /* Atmosphere only — never used on a control. A single hue cannot make a
      gradient travel anywhere, so the field gets somewhere to go: the brand
-     cyan, an indigo, and a violet held furthest back. */
+     cyan, an indigo, and a violet held furthest back.
+
+     Indigo and violet get more alpha than cyan because they carry colour
+     rather than light: at equal alpha they are about a third as bright, so
+     they can be generous without making a spot too bright for text. */
   --aurora-1: rgba(80, 232, 244, 0.5); /* Fluorescent Blue, the brand */
-  --aurora-2: rgba(76, 111, 232, 0.46); /* indigo — depth */
-  --aurora-3: rgba(155, 92, 240, 0.36); /* violet — the far edge, faintest */
+  --aurora-2: rgba(76, 111, 232, 0.58); /* indigo — depth */
+  --aurora-3: rgba(155, 92, 240, 0.48); /* violet — the far edge, faintest */
 
   --radius: 0.25rem; /* sharp, instrument-like */
 
@@ -186,7 +194,9 @@
 
 @utility font-display {
   font-family: var(--font-display);
-  font-variation-settings: "wdth" 100, "opsz" 40;
+  font-variation-settings:
+    "wdth" 100,
+    "opsz" 40;
   letter-spacing: -0.03em;
 }
 
@@ -219,8 +229,6 @@
     0 0 0 1px rgba(80, 232, 244, 0.35),
     0 0 24px -4px rgba(80, 232, 244, 0.5);
 }
-
-
 
 /* Hairline rules */
 @utility rule-t {
@@ -438,6 +446,11 @@ small {
    Depth comes from three things moving together, the way it does in weather:
    a near body is bigger, sharper and travels further; a far body is small,
    heavily blurred and barely moves.
+
+   Blur is in vmax, like the bodies' sizes, so the field is the same picture
+   at every screen size. In px it stayed fixed while the bodies grew, and on
+   a 1920px screen the brightest spot reached 2.6x a phone's — light pooled
+   hard enough that quiet text over it dropped to about 3:1.
 --------------------------------------------------------------------------- */
 .aurora-blob {
   position: absolute;
@@ -451,7 +464,7 @@ small {
 }
 
 .aurora-far {
-  filter: blur(120px);
+  filter: blur(14.75vmax);
   opacity: 0.55;
   --drift-x: 4%;
   --drift-y: 3%;
@@ -459,7 +472,7 @@ small {
 }
 
 .aurora-mid {
-  filter: blur(90px);
+  filter: blur(11vmax);
   opacity: 0.7;
   --drift-x: 8%;
   --drift-y: 6%;
@@ -467,7 +480,7 @@ small {
 }
 
 .aurora-near {
-  filter: blur(64px);
+  filter: blur(7.9vmax);
   opacity: 0.8;
   --drift-x: 14%;
   --drift-y: 10%;
@@ -492,16 +505,15 @@ small {
   }
 }
 
-
 /* The outgoing frame leaves slightly faster than the incoming one arrives, so
    the two never both sit at full strength and wash the page out. */
-
 
 /* The globe placeholder breathes while ~2.8 MB of Three.js arrives. The
    motion IS the loading signal — without it a static disc looks like a
    finished, broken globe. Transform and opacity only. */
 .globe-pending {
-  animation: globe-breathe 2.8s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  animation: globe-breathe 2.8s cubic-bezier(0.45, 0, 0.55, 1) infinite
+    alternate;
   will-change: transform, opacity;
 }
 
