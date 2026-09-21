@@ -813,5 +813,9 @@
     "posts": "Posts",
     "help": "Help",
     "news": "News"
+  },
+  "Loading": {
+    "label": "Loading…",
+    "globe": "Loading the globe"
   }
 }

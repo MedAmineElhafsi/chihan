@@ -813,5 +813,9 @@
     "posts": "Beiträge",
     "help": "Hilfe",
     "news": "Nachrichten"
+  },
+  "Loading": {
+    "label": "Wird geladen…",
+    "globe": "Globus wird geladen"
   }
 }

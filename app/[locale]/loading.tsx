@@ -1,9 +1,5 @@
-import { Loader2 } from "lucide-react";
+import { RouteLoading } from "@/components/loading/route-loading";
 
 export default function Loading() {
-  return (
-    <div className="flex min-h-[60dvh] items-center justify-center">
-      <Loader2 className="size-7 animate-spin text-cyan" />
-    </div>
-  );
+  return <RouteLoading />;
 }

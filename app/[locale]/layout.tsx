@@ -50,7 +50,13 @@ export default async function LocaleLayout({
     <NextIntlClientProvider>
       <DocumentAttributes />
       <Backdrop />
-      <div className="relative flex min-h-dvh flex-col">
+      {/* data-viewer lets a loading skeleton promise only what this viewer
+          will get (a composer for a member, a join prompt for a visitor)
+          with CSS alone, so server and client render the same thing. */}
+      <div
+        data-viewer={user ? "member" : "visitor"}
+        className="group/viewer relative flex min-h-dvh flex-col"
+      >
         <SiteHeader />
         <main className="flex-1 pb-20 lg:pb-0">{children}</main>
         <ShellFooter>

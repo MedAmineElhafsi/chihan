@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 /**
  * What stands in for the globe while it arrives.
  *
@@ -12,13 +14,15 @@
  * where the silhouette alone carries the meaning.
  */
 export function GlobePlaceholder() {
+  const t = useTranslations("Loading");
+
   return (
     <div
       role="status"
       aria-busy="true"
       className="absolute inset-0 flex items-center justify-center"
     >
-      <span className="sr-only">Loading the globe</span>
+      <span className="sr-only">{t("globe")}</span>
 
       <span
         aria-hidden="true"

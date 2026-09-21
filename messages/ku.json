@@ -813,5 +813,9 @@
     "posts": "Peyam",
     "help": "Alîkarî",
     "news": "Nûçe"
+  },
+  "Loading": {
+    "label": "Tê barkirin…",
+    "globe": "Gerstêrk tê barkirin"
   }
 }

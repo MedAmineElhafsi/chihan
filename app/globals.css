@@ -545,3 +545,25 @@ small {
     opacity: 0.8;
   }
 }
+
+/* A block standing in for content on its way. It breathes on the globe's
+   cycle so the whole app has one way of saying "still working", and holds
+   still under reduced motion, where the shape alone carries the meaning. */
+@utility skeleton {
+  background-color: color-mix(in oklab, var(--air) 9%, transparent);
+  animation: skeleton-breathe 2.8s cubic-bezier(0.45, 0, 0.55, 1) infinite
+    alternate;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes skeleton-breathe {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 1;
+  }
+}

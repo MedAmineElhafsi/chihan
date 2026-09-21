@@ -7,7 +7,6 @@ import {
   CalendarDays,
   CalendarPlus,
   Heart,
-  Loader2,
   MapPin,
   MessageSquare,
   Play,
@@ -26,6 +25,7 @@ import { setEventRsvp } from "@/lib/event-rsvp-actions";
 import { downloadEventIcs } from "@/lib/event-ics";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ReportButton } from "@/components/moderation/report-button";
 import { cn } from "@/lib/utils";
 import { springFlick } from "@/lib/motion";
@@ -41,6 +41,7 @@ export function PostCard({
   canInteract: boolean;
 }) {
   const t = useTranslations("Feed");
+  const tLoading = useTranslations("Loading");
   const locale = useLocale();
   const router = useRouter();
 
@@ -330,7 +331,20 @@ export function PostCard({
       {showComments && (
         <div className="flex flex-col gap-2.5 border-t border-border/70 bg-muted/20 px-4 py-3 sm:px-5">
           {comments === null ? (
-            <Loader2 className="size-4 animate-spin text-muted-foreground" />
+            // As many comments as the count already promised (up to three),
+            // in the shape of a comment, rather than a spinner that says
+            // nothing about what is coming. None when the count is zero.
+            <div role="status" className="flex flex-col gap-2.5">
+              <span className="sr-only">{tLoading("label")}</span>
+              {Array.from(
+                { length: Math.min(item.comment_count, 3) },
+                (_, i) => (
+                  <div key={i} className="bg-card/80 rounded-lg px-3 py-2">
+                    <Skeleton className="my-[3px] h-3.5 w-3/4" />
+                  </div>
+                )
+              )}
+            </div>
           ) : comments.length === 0 ? (
             <p className="text-sm text-muted-foreground">{t("noComments")}</p>
           ) : (
