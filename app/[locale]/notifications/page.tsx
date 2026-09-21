@@ -4,6 +4,9 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getCurrentUser } from "@/lib/auth";
 import { listNotifications } from "@/lib/notifications";
 import { NotificationsList } from "@/components/notifications/notifications-list";
+import { navTitle } from "@/lib/page-title";
+
+export const generateMetadata = navTitle("notifications");
 
 export default async function NotificationsPage({
   params,

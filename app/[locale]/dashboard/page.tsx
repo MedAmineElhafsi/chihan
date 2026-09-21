@@ -21,6 +21,9 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { navTitle } from "@/lib/page-title";
+
+export const generateMetadata = navTitle("dashboard");
 
 export default async function DashboardPage({
   params,

@@ -159,6 +159,7 @@ function PostSkeleton({ media = false }: { media?: boolean }) {
 /** `/feed` — mirrors the feed page's Posts tab. */
 export function FeedLoading() {
   const t = useTranslations("Feed");
+  const tNav = useTranslations("Nav");
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 lg:max-w-4xl lg:py-8">
@@ -166,7 +167,7 @@ export function FeedLoading() {
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-            {t("title")}
+            {tNav("explore")}
           </h1>
           <p className="text-muted-foreground mt-1">{t("subtitle")}</p>
         </div>

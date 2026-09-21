@@ -10,6 +10,7 @@ import {
 import { Link } from "@/i18n/navigation";
 import { globalSearch } from "@/lib/search";
 import { SearchForm } from "@/components/search/search-form";
+import { navTitle } from "@/lib/page-title";
 
 const kindIcon = {
   person: Users,
@@ -18,6 +19,8 @@ const kindIcon = {
   post: PenLine,
   news: Newspaper,
 } as const;
+
+export const generateMetadata = navTitle("search");
 
 export default async function SearchPage({
   params,

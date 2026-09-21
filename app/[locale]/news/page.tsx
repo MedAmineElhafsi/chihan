@@ -4,7 +4,10 @@ import { Link } from "@/i18n/navigation";
 import { getNews } from "@/lib/news";
 import { ArticleCard } from "@/components/news/article-card";
 import { cn } from "@/lib/utils";
+import { navTitle } from "@/lib/page-title";
 
+
+export const generateMetadata = navTitle("news");
 
 export default async function NewsPage({
   params,

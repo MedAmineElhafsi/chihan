@@ -23,6 +23,10 @@ const TABS = [
   { href: "/profile", key: "you", Icon: User },
 ] as const;
 
+/* A visitor has no "you" yet. /profile would only bounce them to sign-in
+   after a spinner, so for a visitor the tab goes there directly and says so. */
+const SIGN_IN = { href: "/login", key: "signIn", Icon: User } as const;
+
 export function TabBar({ signedIn }: { signedIn: boolean }) {
   const t = useTranslations("Nav");
   const pathname = usePathname();
@@ -31,7 +35,8 @@ export function TabBar({ signedIn }: { signedIn: boolean }) {
   const path = pathname.replace(/^\/[a-z]{2,3}(?=\/|$)/, "") || "/";
   const isOn = (href: string) => path === href || path.startsWith(`${href}/`);
 
-  const [left, right] = [TABS.slice(0, 2), TABS.slice(2)];
+  const tabs = signedIn ? TABS : [...TABS.slice(0, 3), SIGN_IN];
+  const [left, right] = [tabs.slice(0, 2), tabs.slice(2)];
 
   return (
     <nav

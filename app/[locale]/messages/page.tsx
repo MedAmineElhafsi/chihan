@@ -4,6 +4,9 @@ import { setRequestLocale } from "next-intl/server";
 import { getCurrentUser } from "@/lib/auth";
 import { getConversations } from "@/lib/chat";
 import { ChatShell } from "@/components/chat/chat-shell";
+import { navTitle } from "@/lib/page-title";
+
+export const generateMetadata = navTitle("messages");
 
 export default async function MessagesPage({
   params,

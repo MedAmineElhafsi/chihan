@@ -32,7 +32,9 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
   return {
-    title: t("title"),
+    // Pages name themselves (lib/page-title.ts); this adds the brand, and is
+    // the whole title for pages that do not.
+    title: { default: t("title"), template: t("titleTemplate") },
     description: t("description"),
   };
 }
@@ -45,6 +47,7 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const user = await getCurrentUser();
+  const tNav = await getTranslations("Nav");
 
   return (
     <NextIntlClientProvider>
@@ -57,8 +60,23 @@ export default async function LocaleLayout({
         data-viewer={user ? "member" : "visitor"}
         className="group/viewer relative flex min-h-dvh flex-col"
       >
+        {/* The first stop for a keyboard: past every link in the header,
+            straight to the page. Hidden until it has focus. */}
+        <a
+          href="#main"
+          className="bg-cyan text-primary-foreground shadow-elev-2 sr-only z-[60] rounded-md text-sm font-semibold focus:not-sr-only focus:fixed focus:start-4 focus:top-3 focus:px-4 focus:py-2.5"
+        >
+          {tNav("skipToContent")}
+        </a>
         <SiteHeader />
-        <main className="flex-1 pb-20 lg:pb-0">{children}</main>
+        {/* Focusable only as the skip link's target, so it needs no ring. */}
+        <main
+          id="main"
+          tabIndex={-1}
+          className="flex-1 pb-20 outline-none lg:pb-0"
+        >
+          {children}
+        </main>
         <ShellFooter>
           <SiteFooter />
         </ShellFooter>

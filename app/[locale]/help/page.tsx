@@ -11,6 +11,9 @@ import { RequestCard } from "@/components/help/request-card";
 import { RequestComposer } from "@/components/help/request-composer";
 import { cn } from "@/lib/utils";
 import { HelpCategoryIcon } from "@/components/help/category-icon";
+import { navTitle } from "@/lib/page-title";
+
+export const generateMetadata = navTitle("help");
 
 export default async function HelpPage({
   params,

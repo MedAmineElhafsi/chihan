@@ -368,6 +368,7 @@ export function ExploreClient({
         matches={matches.length}
         active={searching}
         onClear={clearSearch}
+        inert={!chrome}
         className={cn(
           // Sits clear of the results panel on the left and the recenter button on
           // the right, rather than centring on the viewport and colliding with both.
@@ -392,6 +393,7 @@ export function ExploreClient({
         size="icon"
         onClick={recenter}
         aria-label={t("recenter")}
+        inert={!chrome}
         className={cn(
           "panel absolute end-4 top-4 z-10 transition-opacity duration-500",
           !chrome && "pointer-events-none opacity-0"
@@ -400,8 +402,11 @@ export function ExploreClient({
         <Crosshair className="size-5" />
       </Button>
 
-      {/* Results panel */}
+      {/* Results panel. While the landing's hero is up, this and the
+          controls above are inert as well as transparent: invisible buttons
+          used to take a dozen Tab presses before the hero's own. */}
       <div
+        inert={!chrome}
         className={cn(
           "panel-solid absolute inset-x-4 bottom-4 z-10 flex max-h-[55dvh] flex-col overflow-hidden rounded-md transition-opacity duration-500 md:inset-x-auto md:bottom-auto md:start-4 md:top-4 md:max-h-[calc(100%-2rem)] md:w-[340px]",
           !chrome && "pointer-events-none opacity-0"

@@ -2,6 +2,9 @@ import { setRequestLocale } from "next-intl/server";
 
 import { getGlobePoints } from "@/lib/globe";
 import { ExploreClient } from "@/components/globe/explore-client";
+import { navTitle } from "@/lib/page-title";
+
+export const generateMetadata = navTitle("home");
 
 export default async function ExplorePage({
   params,

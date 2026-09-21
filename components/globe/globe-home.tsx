@@ -43,13 +43,15 @@ export function GlobeHome({
         />
       </div>
 
-      {/* Hero curtain */}
+      {/* Hero curtain. Once lifted it is inert, not just transparent: its
+          buttons opt back into pointer events, so after entering they stayed
+          clickable and focusable, invisible, over the results panel. */}
       <div
         className={cn(
           "pointer-events-none absolute inset-0 z-20 transition-all duration-1000 ease-out",
           entered ? "opacity-0" : "opacity-100"
         )}
-        aria-hidden={entered}
+        inert={entered}
       >
         {/* Readability scrim — tight to the text side so the globe stays vivid */}
         <div className="absolute inset-0 bg-gradient-to-r from-depth-0 from-20% via-depth-0/70 via-45% to-transparent to-70%" />

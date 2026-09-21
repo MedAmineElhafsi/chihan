@@ -14,6 +14,9 @@ import {
 } from "@/components/ui/card";
 import { DeleteAccountButton } from "@/components/account/delete-account-button";
 import { PushEnableButton } from "@/components/pwa/push-enable-button";
+import { navTitle } from "@/lib/page-title";
+
+export const generateMetadata = navTitle("settings");
 
 export default async function SettingsPage({
   params,

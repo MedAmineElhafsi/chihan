@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button";
 import { ListingCard } from "@/components/directory/listing-card";
 import { CategoryIcon } from "@/components/directory/category-icon";
 import { cn } from "@/lib/utils";
+import { navTitle } from "@/lib/page-title";
+
+export const generateMetadata = navTitle("directory");
 
 export default async function DirectoryPage({
   params,

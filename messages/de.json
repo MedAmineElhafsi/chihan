@@ -34,7 +34,8 @@
     "createReel": "Reel aufnehmen",
     "createHelp": "Um Hilfe bitten",
     "createPlace": "Ort hinzufügen",
-    "reels": "Reels"
+    "reels": "Reels",
+    "skipToContent": "Zum Inhalt springen"
   },
   "Common": {
     "language": "Sprache",
@@ -219,7 +220,7 @@
     "needsName": "Trag zuerst einen Anzeigenamen ein."
   },
   "Explore": {
-    "title": "Entdecken",
+    "title": "Auf dem Globus",
     "people": "Menschen",
     "restaurants": "Restaurants",
     "doctors": "Ärzte",
@@ -413,7 +414,6 @@
     "message": "Nachricht"
   },
   "Feed": {
-    "title": "Feed",
     "subtitle": "Beiträge und Veranstaltungen aus der kurdischen Community.",
     "tabPost": "Beitrag",
     "tabEvent": "Veranstaltung",
@@ -661,7 +661,8 @@
   },
   "Metadata": {
     "title": "Cîhan — Die kurdische Welt, verbunden",
-    "description": "Eine globale Community- und Entdeckungsplattform für die kurdische Diaspora."
+    "description": "Eine globale Community- und Entdeckungsplattform für die kurdische Diaspora.",
+    "titleTemplate": "%s · Cîhan"
   },
   "Search": {
     "title": "Suche",

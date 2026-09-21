@@ -25,6 +25,7 @@ export function GlobeSearch({
   active,
   onClear,
   className,
+  inert,
 }: {
   query: string;
   onQuery: (v: string) => void;
@@ -38,13 +39,21 @@ export function GlobeSearch({
   active: boolean;
   onClear: () => void;
   className?: string;
+  /** Out of reach entirely — not just invisible — while the page hides it. */
+  inert?: boolean;
 }) {
   const t = useTranslations("Explore");
   const people = tags.filter((o) => o.group === "people");
   const places = tags.filter((o) => o.group === "places");
 
   return (
-    <div className={cn("panel-solid flex flex-col gap-2 rounded-md p-2", className)}>
+    <div
+      inert={inert}
+      className={cn(
+        "panel-solid flex flex-col gap-2 rounded-md p-2",
+        className
+      )}
+    >
       <div className="flex items-center gap-2">
         <Search className="ms-1.5 size-4 shrink-0 text-muted-foreground" />
         <input

@@ -60,7 +60,9 @@ export function MobileMenu({
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/explore">{tNav("explore")}</Link>
+          {/* /explore is the globe, which the tabs call Home; "Explore" is
+              the feed. One place, one name, in every menu. */}
+          <Link href="/explore">{tNav("home")}</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/directory">{tNav("directory")}</Link>

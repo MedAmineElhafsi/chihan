@@ -1,5 +1,5 @@
-// FEATURE-DISABLED: switched off for launch. Flip `feed` in lib/features.ts
-// to bring this surface back — the code and its tables are untouched.
+// FEATURE-DISABLED when `feed` is off in lib/features.ts — the code and its
+// tables stay in place, so flipping the flag brings the surface back whole.
 import { notFound } from "next/navigation";
 import { isEnabled } from "@/lib/features";
 
@@ -22,7 +22,10 @@ import { RequestCard } from "@/components/help/request-card";
 import { ArticleCard } from "@/components/news/article-card";
 import { getHelpRequests } from "@/lib/help";
 import { getNews } from "@/lib/news";
+import { navTitle } from "@/lib/page-title";
 import { cn } from "@/lib/utils";
+
+export const generateMetadata = navTitle("explore");
 
 export default async function FeedPage({
   params,
@@ -46,6 +49,7 @@ export default async function FeedPage({
     getActiveStories(user?.id),
   ]);
   const t = await getTranslations("Feed");
+  const tNav = await getTranslations("Nav");
 
   const hasLocation =
     profile?.lat != null &&
@@ -53,7 +57,7 @@ export default async function FeedPage({
     Number.isFinite(profile.lat) &&
     Number.isFinite(profile.lng);
 
-  // Each tab fetches only its own data — opening Home should not query the
+  // Each tab fetches only its own data — opening Posts should not query the
   // help board and the news table as well.
   const items =
     activeTab === "posts"
@@ -82,8 +86,9 @@ export default async function FeedPage({
     <div className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 lg:max-w-4xl lg:py-8">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
+          {/* Titled by the tab that opens it: the feed lives under Explore. */}
           <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-            {t("title")}
+            {tNav("explore")}
           </h1>
           <p className="text-muted-foreground mt-1">{t("subtitle")}</p>
         </div>

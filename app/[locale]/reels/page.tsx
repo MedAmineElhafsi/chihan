@@ -9,6 +9,9 @@ import { getFeed } from "@/lib/feed";
 import { ReelPlayer } from "@/components/reels/reel-player";
 import { NewReelButton } from "@/components/reels/new-reel-button";
 import { ReelsEmpty } from "@/components/reels/reels-empty";
+import { navTitle } from "@/lib/page-title";
+
+export const generateMetadata = navTitle("reels");
 
 export default async function ReelsPage({
   params,

@@ -34,7 +34,8 @@
     "createReel": "Reel tomar bike",
     "createHelp": "Alîkarî bixwaze",
     "createPlace": "Cih zêde bike",
-    "reels": "Reels"
+    "reels": "Reels",
+    "skipToContent": "Here naverokê"
   },
   "Common": {
     "language": "Ziman",
@@ -219,7 +220,7 @@
     "needsName": "Pêşî navekî xuyanê zêde bike."
   },
   "Explore": {
-    "title": "Vekole",
+    "title": "Li ser gerstêrkê",
     "people": "Mirov",
     "restaurants": "Xwaringeh",
     "doctors": "Bijîjk",
@@ -413,7 +414,6 @@
     "message": "Peyam"
   },
   "Feed": {
-    "title": "Feed",
     "subtitle": "Şandî û bûyer ji civaka kurd.",
     "tabPost": "Şandî",
     "tabEvent": "Bûyer",
@@ -661,7 +661,8 @@
   },
   "Metadata": {
     "title": "Cîhan — Cîhana kurdî, girêdayî",
-    "description": "Platformeke cîhanî ya civak û vedîtinê ji bo koçberên kurd."
+    "description": "Platformeke cîhanî ya civak û vedîtinê ji bo koçberên kurd.",
+    "titleTemplate": "%s · Cîhan"
   },
   "Search": {
     "title": "Lêgerîn",

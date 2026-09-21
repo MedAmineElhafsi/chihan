@@ -74,9 +74,10 @@ export function UserMenu({
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
+          {/* The globe is Home in the header; "Explore" opens the feed. */}
           <Link href="/explore">
             <Globe2 />
-            {t("explore")}
+            {t("home")}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>

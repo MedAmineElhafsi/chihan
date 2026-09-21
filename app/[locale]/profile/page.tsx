@@ -8,6 +8,9 @@ import { ProfileView } from "@/components/profile/profile-view";
 import { OffersServiceSwitch } from "@/components/profile/offers-service-switch";
 import { VerificationPanel } from "@/components/profile/verification-panel";
 import { getMyVerification } from "@/lib/verification";
+import { navTitle } from "@/lib/page-title";
+
+export const generateMetadata = navTitle("profile");
 
 export default async function MyProfilePage({
   params,
