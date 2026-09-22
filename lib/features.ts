@@ -37,6 +37,19 @@ export const FEATURES = {
   // ads table and its history stay.
   ads: true,
 
+  // Speaking instead of typing: voice notes in chats, group chats, help
+  // requests and replies (migration 0028).
+  voice: true,
+
+  // "Translate" on posts, requests and replies. Also needs a
+  // GOOGLE_TRANSLATE_API_KEY; without one the button never appears.
+  translate: true,
+
+  // Two kinds of help request (migration 0030): an interpreter for an
+  // appointment, and Give & Ask for free things.
+  interpreters: true,
+  freeItems: true,
+
   // Deliberately off. Matches and who-viewed are engagement machinery that
   // works against a community built on helping; billing earns nothing at
   // zero users. All three are one flag away, with their data intact.

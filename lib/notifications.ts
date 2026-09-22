@@ -48,6 +48,9 @@ export async function createNotifications(
         group_message: "Group message",
         like: "New like",
         comment: "New comment",
+        help_match: "Someone needs help",
+        interpreter_match: "Someone needs an interpreter",
+        give_match: "Something free near you",
       };
       await Promise.all(
         rows.map((r) =>

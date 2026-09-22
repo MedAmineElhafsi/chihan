@@ -408,7 +408,7 @@ export function MessagesLoading() {
   return (
     <>
       <MemberOnly>
-        <div className="flex h-[calc(100dvh-4rem)] w-full overflow-hidden">
+        <div className="flex h-[calc(100dvh-8.5rem)] w-full overflow-hidden lg:h-[calc(100dvh-4rem)]">
           <Status />
           <aside className="border-border bg-card/40 flex w-full flex-col border-e md:w-[22rem]">
             <div className="border-border border-b px-4 py-3">

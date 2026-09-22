@@ -14,6 +14,8 @@ import { SiteFooter } from "@/components/app-shell/site-footer";
 import { ShellFooter } from "@/components/app-shell/shell-footer";
 import { ServiceWorkerRegister } from "@/components/pwa/sw-register";
 import { InstallPrompt } from "@/components/pwa/install-prompt";
+import { TranslateProvider } from "@/components/translate/translate-provider";
+import { translationAvailable } from "@/lib/translate";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -79,7 +81,10 @@ export default async function LocaleLayout({
           tabIndex={-1}
           className="flex-1 pb-20 outline-none lg:pb-0"
         >
-          {children}
+          {/* Translating reads the text as its reader, so it needs one. */}
+          <TranslateProvider enabled={Boolean(user) && translationAvailable()}>
+            {children}
+          </TranslateProvider>
         </main>
         <ShellFooter>
           <SiteFooter />

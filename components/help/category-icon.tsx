@@ -3,8 +3,10 @@ import {
   Car,
   Circle,
   FileText,
+  Gift,
   GraduationCap,
   House,
+  Languages,
   MessagesSquare,
   Scale,
   Stethoscope,
@@ -26,6 +28,8 @@ const ICONS: Record<string, LucideIcon> = {
   Scale,
   Car,
   Circle,
+  Languages,
+  Gift,
 };
 
 /** The mark for a help category, in the icon set the rest of the app uses. */

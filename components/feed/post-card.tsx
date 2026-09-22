@@ -28,6 +28,9 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ShareButton } from "@/components/share/share-button";
 import { ReportButton } from "@/components/moderation/report-button";
+import { useCanTranslate } from "@/components/translate/translate-provider";
+import { useTranslate } from "@/components/translate/use-translate";
+import { TranslateToggle } from "@/components/translate/translate-toggle";
 import { cn } from "@/lib/utils";
 import { springFlick } from "@/lib/motion";
 import type { FeedItem, PostComment, RsvpStatus } from "@/types/post";
@@ -60,6 +63,10 @@ export function PostCard({
   const [comments, setComments] = useState<PostComment[] | null>(null);
   const [commentText, setCommentText] = useState("");
   const [, startT] = useTransition();
+  const canTranslate = useCanTranslate();
+  const translation = useTranslate("post", item.id);
+  const body = translation.fields?.body ?? item.body;
+  const eventTitle = translation.fields?.event_title ?? item.event_title;
 
   const name = item.author.displayName ?? t("member");
   const initial = name.charAt(0).toUpperCase();
@@ -189,8 +196,11 @@ export function PostCard({
 
       {item.type === "event" && (
         <div className="mx-4 mt-3 rounded-lg border border-cyan/25 bg-cyan/5 p-3.5 sm:mx-5">
-          <div className="font-display text-lg font-semibold leading-snug">
-            {item.event_title}
+          <div
+            dir="auto"
+            className="font-display text-lg font-semibold leading-snug"
+          >
+            {eventTitle}
           </div>
           {item.event_at && (
             <div className="mt-1 flex items-center gap-1.5 text-sm text-cyan">
@@ -249,10 +259,17 @@ export function PostCard({
         </div>
       )}
 
-      {item.body && (
-        <p className="mt-3 whitespace-pre-wrap px-4 text-base leading-relaxed text-foreground/90 sm:px-5">
-          {item.body}
+      {body && (
+        <p
+          dir="auto"
+          className="mt-3 whitespace-pre-wrap px-4 text-base leading-relaxed text-foreground/90 sm:px-5"
+        >
+          {body}
         </p>
+      )}
+
+      {canTranslate && (item.body || item.event_title) && (
+        <TranslateToggle state={translation} className="mt-2 px-4 sm:px-5" />
       )}
 
       {item.media.length > 0 &&

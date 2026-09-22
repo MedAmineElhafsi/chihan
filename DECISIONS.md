@@ -236,3 +236,33 @@ asked — in the message too. Group posts have no Share at all.
 a link preview is drawn by an anonymous crawler for anyone in the group chat
 to see. The share button is how Cîhan reaches the WhatsApp groups the
 community already lives in; it must not be how a request leaks into them.
+
+## A voice note is as private as the words beside it
+
+**Decision.** Voice notes and give photos live in private buckets. The
+storage policy lets a file be read by the person who uploaded it, or by
+anyone who can already see a row that points at it — a message in their
+conversation, a message in their group, a request or reply on the
+members-only board. The lookup runs under the reader's own row-level
+security, so it cannot say yes where the row's own policy says no. A row may
+only point at a file in its author's own folder, so nobody can attach
+someone else's recording to their message and hand it on.
+
+**Why.** Speaking is how many elders and people who read only one Kurdish
+script will use Cîhan; what they say is often more personal than what they
+would type. A public bucket with unguessable names would leak the moment one
+link was forwarded.
+
+## Translation reads as the reader
+
+**Decision.** The Translate link sends the server which text to translate,
+never the text itself. The server reads the original with the reader's own
+session, translates it through Google Cloud Translation, and keeps the
+result in a table nobody but the server can read, keyed to the original and
+deleted with it. New translations are capped at 60 an hour per member.
+
+**Why.** Sending text would let anyone translate anything on Cîhan's key and
+bill; reading as the reader means nothing can be translated that the reader
+could not already read. Google is the one service that translates both
+Kurmanji and Sorani. Readers are told Google translated it, and the privacy
+notice says the text is sent there.

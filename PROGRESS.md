@@ -818,3 +818,40 @@ form hides the new fields and listings look as before.
 Found on the way, not fixed: the listing map's CARTO tiles now come back
 watermarked "API KEY REQUIRED" — the basemap needs a new free provider or a
 key.
+
+## Voice, Translate, interpreters, Give & Ask
+
+- [x] **Voice messages** — record instead of typing in chats, group chats,
+      help requests and replies: tap to start, tap to stop, listen back, send.
+      Up to three minutes, with a waveform and a keyboard-operable player.
+      Files live in a private bucket; a note is heard only by people who can
+      see the chat, group or request it was sent in. Migration **0028**.
+- [x] **Translate** — a link under posts, requests and replies turns them
+      into the reader's language (Kurmanji and Sorani included) and says
+      "Translated from … · Google Translate". Each text is translated once
+      and kept (migration **0029**); a member can trigger at most 60 new
+      translations an hour. Needs `GOOGLE_TRANSLATE_API_KEY`; without it the
+      link never appears.
+- [x] **Interpreter requests** — a help category with the two languages,
+      where (doctor, office, school, lawyer, work), how (in person, phone,
+      video) and when. It notifies members who speak both languages and
+      offer interpreting or language help — in the same city for in person,
+      anywhere for phone or video. "Interpreting" is a new "I can offer" tag.
+- [x] **Give & Ask** — "Free things": ask for something or give something
+      away, with up to four photos (shrunk in the browser, location data
+      removed, members-only). A give notifies people in that city who are
+      asking for things; the asker marks it "Given away".
+      Interpreters and Give & Ask need migration **0030**.
+
+Fixed on the way: on a phone the chat's message box sat under the tab bar
+until the page was scrolled; posting a help request stayed on the board
+instead of opening the new request.
+
+Verified on a production build with sample data (the migrations have not
+run yet): recording with a simulated microphone, listening back, sending,
+playback and keyboard seeking; the board, request pages and forms at 375 and
+1280, in English, Sorani and Arabic; translation into English and Sorani;
+what the forms send. Migrations 0028–0030 were applied to a local Postgres
+dressed as Supabase and checked against 49 cases: who can hear a note, who
+can see a photo, that nobody reads the translation store, and that each runs
+twice without error. Contrast on rendered pixels: lowest 7.26.

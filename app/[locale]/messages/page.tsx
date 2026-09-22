@@ -4,6 +4,7 @@ import { setRequestLocale } from "next-intl/server";
 import { getCurrentUser } from "@/lib/auth";
 import { getConversations } from "@/lib/chat";
 import { ChatShell } from "@/components/chat/chat-shell";
+import { voiceEnabled } from "@/lib/voice";
 import { navTitle } from "@/lib/page-title";
 
 export const generateMetadata = navTitle("messages");
@@ -31,6 +32,7 @@ export default async function MessagesPage({
       partnerUserId={null}
       initialMessages={[]}
       initialOtherLastRead={null}
+      voiceEnabled={await voiceEnabled()}
     />
   );
 }

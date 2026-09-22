@@ -7,7 +7,9 @@ import { getEntitlements } from "./entitlements";
 import { FREE_LIMITS } from "./constants";
 import { isBlockedEitherWay } from "./blocks";
 import { createNotification } from "./notifications";
-import type { ChatMessage } from "@/types/chat";
+import { parseVoice, voiceColumns } from "./voice";
+import { toChatMessage, type ChatMessage } from "@/types/chat";
+import { VOICE_COLUMNS, type VoiceInput } from "@/types/voice";
 
 function startOfTodayISO() {
   const d = new Date();
@@ -84,12 +86,16 @@ export type SendMessageResult =
   | { ok: true; message: ChatMessage }
   | { ok: false; error: string };
 
+/**
+ * Words, a voice note, or both. A voice note arrives already uploaded to the
+ * sender's own folder; this only records that it belongs to the message.
+ */
 export async function sendMessage(
   conversationId: string,
-  body: string
+  body: string,
+  voiceInput?: VoiceInput | null
 ): Promise<SendMessageResult> {
   const text = body.trim();
-  if (!text) return { ok: false, error: "Empty message." };
   if (text.length > 2000) return { ok: false, error: "Message too long." };
 
   const supabase = await createClient();
@@ -97,6 +103,11 @@ export async function sendMessage(
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return { ok: false, error: "Not authenticated." };
+
+  const parsedVoice = parseVoice(voiceInput, user.id);
+  if (!parsedVoice.ok) return { ok: false, error: parsedVoice.error };
+  const voice = parsedVoice.voice;
+  if (!text && !voice) return { ok: false, error: "Empty message." };
 
   const { data: others } = await supabase
     .from("conversation_participants")
@@ -111,10 +122,21 @@ export async function sendMessage(
 
   const { data, error } = await supabase
     .from("messages")
-    .insert({ conversation_id: conversationId, sender_id: user.id, body: text })
-    .select("id, conversation_id, sender_id, body, created_at")
+    .insert({
+      conversation_id: conversationId,
+      sender_id: user.id,
+      body: text,
+      ...voiceColumns(voice),
+    })
+    // Voice columns only when there is a note: a plain text message must
+    // still send on a database that has not had migration 0028.
+    .select(
+      `id, conversation_id, sender_id, body, created_at${voice ? `, ${VOICE_COLUMNS}` : ""}`
+    )
     .single();
-  if (error) return { ok: false, error: error.message };
+  if (error || !data) {
+    return { ok: false, error: error?.message ?? "Could not send." };
+  }
 
   // Sending implies the sender has read up to now.
   await supabase
@@ -139,7 +161,10 @@ export async function sendMessage(
   }
 
   revalidatePath("/messages");
-  return { ok: true, message: data as ChatMessage };
+  return {
+    ok: true,
+    message: toChatMessage(data as unknown as Record<string, unknown>),
+  };
 }
 
 export async function markRead(conversationId: string): Promise<void> {

@@ -17,6 +17,7 @@ import { JoinLeaveButton } from "@/components/groups/join-leave-button";
 import { GroupChat } from "@/components/groups/group-chat";
 import { GroupBoard } from "@/components/groups/group-board";
 import { GroupInvite } from "@/components/groups/group-invite";
+import { voiceEnabled } from "@/lib/voice";
 
 export default async function GroupDetailPage({
   params,
@@ -101,6 +102,7 @@ export default async function GroupDetailPage({
           currentUserId={user.id}
           initialMessages={messages}
           canChat={isMember}
+          voiceEnabled={await voiceEnabled()}
         />
       ) : (
         <section className="panel mt-10 rounded-lg px-4 py-10 text-center text-sm text-muted-foreground">

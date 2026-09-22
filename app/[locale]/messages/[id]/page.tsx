@@ -8,6 +8,7 @@ import {
   getMessages,
 } from "@/lib/chat";
 import { ChatShell } from "@/components/chat/chat-shell";
+import { voiceEnabled } from "@/lib/voice";
 
 export default async function ConversationPage({
   params,
@@ -41,6 +42,7 @@ export default async function ConversationPage({
       partnerUserId={partnerInfo.partner?.userId ?? null}
       initialMessages={messages}
       initialOtherLastRead={partnerInfo.otherLastReadAt}
+      voiceEnabled={await voiceEnabled()}
     />
   );
 }

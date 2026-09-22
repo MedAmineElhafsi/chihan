@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { ArrowLeft, Loader2, Send } from "lucide-react";
+import { ArrowLeft, Loader2, Mic, Send, Square, Trash2, X } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/client";
 import { markRead, sendMessage } from "@/lib/chat-actions";
@@ -10,7 +10,17 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-import type { ChatMessage, ConversationSummary } from "@/types/chat";
+import {
+  toChatMessage,
+  type ChatMessage,
+  type ConversationSummary,
+} from "@/types/chat";
+import { useVoiceRecorder } from "@/components/voice/use-voice-recorder";
+import {
+  RecordingStrip,
+  VoiceProblem,
+} from "@/components/voice/voice-recorder-ui";
+import { VoicePlayer } from "@/components/voice/voice-player";
 
 type Props = {
   currentUserId: string;
@@ -21,6 +31,8 @@ type Props = {
   partnerUserId: string | null;
   initialMessages: ChatMessage[];
   initialOtherLastRead: string | null;
+  /** Recording is offered once migration 0028 has run. */
+  voiceEnabled?: boolean;
 };
 
 export function ChatShell({
@@ -32,8 +44,11 @@ export function ChatShell({
   partnerUserId,
   initialMessages,
   initialOtherLastRead,
+  voiceEnabled = false,
 }: Props) {
   const t = useTranslations("Chat");
+  const tVoice = useTranslations("Voice");
+  const recorder = useVoiceRecorder();
   const locale = useLocale();
   const [convs, setConvs] = useState(initialConversations);
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
@@ -62,7 +77,7 @@ export function ChatShell({
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "messages" },
         (payload) => {
-          const m = payload.new as ChatMessage;
+          const m = toChatMessage(payload.new as Record<string, unknown>);
           if (m.conversation_id === activeId) {
             setMessages((prev) =>
               prev.some((x) => x.id === m.id) ? prev : [...prev, m]
@@ -78,6 +93,7 @@ export function ChatShell({
                       body: m.body,
                       created_at: m.created_at,
                       sender_id: m.sender_id,
+                      voice: Boolean(m.voice),
                     },
                     unread:
                       m.conversation_id === activeId ||
@@ -160,6 +176,42 @@ export function ChatShell({
     }
   }
 
+  async function onSendVoice() {
+    const recorded = recorder.result;
+    if (!activeId || !recorded) return;
+    const voice = await recorder.upload(currentUserId);
+    // A failed upload keeps the recording and says so; nothing is lost.
+    if (!voice) return;
+
+    const pendingId = `pending-${Date.now()}`;
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: pendingId,
+        conversation_id: activeId,
+        sender_id: currentUserId,
+        body: "",
+        created_at: new Date().toISOString(),
+        voice: { ...voice, url: recorded.url },
+      },
+    ]);
+    setSending(true);
+    const res = await sendMessage(activeId, "", voice);
+    setSending(false);
+
+    if (res.ok) {
+      setMessages((prev) => {
+        const settled = prev.filter((x) => x.id !== pendingId);
+        return settled.some((x) => x.id === res.message.id)
+          ? settled
+          : [...settled, res.message];
+      });
+      recorder.reset();
+    } else {
+      setMessages((prev) => prev.filter((x) => x.id !== pendingId));
+    }
+  }
+
   const sortedConvs = [...convs].sort((a, b) =>
     (b.lastMessage?.created_at ?? "").localeCompare(
       a.lastMessage?.created_at ?? ""
@@ -175,7 +227,9 @@ export function ChatShell({
     new Date(otherLastRead) >= new Date(myLastMsg.created_at);
 
   return (
-    <div className="flex h-[calc(100dvh-4rem)] w-full overflow-hidden">
+    // Below lg the tab bar covers the bottom of the screen; the thread stops
+    // above the space main keeps free for it, so the composer is never under it.
+    <div className="flex h-[calc(100dvh-8.5rem)] w-full overflow-hidden lg:h-[calc(100dvh-4rem)]">
       {/* Conversation list */}
       <aside
         className={cn(
@@ -244,7 +298,17 @@ export function ChatShell({
                         {c.lastMessage.sender_id === currentUserId
                           ? `${t("you")}: `
                           : ""}
-                        {c.lastMessage.body}
+                        {c.lastMessage.voice && !c.lastMessage.body ? (
+                          <>
+                            <Mic
+                              className="-mt-px me-1 inline size-3.5"
+                              aria-hidden="true"
+                            />
+                            {tVoice("label")}
+                          </>
+                        ) : (
+                          c.lastMessage.body
+                        )}
                       </p>
                     )}
                   </div>
@@ -314,6 +378,7 @@ export function ChatShell({
                     <div
                       className={cn(
                         "max-w-[78%] rounded-lg px-3.5 py-2 text-sm leading-snug shadow-elev-1",
+                        m.voice && "px-2.5",
                         mine
                           ? cn(
                               "bg-primary text-primary-foreground rounded-ee-md",
@@ -322,7 +387,23 @@ export function ChatShell({
                           : "bg-card text-card-foreground ring-border/80 rounded-es-md ring-1"
                       )}
                     >
-                      {m.body}
+                      {m.voice && (
+                        <VoicePlayer
+                          note={m.voice}
+                          tone={mine ? "mine" : "plain"}
+                        />
+                      )}
+                      {m.body && (
+                        <p
+                          dir="auto"
+                          className={cn(
+                            "whitespace-pre-wrap break-words",
+                            m.voice && "mt-1.5 px-1"
+                          )}
+                        >
+                          {m.body}
+                        </p>
+                      )}
                     </div>
                     <span className="text-muted-foreground px-1.5 text-[0.625rem]">
                       {timeFmt.format(new Date(m.created_at))}
@@ -337,31 +418,119 @@ export function ChatShell({
               )}
             </div>
 
-            <form
-              onSubmit={onSend}
-              className="border-border bg-card/90 sticky bottom-0 flex items-center gap-2 border-t px-3 py-2.5 backdrop-blur-md"
-            >
-              <input
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder={t("messagePlaceholder")}
-                className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/60 h-11 flex-1 rounded-full border px-4 text-sm shadow-elev-1 focus-visible:ring-2 focus-visible:outline-none"
-                maxLength={2000}
-              />
-              <Button
-                type="submit"
-                size="icon"
-                className="size-11 shrink-0 rounded-full"
-                disabled={sending || !text.trim()}
-                aria-label={t("send")}
-              >
-                {sending ? (
-                  <Loader2 className="size-5 animate-spin" />
-                ) : (
-                  <Send className="size-5" />
-                )}
-              </Button>
-            </form>
+            <div className="border-border bg-card/90 sticky bottom-0 border-t backdrop-blur-md">
+              <VoiceProblem problem={recorder.problem} className="px-4 pt-2" />
+              {recorder.status === "recording" ? (
+                <div className="flex items-center gap-2 px-3 py-2.5">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={recorder.discard}
+                    aria-label={tVoice("cancel")}
+                    className="text-muted-foreground size-11 shrink-0 rounded-full"
+                  >
+                    <X className="size-5" />
+                  </Button>
+                  <RecordingStrip recorder={recorder} className="px-1" />
+                  <Button
+                    type="button"
+                    size="icon"
+                    onClick={recorder.stop}
+                    aria-label={tVoice("stop")}
+                    className="size-11 shrink-0 rounded-full"
+                  >
+                    <Square className="size-4 fill-current" />
+                  </Button>
+                </div>
+              ) : recorder.result &&
+                (recorder.status === "recorded" ||
+                  recorder.status === "uploading") ? (
+                <div className="flex items-center gap-2 px-3 py-2.5">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={recorder.discard}
+                    disabled={recorder.status === "uploading" || sending}
+                    aria-label={tVoice("discard")}
+                    className="text-muted-foreground size-11 shrink-0 rounded-full"
+                  >
+                    <Trash2 className="size-5" />
+                  </Button>
+                  <VoicePlayer
+                    note={{
+                      path: "",
+                      ms: recorder.result.ms,
+                      peaks: recorder.result.peaks,
+                      url: recorder.result.url,
+                    }}
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    size="icon"
+                    onClick={() => void onSendVoice()}
+                    disabled={recorder.status === "uploading" || sending}
+                    aria-label={tVoice("send")}
+                    className="size-11 shrink-0 rounded-full"
+                  >
+                    {recorder.status === "uploading" || sending ? (
+                      <Loader2 className="size-5 animate-spin" />
+                    ) : (
+                      <Send className="size-5" />
+                    )}
+                  </Button>
+                </div>
+              ) : (
+                <form
+                  onSubmit={onSend}
+                  className="flex items-center gap-2 px-3 py-2.5"
+                >
+                  <input
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    placeholder={t("messagePlaceholder")}
+                    aria-label={t("messagePlaceholder")}
+                    className="border-input bg-background focus-visible:border-ring focus-visible:ring-ring/60 h-11 flex-1 rounded-full border px-4 text-sm shadow-elev-1 focus-visible:ring-2 focus-visible:outline-none"
+                    maxLength={2000}
+                  />
+                  {/* With nothing typed, the round button records instead,
+                      as it does in the messenger on a phone. */}
+                  {voiceEnabled && !text.trim() ? (
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="outline"
+                      onClick={() => void recorder.start()}
+                      disabled={recorder.status === "requesting"}
+                      aria-label={tVoice("record")}
+                      className="size-11 shrink-0 rounded-full"
+                    >
+                      {recorder.status === "requesting" ? (
+                        <Loader2 className="size-5 animate-spin" />
+                      ) : (
+                        <Mic className="size-5" />
+                      )}
+                    </Button>
+                  ) : (
+                    <Button
+                      type="submit"
+                      size="icon"
+                      className="size-11 shrink-0 rounded-full"
+                      disabled={sending || !text.trim()}
+                      aria-label={t("send")}
+                    >
+                      {sending ? (
+                        <Loader2 className="size-5 animate-spin" />
+                      ) : (
+                        <Send className="size-5" />
+                      )}
+                    </Button>
+                  )}
+                </form>
+              )}
+            </div>
           </>
         )}
       </section>

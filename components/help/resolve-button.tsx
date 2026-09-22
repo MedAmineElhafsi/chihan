@@ -11,9 +11,12 @@ import { Button } from "@/components/ui/button";
 export function ResolveButton({
   requestId,
   status,
+  giving = false,
 }: {
   requestId: string;
   status: string;
+  /** A give is closed by being given away, not by being solved. */
+  giving?: boolean;
 }) {
   const t = useTranslations("Help");
   const router = useRouter();
@@ -21,9 +24,9 @@ export function ResolveButton({
 
   if (status !== "open") {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-sm bg-success/15 px-2.5 py-1 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-success">
+      <span className="bg-success/15 text-success inline-flex items-center gap-1.5 rounded-sm px-2.5 py-1 font-mono text-[0.625rem] tracking-[0.14em] uppercase">
         <CheckCircle2 className="size-3.5" />
-        {t("resolved")}
+        {giving ? t("given") : t("resolved")}
       </span>
     );
   }
@@ -46,7 +49,7 @@ export function ResolveButton({
       ) : (
         <CheckCircle2 className="size-4" />
       )}
-      {t("markResolved")}
+      {giving ? t("markGiven") : t("markResolved")}
     </Button>
   );
 }

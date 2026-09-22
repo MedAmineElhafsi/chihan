@@ -2,11 +2,15 @@ import "server-only";
 
 import { createClient } from "./supabase/server";
 import { getBlockedEitherWayIds } from "./blocks";
-import type {
-  ChatMessage,
-  ChatPartner,
-  ConversationSummary,
+import { voiceReady } from "./schema-ready";
+import { signVoiceNotes } from "./voice";
+import {
+  toChatMessage,
+  type ChatMessage,
+  type ChatPartner,
+  type ConversationSummary,
 } from "@/types/chat";
+import { VOICE_COLUMNS } from "@/types/voice";
 
 async function loadPartners(
   supabase: Awaited<ReturnType<typeof createClient>>,
@@ -77,19 +81,23 @@ export async function getConversations(
       myRows.map((r) => [r.conversation_id, r.last_read_at])
     );
 
+    const withVoice = await voiceReady();
     const [partners, messagesRes] = await Promise.all([
       loadPartners(supabase, convIds, userId),
       supabase
         .from("messages")
-        .select("conversation_id, sender_id, body, created_at")
+        .select(
+          `conversation_id, sender_id, body, created_at${withVoice ? ", voice_path" : ""}`
+        )
         .in("conversation_id", convIds)
         .order("created_at", { ascending: true }),
     ]);
-    const msgs = (messagesRes.data ?? []) as Array<{
+    const msgs = (messagesRes.data ?? []) as unknown as Array<{
       conversation_id: string;
       sender_id: string;
       body: string;
       created_at: string;
+      voice_path?: string | null;
     }>;
 
     const summaries: ConversationSummary[] = convIds.map((id) => {
@@ -105,7 +113,12 @@ export async function getConversations(
         id,
         partner: partners.get(id) ?? null,
         lastMessage: last
-          ? { body: last.body, created_at: last.created_at, sender_id: last.sender_id }
+          ? {
+              body: last.body,
+              created_at: last.created_at,
+              sender_id: last.sender_id,
+              voice: Boolean(last.voice_path),
+            }
           : null,
         unread,
       };
@@ -132,12 +145,23 @@ export async function getMessages(
 ): Promise<ChatMessage[]> {
   try {
     const supabase = await createClient();
+    const withVoice = await voiceReady();
     const { data } = await supabase
       .from("messages")
-      .select("id, conversation_id, sender_id, body, created_at")
+      .select(
+        `id, conversation_id, sender_id, body, created_at${withVoice ? `, ${VOICE_COLUMNS}` : ""}`
+      )
       .eq("conversation_id", conversationId)
       .order("created_at", { ascending: true });
-    return (data ?? []) as ChatMessage[];
+    const messages = ((data ?? []) as unknown as Array<Record<string, unknown>>).map(
+      toChatMessage
+    );
+    // One request signs every note in the thread, with the reader's session.
+    await signVoiceNotes(
+      supabase,
+      messages.map((m) => m.voice)
+    );
+    return messages;
   } catch {
     return [];
   }

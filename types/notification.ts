@@ -5,7 +5,9 @@ export type NotificationType =
   | "help_match"
   | "comment"
   | "ad_approved"
-  | "ad_rejected";
+  | "ad_rejected"
+  | "interpreter_match"
+  | "give_match";
 
 export type AppNotification = {
   id: string;

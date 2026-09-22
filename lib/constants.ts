@@ -175,6 +175,9 @@ export const OFFERING = [
   "language_help",
   "business_help",
   "volunteering",
+  // Can come along to an appointment and interpret; interpreter requests
+  // reach these members first.
+  "interpreting",
 ] as const;
 export type Offering = (typeof OFFERING)[number];
 
@@ -202,6 +205,7 @@ export const OFFERING_TO_LOOKING: Record<Offering, readonly LookingFor[]> = {
   language_help: ["language_exchange"],
   business_help: ["business_partners"],
   volunteering: ["events"],
+  interpreting: ["language_exchange"],
 };
 
 /** Max gallery photos on a profile. */
@@ -216,14 +220,41 @@ export const HELP_CATEGORIES = [
   "paperwork",
   "work",
   "language",
+  // Migration 0030, like "items". Offered only once it has run, and each
+  // behind its flag; placed beside what people look for it next to.
+  "interpreting",
   "health",
   "education",
   "family",
+  "items",
   "legal",
   "transport",
   "other",
 ] as const;
 export type HelpCategory = (typeof HELP_CATEGORIES)[number];
+
+/** Who asks and who gives: only things are given away (migration 0030). */
+export const HELP_KINDS = ["ask", "give"] as const;
+export type HelpKind = (typeof HELP_KINDS)[number];
+
+/** Where an interpreter is needed (matches the DB CHECK). */
+export const INTERPRET_SETTINGS = [
+  "medical",
+  "authority",
+  "school",
+  "legal",
+  "work",
+  "other",
+] as const;
+export type InterpretSetting = (typeof INTERPRET_SETTINGS)[number];
+
+/** How the interpreter joins (matches the DB CHECK). */
+export const INTERPRET_MEETINGS = ["in_person", "phone", "video"] as const;
+export type InterpretMeeting = (typeof INTERPRET_MEETINGS)[number];
+
+/** Photos on a give, and their size before the browser shrinks them. */
+export const HELP_PHOTOS_MAX = 4;
+export const HELP_PHOTO_BUCKET = "help-photos";
 
 export const HELP_CATEGORY_STYLE: Record<
   string,
@@ -243,6 +274,8 @@ export const HELP_CATEGORY_STYLE: Record<
   legal: { color: "#a5d6ff", icon: "Scale" },
   transport: { color: "#8ddb9c", icon: "Car" },
   other: { color: "#9cc4cc", icon: "Circle" },
+  interpreting: { color: "#f7a8d8", icon: "Languages" },
+  items: { color: "#ffd479", icon: "Gift" },
 };
 
 export const HELP_URGENCIES = ["normal", "soon", "urgent"] as const;

@@ -12,6 +12,9 @@ import { RequestComposer } from "@/components/help/request-composer";
 import { cn } from "@/lib/utils";
 import { HelpCategoryIcon } from "@/components/help/category-icon";
 import { navTitle } from "@/lib/page-title";
+import { isEnabled } from "@/lib/features";
+import { helpKindsReady } from "@/lib/schema-ready";
+import { voiceEnabled } from "@/lib/voice";
 
 export const generateMetadata = navTitle("help");
 
@@ -20,7 +23,12 @@ export default async function HelpPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ category?: string; city?: string; status?: string }>;
+  searchParams: Promise<{
+    category?: string;
+    city?: string;
+    status?: string;
+    kind?: string;
+  }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -30,24 +38,44 @@ export default async function HelpPage({
   const user = await getCurrentUser();
   const profile = user ? await getOwnProfile(user.id) : null;
 
+  // Interpreting and Free things arrive with migration 0030, each behind
+  // its own switch.
+  const [kindsReady, canRecord] = await Promise.all([
+    helpKindsReady(),
+    voiceEnabled(),
+  ]);
+  const interpreters = kindsReady && isEnabled("interpreters");
+  const freeItems = kindsReady && isEnabled("freeItems");
+  const categories = HELP_CATEGORIES.filter(
+    (c) =>
+      (c !== "interpreting" || interpreters) && (c !== "items" || freeItems)
+  );
+
   const category =
-    sp.category && (HELP_CATEGORIES as readonly string[]).includes(sp.category)
+    sp.category && (categories as readonly string[]).includes(sp.category)
       ? sp.category
       : undefined;
   const city = sp.city ?? "";
   const status = sp.status === "resolved" ? "resolved" : "open";
+  // Within Free things: what is on offer, or what people are looking for.
+  const kind =
+    category === "items" && (sp.kind === "give" || sp.kind === "ask")
+      ? sp.kind
+      : undefined;
 
   // Counted past the policy, deliberately: a number leaks nothing.
   const openCount = await countOpenHelpRequests(city || LAUNCH_CITY);
 
   const requests = await getHelpRequests(
-    { category, city: city || undefined, status },
+    { category, city: city || undefined, status, kind },
     user?.id
   );
 
   const qs = (over: Record<string, string | undefined>) => {
     const p = new URLSearchParams();
-    const merged = { category, city: city || undefined, status, ...over };
+    const merged = { category, city: city || undefined, status, kind, ...over };
+    // A kind means nothing outside Free things.
+    if (merged.category !== "items") merged.kind = undefined;
     for (const [k, v] of Object.entries(merged)) {
       if (v && !(k === "status" && v === "open")) p.set(k, v);
     }
@@ -83,7 +111,14 @@ export default async function HelpPage({
       {/* Ask */}
       <div className="mt-8">
         {user ? (
-          <RequestComposer defaultCity={profile?.city ?? LAUNCH_CITY} />
+          <RequestComposer
+            defaultCity={profile?.city ?? LAUNCH_CITY}
+            userId={user.id}
+            voiceEnabled={canRecord}
+            interpreters={interpreters}
+            freeItems={freeItems}
+            spokenLanguages={profile?.languages ?? []}
+          />
         ) : (
           <div className="panel flex flex-wrap items-center justify-between gap-3 rounded-md p-5">
             <p className="text-muted-foreground text-sm">{t("signInToAsk")}</p>
@@ -103,7 +138,7 @@ export default async function HelpPage({
           <Link href={qs({ category: undefined })} className={chip(!category)}>
             {t("allCategories")}
           </Link>
-          {HELP_CATEGORIES.map((c) => (
+          {categories.map((c) => (
             <Link
               key={c}
               href={qs({ category: c })}
@@ -114,6 +149,19 @@ export default async function HelpPage({
             </Link>
           ))}
         </div>
+        {category === "items" && (
+          <div className="flex flex-wrap gap-2">
+            <Link href={qs({ kind: undefined })} className={chip(!kind)}>
+              {t("allItems")}
+            </Link>
+            <Link href={qs({ kind: "give" })} className={chip(kind === "give")}>
+              {t("kindGiveShort")}
+            </Link>
+            <Link href={qs({ kind: "ask" })} className={chip(kind === "ask")}>
+              {t("kindAskShort")}
+            </Link>
+          </div>
+        )}
         <div className="flex gap-2">
           <Link
             href={qs({ status: "open" })}
