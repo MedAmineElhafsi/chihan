@@ -6,6 +6,8 @@ export type NotificationType =
   | "comment"
   | "ad_approved"
   | "ad_rejected"
+  | "buddy_request"
+  | "buddy_accepted"
   | "interpreter_match"
   | "give_match";
 

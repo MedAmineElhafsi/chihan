@@ -51,6 +51,8 @@ export async function createNotifications(
         help_match: "Someone needs help",
         interpreter_match: "Someone needs an interpreter",
         give_match: "Something free near you",
+        buddy_request: "Someone would like you as their buddy",
+        buddy_accepted: "You have a buddy",
       };
       await Promise.all(
         rows.map((r) =>

@@ -54,6 +54,10 @@ export const FEATURES = {
   // reader’s language (migration 0032).
   guides: true,
 
+  // Pairing a newcomer with someone who has been here a while
+  // (migration 0033). Buddies must be verified members.
+  buddies: true,
+
   // Deliberately off. Matches and who-viewed are engagement machinery that
   // works against a community built on helping; billing earns nothing at
   // zero users. All three are one flag away, with their data intact.

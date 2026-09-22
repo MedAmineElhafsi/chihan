@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { BookOpenCheck, HandHeart } from "lucide-react";
+import { BookOpenCheck, HandHeart, HeartHandshake } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
@@ -18,6 +18,7 @@ import { voiceEnabled } from "@/lib/voice";
 import { getGuides, guidesEnabled } from "@/lib/guides";
 import { LAUNCH_COUNTRY } from "@/lib/constants";
 import { SettleIn, type SettleInItem } from "@/components/help/settle-in";
+import { buddiesEnabled } from "@/lib/buddies";
 
 export const generateMetadata = navTitle("help");
 
@@ -90,6 +91,15 @@ export default async function HelpPage({
       body: count
         ? t("hubGuidesBody", { count, city: place })
         : t("hubGuidesEmpty"),
+    });
+  }
+
+  if (await buddiesEnabled()) {
+    settleIn.push({
+      href: "/buddies",
+      icon: HeartHandshake,
+      title: t("hubBuddies"),
+      body: t("hubBuddiesBody"),
     });
   }
 

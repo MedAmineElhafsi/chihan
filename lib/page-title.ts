@@ -12,6 +12,7 @@ type NavName =
   | "messages"
   | "search"
   | "news"
+  | "buddies"
   | "notifications"
   | "settings"
   | "dashboard";
