@@ -3,7 +3,6 @@ import { setRequestLocale } from "next-intl/server";
 
 import { getCurrentUser } from "@/lib/auth";
 import { getOwnProfile } from "@/lib/profiles";
-import { syncVerifiedBadge } from "@/lib/view-actions";
 import { ProfileView } from "@/components/profile/profile-view";
 import { OffersServiceSwitch } from "@/components/profile/offers-service-switch";
 import { VerificationPanel } from "@/components/profile/verification-panel";
@@ -23,7 +22,6 @@ export default async function MyProfilePage({
   const user = await getCurrentUser();
   if (!user) redirect(`/${locale}/login`);
 
-  await syncVerifiedBadge(user.id);
   const profile = await getOwnProfile(user.id);
   const verification = await getMyVerification(user.id);
   if (!profile || !profile.display_name) redirect(`/${locale}/onboarding`);

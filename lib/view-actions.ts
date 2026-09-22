@@ -1,23 +1,10 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-
 import { createClient } from "./supabase/server";
-import { getEntitlements } from "./entitlements";
 
-/** Keep profiles.is_verified in sync with the Premium entitlement. */
-export async function syncVerifiedBadge(userId: string): Promise<void> {
-  try {
-    const ent = await getEntitlements(userId);
-    const supabase = await createClient();
-    await supabase
-      .from("profiles")
-      .update({ is_verified: ent.features.verifiedBadge })
-      .eq("user_id", userId);
-  } catch {
-    // Column / table missing — ignore.
-  }
-}
+// The verified badge is no longer synced from Premium here: it means an
+// administrator checked an identity document (0023), and only
+// decide_verification sets it. See migration 0031.
 
 export async function markProfileViewed(
   profileId: string
@@ -46,14 +33,4 @@ export async function markProfileViewed(
   );
   if (error) return { ok: false };
   return { ok: true };
-}
-
-export async function refreshOwnVerifiedBadge(): Promise<void> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return;
-  await syncVerifiedBadge(user.id);
-  revalidatePath("/profile");
 }

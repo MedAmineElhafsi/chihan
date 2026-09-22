@@ -59,14 +59,10 @@ export async function POST(request: NextRequest) {
       },
       { onConflict: "user_id" }
     );
-
-    // Premium unlocks the verified badge on the member profile.
-    const premium =
-      sub.status === "active" || sub.status === "trialing";
-    await svc
-      .from("profiles")
-      .update({ is_verified: premium })
-      .eq("user_id", uid);
+    // Paying does not verify anyone. "Verified" means an administrator
+    // checked an identity document (0023); it decides who may post jobs and
+    // housing and who may be a buddy, so a subscription must neither grant
+    // it nor, when cancelled, take it away.
   }
 
   try {

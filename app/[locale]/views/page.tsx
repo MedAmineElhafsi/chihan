@@ -11,7 +11,6 @@ import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getEntitlements } from "@/lib/entitlements";
 import { getOwnProfile, getProfileViewers } from "@/lib/profiles";
-import { syncVerifiedBadge } from "@/lib/view-actions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
@@ -30,9 +29,6 @@ export default async function WhoViewedMePage({
 
   const profile = await getOwnProfile(user.id);
   if (!profile || !profile.display_name) redirect(`/${locale}/onboarding`);
-
-  // Keep the verified badge in sync when visiting this premium surface.
-  await syncVerifiedBadge(user.id);
 
   const ent = await getEntitlements(user.id);
   const t = await getTranslations("Views");
