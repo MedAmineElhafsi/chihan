@@ -20,7 +20,13 @@ export function ReportButton({
   targetType,
   targetId,
 }: {
-  targetType: "listing" | "post" | "comment" | "review" | "profile";
+  targetType:
+    | "listing"
+    | "post"
+    | "comment"
+    | "review"
+    | "profile"
+    | "classified";
   targetId: string;
 }) {
   const t = useTranslations("Report");

@@ -38,6 +38,9 @@ export const voiceReady = () => probe("messages", "voice_path");
 /** Migration 0030: interpreter requests and Give & Ask. */
 export const helpKindsReady = () => probe("help_requests", "kind");
 
+/** Migration 0034: the jobs and housing board. */
+export const classifiedsReady = () => probe("classifieds", "kind");
+
 /** Migration 0033: the buddy programme. */
 export const buddiesReady = () => probe("buddy_profiles", "role");
 

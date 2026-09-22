@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { BookOpenCheck, HandHeart, HeartHandshake } from "lucide-react";
+import { BookOpenCheck, Building2, HandHeart, HeartHandshake } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
@@ -19,6 +19,7 @@ import { getGuides, guidesEnabled } from "@/lib/guides";
 import { LAUNCH_COUNTRY } from "@/lib/constants";
 import { SettleIn, type SettleInItem } from "@/components/help/settle-in";
 import { buddiesEnabled } from "@/lib/buddies";
+import { classifiedsEnabled } from "@/lib/classifieds";
 
 export const generateMetadata = navTitle("help");
 
@@ -100,6 +101,15 @@ export default async function HelpPage({
       icon: HeartHandshake,
       title: t("hubBuddies"),
       body: t("hubBuddiesBody"),
+    });
+  }
+
+  if (await classifiedsEnabled()) {
+    settleIn.push({
+      href: "/housing",
+      icon: Building2,
+      title: t("hubBoard"),
+      body: t("hubBoardBody"),
     });
   }
 

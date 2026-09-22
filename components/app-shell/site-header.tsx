@@ -16,6 +16,7 @@ import { NotificationsBell } from "@/components/notifications/notifications-bell
 import { ChatIcon } from "./chat-icon";
 import { guidesEnabled } from "@/lib/guides";
 import { buddiesEnabled } from "@/lib/buddies";
+import { classifiedsEnabled } from "@/lib/classifieds";
 
 // The same five destinations as the mobile tab bar, so the app has one
 // shape on every screen size.
@@ -35,6 +36,7 @@ export async function SiteHeader() {
   const sections = {
     guides: await guidesEnabled(),
     buddies: await buddiesEnabled(),
+    board: await classifiedsEnabled(),
   };
   const [notifItems, unread, unreadMessages] = user
     ? await Promise.all([

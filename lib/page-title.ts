@@ -13,6 +13,8 @@ type NavName =
   | "search"
   | "news"
   | "buddies"
+  | "jobs"
+  | "housing"
   | "notifications"
   | "settings"
   | "dashboard";

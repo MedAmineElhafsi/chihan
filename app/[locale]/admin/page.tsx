@@ -12,6 +12,8 @@ import { isEnabled } from "@/lib/features";
 import { ReportRow } from "@/components/moderation/report-row";
 import { cn } from "@/lib/utils";
 import { getOpenSuggestions, guidesEnabled } from "@/lib/guides";
+import { classifiedsEnabled, getHeldClassifieds } from "@/lib/classifieds";
+import { HeldQueue } from "@/components/admin/held-queue";
 
 export default async function AdminPage({
   params,
@@ -31,11 +33,14 @@ export default async function AdminPage({
     sp.status === "all" ? "all" : "open";
 
   const t = await getTranslations("Admin");
+  const tBoard = await getTranslations("Board");
   const reports = await getReports(statusFilter);
 
   const pendingAds = isEnabled("ads") ? await getPendingAds() : [];
   const withGuides = await guidesEnabled();
   const guideSuggestions = withGuides ? await getOpenSuggestions() : [];
+  const withBoard = await classifiedsEnabled();
+  const held = withBoard ? await getHeldClassifieds() : [];
 
   // Signed links expire in five minutes — these are identity documents.
   const pending = await getVerificationQueue("pending");
@@ -62,6 +67,15 @@ export default async function AdminPage({
             {t("guidesLink", { count: guideSuggestions.length })}
           </Link>
         </nav>
+      )}
+
+      {withBoard && (
+        <section className="mt-8 flex flex-col gap-3">
+          <h2 className="font-display text-xl font-semibold">
+            {tBoard("heldTitle", { count: held.length })}
+          </h2>
+          <HeldQueue items={held} />
+        </section>
       )}
 
       {isEnabled("ads") && (

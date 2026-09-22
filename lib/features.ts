@@ -58,6 +58,10 @@ export const FEATURES = {
   // (migration 0033). Buddies must be verified members.
   buddies: true,
 
+  // Rooms and jobs posted by verified members, screened for the wording
+  // scams use (migration 0034).
+  jobsHousing: true,
+
   // Deliberately off. Matches and who-viewed are engagement machinery that
   // works against a community built on helping; billing earns nothing at
   // zero users. All three are one flag away, with their data intact.
