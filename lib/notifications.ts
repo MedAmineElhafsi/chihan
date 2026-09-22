@@ -53,6 +53,7 @@ export async function createNotifications(
         give_match: "Something free near you",
         buddy_request: "Someone would like you as their buddy",
         buddy_accepted: "You have a buddy",
+        ticket_sold: "A ticket was bought",
       };
       await Promise.all(
         rows.map((r) =>

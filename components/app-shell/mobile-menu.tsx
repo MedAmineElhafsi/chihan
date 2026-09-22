@@ -35,7 +35,12 @@ export function MobileMenu({
   email: string | null;
   isAdmin?: boolean;
   /** Sections that exist once their migration has run. */
-  sections?: { guides?: boolean; buddies?: boolean; board?: boolean };
+  sections?: {
+    guides?: boolean;
+    buddies?: boolean;
+    board?: boolean;
+    tickets?: boolean;
+  };
 }) {
   const tNav = useTranslations("Nav");
   const tCommon = useTranslations("Common");
@@ -92,6 +97,11 @@ export function MobileMenu({
               <Link href="/housing">{tNav("housing")}</Link>
             </DropdownMenuItem>
           </>
+        )}
+        {sections.tickets && (
+          <DropdownMenuItem asChild>
+            <Link href="/tickets">{tNav("tickets")}</Link>
+          </DropdownMenuItem>
         )}
         <DropdownMenuItem asChild>
           <Link href="/search">{tNav("search")}</Link>

@@ -33,6 +33,11 @@ export type FeedItem = {
   my_rsvp: RsvpStatus | null;
   /** Distance in km when "near me" filter is applied. */
   distance_km?: number | null;
+  /** Tickets (migration 0035); null on an event that does not sell any. */
+  ticket_price_cents?: number | null;
+  ticket_capacity?: number | null;
+  ticket_currency?: string | null;
+  tickets_sold?: number;
 };
 
 export type PostComment = {

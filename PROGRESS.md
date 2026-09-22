@@ -855,3 +855,55 @@ what the forms send. Migrations 0028–0030 were applied to a local Postgres
 dressed as Supabase and checked against 49 cases: who can hear a note, who
 can see a photo, that nobody reads the translation store, and that each runs
 twice without error. Contrast on rendered pixels: lowest 7.26.
+
+## Guides, buddies, a board, and two ways to earn
+
+- [x] **City guides** — how a thing works here, step by step, in the
+      reader's language: registering an address, health insurance, a school
+      place, a residence permit. Administrators write them; a guide exists
+      per city or for a whole country, and the reader is shown the version
+      in their own language where it exists and the next best one where it
+      does not. Members can suggest a guide, and a request on the help board
+      can be turned into one. Migration **0032**.
+- [x] **Buddy programme** — someone who has been here a while walks a
+      newcomer through the first months. A buddy must be a verified member
+      and says how many people they can take (one to three); a newcomer
+      asks, the buddy accepts or declines, and accepting opens a chat.
+      Either side can end it at any moment without explaining. Migration
+      **0033**.
+- [x] **Jobs and housing** — rooms, flats and work posted by verified
+      members only. Every post is read for the wording scams use, in
+      English, German, Arabic and Kurdish — money before a viewing, keys by
+      post, a fee to apply, a transfer to a foreign account — and anything
+      that matches is held for an administrator instead of appearing. Three
+      different people reporting a post holds it too. Posts expire after
+      thirty days. Migration **0034**.
+- [x] **A business plan, and tickets for events** — a shop or professional
+      pays monthly and gets longer ad runs (thirty days instead of seven)
+      and its listing's own numbers: how often the page was opened, and how
+      often someone tapped call, WhatsApp, the website, directions or share,
+      counted per day. The numbers say how many, never who, and the owner's
+      own visits are not counted. An organiser can put a price and a number
+      of places on an event; buyers pay through Stripe straight into the
+      organiser's own account, Cîhan keeps 5%, and no card details ever
+      reach Cîhan. Each buyer gets a code, checked in once at the door.
+      Migration **0035**. Both wait for Stripe keys; without them neither
+      surface appears.
+
+Fixed on the way: a list with an odd number of cards painted half a row in
+the hairline colour (guides, the board, the settle-in hub); the statistics
+table aligned to the physical right, so in Arabic and Sorani the numbers sat
+against the words instead of at the end of the row; counts rendered in Latin
+digits beside money in Sorani numerals.
+
+Verified on a production build with sample data (the migrations have not run
+yet): tickets bought and sold, the code at the door, payouts connected, the
+listing statistics both with and without the plan, the event card's Buy
+button and the composer's ticket fields, the guides list, the buddy
+programme and the board, at 375 and 1280, in English, Sorani and Arabic.
+Migrations 0032–0035 were applied to a local Postgres dressed as Supabase
+and checked against 92 cases (16, 25, 24 and 27) — who may write a guide, who may be a buddy,
+what the board holds, who reads a listing's numbers, that nobody can write
+themselves a ticket, and that each runs twice without error — and the whole
+pending set 0026–0035 was then run end to end on a 0025 database, twice.
+Contrast on rendered pixels for the new text: lowest 5.45.

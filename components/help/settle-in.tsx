@@ -52,6 +52,21 @@ export async function SettleIn({ items }: { items: SettleInItem[] }) {
             </span>
           </Link>
         ))}
+        {/* Empty cells would otherwise show the hairline colour as a block;
+            these fill the rest of the last row with the cards' own. */}
+        {items.length % 2 === 1 && (
+          <div
+            className="bg-depth-1 hidden sm:block lg:hidden"
+            aria-hidden="true"
+          />
+        )}
+        {Array.from({ length: (3 - (items.length % 3)) % 3 }).map((_, i) => (
+          <div
+            key={`gap-${i}`}
+            className="bg-depth-1 hidden lg:block"
+            aria-hidden="true"
+          />
+        ))}
       </div>
     </section>
   );

@@ -26,6 +26,7 @@ import { getNews } from "@/lib/news";
 import { getSponsored } from "@/lib/ads";
 import { withSponsored } from "@/lib/sponsored";
 import { navTitle } from "@/lib/page-title";
+import { ticketsAvailable } from "@/lib/tickets";
 import { cn } from "@/lib/utils";
 
 export const generateMetadata = navTitle("explore");
@@ -53,6 +54,8 @@ export default async function FeedPage({
   ]);
   const t = await getTranslations("Feed");
   const tNav = await getTranslations("Nav");
+  // Ticket fields only appear where tickets can actually be sold.
+  const canSellTickets = await ticketsAvailable();
 
   const hasLocation =
     profile?.lat != null &&
@@ -165,7 +168,7 @@ export default async function FeedPage({
                 </Button>
               </div>
             ) : ent.features.createPosts ? (
-              <FeedComposer userId={user.id} />
+              <FeedComposer userId={user.id} tickets={canSellTickets} />
             ) : (
               <div className="social-surface border-cyan/25 ring-cyan/15 flex flex-col gap-3 p-4 ring-1 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-start gap-3">

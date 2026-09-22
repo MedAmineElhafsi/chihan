@@ -4,9 +4,11 @@ import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   CalendarPlus,
+  ChevronDown,
   ImagePlus,
   Loader2,
   PenLine,
+  Ticket as TicketIcon,
   X,
 } from "lucide-react";
 
@@ -22,7 +24,14 @@ import { cn } from "@/lib/utils";
 const fieldClass =
   "h-11 w-full rounded-md border border-input bg-card/40 px-3.5 text-sm shadow-elev-1 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60";
 
-export function FeedComposer({ userId }: { userId: string }) {
+export function FeedComposer({
+  userId,
+  tickets = false,
+}: {
+  userId: string;
+  /** Whether this Cîhan can sell tickets at all (Stripe + migration 0035). */
+  tickets?: boolean;
+}) {
   const t = useTranslations("Feed");
   const router = useRouter();
   const fileInput = useRef<HTMLInputElement>(null);
@@ -32,6 +41,8 @@ export function FeedComposer({ userId }: { userId: string }) {
   const [eventTitle, setEventTitle] = useState("");
   const [eventAt, setEventAt] = useState("");
   const [eventLocation, setEventLocation] = useState("");
+  const [ticketPrice, setTicketPrice] = useState("");
+  const [ticketCapacity, setTicketCapacity] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -80,6 +91,8 @@ export function FeedComposer({ userId }: { userId: string }) {
               eventTitle,
               eventAt,
               eventLocation,
+              ticketPrice,
+              ticketCapacity,
             })
           : await createPost({ type: "post", body, media });
 
@@ -92,6 +105,8 @@ export function FeedComposer({ userId }: { userId: string }) {
       setEventTitle("");
       setEventAt("");
       setEventLocation("");
+      setTicketPrice("");
+      setTicketCapacity("");
       setFile(null);
       setPreview(null);
       setLoading(false);
@@ -150,6 +165,40 @@ export function FeedComposer({ userId }: { userId: string }) {
                 placeholder={t("eventLocation")}
               />
             </div>
+            {/* Free is the normal case, so this only appears if asked for. */}
+            {tickets && (
+              <details className="group">
+                <summary className="text-muted-foreground hover:text-foreground inline-flex cursor-pointer list-none items-center gap-1.5 text-sm">
+                  <TicketIcon className="size-4" />
+                  {t("ticketsToggle")}
+                  <ChevronDown
+                    className="size-4 transition-transform group-open:rotate-180"
+                    aria-hidden="true"
+                  />
+                </summary>
+                <div className="mt-2 grid gap-3 sm:grid-cols-2">
+                  <Input
+                    type="text"
+                    inputMode="decimal"
+                    value={ticketPrice}
+                    onChange={(e) => setTicketPrice(e.target.value)}
+                    placeholder={t("ticketPrice")}
+                    aria-label={t("ticketPrice")}
+                  />
+                  <Input
+                    type="text"
+                    inputMode="numeric"
+                    value={ticketCapacity}
+                    onChange={(e) => setTicketCapacity(e.target.value)}
+                    placeholder={t("ticketCapacity")}
+                    aria-label={t("ticketCapacity")}
+                  />
+                </div>
+                <p className="text-muted-foreground mt-2 text-xs">
+                  {t("ticketsHint")}
+                </p>
+              </details>
+            )}
           </>
         )}
 

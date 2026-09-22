@@ -23,6 +23,7 @@ import {
 } from "@/lib/feed-actions";
 import { setEventRsvp } from "@/lib/event-rsvp-actions";
 import { downloadEventIcs } from "@/lib/event-ics";
+import { TicketButton } from "@/components/feed/ticket-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -256,6 +257,19 @@ export function PostCard({
               {t("addToCalendar")}
             </button>
           </div>
+
+          {item.ticket_price_cents != null && item.ticket_capacity != null && (
+            <TicketButton
+              className="border-cyan/20 mt-2.5 border-t pt-2.5"
+              eventId={item.id}
+              priceCents={item.ticket_price_cents}
+              capacity={item.ticket_capacity}
+              sold={item.tickets_sold ?? 0}
+              currency={item.ticket_currency ?? "eur"}
+              isOrganiser={currentUserId === item.author_id}
+              canBuy={canInteract}
+            />
+          )}
         </div>
       )}
 

@@ -17,6 +17,7 @@ import { ChatIcon } from "./chat-icon";
 import { guidesEnabled } from "@/lib/guides";
 import { buddiesEnabled } from "@/lib/buddies";
 import { classifiedsEnabled } from "@/lib/classifieds";
+import { ticketsAvailable } from "@/lib/tickets";
 
 // The same five destinations as the mobile tab bar, so the app has one
 // shape on every screen size.
@@ -37,6 +38,7 @@ export async function SiteHeader() {
     guides: await guidesEnabled(),
     buddies: await buddiesEnabled(),
     board: await classifiedsEnabled(),
+    tickets: await ticketsAvailable(),
   };
   const [notifItems, unread, unreadMessages] = user
     ? await Promise.all([
@@ -85,7 +87,7 @@ export async function SiteHeader() {
               />
             )}
             <span className="mx-1 h-4 w-px bg-border" />
-            <UserMenu email={email} isAdmin={admin} />
+            <UserMenu email={email} isAdmin={admin} tickets={sections.tickets} />
           </div>
 
           <div className="flex items-center gap-0.5 lg:hidden">

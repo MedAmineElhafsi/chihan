@@ -12,6 +12,7 @@ import {
   Languages,
   Gift,
   HeartHandshake,
+  Ticket,
 } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
@@ -50,6 +51,7 @@ function typeIcon(
   }
   if (type === "interpreter_match") return Languages;
   if (type === "give_match") return Gift;
+  if (type === "ticket_sold") return Ticket;
   if (type === "ad_approved" || type === "ad_rejected") return Megaphone;
   if (type === "like") return Heart;
   if (type === "comment") return MessageSquare;
@@ -75,6 +77,7 @@ function notificationCopy(
   if (n.type === "buddy_accepted") return t("buddy_accepted", { name });
   if (n.type === "interpreter_match") return t("interpreter_match", { name });
   if (n.type === "give_match") return t("give_match", { name });
+  if (n.type === "ticket_sold") return t("ticket_sold", { name });
   if (n.type === "ad_approved" || n.type === "ad_rejected") {
     return t(n.type, {
       listing: isolate(n.context_label || t("yourListing")),

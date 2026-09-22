@@ -9,7 +9,8 @@ export type NotificationType =
   | "buddy_request"
   | "buddy_accepted"
   | "interpreter_match"
-  | "give_match";
+  | "give_match"
+  | "ticket_sold";
 
 export type AppNotification = {
   id: string;

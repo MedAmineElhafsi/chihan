@@ -15,6 +15,7 @@ type NavName =
   | "buddies"
   | "jobs"
   | "housing"
+  | "tickets"
   | "notifications"
   | "settings"
   | "dashboard";

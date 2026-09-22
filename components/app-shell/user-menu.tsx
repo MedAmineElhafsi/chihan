@@ -9,6 +9,7 @@ import {
   MessageSquare,
   Settings,
   ShieldCheck,
+  Ticket as TicketIcon,
   UserRound,
 } from "lucide-react";
 
@@ -28,9 +29,12 @@ import {
 export function UserMenu({
   email,
   isAdmin,
+  tickets = false,
 }: {
   email: string | null;
   isAdmin?: boolean;
+  /** Only where tickets can be sold at all (Stripe + migration 0035). */
+  tickets?: boolean;
 }) {
   const t = useTranslations("Nav");
 
@@ -98,6 +102,14 @@ export function UserMenu({
             {t("notifications")}
           </Link>
         </DropdownMenuItem>
+        {tickets && (
+          <DropdownMenuItem asChild>
+            <Link href="/tickets">
+              <TicketIcon />
+              {t("tickets")}
+            </Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem asChild>
           <Link href="/dashboard">
             <LayoutDashboard />

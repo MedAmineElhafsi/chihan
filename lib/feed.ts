@@ -2,6 +2,7 @@ import "server-only";
 
 import { createClient } from "./supabase/server";
 import { getHiddenAuthorIds } from "./blocks";
+import { ticketsReady } from "./schema-ready";
 import type {
   FeedAuthor,
   FeedItem,
@@ -104,6 +105,65 @@ async function loadRsvps(
   return { going, interested, mine };
 }
 
+/**
+ * What an event asks for a ticket, and how many places are gone. Read
+ * separately from the posts themselves so the feed's own query keeps
+ * working on a database where migration 0035 has not run.
+ */
+async function loadTickets(
+  supabase: Supabase,
+  eventIds: string[]
+): Promise<
+  Map<
+    string,
+    { price: number; capacity: number; currency: string; sold: number }
+  >
+> {
+  const out = new Map<
+    string,
+    { price: number; capacity: number; currency: string; sold: number }
+  >();
+  if (eventIds.length === 0 || !(await ticketsReady())) return out;
+  try {
+    const { data } = await supabase
+      .from("posts")
+      .select("id, ticket_price_cents, ticket_capacity, ticket_currency")
+      .in("id", eventIds)
+      .not("ticket_price_cents", "is", null);
+    const rows = (data ?? []) as Array<{
+      id: string;
+      ticket_price_cents: number | null;
+      ticket_capacity: number | null;
+      ticket_currency: string | null;
+    }>;
+    if (rows.length === 0) return out;
+
+    const { data: sold } = await supabase.rpc("tickets_sold_many", {
+      p_events: rows.map((r) => String(r.id)),
+    });
+    const soldBy = new Map<string, number>();
+    for (const s of (sold ?? []) as Array<{
+      event_id: string;
+      sold: number;
+    }>) {
+      soldBy.set(String(s.event_id), Number(s.sold));
+    }
+
+    for (const r of rows) {
+      if (!r.ticket_price_cents || !r.ticket_capacity) continue;
+      out.set(String(r.id), {
+        price: Number(r.ticket_price_cents),
+        capacity: Number(r.ticket_capacity),
+        currency: String(r.ticket_currency ?? "eur"),
+        sold: soldBy.get(String(r.id)) ?? 0,
+      });
+    }
+  } catch {
+    // pre-migration
+  }
+  return out;
+}
+
 export async function mapPostRows(
   supabase: Supabase,
   data: Array<Record<string, unknown>>,
@@ -129,11 +189,9 @@ export async function mapPostRows(
 
   const authorIds = [...new Set(rows.map((r) => r.author_id))];
   const authors = await loadAuthors(supabase, authorIds);
-  const rsvps = await loadRsvps(
-    supabase,
-    rows.filter((r) => r.type === "event").map((r) => r.id),
-    viewerId
-  );
+  const eventIds = rows.filter((r) => r.type === "event").map((r) => r.id);
+  const rsvps = await loadRsvps(supabase, eventIds, viewerId);
+  const tickets = await loadTickets(supabase, eventIds);
 
   const likedSet = new Set<string>();
   if (viewerId && rows.length) {
@@ -152,6 +210,10 @@ export async function mapPostRows(
 
   return rows.map((r) => ({
     ...r,
+    ticket_price_cents: tickets.get(r.id)?.price ?? null,
+    ticket_capacity: tickets.get(r.id)?.capacity ?? null,
+    ticket_currency: tickets.get(r.id)?.currency ?? null,
+    tickets_sold: tickets.get(r.id)?.sold ?? 0,
     liked: likedSet.has(r.id),
     author:
       authors.get(r.author_id) ?? {

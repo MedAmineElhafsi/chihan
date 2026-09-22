@@ -8,6 +8,8 @@ import { getEntitlements } from "./entitlements";
 import { geocode } from "./geocode";
 import { getComments } from "./feed";
 import { createNotification } from "./notifications";
+import { ticketsConfigured } from "./stripe";
+import { ticketsReady } from "./schema-ready";
 import type { PostComment } from "@/types/post";
 
 const postSchema = z.object({
@@ -17,6 +19,9 @@ const postSchema = z.object({
   eventTitle: z.string().trim().max(140).optional().default(""),
   eventAt: z.string().optional().default(""),
   eventLocation: z.string().trim().max(160).optional().default(""),
+  /** What a ticket costs, as typed: "10", "10.50". Empty means free. */
+  ticketPrice: z.string().trim().max(12).optional().default(""),
+  ticketCapacity: z.string().trim().max(7).optional().default(""),
 });
 
 export type CreatePostInput = z.input<typeof postSchema>;
@@ -56,6 +61,25 @@ export async function createPost(
     return { ok: false, error: "Events need a title and a date." };
   }
 
+  // Tickets, when the organiser asked for them and Stripe can take money.
+  let ticketPriceCents: number | null = null;
+  let ticketCapacity: number | null = null;
+  if (v.type === "event" && (v.ticketPrice || v.ticketCapacity)) {
+    if (!ticketsConfigured() || !(await ticketsReady())) {
+      return { ok: false, error: "Tickets are not available yet." };
+    }
+    const price = Number(v.ticketPrice.replace(",", "."));
+    const places = Number(v.ticketCapacity);
+    if (!Number.isFinite(price) || price < 1) {
+      return { ok: false, error: "A ticket costs at least 1." };
+    }
+    if (!Number.isInteger(places) || places < 1 || places > 100000) {
+      return { ok: false, error: "Say how many places there are." };
+    }
+    ticketPriceCents = Math.round(price * 100);
+    ticketCapacity = places;
+  }
+
   let eventLat: number | null = null;
   let eventLng: number | null = null;
   if (v.type === "event" && v.eventLocation) {
@@ -75,6 +99,12 @@ export async function createPost(
           event_location: v.eventLocation || null,
           event_lat: eventLat,
           event_lng: eventLng,
+          ...(ticketPriceCents !== null
+            ? {
+                ticket_price_cents: ticketPriceCents,
+                ticket_capacity: ticketCapacity,
+              }
+            : {}),
         }
       : {
           author_id: user.id,

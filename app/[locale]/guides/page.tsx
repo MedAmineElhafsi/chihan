@@ -147,6 +147,14 @@ export default async function GuidesPage({
                 {guides.city.map((g) => (
                   <GuideCard key={g.slug} guide={g} />
                 ))}
+                {/* An odd card would leave half a row painted in the hairline
+                    colour; this fills it with the cards' own background. */}
+                {guides.city.length % 2 === 1 && (
+                  <div
+                    className="bg-depth-1 hidden sm:block"
+                    aria-hidden="true"
+                  />
+                )}
               </div>
             </section>
           )}
@@ -159,6 +167,12 @@ export default async function GuidesPage({
                 {guides.country.map((g) => (
                   <GuideCard key={g.slug} guide={g} />
                 ))}
+                {guides.country.length % 2 === 1 && (
+                  <div
+                    className="bg-depth-1 hidden sm:block"
+                    aria-hidden="true"
+                  />
+                )}
               </div>
             </section>
           )}

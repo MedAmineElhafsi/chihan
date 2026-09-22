@@ -4,9 +4,11 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
   BadgeCheck,
+  BarChart3,
   Globe,
   Mail,
   MapPin,
+  Navigation,
   Pencil,
   Phone,
 } from "lucide-react";
@@ -31,6 +33,8 @@ import { ShareButton } from "@/components/share/share-button";
 import { WhatsAppGlyph } from "@/components/icons/whatsapp-glyph";
 import { preview, snippet } from "@/lib/og";
 import { getListingDetails } from "@/lib/listing-details";
+import { ListingTracker } from "@/components/directory/listing-tracker";
+import { businessReady } from "@/lib/schema-ready";
 import { isOpenNow, localWeekday } from "@/lib/opening-hours";
 import { cn } from "@/lib/utils";
 import { WEEKDAYS, type Weekday } from "@/types/listing";
@@ -113,9 +117,20 @@ export default async function ListingDetailPage({
   const whatsappHref = details?.whatsapp
     ? `https://wa.me/${details.whatsapp.replace(/^\+/, "")}`
     : null;
+  const directionsHref = located
+    ? `https://www.openstreetmap.org/directions?to=${listing.lat},${listing.lng}`
+    : place
+      ? `https://www.openstreetmap.org/search?query=${encodeURIComponent(place)}`
+      : null;
+
+  // A listing's own numbers (migration 0035): counted for every listing,
+  // shown to its owner.
+  const counts = await businessReady();
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+      {counts && <ListingTracker listingId={listing.id} />}
+
       <Link
         href="/directory"
         className="text-sm text-muted-foreground transition-colors hover:text-foreground"
@@ -154,16 +169,26 @@ export default async function ListingDetailPage({
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
-          <ShareButton
-            path={`/directory/${listing.id}`}
-            title={listing.name}
-            size="default"
-          />
+          <span data-stat="share">
+            <ShareButton
+              path={`/directory/${listing.id}`}
+              title={listing.name}
+              size="default"
+            />
+          </span>
           {isOwner && (
             <Button asChild variant="outline" className="gap-1.5">
               <Link href={`/directory/${listing.id}/edit`}>
                 <Pencil className="size-4" />
                 {t("edit")}
+              </Link>
+            </Button>
+          )}
+          {isOwner && counts && (
+            <Button asChild variant="outline" className="gap-1.5">
+              <Link href={`/directory/${listing.id}/stats`}>
+                <BarChart3 className="size-4" />
+                {t("statistics")}
               </Link>
             </Button>
           )}
@@ -277,6 +302,7 @@ export default async function ListingDetailPage({
                   href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
+                  data-stat="whatsapp"
                 >
                   <WhatsAppGlyph className="size-4 text-[#25d366]" />
                   {t("whatsappButton")}
@@ -289,11 +315,24 @@ export default async function ListingDetailPage({
                 <span>{place}</span>
               </div>
             )}
+            {directionsHref && (
+              <a
+                href={directionsHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-cyan flex items-center gap-2.5 text-sm transition-colors"
+                data-stat="directions"
+              >
+                <Navigation className="text-cyan size-4 shrink-0" />
+                {t("directions")}
+              </a>
+            )}
             {listing.phone && (
               <a
                 href={`tel:${listing.phone}`}
                 className="flex items-center gap-2.5 text-sm transition-colors hover:text-cyan"
                 dir="ltr"
+                data-stat="call"
               >
                 <Phone className="size-4 shrink-0 text-cyan" />
                 {listing.phone}
@@ -320,6 +359,7 @@ export default async function ListingDetailPage({
                 rel="noopener noreferrer"
                 className="flex items-center gap-2.5 break-all text-sm transition-colors hover:text-cyan"
                 dir="ltr"
+                data-stat="website"
               >
                 <Globe className="size-4 shrink-0 text-cyan" />
                 {t("visitWebsite")}

@@ -266,3 +266,75 @@ bill; reading as the reader means nothing can be translated that the reader
 could not already read. Google is the one service that translates both
 Kurmanji and Sorani. Readers are told Google translated it, and the privacy
 notice says the text is sent there.
+
+## Guides are written, not crowdsourced
+
+**Decision.** A guide is written and published by an administrator, in as
+many languages as it exists in, with the date it was last checked on the
+page. Members cannot edit one; they can suggest that a guide should exist,
+and a question on the help board can be turned into a suggestion in one tap.
+A reader is shown the guide in their own language where it exists, and the
+next best language where it does not.
+
+**Why.** Wrong information about a residence permit costs somebody their
+status. A wiki would be faster to fill and impossible to trust; the
+suggestion box keeps the community's knowledge of what is missing without
+putting the office's rules in anyone's hands. The review date is there so a
+reader can see when an answer went stale rather than assume it did not.
+
+## A buddy must be a verified member
+
+**Decision.** Only a member whose identity an administrator has checked may
+offer to be a buddy, and only they may post a room or a job. Being a
+newcomer asking for a buddy needs nothing. Either side ends a buddyship
+instantly, without a reason, and the programme's safety note is on the page
+rather than behind a link.
+
+**Why.** A buddy sits beside someone at an office and reads their post. A
+landlord takes a deposit. The people on the receiving end are new, often
+without the language, and frequently alone — the asymmetry is the whole
+point of the feature, so the side with the power is the side that gets
+checked. Paying for anything never grants this; only a document does.
+
+## The board holds a post, it does not delete it
+
+**Decision.** Every job and room is read on the way in for the wording scams
+use — money before a viewing, keys by post, a fee to apply, a transfer to a
+foreign account — in English, German, Arabic and Kurdish. A match holds the
+post for an administrator instead of publishing it; three different people
+reporting a post holds it too. Nothing is thrown away, and the author is not
+accused of anything.
+
+**Why.** The same sentence can be a fraud or a clumsy translation. Holding
+costs an honest poster a few hours and costs a scammer their whole
+opportunity, which is the right way round; deleting would lose the evidence
+and tell the scammer exactly which words to change.
+
+## Ticket money never passes through Cîhan
+
+**Decision.** An organiser connects their own Stripe account, and a buyer's
+payment is made straight into it, with Cîhan's 5% taken as a platform fee on
+the way. Cîhan never holds anyone else's money, never sees a card, and
+writes a ticket only when Stripe says the payment completed — the checkout
+session's id is unique in the table, so a retried webhook cannot sell the
+same place twice. The price and the number of places left are read on the
+server, never taken from the page.
+
+**Why.** Holding other people's money is a regulated business and a
+liability Cîhan has no reason to take on. This way an organiser is paid
+whether or not Cîhan is still running, and a lost webhook can be replayed
+without double-selling.
+
+## A business learns how many, never who
+
+**Decision.** A listing's statistics are a count per day and per kind — page
+opened, tapped call, tapped WhatsApp, tapped the website, asked for
+directions, shared. There is no row per visit and nothing that identifies a
+visitor, the owner's own visits are not counted, and only the owner can read
+the numbers. The headline totals are free; the day-by-day detail is what the
+business plan buys.
+
+**Why.** A shop needs to know whether the listing works, which a count
+answers. Anything finer would mean keeping a record of who looked at what,
+for an audience with good reason to be careful about exactly that — and once
+such a record exists it can be demanded.

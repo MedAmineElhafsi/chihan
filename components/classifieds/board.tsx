@@ -143,6 +143,10 @@ export async function ClassifiedsBoard({
           {items.map((item) => (
             <ClassifiedCard key={item.id} item={item} />
           ))}
+          {/* An odd card would leave half a row in the hairline colour. */}
+          {items.length % 2 === 1 && (
+            <div className="bg-depth-1 hidden sm:block" aria-hidden="true" />
+          )}
         </div>
       )}
     </div>
