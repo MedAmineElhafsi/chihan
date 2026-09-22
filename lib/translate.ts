@@ -20,8 +20,32 @@ export function translationAvailable(): boolean {
 
 export type Translated = { text: string; detected: string | null };
 
-/** Several texts into one language, in one call. Throws on any failure. */
+/**
+ * Several texts into one language. A long guide is sent in batches: the
+ * service takes at most 128 texts, and a few hundred KB, per request.
+ */
 export async function googleTranslate(
+  texts: string[],
+  target: string
+): Promise<Translated[]> {
+  const out: Translated[] = [];
+  let batch: string[] = [];
+  let size = 0;
+  for (const text of texts) {
+    if (batch.length && (batch.length >= 100 || size + text.length > 20_000)) {
+      out.push(...(await translateBatch(batch, target)));
+      batch = [];
+      size = 0;
+    }
+    batch.push(text);
+    size += text.length;
+  }
+  if (batch.length) out.push(...(await translateBatch(batch, target)));
+  return out;
+}
+
+/** One request. Throws on any failure. */
+async function translateBatch(
   texts: string[],
   target: string
 ): Promise<Translated[]> {

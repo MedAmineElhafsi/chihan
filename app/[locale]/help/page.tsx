@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { HandHeart } from "lucide-react";
+import { BookOpenCheck, HandHeart } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
@@ -15,6 +15,9 @@ import { navTitle } from "@/lib/page-title";
 import { isEnabled } from "@/lib/features";
 import { helpKindsReady } from "@/lib/schema-ready";
 import { voiceEnabled } from "@/lib/voice";
+import { getGuides, guidesEnabled } from "@/lib/guides";
+import { LAUNCH_COUNTRY } from "@/lib/constants";
+import { SettleIn, type SettleInItem } from "@/components/help/settle-in";
 
 export const generateMetadata = navTitle("help");
 
@@ -70,6 +73,25 @@ export default async function HelpPage({
     { category, city: city || undefined, status, kind },
     user?.id
   );
+
+  // The other ways to settle in, beside the board.
+  const place = city || profile?.city || LAUNCH_CITY;
+  const settleIn: SettleInItem[] = [];
+  if (await guidesEnabled()) {
+    const guides = await getGuides(
+      { city: place, country: profile?.country || LAUNCH_COUNTRY },
+      locale
+    );
+    const count = guides.city.length + guides.country.length;
+    settleIn.push({
+      href: `/guides?city=${encodeURIComponent(place)}`,
+      icon: BookOpenCheck,
+      title: t("hubGuides"),
+      body: count
+        ? t("hubGuidesBody", { count, city: place })
+        : t("hubGuidesEmpty"),
+    });
+  }
 
   const qs = (over: Record<string, string | undefined>) => {
     const p = new URLSearchParams();
@@ -131,6 +153,8 @@ export default async function HelpPage({
           </div>
         )}
       </div>
+
+      <SettleIn items={settleIn} />
 
       {/* Filters */}
       <div className="border-border mt-8 flex flex-col gap-3 border-b pb-5">

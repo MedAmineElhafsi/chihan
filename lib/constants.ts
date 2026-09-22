@@ -214,6 +214,9 @@ export const PROFILE_PHOTOS_MAX = 8;
 /** The launch community. Used as the default filter on the help board. */
 export const LAUNCH_CITY = "Berlin";
 
+/** Its country: which country-wide guides a reader sees by default. */
+export const LAUNCH_COUNTRY = "Germany";
+
 /** What newcomers actually need help with (matches the DB CHECK). */
 export const HELP_CATEGORIES = [
   "housing",

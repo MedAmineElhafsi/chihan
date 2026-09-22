@@ -37,3 +37,6 @@ export const voiceReady = () => probe("messages", "voice_path");
 
 /** Migration 0030: interpreter requests and Give & Ask. */
 export const helpKindsReady = () => probe("help_requests", "kind");
+
+/** Migration 0032: city guides. */
+export const guidesReady = () => probe("guides", "slug");

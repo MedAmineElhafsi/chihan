@@ -21,6 +21,11 @@ import { OfferText, RequestText } from "@/components/help/request-text";
 import { VoicePlayer } from "@/components/voice/voice-player";
 import { ShareButton } from "@/components/share/share-button";
 import { preview } from "@/lib/og";
+import { getGuidesForHelp, guidesEnabled, hasSuggestedFromRequest } from "@/lib/guides";
+import { getOwnProfile } from "@/lib/profiles";
+import { LAUNCH_COUNTRY } from "@/lib/constants";
+import { GuideTopicIcon } from "@/components/guides/guide-topic";
+import { SuggestGuideButton } from "@/components/guides/suggest-guide-button";
 
 /**
  * Requests are members-only, and a link preview is drawn by an anonymous
@@ -57,13 +62,32 @@ export default async function HelpRequestPage({
   const request = await getHelpRequest(id);
   if (!request) notFound();
 
-  const [offers, t, tDir, suggested, canRecord] = await Promise.all([
-    getHelpOffers(id),
-    getTranslations("Help"),
-    getTranslations("Directory"),
-    getSuggestedListings(request.category, request.city),
-    voiceEnabled(),
-  ]);
+  const [offers, t, tDir, tGuides, suggested, canRecord, profile, withGuides] =
+    await Promise.all([
+      getHelpOffers(id),
+      getTranslations("Help"),
+      getTranslations("Directory"),
+      getTranslations("Guides"),
+      getSuggestedListings(request.category, request.city),
+      voiceEnabled(),
+      getOwnProfile(user.id),
+      guidesEnabled(),
+    ]);
+  // A guide that may already answer this, and whether the asker has
+  // already offered their answer back as one.
+  const [guides, alreadySuggested] = withGuides
+    ? await Promise.all([
+        getGuidesForHelp(
+          request.category,
+          {
+            city: request.city,
+            country: profile?.country || LAUNCH_COUNTRY,
+          },
+          locale
+        ),
+        hasSuggestedFromRequest(request.id, user.id),
+      ])
+    : [[], false];
 
   const style =
     HELP_CATEGORY_STYLE[request.category] ?? HELP_CATEGORY_STYLE.other;
@@ -265,14 +289,61 @@ export default async function HelpRequestPage({
             <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
               {t("memoryBody")}
             </p>
-            <Link
-              href="/directory/new"
-              className="border-cyan/40 text-cyan hover:bg-cyan/10 mt-4 inline-flex items-center gap-2 rounded-sm border px-4 py-2 font-mono text-xs tracking-[0.14em] uppercase transition-colors"
-            >
-              {t("memoryCta")}
-            </Link>
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <Link
+                href="/directory/new"
+                className="border-cyan/40 text-cyan hover:bg-cyan/10 inline-flex items-center gap-2 rounded-sm border px-4 py-2 font-mono text-xs tracking-[0.14em] uppercase transition-colors"
+              >
+                {t("memoryCta")}
+              </Link>
+              {withGuides && (
+                <SuggestGuideButton
+                  variant="panel"
+                  requestId={request.id}
+                  defaultTitle={request.title}
+                  defaultCity={request.city ?? ""}
+                  alreadySuggested={alreadySuggested}
+                />
+              )}
+            </div>
           </section>
         )}
+
+      {/* A guide may already answer this, step by step. */}
+      {guides.length > 0 && (
+        <section className="mt-8 flex flex-col gap-3">
+          <h2 className="font-display text-air text-xl font-semibold">
+            {tGuides("mightHelp")}
+          </h2>
+          <ul className="flex flex-col gap-2">
+            {guides.map((g) => (
+              <li key={g.slug}>
+                <Link
+                  href={`/guides/${g.slug}`}
+                  className="panel hover:border-cyan/40 flex items-start gap-3 rounded-md p-4 transition-colors"
+                >
+                  <span className="bg-cyan/10 text-cyan flex size-9 shrink-0 items-center justify-center rounded-md">
+                    <GuideTopicIcon topic={g.topic} />
+                  </span>
+                  <span className="min-w-0">
+                    <span dir="auto" className="text-air block font-medium">
+                      {g.title}
+                    </span>
+                    {g.summary && (
+                      <span
+                        dir="auto"
+                        className="text-muted-foreground line-clamp-2 block text-sm"
+                      >
+                        {g.summary}
+                      </span>
+                    )}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* Places in the directory that might already answer this */}
       {suggested.length > 0 && (

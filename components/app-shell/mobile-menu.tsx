@@ -30,9 +30,12 @@ import {
 export function MobileMenu({
   email,
   isAdmin,
+  sections = {},
 }: {
   email: string | null;
   isAdmin?: boolean;
+  /** Sections that exist once their migration has run. */
+  sections?: { guides?: boolean };
 }) {
   const tNav = useTranslations("Nav");
   const tCommon = useTranslations("Common");
@@ -70,6 +73,11 @@ export function MobileMenu({
         <DropdownMenuItem asChild>
           <Link href="/news">{tNav("news")}</Link>
         </DropdownMenuItem>
+        {sections.guides && (
+          <DropdownMenuItem asChild>
+            <Link href="/guides">{tNav("guides")}</Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem asChild>
           <Link href="/search">{tNav("search")}</Link>
         </DropdownMenuItem>

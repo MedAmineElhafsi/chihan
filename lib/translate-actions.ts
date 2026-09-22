@@ -6,7 +6,7 @@ import { createClient } from "./supabase/server";
 import { createServiceClient } from "./supabase/service";
 import { googleTranslate, translationAvailable } from "./translate";
 
-export type TranslateKind = "post" | "help_request" | "help_offer";
+export type TranslateKind = "post" | "help_request" | "help_offer" | "guide";
 
 export type TranslateResult =
   | {
@@ -35,7 +35,32 @@ const FIELDS: Record<TranslateKind, { table: string; columns: string[] }> = {
   post: { table: "posts", columns: ["event_title", "body"] },
   help_request: { table: "help_requests", columns: ["title", "body"] },
   help_offer: { table: "help_offers", columns: ["body"] },
+  guide: { table: "guides", columns: ["title", "summary", "steps"] },
 };
+
+/**
+ * The texts to translate, by name. A guide’s steps are a list, so each
+ * step’s title and body become fields of their own (step_0_title, …).
+ */
+function textsOf(row: Record<string, unknown>, columns: string[]) {
+  const out: Record<string, string> = {};
+  for (const c of columns) {
+    const v = row[c];
+    if (typeof v === "string" && v.trim()) out[c] = v;
+    if (c === "steps" && Array.isArray(v)) {
+      v.forEach((step, i) => {
+        const s = step as { title?: unknown; body?: unknown };
+        if (typeof s.title === "string" && s.title.trim()) {
+          out[`step_${i}_title`] = s.title;
+        }
+        if (typeof s.body === "string" && s.body.trim()) {
+          out[`step_${i}_body`] = s.body;
+        }
+      });
+    }
+  }
+  return out;
+}
 
 /**
  * Translates a post, a request or a reply into the reader's language.
@@ -69,11 +94,7 @@ export async function translateContent(
     .eq("id", id)
     .maybeSingle();
   if (!row) return { ok: false, error: "notfound" };
-  const source: Record<string, string> = {};
-  for (const c of spec.columns) {
-    const v = (row as unknown as Record<string, unknown>)[c];
-    if (typeof v === "string" && v.trim()) source[c] = v;
-  }
+  const source = textsOf(row as unknown as Record<string, unknown>, spec.columns);
   if (Object.keys(source).length === 0) return { ok: false, error: "notfound" };
 
   const hash = createHash("sha256")

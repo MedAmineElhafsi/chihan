@@ -14,6 +14,7 @@ import { UserMenu } from "./user-menu";
 import { MobileMenu } from "./mobile-menu";
 import { NotificationsBell } from "@/components/notifications/notifications-bell";
 import { ChatIcon } from "./chat-icon";
+import { guidesEnabled } from "@/lib/guides";
 
 // The same five destinations as the mobile tab bar, so the app has one
 // shape on every screen size.
@@ -30,6 +31,7 @@ export async function SiteHeader() {
   const user = await getCurrentUser();
   const email = user?.email ?? null;
   const admin = user ? await isAdmin(user.id) : false;
+  const sections = { guides: await guidesEnabled() };
   const [notifItems, unread, unreadMessages] = user
     ? await Promise.all([
         listNotifications(user.id, 8),
@@ -88,7 +90,7 @@ export async function SiteHeader() {
                 initialUnread={unread}
               />
             )}
-            <MobileMenu email={email} isAdmin={admin} />
+            <MobileMenu email={email} isAdmin={admin} sections={sections} />
           </div>
         </div>
       </div>

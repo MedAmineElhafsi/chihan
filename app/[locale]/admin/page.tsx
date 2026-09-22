@@ -11,6 +11,7 @@ import { getPendingAds } from "@/lib/ads";
 import { isEnabled } from "@/lib/features";
 import { ReportRow } from "@/components/moderation/report-row";
 import { cn } from "@/lib/utils";
+import { getOpenSuggestions, guidesEnabled } from "@/lib/guides";
 
 export default async function AdminPage({
   params,
@@ -33,6 +34,8 @@ export default async function AdminPage({
   const reports = await getReports(statusFilter);
 
   const pendingAds = isEnabled("ads") ? await getPendingAds() : [];
+  const withGuides = await guidesEnabled();
+  const guideSuggestions = withGuides ? await getOpenSuggestions() : [];
 
   // Signed links expire in five minutes — these are identity documents.
   const pending = await getVerificationQueue("pending");
@@ -49,6 +52,17 @@ export default async function AdminPage({
         {t("title")}
       </h1>
       <p className="mt-1 text-muted-foreground">{t("subtitle")}</p>
+
+      {withGuides && (
+        <nav className="mt-6 flex flex-wrap gap-2">
+          <Link
+            href="/admin/guides"
+            className="rounded-md border border-border bg-card/40 px-3 py-2 text-sm font-medium transition-colors hover:border-cyan/50 hover:text-cyan"
+          >
+            {t("guidesLink", { count: guideSuggestions.length })}
+          </Link>
+        </nav>
+      )}
 
       {isEnabled("ads") && (
         <section className="mt-8 flex flex-col gap-3">

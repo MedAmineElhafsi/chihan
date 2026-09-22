@@ -50,6 +50,10 @@ export const FEATURES = {
   interpreters: true,
   freeItems: true,
 
+  // Step-by-step guides for a city, written by administrators, in the
+  // reader’s language (migration 0032).
+  guides: true,
+
   // Deliberately off. Matches and who-viewed are engagement machinery that
   // works against a community built on helping; billing earns nothing at
   // zero users. All three are one flag away, with their data intact.
