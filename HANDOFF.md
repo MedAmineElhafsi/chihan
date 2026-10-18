@@ -163,16 +163,26 @@ down with it.
 ### 5.2 Migrations are proven before they are offered
 
 Every migration ships with RLS policies for every table it creates, in the same
-file, and is written to be safe to run twice. They were each tested against a
+file, and is written to be safe to run twice. They are each tested against a
 real Postgres (PGlite) dressed up as Supabase — roles `anon` /
 `authenticated` / `service_role`, `auth.uid()` from the JWT claim, a fake
-`storage` schema — before being handed to the customer: 92 checks for
-0032–0035 alone, plus the full 0026–0035 set run end to end on a 0025 database,
-twice.
+`storage` schema — before being handed to the customer.
 
-**That harness is not in the repository.** It lived in a session scratchpad and
-is gone. Rebuilding it is the single highest-value piece of engineering
-housekeeping left (see §7).
+```bash
+npm run test:db
+```
+
+145 checks in about thirteen seconds: who may write a guide, who may be a
+buddy, what the board holds, who can hear a voice note, who reads a
+listing's numbers, that nobody can write themselves a ticket, and that the
+whole pending set runs on a 0025 database twice. It lives in
+[`test/db`](test/db/README.md), and its README explains how to add to it.
+
+**Run it before writing any migration, and before handing anyone SQL.** It
+has already earned its place: it caught a `CHECK` constraint in 0035 that
+let an event carry a ticket price with no number of places, because the
+constraint evaluated to `null` and a `CHECK` passes on `null` — and the
+number of places is the only thing stopping an event overselling.
 
 ### 5.3 Private files, signed URLs
 
@@ -238,11 +248,11 @@ In the order I would do it:
 1. **Get §3 done.** Migrations, then an admin, then the production env vars.
    Nothing else is worth doing while ten migrations sit unapplied — the
    customer has been looking at a site that hides most of what has been built.
-2. **Put the migration test harness in the repository.** A `scripts/` or
-   `test/db/` folder with the PGlite setup, the Supabase-shaped prelude and the
-   per-migration test files, runnable with `npm run test:db`. Right now the
-   proof that these policies are correct exists only in old transcripts, and
-   the next person to touch a policy has no net.
+2. **Extend the database tests as you go.** `npm run test:db` covers 0028 and
+   0031–0035 plus the pending set; the migrations before those have no tests
+   yet. Chat, groups and the help board are the ones carrying private
+   material, so they are worth backfilling — and every new migration should
+   arrive with its own file.
 3. **Have a native speaker read the Kurmancî and Soranî strings.** They are my
    best effort, not a translator's. 1,304 strings in each.
 4. **Fix the map tiles.** The listing map's CARTO basemap now returns tiles

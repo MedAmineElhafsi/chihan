@@ -93,6 +93,7 @@ Premium unlocks automatically once a `subscriptions` row is `active`. To wire re
 | `npm run build`   | Production build (also type-checks)          |
 | `npm run start`   | Run the production build                     |
 | `npm run lint`    | ESLint (flat config)                         |
+| `npm run test:db` | Every migration and its RLS policies, against a real Postgres in memory (`test/db`) |
 | `npx tsc --noEmit`| Type-check only                              |
 
 ---
@@ -152,6 +153,12 @@ Apply the SQL files in `supabase/migrations` **in order** (SQL Editor or `supaba
 
 Optional demo data: `seed.sql` (people), `seed_listings.sql` (businesses), `seed_news.sql` (news).
 Make yourself an admin once: `update public.profiles set is_admin = true where user_id = '<id>';`
+
+**Before a migration is written here, prove it:** `npm run test:db` runs every
+migration and its row-level security against a real Postgres in memory, and
+asks the database *as somebody* whether the policies hold. See
+[`test/db/README.md`](./test/db/README.md). Nothing should be handed to
+anyone to paste into the SQL editor until that passes.
 
 ## Deployment (Vercel + Supabase)
 

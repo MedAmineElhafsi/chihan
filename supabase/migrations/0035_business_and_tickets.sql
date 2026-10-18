@@ -205,10 +205,16 @@ alter table public.posts
   add column if not exists ticket_currency text not null default 'eur';
 
 alter table public.posts drop constraint if exists posts_tickets_check;
+-- Both or neither. Spelling out `is not null` matters: a check constraint
+-- passes when it evaluates to null, so "price >= 100 and capacity between
+-- 1 and 100000" would let a price through with no number of places — and
+-- the number of places is the only thing that stops an event overselling.
 alter table public.posts add constraint posts_tickets_check check (
   (ticket_price_cents is null and ticket_capacity is null)
   or (
     type = 'event'
+    and ticket_price_cents is not null
+    and ticket_capacity is not null
     and ticket_price_cents >= 100
     and ticket_price_cents <= 100000000
     and ticket_capacity between 1 and 100000

@@ -907,3 +907,32 @@ what the board holds, who reads a listing's numbers, that nobody can write
 themselves a ticket, and that each runs twice without error — and the whole
 pending set 0026–0035 was then run end to end on a 0025 database, twice.
 Contrast on rendered pixels for the new text: lowest 5.45.
+
+## The migrations can now be proven, not just reviewed
+
+- [x] **`npm run test:db`** — every migration runs against a real Postgres
+      (PGlite, Postgres 17 in WASM) dressed up as Supabase: the roles
+      `anon` / `authenticated` / `service_role`, `auth.uid()` read from the
+      session, `auth.users`, `storage.buckets` / `objects` /
+      `foldername()`, and the realtime publication. `as(db, uid, fn)` runs
+      statements as a signed-in member, so a policy is asked the question a
+      browser will ask it. 145 checks in about thirteen seconds, no Docker
+      and no network: who may write a guide, who may be a buddy, what
+      wording the board holds, who can hear a voice note, who reads a
+      listing's numbers, that nobody can write themselves a ticket, and
+      that the whole pending set 0026–0035 runs on a 0025 database twice.
+      It also sweeps every table in the database for row-level security.
+      `test/db/README.md` says how to add to it.
+
+Found by it on the first run, and fixed: `posts_tickets_check` in **0035**
+let an event carry a ticket price with no number of places. The branch read
+`ticket_price_cents >= 100 and ticket_capacity between 1 and 100000`, which
+evaluates to `null` when the capacity is null — and a check constraint passes
+on `null`. The number of places is the only thing stopping an event from
+overselling itself. The constraint now says `is not null` out loud. 0035 has
+not run anywhere yet, so it was corrected in place rather than patched by a
+later migration.
+
+Not yet covered: 0000–0027 and 0029–0030 have no test files. Chat, groups and
+the help board carry the most private material and are the ones worth
+backfilling first.
