@@ -132,6 +132,10 @@ Realistically: one migration, two buckets, a review queue, a product page
 and a checkout. A week of work, not a month — the expensive part is the tax
 decision and the lawyer, not the code.
 
+**The migration is written**: `supabase/migrations/0036_bazar.sql`, with 42
+checks in `test/db/tests/0036-bazar.test.mjs`. There is no application code
+yet, and nothing should be built on it until §6 is answered.
+
 ---
 
 ## 4. The shape of it
@@ -154,10 +158,17 @@ the flags, and refuses to let a client set its own status — exactly as
 `classifieds_guard()` does.
 
 **`shop_orders`** — buyer_id, product_id, **seller_id denormalised** (so a
-payout survives the product being withdrawn), amount_cents,
-platform_fee_cents, seller_share_cents, vat_cents, vat_country, vat_rate,
-stripe_session_id (unique), status, `withdrawal_waived_at`, download_count,
-last_downloaded_at, expires_at.
+payout survives the product being withdrawn), **file_path copied at the
+moment of sale**, amount_cents, platform_fee_cents, seller_share_cents,
+vat_cents, vat_country, vat_rate, stripe_session_id (unique), status,
+`withdrawal_waived_at`, download_count, last_downloaded_at, expires_at.
+
+Copying the file path onto the order rather than joining back to the product
+is not tidiness. The tests found that the join version broke two ways: a
+seller editing their work sent it back to the review queue, which took the
+download away from everybody who had already paid; and a seller could swap
+`file_path` and change what a completed sale delivered. The order records
+what was bought.
 
 RLS: the buyer reads their own orders. **The seller does not read this table
 at all** — their sales come from a security-definer function returning

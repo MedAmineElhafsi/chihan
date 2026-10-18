@@ -48,9 +48,9 @@ instead of erroring.
 
 ## 3. Do these first — the project is blocked on them
 
-### 3.1 Ten migrations have never been run
+### 3.1 Eleven migrations have never been run
 
-`supabase/migrations/0026_*` through `0035_*` are written, tested and
+`supabase/migrations/0026_*` through `0036_*` are written, tested and
 committed, but **none of them has been applied to the live Supabase project**
 (verified against the live database on 18 Oct 2026 — every table and column
 they add is still missing).
@@ -64,7 +64,7 @@ live and correct; it is just hiding, by design (see §5.1).
 Build the one-file script and paste it into the Supabase SQL editor:
 
 ```bash
-node -e "const fs=require('fs');const d='supabase/migrations';let o='-- Cihan - every migration that has not run yet, in order.\n-- Paste the whole file into the Supabase SQL editor and run it once.\n-- Each part is safe to run again.\n\n';for(const f of fs.readdirSync(d).filter(f=>/^00(2[6-9]|3[0-5])_/.test(f)).sort()){o+='-- ====== '+f+' ======\n'+fs.readFileSync(d+'/'+f,'utf8').replace(/\r\n/g,'\n').trimEnd()+'\n\n'}fs.writeFileSync('pending.sql',o);console.log('wrote pending.sql')"
+node -e "const fs=require('fs');const d='supabase/migrations';let o='-- Cihan - every migration that has not run yet, in order.\n-- Paste the whole file into the Supabase SQL editor and run it once.\n-- Each part is safe to run again.\n\n';for(const f of fs.readdirSync(d).filter(f=>/^00(2[6-9]|3[0-6])_/.test(f)).sort()){o+='-- ====== '+f+' ======\n'+fs.readFileSync(d+'/'+f,'utf8').replace(/\r\n/g,'\n').trimEnd()+'\n\n'}fs.writeFileSync('pending.sql',o);console.log('wrote pending.sql')"
 ```
 
 It is idempotent — the whole set was run twice, end to end, against a local
@@ -122,7 +122,7 @@ member profiles, realtime chat, feed and events, news, help board, private
 groups, reels, invites, reports and moderation, Stripe subscriptions, five
 locales with full RTL, PWA with web push.
 
-**Added over the recent sessions** (all behind migrations 0026–0035):
+**Added over the recent sessions** (all behind migrations 0026–0036):
 
 | Feature | Migration | Notes |
 | --- | --- | --- |
@@ -136,6 +136,7 @@ locales with full RTL, PWA with web push.
 | Buddy programme | 0033 | verified mentors only, capacity 1–3, either side ends it instantly |
 | Jobs & housing board | 0034 | verified posters only, scam wording screened in EN/DE/AR/KU, held not deleted |
 | Business plan · event tickets | 0035 | longer ad runs + listing statistics; Stripe Connect destination charges, 5% fee |
+| Bazar — artists sell downloads | 0036 | **schema only, no app code yet.** See [BAZAR.md](BAZAR.md) before building it |
 
 Feature flags live in `lib/features.ts`. Deliberately **off** for launch:
 `match`, `views`, `billing` — engagement machinery that works against a
@@ -249,7 +250,7 @@ In the order I would do it:
    Nothing else is worth doing while ten migrations sit unapplied — the
    customer has been looking at a site that hides most of what has been built.
 2. **Extend the database tests as you go.** `npm run test:db` covers 0028 and
-   0031–0035 plus the pending set; the migrations before those have no tests
+   0031–0036 plus the pending set; the migrations before those have no tests
    yet. Chat, groups and the help board are the ones carrying private
    material, so they are worth backfilling — and every new migration should
    arrive with its own file.

@@ -13,9 +13,9 @@ import path from "node:path";
 import { freshDb, adapt, migrationFiles, MIGRATIONS } from "../harness.mjs";
 
 export const title =
-  "the pending set — 0026 to 0035, on the live project's state";
+  "the pending set — 0026 to 0036, on the live project's state";
 
-const PENDING = /^00(2[6-9]|3[0-5])_/;
+const PENDING = /^00(2[6-9]|3[0-6])_/;
 
 export default async function testPendingSet(t) {
   const files = migrationFiles().filter((f) => PENDING.test(f));
@@ -27,7 +27,7 @@ export default async function testPendingSet(t) {
 
   t.ok(
     "it holds every migration that has not run",
-    files.length === 10,
+    files.length === 11,
     files.join(", ")
   );
 
@@ -70,6 +70,9 @@ export default async function testPendingSet(t) {
     "guides",
     "listing_events",
     "payout_accounts",
+    "shop_orders",
+    "shop_payouts",
+    "shop_products",
     "tickets",
     "translations",
   ];
@@ -82,7 +85,7 @@ export default async function testPendingSet(t) {
     )
   ).rows.map((r) => r.table_name);
   t.ok(
-    "every table the ten migrations promise",
+    "every table the eleven migrations promise",
     present.length === expected.length,
     `missing: ${expected.filter((e) => !present.includes(e)).join(", ")}`
   );
@@ -117,24 +120,34 @@ export default async function testPendingSet(t) {
     `${policies} policies`
   );
 
-  t.section("the buckets it creates are private");
+  t.section("the buckets it creates");
 
   const buckets = (
     await db.query(
       `select id, public from storage.buckets
-        where id in ('voice-notes', 'help-photos', 'board-photos')
+        where id in ('voice-notes', 'help-photos', 'board-photos', 'shop-files')
         order by id`
     )
   ).rows;
   t.ok(
-    "all three of them exist",
-    buckets.length === 3,
+    "all four of them exist",
+    buckets.length === 4,
     JSON.stringify(buckets.map((b) => b.id))
   );
   t.ok(
     "and not one of them is public",
     buckets.every((b) => b.public === false),
     JSON.stringify(buckets)
+  );
+
+  // The one deliberate exception: a shop preview exists to be seen.
+  t.ok(
+    "while shop previews are public on purpose",
+    (
+      await db.query(
+        `select public from storage.buckets where id = 'shop-previews'`
+      )
+    ).rows[0]?.public === true
   );
 
   await db.close();
