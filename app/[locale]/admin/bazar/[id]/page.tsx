@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { isAdmin } from "@/lib/moderation";
 import { getProductById } from "@/lib/shop";
+import { shopSellingConfigured } from "@/lib/stripe";
 import { ProductForm } from "@/components/bazar/product-form";
 
 export default async function EditProductPage({
@@ -36,7 +37,11 @@ export default async function EditProductPage({
       >
         {product.title}
       </h1>
-      <ProductForm product={product} userId={product.seller_id} />
+      <ProductForm
+        product={product}
+        userId={product.seller_id}
+        selling={shopSellingConfigured()}
+      />
     </div>
   );
 }

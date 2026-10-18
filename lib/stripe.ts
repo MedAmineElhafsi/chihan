@@ -40,3 +40,29 @@ export function ticketsConfigured(): boolean {
 export function siteUrl(): string {
   return process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 }
+
+/**
+ * What Cîhan keeps of a sale in the Bazar.
+ *
+ * Higher than a ticket's 5% for two reasons: Stripe's fixed component eats
+ * a small sale (€0.25 on a €5 download is already 5%), and unlike a ticket
+ * Cîhan is the merchant here — it carries the VAT registration, the filing
+ * and the refunds.
+ */
+export const SHOP_FEE_PERCENT = 15;
+
+/** The smallest price worth charging once the fixed fees are paid. */
+export const SHOP_MIN_PRICE_CENTS = 500;
+
+/**
+ * Selling in the Bazar is off unless somebody says otherwise.
+ *
+ * Not the usual "on when the keys exist": a download is taxed where the
+ * buyer is, so switching this on without an OSS registration behind it is
+ * a legal problem rather than a missing feature. It takes a deliberate
+ * STRIPE_TAX=on, after the paperwork, by somebody who knows it was done.
+ * The free shelf works either way.
+ */
+export function shopSellingConfigured(): boolean {
+  return stripeConfigured && process.env.STRIPE_TAX === "on";
+}

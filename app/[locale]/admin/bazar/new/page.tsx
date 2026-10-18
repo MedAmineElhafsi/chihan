@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { isAdmin } from "@/lib/moderation";
 import { bazarReady } from "@/lib/schema-ready";
+import { shopSellingConfigured } from "@/lib/stripe";
 import { ProductForm } from "@/components/bazar/product-form";
 
 export default async function NewProductPage({
@@ -31,7 +32,7 @@ export default async function NewProductPage({
       <h1 className="font-display text-air mt-4 text-2xl font-semibold tracking-tight">
         {t("adminAdd")}
       </h1>
-      <ProductForm userId={user.id} />
+      <ProductForm userId={user.id} selling={shopSellingConfigured()} />
     </div>
   );
 }

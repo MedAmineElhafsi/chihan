@@ -136,7 +136,7 @@ locales with full RTL, PWA with web push.
 | Buddy programme | 0033 | verified mentors only, capacity 1–3, either side ends it instantly |
 | Jobs & housing board | 0034 | verified posters only, scam wording screened in EN/DE/AR/KU, held not deleted |
 | Business plan · event tickets | 0035 | longer ad runs + listing statistics; Stripe Connect destination charges, 5% fee |
-| Bazar — free downloads (Phase A) | 0036 | the shelf, a product page and an admin upload queue. **Nothing is for sale**: no Stripe, no VAT, no checkout. See [BAZAR.md](BAZAR.md) before going further |
+| Bazar — downloads by Kurdish makers | 0036 | the shelf, product pages, a review queue, checkout, settlement. **Paid selling is off until `STRIPE_TAX=on`**, which must not be set before the OSS registration exists. Free downloads work without any of it. See [BAZAR.md](BAZAR.md) |
 
 Feature flags live in `lib/features.ts`. Deliberately **off** for launch:
 `match`, `views`, `billing` — engagement machinery that works against a

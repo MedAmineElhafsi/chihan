@@ -487,10 +487,9 @@ export default async function test0036Bazar(t) {
   );
 
   await as(db, ADMIN, () =>
-    db.query(
-      `update public.shop_products set status = 'held' where id = $1`,
-      [free.id]
-    )
+    db.query(`update public.shop_products set status = 'held' where id = $1`, [
+      free.id,
+    ])
   );
   t.ok(
     "and taking it off the shelf closes the link",
@@ -514,9 +513,10 @@ export default async function test0036Bazar(t) {
   t.ok(
     "a visitor's download counts as much as a member's",
     (
-      await db.query(`select downloads from public.shop_products where id = $1`, [
-        free.id,
-      ])
+      await db.query(
+        `select downloads from public.shop_products where id = $1`,
+        [free.id]
+      )
     ).rows[0].downloads === 2
   );
 
@@ -527,9 +527,10 @@ export default async function test0036Bazar(t) {
   t.ok(
     "nothing counts against work that is not on the shelf",
     (
-      await db.query(`select downloads from public.shop_products where id = $1`, [
-        held.id,
-      ])
+      await db.query(
+        `select downloads from public.shop_products where id = $1`,
+        [held.id]
+      )
     ).rows[0].downloads === 0
   );
 
@@ -562,6 +563,49 @@ export default async function test0036Bazar(t) {
     seeded.status
   );
 
+  t.section("the maker hears the answer either way");
+
+  const waiting = (await submit(ARTIST, { slug: "awaiting-a-verdict" }))
+    .rows[0];
+  await as(db, ADMIN, () =>
+    db.query(`select public.decide_product($1, true, null)`, [waiting.id])
+  );
+  t.ok(
+    "being listed is news that reaches the maker",
+    (
+      await db.query(
+        `select 1 from public.notifications where type = 'product_listed' and user_id = $1 and entity_id = $2`,
+        [ARTIST, waiting.id]
+      )
+    ).rows.length === 1
+  );
+
+  const refused = (await submit(ARTIST, { slug: "turned-away" })).rows[0];
+  await as(db, ADMIN, () =>
+    db.query(`select public.decide_product($1, false, $2)`, [
+      refused.id,
+      "The crest belongs to somebody else.",
+    ])
+  );
+  const note = (
+    await db.query(
+      `select status, review_note from public.shop_products where id = $1`,
+      [refused.id]
+    )
+  ).rows[0];
+  t.ok(
+    "so is being turned away, with the reason kept",
+    note.status === "held" &&
+      note.review_note === "The crest belongs to somebody else." &&
+      (
+        await db.query(
+          `select 1 from public.notifications where type = 'product_held' and entity_id = $1`,
+          [refused.id]
+        )
+      ).rows.length === 1,
+    JSON.stringify(note)
+  );
+
   t.section("settlement");
 
   await asService(db, () =>
@@ -581,6 +625,69 @@ export default async function test0036Bazar(t) {
     (await as(db, OTHER, () => db.query(`select 1 from public.shop_payouts`)))
       .rows.length === 0
   );
+  const owed = async (uid, seller) =>
+    (
+      await as(db, uid, () =>
+        db.query(`select * from public.shop_owed($1)`, [seller])
+      )
+    ).rows[0];
+
+  // The only sale so far was refunded further up, and 553 was already sent
+  // on — so nothing is earned, and the shortfall is a clawback rather than
+  // something settlement should pay again.
+  const afterRefund = await owed(ARTIST, ARTIST);
+  t.ok(
+    "a refunded sale stops counting as earned",
+    Number(afterRefund.earned_cents) === 0,
+    JSON.stringify(afterRefund)
+  );
+  t.ok(
+    "...and what was already sent is never owed twice",
+    Number(afterRefund.paid_cents) === 553 &&
+      Number(afterRefund.owed_cents) === 0,
+    JSON.stringify(afterRefund)
+  );
+  t.ok(
+    "and one maker cannot read another's figures",
+    (await owed(OTHER, ARTIST)) === undefined
+  );
+
+  await asService(db, () =>
+    db.query(
+      `insert into public.shop_orders
+         (buyer_id, product_id, seller_id, amount_cents, platform_fee_cents,
+          seller_share_cents, withdrawal_waived_at, file_path, stripe_session_id)
+       values ($1, $2, $3, 1000, 150, 691, now(), $4, 'cs_test_2')`,
+      [OTHER, first.id, ARTIST, first.file_path]
+    )
+  );
+  const afterSale = await owed(ARTIST, ARTIST);
+  t.ok(
+    "a new sale is owed less what was already sent",
+    Number(afterSale.earned_cents) === 691 &&
+      Number(afterSale.owed_cents) === 138,
+    JSON.stringify(afterSale)
+  );
+
+  const queue = (
+    await as(db, ADMIN, () =>
+      db.query(`select * from public.shop_settlement()`)
+    )
+  ).rows;
+  t.ok(
+    "and the settlement list agrees with it",
+    queue.length === 1 && Number(queue[0].owed_cents) === 138,
+    JSON.stringify(queue)
+  );
+  t.ok(
+    "which only an administrator may read",
+    (
+      await as(db, ARTIST, () =>
+        db.query(`select * from public.shop_settlement()`)
+      )
+    ).rows.length === 0
+  );
+
   await t.refuses(
     "nobody pays themselves",
     () =>

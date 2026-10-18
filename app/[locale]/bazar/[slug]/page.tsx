@@ -12,6 +12,9 @@ import { fileKind, fileSize } from "@/types/shop";
 import { Button } from "@/components/ui/button";
 import { ShareButton } from "@/components/share/share-button";
 import { DownloadButton } from "@/components/bazar/download-button";
+import { BuyButton } from "@/components/bazar/buy-button";
+import { money } from "@/lib/tickets";
+import { getMyPurchases } from "@/lib/shop";
 
 export async function generateMetadata({
   params,
@@ -48,6 +51,14 @@ export default async function ProductPage({
 
   const user = await getCurrentUser();
   const admin = user ? await isAdmin(user.id) : false;
+  const paid = product.price_cents > 0;
+  // Something already bought is downloaded, not bought again.
+  const owned =
+    paid && user
+      ? (await getMyPurchases(user.id)).some(
+          (o) => o.product_id === product.id && o.status === "paid"
+        )
+      : false;
   // Only an administrator sees work that is not on the shelf.
   if (product.status !== "listed" && !admin) notFound();
 
@@ -128,7 +139,9 @@ export default async function ProductPage({
               <dt className="sr-only">{t("price")}</dt>
               <dd className="text-cyan inline-flex items-center gap-1.5 font-medium">
                 <Download className="size-4" aria-hidden="true" />
-                {t("free")}
+                {paid
+                  ? money(product.price_cents, product.currency, locale)
+                  : t("free")}
               </dd>
             </div>
             {(kind || size) && (
@@ -145,8 +158,20 @@ export default async function ProductPage({
             </div>
           </dl>
 
-          {product.status === "listed" && product.file_path && (
-            <DownloadButton productId={product.id} fileName={fileName} />
+          {product.status === "listed" &&
+            product.file_path &&
+            (!paid || owned ? (
+              <DownloadButton productId={product.id} fileName={fileName} />
+            ) : (
+              <BuyButton
+                productId={product.id}
+                price={money(product.price_cents, product.currency, locale)}
+                canBuy={Boolean(user) && product.seller_id !== user?.id}
+              />
+            ))}
+
+          {paid && !owned && !user && (
+            <p className="text-muted-foreground text-sm">{t("signInToBuy")}</p>
           )}
 
           <p className="text-muted-foreground text-xs">

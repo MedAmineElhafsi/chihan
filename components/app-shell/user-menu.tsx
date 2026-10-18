@@ -3,7 +3,9 @@
 import { useTranslations } from "next-intl";
 import {
   Bell,
+  Download,
   Globe2,
+  Palette,
   LayoutDashboard,
   LogOut,
   MessageSquare,
@@ -30,11 +32,14 @@ export function UserMenu({
   email,
   isAdmin,
   tickets = false,
+  bazar = false,
 }: {
   email: string | null;
   isAdmin?: boolean;
   /** Only where tickets can be sold at all (Stripe + migration 0035). */
   tickets?: boolean;
+  /** Only where the Bazar exists (migration 0036). */
+  bazar?: boolean;
 }) {
   const t = useTranslations("Nav");
 
@@ -102,6 +107,22 @@ export function UserMenu({
             {t("notifications")}
           </Link>
         </DropdownMenuItem>
+        {bazar && (
+          <DropdownMenuItem asChild>
+            <Link href="/bazar/downloads">
+              <Download />
+              {t("bazarDownloads")}
+            </Link>
+          </DropdownMenuItem>
+        )}
+        {bazar && (
+          <DropdownMenuItem asChild>
+            <Link href="/bazar/mine">
+              <Palette />
+              {t("bazarMine")}
+            </Link>
+          </DropdownMenuItem>
+        )}
         {tickets && (
           <DropdownMenuItem asChild>
             <Link href="/tickets">

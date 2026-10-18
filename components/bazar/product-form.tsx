@@ -53,10 +53,13 @@ function slugify(value: string): string {
 export function ProductForm({
   product,
   userId,
+  selling = false,
 }: {
   product?: Product;
   /** Whose folder the uploads go in. */
   userId: string;
+  /** Whether anything here can carry a price yet. */
+  selling?: boolean;
 }) {
   const t = useTranslations("Bazar");
   const router = useRouter();
@@ -68,6 +71,9 @@ export function ProductForm({
   const [slugTouched, setSlugTouched] = useState(Boolean(product));
   const [description, setDescription] = useState(product?.description ?? "");
   const [licence, setLicence] = useState(product?.licence ?? "personal");
+  const [price, setPrice] = useState(
+    product?.price_cents ? String(product.price_cents / 100) : ""
+  );
   const [status, setStatus] = useState<"draft" | "listed" | "held">(
     product?.status === "listed" || product?.status === "held"
       ? product.status
@@ -169,6 +175,7 @@ export function ProductForm({
         title,
         description,
         licence,
+        priceCents: Math.round(Number(price.replace(",", ".") || 0) * 100),
         sellerId: product?.seller_id ?? "",
         filePath,
         fileBytes,
@@ -332,6 +339,22 @@ export function ProductForm({
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
+        {selling && (
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="price">{t("formPrice")}</Label>
+            <Input
+              id="price"
+              type="text"
+              inputMode="decimal"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder={t("formPricePlaceholder")}
+            />
+            <span className="text-muted-foreground text-xs">
+              {t("formPriceHint")}
+            </span>
+          </div>
+        )}
         <div className="flex flex-col gap-2">
           <Label htmlFor="licence">{t("formLicence")}</Label>
           <select
@@ -366,7 +389,9 @@ export function ProductForm({
         </div>
       </div>
 
-      <p className="text-muted-foreground text-sm">{t("formFreeNote")}</p>
+      {!selling && (
+        <p className="text-muted-foreground text-sm">{t("formFreeNote")}</p>
+      )}
 
       {error && <p className="text-destructive text-sm">{error}</p>}
 

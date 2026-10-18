@@ -16,13 +16,19 @@ import { Button } from "@/components/ui/button";
 export function PayoutConnect({
   started,
   ready,
+  namespace = "Tickets",
 }: {
   /** An account exists but its questions are not finished. */
   started: boolean;
   /** Stripe says this account can take money. */
   ready: boolean;
+  /**
+   * Where the words come from. The same account serves tickets and the
+   * Bazar, but "ticket money" is the wrong sentence on a maker's page.
+   */
+  namespace?: "Tickets" | "Bazar";
 }) {
-  const t = useTranslations("Tickets");
+  const t = useTranslations(namespace);
   const [error, setError] = useState<string | null>(null);
   const [pending, start] = useTransition();
 

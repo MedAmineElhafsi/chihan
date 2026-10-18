@@ -132,12 +132,16 @@ Realistically: one migration, two buckets, a review queue, a product page
 and a checkout. A week of work, not a month — the expensive part is the tax
 decision and the lawyer, not the code.
 
-**Phase A is built.** `supabase/migrations/0036_bazar.sql` with 52 checks in
-`test/db/tests/0036-bazar.test.mjs`, and the app layer for free downloads:
-`/bazar`, `/bazar/[slug]`, and an administrator's upload queue at
-`/admin/bazar`. Nothing is for sale — there is no Stripe call anywhere in
-it, and `takeDownload()` refuses anything with a price. Phases B and C wait
-on §6.
+**Phases A and B are built.** `supabase/migrations/0036_bazar.sql` with 60
+checks in `test/db/tests/0036-bazar.test.mjs`, and the app layer: `/bazar`,
+`/bazar/[slug]`, `/bazar/downloads`, `/bazar/mine`, and an administrator's
+queue at `/admin/bazar` carrying both the review list and settlement.
+
+**Paid selling is off until somebody sets `STRIPE_TAX=on`,** and that must
+not happen before the OSS registration in §2.1 exists — switching it on
+without the paperwork is a legal problem, not a missing feature. Until then
+the free shelf works exactly as it does now, and no price field even
+appears. Phase C (open submissions) still waits on §6.
 
 ---
 
@@ -241,10 +245,26 @@ away rests on it travelling. Paid files stay private — the test asserts that
 the paid file sitting beside a free one does not become public by
 association.
 
-**Phase B — paid, with three to five invited creators.**
-Stripe Tax or a merchant of record, the review queue, transfers. Invited
-rather than open, so the review load is known and the first impression is
-curated.
+**Phase B — paid, with three to five invited creators. Built, switched off.**
+Built on the assumption that Cîhan registers for OSS and uses Stripe Tax
+rather than putting a merchant of record in front — because the repository
+already has Stripe keys, a webhook and Connect, and swapping later touches
+only `buyProduct()` and one webhook branch. **If the customer chooses Paddle
+or Lemon Squeezy instead, those two places are what changes.**
+
+"Invited" is not a separate mechanism: only verified members may put work
+up, and verification means an administrator looked at a document. Widening
+the circle is a matter of verifying more people.
+
+What exists: Stripe Checkout with `automatic_tax`, tax-inclusive pricing,
+the withdrawal waiver recorded on the order, a webhook branch that writes
+the order once, a review queue that notifies the maker either way, a page
+where a maker sees counts and amounts but never a buyer, and settlement by
+Stripe transfer into the account they already connect for tickets.
+
+Still to be done by a person, not by code: the OSS registration, an
+accountant's eye on the tax code (`txcd_10000000`), and the symbols policy
+in §2.2 before the first open submission.
 
 **Phase C — open submissions.**
 Only once there are enough members for the review work to be worth a human's

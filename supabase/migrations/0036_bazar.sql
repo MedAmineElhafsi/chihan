@@ -266,6 +266,19 @@ begin
          reviewed_at = now(),
          review_note = v_note
    where id = p_product;
+
+  -- Somebody waited for this answer. Tell them either way, including when
+  -- it is no — a held submission with no word is just silence.
+  if v_seller <> auth.uid() then
+    insert into notifications (user_id, actor_id, type, entity_id, link)
+    values (
+      v_seller,
+      auth.uid(),
+      case when p_approve then 'product_listed' else 'product_held' end,
+      p_product,
+      '/bazar/mine'
+    );
+  end if;
 end;
 $fn$;
 
@@ -376,6 +389,60 @@ $$;
 
 revoke all on function public.shop_sales(uuid) from public;
 grant execute on function public.shop_sales(uuid) to authenticated;
+
+-- What a maker has earned and what has already been sent on. Still only
+-- numbers: the difference is what settlement owes them.
+create or replace function public.shop_owed(p_seller uuid)
+returns table (earned_cents bigint, paid_cents bigint, owed_cents bigint)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  with earned as (
+    select coalesce(sum(seller_share_cents), 0)::bigint as c
+      from public.shop_orders
+     where seller_id = p_seller and status = 'paid'
+  ),
+  paid as (
+    select coalesce(sum(amount_cents), 0)::bigint as c
+      from public.shop_payouts
+     where seller_id = p_seller and status in ('pending', 'sent')
+  )
+  select earned.c, paid.c, greatest(earned.c - paid.c, 0)
+    from earned, paid
+   where p_seller = auth.uid() or public.is_admin(auth.uid());
+$$;
+
+revoke all on function public.shop_owed(uuid) from public;
+grant execute on function public.shop_owed(uuid) to authenticated;
+
+-- Everyone with something outstanding, for whoever runs settlement.
+create or replace function public.shop_settlement()
+returns table (seller_id uuid, owed_cents bigint)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select o.seller_id,
+         (coalesce(sum(o.seller_share_cents), 0)
+          - coalesce((
+              select sum(p.amount_cents) from public.shop_payouts p
+               where p.seller_id = o.seller_id and p.status in ('pending', 'sent')
+            ), 0))::bigint
+    from public.shop_orders o
+   where o.status = 'paid' and public.is_admin(auth.uid())
+   group by o.seller_id
+  having (coalesce(sum(o.seller_share_cents), 0)
+          - coalesce((
+              select sum(p.amount_cents) from public.shop_payouts p
+               where p.seller_id = o.seller_id and p.status in ('pending', 'sent')
+            ), 0)) > 0;
+$$;
+
+revoke all on function public.shop_settlement() from public;
+grant execute on function public.shop_settlement() to authenticated;
 
 -- ----------------------------------------------------------------------------
 -- 7. Settlement. Cîhan took the money, so Cîhan sends the share on.

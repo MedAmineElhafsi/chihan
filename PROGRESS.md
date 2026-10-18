@@ -971,3 +971,38 @@ column too narrow for it; the placeholder for work with no preview image
 measured 1.23:1, which is not a placeholder but an invisible one; and the
 administrator's list counted downloads in Latin digits beside a page that
 formats every other number for the reader's locale.
+
+## Bazar, Phase B: paid work, switched off until the paperwork exists
+
+- [x] **Checkout, review and settlement** — Stripe Checkout with
+      `automatic_tax` and tax-inclusive prices; a webhook branch that turns
+      a paid session into an order exactly once; `/bazar/downloads` for what
+      a buyer has taken; `/bazar/mine` where a maker sees counts, amounts
+      and what is still owed; a review queue on `/admin/bazar` that tells
+      the maker the answer either way, with the reason; and settlement by
+      Stripe transfer into the account they already connect for tickets.
+
+Built on the assumption that Cîhan registers for OSS and uses Stripe Tax
+rather than a merchant of record in front — the repository already has the
+Stripe keys, the webhook and Connect, and swapping later touches only
+`buyProduct()` and one webhook branch. `BAZAR.md` §6 still has the customer's
+decisions in it.
+
+**Paid selling is off unless `STRIPE_TAX=on` is set deliberately.** Not the
+usual "on when the keys exist": a download is taxed where the buyer is, so
+switching it on without the OSS registration is a legal problem rather than a
+missing feature. Until then no price field appears, nothing can be bought,
+and the free shelf works exactly as before.
+
+Verified on a production build with sample work: the paid product page, a
+maker's page, the review queue with its flags, settlement, and a buyer's
+downloads — at 375 and 1280 in English, Arabic and Sorani. The waiver
+checkbox was ticked and the Buy button pressed for real; the server action
+re-asks Supabase who is signed in rather than trusting the page, so a mocked
+session is told to sign in. 60 checks for 0036, 206 in the suite. Contrast on
+rendered pixels: lowest 6.02.
+
+Fixed while looking at it: the payout panel is shared with tickets and said
+"Ticket money goes straight to your account" on a maker's page; paid work
+showed a download counter that paid work never increments; and the
+administrator's subtitle still said there was no checkout.

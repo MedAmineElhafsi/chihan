@@ -338,3 +338,42 @@ business plan buys.
 answers. Anything finer would mean keeping a record of who looked at what,
 for an audience with good reason to be careful about exactly that — and once
 such a record exists it can be demanded.
+
+## In the Bazar, Cîhan is the merchant — the opposite of a ticket
+
+**Decision.** A ticket is a Stripe destination charge: the organiser is paid
+directly and owes their own tax. A download is not. Cîhan takes the payment,
+Stripe Tax works out the rate for wherever the buyer is, and the maker is
+paid their share afterwards by transfer. The order row carries what was
+charged, in which country, at what rate, because the order is the tax record.
+Paid selling stays off until `STRIPE_TAX=on` is set deliberately, after the
+OSS registration exists.
+
+**Why.** An organiser selling tickets into a hall in Berlin has a simple
+local tax position. A file crosses a border the instant it is bought, and is
+taxed where the buyer is — so somebody has to be registered for OSS, and it
+cannot be a newcomer selling six posters. One registration carries everyone.
+
+## A maker is told how many, never who
+
+**Decision.** `shop_orders` has no select policy for the seller at all. What
+a maker sees comes from `shop_sales()` and `shop_owed()`: counts and amounts,
+never a row with a person in it. Invoices must be kept for ten years, so the
+retained line says "digital download" rather than the title of the piece.
+
+**Why.** Some members travel to Turkey, Iran and Syria. A record tying a
+named person to a political purchase is a danger to them, and the only
+version of that record which cannot leak is the one that was never kept.
+Making it a missing policy rather than a careful query means no future
+convenience feature can quietly undo it.
+
+## The withdrawal waiver is a column, not a checkbox
+
+**Decision.** `shop_orders` refuses a paid row without `withdrawal_waived_at`.
+The buyer ticks a box saying they want the file now and understand it ends
+their fourteen-day right to cancel, and the moment they said it is written on
+the order.
+
+**Why.** In the EU that right ends only if the buyer agreed before buying and
+acknowledged what they were giving up. An interface that forgets the box is a
+fortnight of refunds on files people already have. A constraint cannot forget.

@@ -89,7 +89,12 @@ export async function SiteHeader() {
               />
             )}
             <span className="mx-1 h-4 w-px bg-border" />
-            <UserMenu email={email} isAdmin={admin} tickets={sections.tickets} />
+            <UserMenu
+              email={email}
+              isAdmin={admin}
+              tickets={sections.tickets}
+              bazar={sections.bazar}
+            />
           </div>
 
           <div className="flex items-center gap-0.5 lg:hidden">

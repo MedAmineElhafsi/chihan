@@ -2,7 +2,12 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import type Stripe from "stripe";
 
-import { BUSINESS_PRICE_ID, getStripe, stripeConfigured } from "@/lib/stripe";
+import {
+  BUSINESS_PRICE_ID,
+  SHOP_FEE_PERCENT,
+  getStripe,
+  stripeConfigured,
+} from "@/lib/stripe";
 import { createServiceClient } from "@/lib/supabase/service";
 
 function periodEndISO(sub: Stripe.Subscription): string | null {
@@ -142,10 +147,73 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  /**
+   * A paid download becomes an order, once.
+   *
+   * Cîhan is the merchant here, so the order is also the tax record: what
+   * was charged, where the buyer was, and at what rate. The file path is
+   * copied in rather than joined, so a maker editing their work later
+   * cannot change or withdraw what somebody has already bought.
+   */
+  async function recordPurchase(session: Stripe.Checkout.Session) {
+    const productId = session.metadata?.product_id;
+    const sellerId = session.metadata?.seller_id;
+    const filePath = session.metadata?.file_path;
+    const buyerId = session.metadata?.buyer_id ?? session.client_reference_id;
+    if (!productId || !sellerId || !filePath || !buyerId) return;
+
+    const total = session.amount_total ?? 0;
+    const vat = session.total_details?.amount_tax ?? 0;
+    // The fee is taken on what is left after the tax, which is not Cîhan's
+    // money and never was.
+    const net = Math.max(0, total - vat);
+    const fee = Math.round((net * SHOP_FEE_PERCENT) / 100);
+
+    // Where the buyer said they were, which is what the rate was worked
+    // out from and what the filing will be grouped by.
+    const country = session.customer_details?.address?.country ?? null;
+
+    const { data: inserted } = await svc
+      .from("shop_orders")
+      .insert({
+        buyer_id: buyerId,
+        product_id: productId,
+        seller_id: sellerId,
+        file_path: filePath,
+        amount_cents: total,
+        currency: (session.currency ?? "eur").toLowerCase(),
+        platform_fee_cents: fee,
+        seller_share_cents: Math.max(0, net - fee),
+        vat_cents: vat,
+        vat_country: country,
+        vat_rate: net > 0 ? Number(((vat / net) * 100).toFixed(2)) : 0,
+        stripe_session_id: session.id,
+        withdrawal_waived_at:
+          session.metadata?.waived_at ?? new Date().toISOString(),
+      })
+      .select("id")
+      .maybeSingle();
+    if (!inserted) return; // already recorded, or refused
+
+    if (sellerId !== buyerId) {
+      await svc.from("notifications").insert({
+        user_id: sellerId,
+        actor_id: null,
+        type: "product_sold",
+        entity_id: productId,
+        link: "/bazar/mine",
+      });
+    }
+  }
+
   try {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
+        if (session.metadata?.kind === "shop") {
+          await recordPurchase(session);
+          break;
+        }
         if (session.metadata?.kind === "ticket") {
           await recordTicket(session);
           break;
