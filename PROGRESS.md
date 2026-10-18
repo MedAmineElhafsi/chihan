@@ -936,3 +936,38 @@ later migration.
 Not yet covered: 0000–0027 and 0029–0030 have no test files. Chat, groups and
 the help board carry the most private material and are the ones worth
 backfilling first.
+
+## Bazar, Phase A: the free shelf
+
+- [x] **Work by Kurdish makers, free to download** — `/bazar` and
+      `/bazar/[slug]`, with an administrator's upload queue at
+      `/admin/bazar`. A flag pack, Newroz cards, an alphabet sheet for a
+      child growing up away from the language: things somebody would send
+      into a WhatsApp group, which is the only distribution this project
+      has. Migration **0036**.
+
+Nothing is for sale. There is no Stripe call in any of it, and the action
+that hands over a file refuses anything carrying a price. The tables for
+paid work, orders, VAT and settlement are in the migration and dormant, and
+`BAZAR.md` §6 lists what the customer has to decide before they wake up —
+above all whether Cîhan registers for OSS or puts a merchant of record in
+front.
+
+A free file is readable by anyone, signed in or not: a link that demands an
+account before showing somebody a flag is not a shareable link, and the
+whole argument for giving the flag away rests on it travelling. Paid files
+stay shut, and the test asserts that a paid file sitting beside a free one
+does not become public by association.
+
+Verified on a production build with sample work (migration 0036 has not run
+yet): the shelf, a product page and the admin queue at 375 and 1280 in
+English, Sorani and Arabic; the download button pressed for real, which on a
+database without the table answers with a sentence rather than a broken
+page. 52 checks for 0036, 198 in the database suite. Contrast on rendered
+pixels: lowest 5.39.
+
+Fixed while looking at it: the product page's title broke mid-word in a
+column too narrow for it; the placeholder for work with no preview image
+measured 1.23:1, which is not a placeholder but an invisible one; and the
+administrator's list counted downloads in Latin digits beside a page that
+formats every other number for the reader's locale.

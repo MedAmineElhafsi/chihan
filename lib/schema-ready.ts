@@ -50,5 +50,8 @@ export const guidesReady = () => probe("guides", "slug");
 /** Migration 0035: the business plan and a listing's own numbers. */
 export const businessReady = () => probe("listing_events", "kind");
 
+/** Migration 0036: the Bazar. */
+export const bazarReady = () => probe("shop_products", "slug");
+
 /** Migration 0035: tickets for an event. */
 export const ticketsReady = () => probe("posts", "ticket_price_cents");

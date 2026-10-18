@@ -132,9 +132,12 @@ Realistically: one migration, two buckets, a review queue, a product page
 and a checkout. A week of work, not a month — the expensive part is the tax
 decision and the lawyer, not the code.
 
-**The migration is written**: `supabase/migrations/0036_bazar.sql`, with 42
-checks in `test/db/tests/0036-bazar.test.mjs`. There is no application code
-yet, and nothing should be built on it until §6 is answered.
+**Phase A is built.** `supabase/migrations/0036_bazar.sql` with 52 checks in
+`test/db/tests/0036-bazar.test.mjs`, and the app layer for free downloads:
+`/bazar`, `/bazar/[slug]`, and an administrator's upload queue at
+`/admin/bazar`. Nothing is for sale — there is no Stripe call anywhere in
+it, and `takeDownload()` refuses anything with a price. Phases B and C wait
+on §6.
 
 ---
 
@@ -224,11 +227,19 @@ over 8% before anything else. Cîhan is also carrying the VAT admin here.
 
 ## 5. How to phase it
 
-**Phase A — free downloads only. Shippable before launch.**
+**Phase A — free downloads only. Shippable before launch. Built.**
 No Stripe, no VAT, no invoices, no consumer-rights exposure. An administrator
 uploads a flag pack, Newroz cards, a Kurdish alphabet sheet. It exercises the
 whole delivery chain end to end and produces the one thing Cîhan is short
 of: something worth sharing that is not "please sign up".
+
+One thing this forced, which is worth keeping in mind for Phase B: **a free
+file is readable by anyone, signed in or not** (`is_free_download()` and its
+own storage policy). A link that demands an account before showing somebody
+a flag is not a shareable link, and the whole argument for giving the flag
+away rests on it travelling. Paid files stay private — the test asserts that
+the paid file sitting beside a free one does not become public by
+association.
 
 **Phase B — paid, with three to five invited creators.**
 Stripe Tax or a merchant of record, the review queue, transfers. Invited

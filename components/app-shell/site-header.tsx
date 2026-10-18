@@ -18,6 +18,7 @@ import { guidesEnabled } from "@/lib/guides";
 import { buddiesEnabled } from "@/lib/buddies";
 import { classifiedsEnabled } from "@/lib/classifieds";
 import { ticketsAvailable } from "@/lib/tickets";
+import { bazarEnabled } from "@/lib/shop";
 
 // The same five destinations as the mobile tab bar, so the app has one
 // shape on every screen size.
@@ -39,6 +40,7 @@ export async function SiteHeader() {
     buddies: await buddiesEnabled(),
     board: await classifiedsEnabled(),
     tickets: await ticketsAvailable(),
+    bazar: await bazarEnabled(),
   };
   const [notifItems, unread, unreadMessages] = user
     ? await Promise.all([

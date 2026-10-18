@@ -12,6 +12,7 @@ import { isEnabled } from "@/lib/features";
 import { ReportRow } from "@/components/moderation/report-row";
 import { cn } from "@/lib/utils";
 import { getOpenSuggestions, guidesEnabled } from "@/lib/guides";
+import { bazarEnabled } from "@/lib/shop";
 import { classifiedsEnabled, getHeldClassifieds } from "@/lib/classifieds";
 import { HeldQueue } from "@/components/admin/held-queue";
 
@@ -38,6 +39,7 @@ export default async function AdminPage({
 
   const pendingAds = isEnabled("ads") ? await getPendingAds() : [];
   const withGuides = await guidesEnabled();
+  const withBazar = await bazarEnabled();
   const guideSuggestions = withGuides ? await getOpenSuggestions() : [];
   const withBoard = await classifiedsEnabled();
   const held = withBoard ? await getHeldClassifieds() : [];
@@ -58,14 +60,24 @@ export default async function AdminPage({
       </h1>
       <p className="mt-1 text-muted-foreground">{t("subtitle")}</p>
 
-      {withGuides && (
+      {(withGuides || withBazar) && (
         <nav className="mt-6 flex flex-wrap gap-2">
-          <Link
-            href="/admin/guides"
-            className="rounded-md border border-border bg-card/40 px-3 py-2 text-sm font-medium transition-colors hover:border-cyan/50 hover:text-cyan"
-          >
-            {t("guidesLink", { count: guideSuggestions.length })}
-          </Link>
+          {withGuides && (
+            <Link
+              href="/admin/guides"
+              className="rounded-md border border-border bg-card/40 px-3 py-2 text-sm font-medium transition-colors hover:border-cyan/50 hover:text-cyan"
+            >
+              {t("guidesLink", { count: guideSuggestions.length })}
+            </Link>
+          )}
+          {withBazar && (
+            <Link
+              href="/admin/bazar"
+              className="rounded-md border border-border bg-card/40 px-3 py-2 text-sm font-medium transition-colors hover:border-cyan/50 hover:text-cyan"
+            >
+              {t("bazarLink")}
+            </Link>
+          )}
         </nav>
       )}
 

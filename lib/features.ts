@@ -62,6 +62,11 @@ export const FEATURES = {
   // scams use (migration 0034).
   jobsHousing: true,
 
+  // Bazar: work by Kurdish makers (migration 0036). Phase A gives
+  // everything away — there is no checkout, and nothing here costs
+  // anything until the tax question in BAZAR.md is answered.
+  bazar: true,
+
   // Deliberately off. Matches and who-viewed are engagement machinery that
   // works against a community built on helping; billing earns nothing at
   // zero users. All three are one flag away, with their data intact.

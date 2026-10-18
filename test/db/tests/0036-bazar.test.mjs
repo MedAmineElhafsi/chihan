@@ -456,6 +456,112 @@ export default async function test0036Bazar(t) {
     buckets.find((b) => b.id === "shop-previews")?.public === true
   );
 
+  t.section("free work is for everyone — the point of giving it away");
+
+  const FREE_FILE = free.file_path;
+  await db.exec(
+    `insert into storage.objects (bucket_id, name, owner)
+     values ('shop-files', '${FREE_FILE}', '${ARTIST}')`
+  );
+
+  const reachesFree = async (uid) =>
+    (
+      await as(db, uid, () =>
+        db.query(
+          `select 1 from storage.objects where bucket_id = 'shop-files' and name = $1`,
+          [FREE_FILE]
+        )
+      )
+    ).rows.length;
+
+  t.ok(
+    "somebody who has never signed in can take a free download",
+    (await reachesFree(null)) === 1
+  );
+  t.ok("so can a member", (await reachesFree(OTHER)) === 1);
+
+  // The paid file next to it must not become public by association.
+  t.ok(
+    "while the paid file beside it stays shut",
+    (await reaches(OTHER)) === 0
+  );
+
+  await as(db, ADMIN, () =>
+    db.query(
+      `update public.shop_products set status = 'held' where id = $1`,
+      [free.id]
+    )
+  );
+  t.ok(
+    "and taking it off the shelf closes the link",
+    (await reachesFree(null)) === 0
+  );
+  await as(db, ADMIN, () =>
+    db.query(
+      `update public.shop_products set status = 'listed' where id = $1`,
+      [free.id]
+    )
+  );
+
+  t.section("counting what was taken, never who");
+
+  await as(db, null, () =>
+    db.query(`select public.record_download($1)`, [free.id])
+  );
+  await as(db, OTHER, () =>
+    db.query(`select public.record_download($1)`, [free.id])
+  );
+  t.ok(
+    "a visitor's download counts as much as a member's",
+    (
+      await db.query(`select downloads from public.shop_products where id = $1`, [
+        free.id,
+      ])
+    ).rows[0].downloads === 2
+  );
+
+  const held = (await submit(ARTIST, { slug: "not-listed-yet" })).rows[0];
+  await as(db, null, () =>
+    db.query(`select public.record_download($1)`, [held.id])
+  );
+  t.ok(
+    "nothing counts against work that is not on the shelf",
+    (
+      await db.query(`select downloads from public.shop_products where id = $1`, [
+        held.id,
+      ])
+    ).rows[0].downloads === 0
+  );
+
+  t.section("an administrator stocks the shelf");
+
+  const seeded = (
+    await as(db, ADMIN, () =>
+      db.query(
+        `insert into public.shop_products
+           (seller_id, slug, title, description, price_cents, file_path,
+            rights_confirmed_at, status)
+         values ($1, 'flag-pack-official', 'Kurdish flag, print-ready', $2, 0, $3, now(), 'listed')
+         returning seller_id, status`,
+        [
+          ARTIST,
+          "The flag at A3, A2 and A1, plus a vector. Free, for everyone, forever.",
+          `${ARTIST}/flag-pack.pdf`,
+        ]
+      )
+    )
+  ).rows[0];
+  t.ok(
+    "an administrator may put work up on a maker's behalf",
+    seeded.seller_id === ARTIST,
+    seeded.seller_id
+  );
+  t.ok(
+    "...and list it directly, because they are the review",
+    seeded.status === "listed",
+    seeded.status
+  );
+
   t.section("settlement");
 
   await asService(db, () =>

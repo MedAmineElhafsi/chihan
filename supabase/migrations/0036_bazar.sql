@@ -74,6 +74,10 @@ create table if not exists public.shop_products (
   reviewed_at timestamptz,
   review_note text check (review_note is null or char_length(review_note) <= 1000),
 
+  -- How many times it has been taken. A number, never a who — the same
+  -- rule as a listing's statistics.
+  downloads integer not null default 0 check (downloads >= 0),
+
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
 
@@ -208,10 +212,13 @@ create policy "Listed work is public" on public.shop_products for select
   );
 
 -- The same bar as the jobs board, for the same reason: money and identity.
+-- An administrator may also put work up on somebody's behalf, which is how
+-- the shelf is stocked before there is anybody to stock it.
 drop policy if exists "Verified members sell" on public.shop_products;
 create policy "Verified members sell" on public.shop_products for insert
   to authenticated with check (
-    seller_id = auth.uid() and public.is_verified(auth.uid())
+    (seller_id = auth.uid() and public.is_verified(auth.uid()))
+    or public.is_admin(auth.uid())
   );
 
 drop policy if exists "Sellers edit their own work" on public.shop_products;
@@ -459,6 +466,52 @@ create policy "Upload what you sell to your own folder" on storage.objects
     bucket_id in ('shop-files', 'shop-previews')
     and (storage.foldername(name))[1] = auth.uid()::text
   );
+
+-- Free work is readable by anyone, signed in or not.
+--
+-- This is the whole point of giving something away: a link to the flag pack
+-- has to work when it arrives in a WhatsApp group, for somebody who has
+-- never heard of Cîhan and is not about to make an account to see a flag.
+-- Not security definer, so the product's own policy still decides — and it
+-- only shows what is listed.
+create or replace function public.is_free_download(p_name text)
+returns boolean
+language sql
+stable
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.shop_products
+     where file_path = p_name and price_cents = 0 and status = 'listed'
+  );
+$$;
+
+revoke all on function public.is_free_download(text) from public;
+grant execute on function public.is_free_download(text) to anon, authenticated;
+
+drop policy if exists "Free work is for everyone" on storage.objects;
+create policy "Free work is for everyone" on storage.objects
+  for select to anon, authenticated
+  using (
+    bucket_id = 'shop-files' and public.is_free_download(name)
+  );
+
+-- Counting what was taken. No row per person, and nothing that says who.
+create or replace function public.record_download(p_product uuid)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $fn$
+begin
+  update shop_products
+     set downloads = downloads + 1
+   where id = p_product and status = 'listed';
+end;
+$fn$;
+
+revoke all on function public.record_download(uuid) from public;
+grant execute on function public.record_download(uuid) to anon, authenticated;
 
 drop policy if exists "Download what you bought" on storage.objects;
 create policy "Download what you bought" on storage.objects

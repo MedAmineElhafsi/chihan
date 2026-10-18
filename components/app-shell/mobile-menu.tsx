@@ -40,6 +40,7 @@ export function MobileMenu({
     buddies?: boolean;
     board?: boolean;
     tickets?: boolean;
+    bazar?: boolean;
   };
 }) {
   const tNav = useTranslations("Nav");
@@ -97,6 +98,11 @@ export function MobileMenu({
               <Link href="/housing">{tNav("housing")}</Link>
             </DropdownMenuItem>
           </>
+        )}
+        {sections.bazar && (
+          <DropdownMenuItem asChild>
+            <Link href="/bazar">{tNav("bazar")}</Link>
+          </DropdownMenuItem>
         )}
         {sections.tickets && (
           <DropdownMenuItem asChild>
