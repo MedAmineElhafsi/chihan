@@ -92,10 +92,50 @@ by resetting exactly those. That is correct, not a bug: "verified" decides who
 may post a room or a job and who may be a buddy, so it has to mean a document
 an administrator looked at. Tell the customer before you run it.
 
-### 3.4 Production environment
+### 3.4 It is deployed, behind a login
 
-`NEXT_PUBLIC_SITE_URL` must be set in production or every Stripe return link
-and share link points at localhost.
+**https://cihan-xi.vercel.app** — Vercel project `cihan` under
+`medamineelhafsis-projects`, deployed 21 October 2026 from `e01c7f0`.
+
+**Vercel Authentication is on for every deployment, production included**
+(`ssoProtection: { deploymentType: "all" }`). An anonymous visitor gets
+Vercel's login page, not the site — deep links too; nothing of the app
+leaks. That is deliberate: until the Impressum, the terms and a real
+privacy notice exist (§6 below), a public German-facing commercial site is
+an exposure rather than a launch. Turning it off is one setting in the
+dashboard when the paperwork is ready.
+
+There is no Git integration — linking the repository needs a GitHub Login
+Connection on the Vercel account, which was not set up. Deployments are
+therefore manual:
+
+```bash
+npx vercel deploy --prod --yes
+```
+
+**The site is built but keyless.** Only `NEXT_PUBLIC_SITE_URL` is set. Add
+the rest in the Vercel dashboard (Settings → Environment Variables) — they
+belong to the customer and nobody else should be typing them:
+
+| Variable | Needed for |
+| --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL` | everything. Public by design |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | everything. Public by design — RLS is what protects the data |
+| `SUPABASE_SERVICE_ROLE_KEY` | **secret.** Webhooks and admin tasks. Never `NEXT_PUBLIC_` |
+| `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` | secret. Premium, tickets, the Bazar |
+| `NEXT_PUBLIC_STRIPE_PRICE_MONTHLY` / `_YEARLY` / `_BUSINESS` | the plans that use them |
+| `STRIPE_CONNECT` | event tickets |
+| `STRIPE_TAX` | **leave unset.** `on` enables paid Bazar selling and must wait for the OSS registration |
+| `GOOGLE_TRANSLATE_API_KEY` | the Translate link |
+| `RESEND_API_KEY` | invite emails |
+| `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | web push |
+
+`NEXT_PUBLIC_*` values are inlined at build time, so **redeploy after
+adding them** or they will not take effect.
+
+The build survives without any of them — the globe loader catches its own
+error — so a keyless deployment goes green and simply shows nothing. Do not
+read a successful build as a working site.
 
 Optional keys, each gating one feature that stays invisible without it:
 
