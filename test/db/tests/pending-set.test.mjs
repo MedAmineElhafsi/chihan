@@ -1,21 +1,27 @@
 /**
  * The set that has not run yet, as the customer will run it.
  *
- * The live project is at 0025. What they are handed is one file holding
- * 0026 through 0035, pasted into the Supabase SQL editor. Two things have
- * to be true of it: it works on a 0025 database, and running it again —
- * because a paste was interrupted, or nobody could remember — changes
- * nothing and breaks nothing.
+ * 0026 to 0036 have since been applied to the live project, so what is
+ * waiting is 0037 alone. Two things have to be true of whatever is handed
+ * over: it works on a database in the state the live one is actually in,
+ * and running it again — because a paste was interrupted, or nobody could
+ * remember — changes nothing and breaks nothing.
+ *
+ * The sweeps further down are not about the pending set at all. They ask
+ * what has to be true of the whole schema however it got there: that no
+ * table holding members' material is missing its row-level security, and
+ * that no bucket is public by accident.
  */
 import fs from "node:fs";
 import path from "node:path";
 
 import { freshDb, adapt, migrationFiles, MIGRATIONS } from "../harness.mjs";
 
-export const title =
-  "the pending set — 0026 to 0036, on the live project's state";
+export const title = "the pending set — 0037, on the live project's state";
 
-const PENDING = /^00(2[6-9]|3[0-6])_/;
+/** Everything after the last migration the live project has run. */
+const LIVE_AT = "0036";
+const PENDING = /^0037_/;
 
 export default async function testPendingSet(t) {
   const files = migrationFiles().filter((f) => PENDING.test(f));
@@ -27,12 +33,12 @@ export default async function testPendingSet(t) {
 
   t.ok(
     "it holds every migration that has not run",
-    files.length === 11,
+    files.length === 1,
     files.join(", ")
   );
 
-  const db = await freshDb({ upTo: "0025" });
-  t.ok("a database at 0025, like the live one", true);
+  const db = await freshDb({ upTo: LIVE_AT });
+  t.ok(`a database at ${LIVE_AT}, like the live one`, true);
 
   await db.exec("set check_function_bodies = off;");
   try {
@@ -85,7 +91,7 @@ export default async function testPendingSet(t) {
     )
   ).rows.map((r) => r.table_name);
   t.ok(
-    "every table the eleven migrations promise",
+    "every table the features need is there",
     present.length === expected.length,
     `missing: ${expected.filter((e) => !present.includes(e)).join(", ")}`
   );

@@ -68,9 +68,10 @@ Two things that look wrong and are not:
 - `translations` refuses the anon key with a permission error. That is the
   point of it: RLS on, no policies at all, service role only.
 
-**The deployed site will not show any of this until its Supabase keys are
-added and it is redeployed** (§3.4). The migrations are in the database; the
-site cannot reach the database yet.
+The keys were added afterwards and the deployment reaches all of it (§3.4).
+
+**`0037` is written, proven and not yet applied** — see §3.6. It is the only
+migration the live project is behind.
 
 ### 3.2 There is one administrator
 
@@ -201,29 +202,40 @@ German is the binding version and the other four say so in a notice at the
 top. `TERMS_UPDATED` in `lib/legal.ts` is the date readers see; change it
 when the words change.
 
-### 3.6 Blocking somebody does not actually stop them
+### 3.6 Blocking: fixed in 0037, which still has to be run
 
-Found by the new chat tests, and not yet fixed.
+Found by the chat tests. `user_blocks` was consulted in
+`lib/chat-actions.ts` and **nowhere in the database**. PostgREST is a public
+endpoint and the anon key ships inside every page, so a blocked member could
+`POST /rest/v1/messages` directly and 0004's insert policy waved them
+through — all it asked was whether they were in the conversation. The block
+was a courtesy that a browser's dev tools undid in a minute.
 
-`user_blocks` is consulted in `lib/chat-actions.ts` before a message is
-sent, and **nowhere in the database**. PostgREST is a public endpoint: a
-blocked member holding the anon key — which ships in every page — can
-`POST /rest/v1/messages` directly, and the insert policy will allow it,
-because all the policy asks is whether they are in the conversation. The
-block is a courtesy that a browser's dev tools undo in a minute.
+That is a worse failure here than it would be in most products. The people
+most likely to block somebody on Cîhan are the ones being harassed, and they
+were being told they were safe when they were not.
 
-This matters more here than it would elsewhere. The people most likely to
-block somebody on Cîhan are the ones being harassed, and they are being
-told they are safe when they are not.
+[`0037_blocks_in_the_database.sql`](supabase/migrations/0037_blocks_in_the_database.sql)
+closes it: a `blocked_in_conversation(conv)` helper, that clause added to
+the insert policy on `messages`, and the same check inside
+`create_direct_conversation()` so the room and the door shut together. A
+block in either direction closes the conversation for both of them, which is
+what the server actions already did. Proven by
+[`test/db/tests/0037-blocks.test.mjs`](test/db/tests/0037-blocks.test.mjs),
+sixteen checks, including the hole itself on a 0036 database so the closing
+can be watched.
 
-The fix is a migration — call it 0037 — adding a `security definer` helper
-along the lines of `blocked_in_conversation(conv, uid)` that looks for a
-block in either direction between the sender and any other participant, and
-an `and not public.blocked_in_conversation(...)` on the insert policies for
-`messages` and `group_messages`. Prove it in `test/db` first; the section
-headed "what the database does not enforce" in
-[`test/db/tests/0004-chat.test.mjs`](test/db/tests/0004-chat.test.mjs)
-is the test that should change when it is closed.
+**Group messages are deliberately left out**, which is a correction to what
+this section said before. If one member's block stopped another member
+posting to a shared room, every member would hold a mute button over every
+other — one tap and somebody is silenced in a room neither of them owns.
+Blocking inside a group is about what you are shown, and belongs in the
+interface. It is not there yet: a blocked member's group messages are still
+displayed to you. A display bug, and a far smaller one than this was.
+
+**Nothing is fixed until the file is run.** Paste it into the Supabase SQL
+editor for `czihcdhrzbhgsugdnyxx`, or apply it the way 0026–0036 were. It
+touches no data: one function added, one replaced, one policy rewritten.
 
 ---
 
@@ -313,7 +325,7 @@ real Postgres (PGlite) dressed up as Supabase — roles `anon` /
 npm run test:db
 ```
 
-302 checks in about fifteen seconds: who may write a guide, who may be a
+319 checks in about twenty-five seconds: who may write a guide, who may be a
 buddy, what the board holds, who can hear a voice note, who reads a
 listing's numbers, that nobody can write themselves a ticket, and that the
 whole pending set runs on a 0025 database twice. It lives in
@@ -321,7 +333,8 @@ whole pending set runs on a 0025 database twice. It lives in
 
 The private-material tables are covered too, which was the largest gap:
 **0004** direct messages, **0012 + 0023** group rooms and private groups,
-**0021** the help board, **0023** verification documents. Those four files
+**0021** the help board, **0023** verification documents, and **0037**
+the blocking fix. Those files
 ask the questions an attacker would — can I read a conversation I am not in,
 put myself into one, sign a message with somebody else's name, reach another
 member's passport scan — and the answer is no to each.
@@ -398,9 +411,10 @@ In the order I would do it:
    behind a login, waiting on the legal pages.
 2. **Fill in `lib/legal.ts` and get the terms reviewed** (§3.5). These are
    the last things between the site and being allowed to go public.
-3. **Close the blocking hole in chat** (§3.6), and extend the database tests
-   as you go. `npm run test:db` now covers 0004, 0012, 0021, 0023, 0028 and
-   0031–0036 plus the pending set — the private-material tables are done.
+3. **Run 0037** (§3.6) — it is written and proven but the live project is
+   still without it — and extend the database tests as you go.
+   `npm run test:db` covers 0004, 0012, 0021, 0023, 0028, 0031–0036 and 0037
+   plus the pending set; the private-material tables are done.
    What is left untested is the ordinary stuff: listings and reviews (0002),
    the feed (0005), news (0006), notifications (0009), stories and invites
    (0020), reels (0024). Every new migration should still arrive with its

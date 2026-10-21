@@ -1163,3 +1163,38 @@ mentions `cartocdn` any more.
 That last check also settles something §3.4 had been saying for a week —
 the site is no longer keyless. Numbers that came out of Postgres cannot be
 rendered by a deployment that cannot reach it.
+
+## 0037 — the block holds without the server's help
+
+- [x] **`supabase/migrations/0037_blocks_in_the_database.sql`.** A
+      `blocked_in_conversation(conv)` helper, that clause added to the insert
+      policy on `messages`, and the same check inside
+      `create_direct_conversation()` so the room and the door shut together.
+      A block in either direction closes the conversation for both of them —
+      whoever blocked does not get to keep talking at somebody who has no way
+      to answer, which is what the server actions already did.
+
+Three judgements worth recording.
+
+**The helper takes a conversation, not a pair of user ids.** A
+`blocked_between(a, b)` would have read more neatly and would also have let
+anybody holding the anon key ask whether any two members of Cîhan have
+blocked each other. This one answers about `auth.uid()` and nothing else.
+
+**Group messages are left alone**, which corrects what HANDOFF §3.6 said
+when the hole was first written up. If one member's block stopped another
+member posting to a shared room, every member would hold a mute button over
+every other. Blocking in a group is about what you are shown, and belongs in
+the interface — where it is not implemented yet, and should be.
+
+**Reading is untouched.** A block stops the conversation going further; it
+does not reach back and delete what was already said. Somebody being
+harassed may well need that record.
+
+Sixteen checks in `test/db/tests/0037-blocks.test.mjs`, including the hole
+itself on a 0036 database so the closing can be watched happening. The
+section in the 0004 test that asserted the gap now asserts the fix, and the
+pending-set test has been pointed at the live project's real state — 0036,
+with 0037 the only file waiting. 319 checks in all.
+
+**Not applied.** The live project is still open until the file is run.

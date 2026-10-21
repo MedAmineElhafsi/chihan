@@ -243,36 +243,41 @@ export default async function test0004Chat(t) {
     (await profileSeenBy(null)) === 0
   );
 
-  t.section("what the database does not enforce: blocking");
+  t.section("blocking, which 0037 moved in here");
 
-  // `user_blocks` is checked in `lib/chat-actions.ts` before a message is
-  // sent, and nowhere in the database. PostgREST is a public endpoint — a
-  // blocked member holding the anon key can insert into `messages` directly
-  // and the policy above will allow it, because all it asks is whether they
-  // are in the conversation.
-  //
-  // This test states the gap rather than hiding it. If a later migration
-  // closes it, this is the test that should change.
+  // This section used to be headed "what the database does not enforce", and
+  // asserted the opposite of what it asserts now: until 0037 the block lived
+  // only in `lib/chat-actions.ts`, so a blocked member holding the anon key
+  // could insert straight into `messages` and this policy waved them
+  // through. The whole of the new rule — both directions, the door as well
+  // as the room, and what a block deliberately does not touch — is in
+  // `0037-blocks.test.mjs`. What belongs to 0004 is that its own insert
+  // policy is the thing doing the refusing.
   await as(db, BARAN, () =>
     db.query(
       `insert into public.user_blocks (blocker_id, blocked_id) values ($1, $2)`,
       [BARAN, RONAHI]
     )
   );
-  await as(db, RONAHI, () =>
-    db.query(
-      `insert into public.messages (conversation_id, sender_id, body)
-       values ($1, $2, 'blocked, but the API does not know that')`,
-      [conv, RONAHI]
-    )
-  );
-  const afterBlock = await asService(db, () =>
-    db.query(`select count(*)::int as n from public.messages`)
+  await t.refuses(
+    "a blocked member cannot reach the table directly either",
+    () =>
+      as(db, RONAHI, () =>
+        db.query(
+          `insert into public.messages (conversation_id, sender_id, body)
+           values ($1, $2, 'the API knows about this now')`,
+          [conv, RONAHI]
+        )
+      ),
+    /row-level security/i
   );
   t.ok(
-    "a blocked member can still reach the table directly — the block lives in the server action, not here",
-    afterBlock.rows[0].n === 2,
-    `${afterBlock.rows[0].n} messages`
+    "...and the conversation still holds only what was said before it",
+    (
+      await asService(db, () =>
+        db.query(`select count(*)::int as n from public.messages`)
+      )
+    ).rows[0].n === 1
   );
 
   t.ok(
