@@ -225,13 +225,21 @@ what the server actions already did. Proven by
 sixteen checks, including the hole itself on a 0036 database so the closing
 can be watched.
 
-**Group messages are deliberately left out**, which is a correction to what
-this section said before. If one member's block stopped another member
-posting to a shared room, every member would hold a mute button over every
-other — one tap and somebody is silenced in a room neither of them owns.
-Blocking inside a group is about what you are shown, and belongs in the
-interface. It is not there yet: a blocked member's group messages are still
-displayed to you. A display bug, and a far smaller one than this was.
+**Group messages are deliberately left out of the policy**, which is a
+correction to what this section said before. If one member's block stopped
+another member posting to a shared room, every member would hold a mute
+button over every other — one tap and somebody is silenced in a room
+neither of them owns. Blocking inside a group is about what you are shown,
+not about what others may say.
+
+So that half is done in the interface instead, and it is done: a blocked,
+blocking or muted member is dropped by `getGroupMessages`, by
+`getGroupPosts`, and by the Realtime handler in
+`components/groups/group-chat.tsx` — which matters, because a live message
+arrives straight from Postgres over a socket and never passes a loader that
+could filter it. Notifications were already filtered by
+`filterAllowedNotifications`. Three surfaces, and the rule is the same one
+`lib/feed.ts` has always used: `getHiddenAuthorIds(viewerId)`.
 
 **Applied** to `czihcdhrzbhgsugdnyxx` on 21 October 2026. Verified in the
 catalogue afterwards rather than assumed: the insert policy on `messages`

@@ -1223,3 +1223,35 @@ Checked after, in the catalogue rather than by hoping:
 The behaviour itself was proven in the harness against the same schema —
 sixteen checks — not on the live database. Nobody's real conversation was
 used as a test.
+
+## Blocked members disappear from groups
+
+The other half of 0037, and deliberately not SQL. A block cannot stop
+somebody posting to a shared room — that would hand every member a mute
+button over every other — so in a group it has to be about what you are
+shown.
+
+Three surfaces, all using the rule `lib/feed.ts` has always used,
+`getHiddenAuthorIds(viewerId)`: blocked either way, plus muted.
+
+- [x] **The group chat loader.** Hidden senders are dropped before their
+      profiles are fetched and before any voice note is signed, so nothing
+      about them reaches the page at all.
+- [x] **The group board.** Same rule; it already took a `viewerId` and was
+      only using it for likes.
+- [x] **The Realtime handler.** This is the one that would have been missed:
+      a live message arrives straight from Postgres over a socket and never
+      passes through a loader. The page now also sends the list itself, and
+      the Set is keyed on its contents so a fresh array from the server does
+      not tear down and resubscribe the channel.
+
+Notifications were already right — `createNotifications` runs everything
+through `filterAllowedNotifications`, so a blocked member's group message
+never pinged anybody.
+
+**What was not verified.** The signed-out path renders (the group page
+serves its own `<h1>`), it type-checks, lints and builds — but the filtering
+itself was not exercised end to end, because the live database has no
+blocked pair who share a group and making one would mean creating accounts
+and blocks in the customer's production data. The quickest real check is to
+block somebody from their profile and reload a group you are both in.

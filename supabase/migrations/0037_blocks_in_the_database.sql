@@ -21,9 +21,11 @@
 -- every member would hold a mute button over every other — one tap, and
 -- somebody is silenced in a room neither of them owns. Blocking inside a
 -- group is about what you are shown, not about what others may say, and it
--- belongs in the interface. It is not implemented there yet: a blocked
--- member's group messages are still displayed. That is a display bug, and a
--- smaller one than this was.
+-- belongs in the interface. That half landed just after this file: the group
+-- chat loader, the group board loader and the Realtime handler all drop
+-- hidden senders now, and notifications already did. No SQL changed for it,
+-- which is the point — it is a question of what you are shown, not of what
+-- the database permits.
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------

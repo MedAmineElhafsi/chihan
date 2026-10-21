@@ -1,13 +1,26 @@
 import "server-only";
 
 import { createClient } from "./supabase/server";
+import { getHiddenAuthorIds } from "./blocks";
 import { voiceReady } from "./schema-ready";
 import { signVoiceNotes } from "./voice";
 import type { GroupMessage } from "@/types/group-message";
 import { VOICE_COLUMNS, voiceFromRow } from "@/types/voice";
 
+/**
+ * The room's messages, minus the people this member does not want to hear.
+ *
+ * A block cannot stop somebody posting to a group — that would hand every
+ * member a mute button over every other, and 0037 deliberately leaves group
+ * messages out of the policy for exactly that reason. In a group a block is
+ * about what you are shown, which means it has to be done here.
+ *
+ * Hidden senders are dropped before their profiles are fetched and before
+ * any voice note is signed, so nothing about them reaches the page at all.
+ */
 export async function getGroupMessages(
   groupId: string,
+  viewerId?: string | null,
   limit = 100
 ): Promise<GroupMessage[]> {
   try {
@@ -22,7 +35,15 @@ export async function getGroupMessages(
       .order("created_at", { ascending: true })
       .limit(limit);
     if (error || !rows?.length) return [];
-    const data = rows as unknown as Array<Record<string, unknown>>;
+    let data = rows as unknown as Array<Record<string, unknown>>;
+
+    if (viewerId) {
+      const hidden = await getHiddenAuthorIds(viewerId);
+      if (hidden.size > 0) {
+        data = data.filter((m) => !hidden.has(String(m.sender_id)));
+      }
+      if (data.length === 0) return [];
+    }
 
     const senderIds = [...new Set(data.map((m) => String(m.sender_id)))];
     const { data: profiles } = await supabase

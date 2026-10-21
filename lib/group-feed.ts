@@ -1,9 +1,15 @@
 import "server-only";
 
 import { createClient } from "./supabase/server";
+import { getHiddenAuthorIds } from "./blocks";
 import { mapPostRows } from "./feed";
 import type { FeedItem } from "@/types/post";
 
+/**
+ * The group's board. Same rule as the group's chat and as the main feed:
+ * somebody this member has blocked, or who has blocked them, or whom they
+ * have muted, does not appear.
+ */
 export async function getGroupPosts(
   groupId: string,
   viewerId?: string | null
@@ -19,11 +25,14 @@ export async function getGroupPosts(
       .order("created_at", { ascending: false })
       .limit(80);
     if (error || !data) return [];
-    return mapPostRows(
-      supabase,
-      data as Array<Record<string, unknown>>,
-      viewerId
-    );
+    let rows = data as Array<Record<string, unknown>>;
+    if (viewerId) {
+      const hidden = await getHiddenAuthorIds(viewerId);
+      if (hidden.size > 0) {
+        rows = rows.filter((r) => !hidden.has(String(r.author_id)));
+      }
+    }
+    return mapPostRows(supabase, rows, viewerId);
   } catch {
     return [];
   }

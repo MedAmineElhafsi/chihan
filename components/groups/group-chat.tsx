@@ -33,12 +33,20 @@ export function GroupChat({
   currentUserId,
   initialMessages,
   canChat,
+  hiddenSenderIds = [],
   voiceEnabled = false,
 }: {
   groupId: string;
   currentUserId: string;
   initialMessages: GroupMessage[];
   canChat: boolean;
+  /**
+   * People this member has blocked or muted, and people who have blocked
+   * them. The server has already kept them out of `initialMessages`; this
+   * list is for the live ones, which arrive straight from Postgres over the
+   * socket and never pass through a loader that could filter them.
+   */
+  hiddenSenderIds?: string[];
   /** Recording is offered once migration 0028 has run. */
   voiceEnabled?: boolean;
 }) {
@@ -50,6 +58,15 @@ export function GroupChat({
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Rebuilt only when the list itself changes. The server sends a fresh
+  // array on every render, so keying the Set on its contents is what keeps
+  // the Realtime subscription below from tearing down and resubscribing.
+  const hiddenKey = hiddenSenderIds.join(",");
+  const hidden = useMemo(
+    () => new Set(hiddenKey ? hiddenKey.split(",") : []),
+    [hiddenKey]
+  );
 
   const timeFmt = useMemo(
     () =>
@@ -96,6 +113,7 @@ export function GroupChat({
         (payload) => {
           const row = payload.new as Record<string, unknown>;
           const id = String(row.id);
+          if (hidden.has(String(row.sender_id))) return;
           setMessages((prev) => {
             if (prev.some((m) => m.id === id)) return prev;
             return [
@@ -126,7 +144,7 @@ export function GroupChat({
       cancelled = true;
       if (channel) void supabase.removeChannel(channel);
     };
-  }, [groupId, canChat]);
+  }, [groupId, canChat, hidden]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });

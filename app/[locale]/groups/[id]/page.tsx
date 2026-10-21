@@ -9,6 +9,7 @@ import { MapPin, Users } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getGroup, getGroupMembers, getMembership } from "@/lib/groups";
+import { getHiddenAuthorIds } from "@/lib/blocks";
 import { getGroupMessages } from "@/lib/group-chat";
 import { getGroupPosts } from "@/lib/group-feed";
 import { getInviteCandidates } from "@/lib/group-invite";
@@ -39,10 +40,13 @@ export default async function GroupDetailPage({
     getMembership(id, user?.id ?? null),
   ]);
   const isMember = role != null;
-  const [messages, posts, candidates] = await Promise.all([
-    isMember && user ? getGroupMessages(id) : Promise.resolve([]),
+  const [messages, posts, candidates, hidden] = await Promise.all([
+    isMember && user ? getGroupMessages(id, user.id) : Promise.resolve([]),
     isMember && user ? getGroupPosts(id, user.id) : Promise.resolve([]),
     isMember && user ? getInviteCandidates(id) : Promise.resolve([]),
+    // The loaders above filter what they return; the chat also needs the
+    // list itself, for messages that arrive live over the socket.
+    user ? getHiddenAuthorIds(user.id) : Promise.resolve(new Set<string>()),
   ]);
 
   const place = [group.city, group.country].filter(Boolean).join(", ");
@@ -102,6 +106,7 @@ export default async function GroupDetailPage({
           currentUserId={user.id}
           initialMessages={messages}
           canChat={isMember}
+          hiddenSenderIds={[...hidden].sort()}
           voiceEnabled={await voiceEnabled()}
         />
       ) : (
