@@ -288,10 +288,10 @@ evening.
 
 ## 7. Where it sits
 
-Honestly: this is not next. Ten migrations have never run, there are no
-administrators, and there is no Impressum. The site is deployed, but behind
-Vercel Authentication precisely because of that last one. A shop on a site
-with 26 members and no public address earns nothing.
+Honestly: this is still not next. The migrations have run and there is an
+administrator now, but there is no Impressum, and the site sits behind
+Vercel Authentication precisely because of that. A shop on a site with 26
+members and no public address earns nothing.
 
 But **Phase A costs almost nothing and helps the launch** rather than
 competing with it — a free flag pack is a reason for someone to send a link

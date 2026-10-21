@@ -1029,6 +1029,11 @@ now written down in `test/db/README.md`. And `translations` refuses the anon
 key outright, which is exactly what a table with RLS on and no policies is
 supposed to do.
 
-Still true: there are no administrators, so nothing that needs approval can
-be approved. And the deployed site has no Supabase keys yet, so it cannot
-see any of this until they are added and it is redeployed.
+One administrator now exists, so ads, held board posts, verification
+requests, guides and Bazar submissions have somebody who can decide them.
+Being an administrator does not confer the verified badge: that still means
+a document was checked, and it is what gates posting a room or a job and
+being a buddy.
+
+Still true: the deployed site has no Supabase keys yet, so it cannot see any
+of this until they are added and it is redeployed.

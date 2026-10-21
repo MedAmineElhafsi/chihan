@@ -72,18 +72,27 @@ Two things that look wrong and are not:
 added and it is redeployed** (§3.4). The migrations are in the database; the
 site cannot reach the database yet.
 
-### 3.2 There are no administrators
+### 3.2 There is one administrator
 
-The live project has **26 profiles and 0 admins**. Nothing that needs approval
-can be approved: sponsored ads, held board posts, verification requests, city
-guides. Promote someone after the migrations run:
+`8970e05f-a138-493c-a622-a21111329a94` (Mohamed Amine El Hafsi), set on
+21 October 2026. Ads, held board posts, verification requests, guides and
+Bazar submissions can now be approved by somebody.
+
+Being an administrator does **not** confer the verified badge, and
+deliberately so — `is_verified` means a document was checked, and it is what
+decides who may post a room or a job and who may be a buddy. An
+administrator who wants to do those things submits a verification request
+like anyone else and then approves it through `decide_verification()`, which
+leaves the record that a direct flag update would not.
+
+To add another administrator:
 
 ```sql
 update public.profiles set is_admin = true where user_id = 'THE-UUID';
 ```
 
-Migration `0031` deliberately closes the hole that would have let a member do
-this to themselves, so it has to be done in SQL by hand, once.
+Migration `0031` stops a member doing that to themselves, so it has to be
+run in SQL by somebody who already has access to the database.
 
 ### 3.3 Two verified badges were taken back
 
