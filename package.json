@@ -12,7 +12,8 @@
     "video:studio": "remotion studio remotion/index.ts",
     "video:render": "remotion render remotion/index.ts HeroLoop public/video/hero.mp4 --codec=h264",
     "db:migrate": "node scripts/run-migration.mjs",
-    "test:db": "node test/db/run.mjs"
+    "test:db": "node test/db/run.mjs",
+    "env:push": "node scripts/push-env-to-vercel.mjs"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.2.0",
