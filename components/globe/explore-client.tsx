@@ -15,6 +15,8 @@ import {
   Crosshair,
   Globe2,
   MapPin,
+  PanelLeftClose,
+  PanelLeftOpen,
   Stethoscope,
   UserRound,
   Users,
@@ -29,9 +31,11 @@ import { CategoryIcon } from "@/components/directory/category-icon";
 import { CATEGORY_COLORS, pointStyle } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useOnlineProfiles } from "@/lib/use-online";
+import { globeTotals } from "@/lib/globe-totals";
 import type { GlobePoint } from "@/lib/globe";
 import { GlobePlaceholder } from "./globe-placeholder";
 import { GlobeSearch, type TagOption } from "./globe-search";
+import { GlobeStats } from "./globe-stats";
 
 const GlobeGL = dynamic(() => import("./globe-gl"), {
   ssr: false,
@@ -69,7 +73,12 @@ export function ExploreClient({
   const [tag, setTag] = useState("");
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  /** The filters, the key and the list fold away; the head of the panel does
+      not, because that is where the numbers live. */
+  const [menuOpen, setMenuOpen] = useState(true);
   const online = useOnlineProfiles();
+
+  const totals = useMemo(() => globeTotals(points), [points]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -408,17 +417,54 @@ export function ExploreClient({
       <div
         inert={!chrome}
         className={cn(
-          "panel-solid absolute inset-x-4 bottom-4 z-10 flex max-h-[55dvh] flex-col overflow-hidden rounded-md transition-opacity duration-500 md:inset-x-auto md:bottom-auto md:start-4 md:top-4 md:max-h-[calc(100%-2rem)] md:w-[340px]",
+          // bottom-20 on a phone, not bottom-4: the tab bar is fixed over the
+          // bottom of the viewport, and anything closer than that is read
+          // through it — which only became obvious once the panel could be
+          // folded down to a card the height of its own head.
+          "panel-solid absolute inset-x-4 bottom-20 z-10 flex max-h-[55dvh] flex-col overflow-hidden rounded-md transition-opacity duration-500 md:inset-x-auto md:bottom-auto md:start-4 md:top-4 md:max-h-[calc(100%-2rem)] md:w-[340px]",
           !chrome && "pointer-events-none opacity-0"
         )}
       >
-        <div className="flex flex-col gap-3 border-b border-border/60 p-4">
-          <div className="flex items-center justify-between">
+        <div
+          className={cn(
+            "flex flex-col gap-3 p-4",
+            menuOpen && "border-b border-border/60"
+          )}
+        >
+          <div className="flex items-center justify-between gap-2">
             <h1 className="font-display text-lg font-semibold">{t("title")}</h1>
-            <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-              {t("matchCount", { count: matches.length })}
-            </span>
+            <div className="flex items-center gap-1.5">
+              <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                {t("matchCount", { count: matches.length })}
+              </span>
+              <button
+                onClick={() => setMenuOpen((open) => !open)}
+                aria-expanded={menuOpen}
+                aria-label={menuOpen ? t("hideMenu") : t("showMenu")}
+                className="-me-1 rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              >
+                {menuOpen ? (
+                  <PanelLeftClose className="size-4 rtl:-scale-x-100" />
+                ) : (
+                  <PanelLeftOpen className="size-4 rtl:-scale-x-100" />
+                )}
+              </button>
+            </div>
           </div>
+
+          <GlobeStats
+            members={totals.members}
+            cities={totals.cities}
+            countries={totals.countries}
+          />
+        </div>
+
+        <div
+          className={cn(
+            "flex flex-col gap-3 border-b border-border/60 px-4 pb-4 pt-3",
+            !menuOpen && "hidden"
+          )}
+        >
           <div className="flex flex-wrap gap-1.5">
             {layers.map(({ key, label, icon: Icon }) => (
               <button
@@ -468,7 +514,12 @@ export function ExploreClient({
           )}
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto p-3">
+        <div
+          className={cn(
+            "min-h-0 flex-1 overflow-y-auto p-3",
+            !menuOpen && "hidden"
+          )}
+        >
           {matches.length === 0 ? (
             <div className="flex flex-col items-center gap-2 px-4 py-10 text-center">
               <MapPin className="size-7 text-cyan" />

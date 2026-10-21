@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 
 import { getGlobePoints } from "@/lib/globe";
+import { globeTotals } from "@/lib/globe-totals";
 import { GlobeHome } from "@/components/globe/globe-home";
 
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
@@ -8,24 +9,9 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   setRequestLocale(locale);
 
   const points = await getGlobePoints();
-  const people = points.filter((p) => p.kind === "person");
 
-  return (
-    <GlobeHome
-      points={points}
-      // Members, and where the members are — counted the same way for the
-      // hero and for the panel that stays beside the globe, so the two can
-      // never drift apart and show a visitor different numbers for the same
-      // word. City by name alone would fold Berlin, Germany into Berlin,
-      // Maryland, so the country goes into the key.
-      stats={{
-        members: people.length,
-        places: points.filter((p) => p.kind === "listing").length,
-        cities: new Set(
-          people.filter((p) => p.city).map((p) => `${p.city}, ${p.country}`)
-        ).size,
-        countries: new Set(people.map((p) => p.country).filter(Boolean)).size,
-      }}
-    />
-  );
+  // The hero and the panel beside the globe count the same way, from the
+  // same place, so they cannot drift apart and show a visitor two different
+  // numbers under one word.
+  return <GlobeHome points={points} stats={globeTotals(points)} />;
 }

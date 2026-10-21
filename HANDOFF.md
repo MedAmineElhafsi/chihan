@@ -259,14 +259,19 @@ locales with full RTL, PWA with web push.
   sprites so nothing depends on a second service. If its public instance ever
   becomes a problem the same tiles can be self-hosted, which is the point of
   it. Attribution rides along in the tile metadata.
-- **The globe keeps its numbers on screen.** Members, cities and countries
-  used to sit on the hero curtain and vanish the moment anyone pressed
-  Explore — which is exactly when a visitor starts wondering how big this
-  place is. They now stay in a panel beside the globe
-  (`components/globe/globe-stats.tsx`), counted from the same points that are
-  drawn, so the figure and the dots always agree. While looking at it: the
-  results panel was labelling its count "46 members" when 46 was people plus
-  restaurants plus events. It says "46 found" now.
+- **The globe keeps its numbers on screen, and the menu folds away.**
+  Members, cities and countries used to sit on the hero curtain and vanish
+  the moment anyone pressed Explore — which is exactly when a visitor starts
+  wondering how big this place is. They now live in the head of the results
+  panel (`components/globe/globe-stats.tsx`), on both the landing page and
+  `/explore`, counted by `lib/globe-totals.ts` — one function, so the hero
+  and the panel cannot show two different numbers under one word. The
+  filters, the key and the country list fold away behind one button, leaving
+  the head of the panel and a clear globe; the numbers stay, because folding
+  the menu is not a request to be told less about the community. While
+  looking at it: the results panel was labelling its count "46 members" when
+  46 was people plus restaurants plus events. It says "46 found" now, and on
+  a phone the panel sits above the tab bar instead of under it.
 
 Feature flags live in `lib/features.ts`. Deliberately **off** for launch:
 `match`, `views`, `billing` — engagement machinery that works against a

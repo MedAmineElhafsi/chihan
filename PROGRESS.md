@@ -1109,3 +1109,32 @@ states the gap rather than hiding it. HANDOFF §3.6 has the fix.
       46 was people plus restaurants plus events, and the per-country rows
       did the same. Both say "found" now, which is what they were counting
       all along.
+
+## The statistic moves to the panel, and the menu learns to fold
+
+The customer wanted the numbers on the left of the page, and a way to open
+and close the menu over the globe.
+
+- [x] **The statistic sits in the head of the results panel**, on the landing
+      page and on `/explore`, above the filters: members, cities, countries.
+      Both it and the landing hero now count through one function,
+      `lib/globe-totals.ts`, so the two can never drift apart and show a
+      visitor different numbers under the same word. The floating card that
+      sat over the globe's bottom corner is gone — it was a second place for
+      the same fact.
+
+- [x] **The menu folds.** One button in the panel head puts away the layer
+      chips, the colour key and the country list, leaving a small card and an
+      unobstructed globe. The numbers deliberately stay in the folded card:
+      folding the menu is a request for less furniture, not for less to be
+      said about the community. `aria-expanded` on the button, the folded
+      content properly `hidden` rather than merely invisible, and the icon
+      mirrors in Arabic and Soranî.
+
+Folding it down to a card the height of its own head is what finally made an
+old bug obvious: on a phone the panel was anchored `bottom-4`, and the tab
+bar is fixed over the bottom 64 px of the viewport, so the last line was
+always being read through it. It sits at `bottom-20` now.
+
+Verified at 1280 px and 375 px, in English and Arabic, both states, on the
+landing page and on `/explore`.

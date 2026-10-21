@@ -279,6 +279,8 @@
     "places": "Places",
     "clear": "Clear search",
     "matchCount": "{count} found",
+    "hideMenu": "Fold the menu away",
+    "showMenu": "Open the menu",
     "cat_classes": "Classes & teachers"
   },
   "Directory": {

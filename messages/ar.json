@@ -279,6 +279,8 @@
     "places": "الأماكن",
     "clear": "مسح البحث",
     "matchCount": "{count} نتيجة",
+    "hideMenu": "طي القائمة",
+    "showMenu": "فتح القائمة",
     "cat_classes": "دروس ومعلّمون"
   },
   "Directory": {

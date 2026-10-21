@@ -279,6 +279,8 @@
     "places": "Orte",
     "clear": "Suche löschen",
     "matchCount": "{count} gefunden",
+    "hideMenu": "Menü einklappen",
+    "showMenu": "Menü öffnen",
     "cat_classes": "Kurse & Lehrkräfte"
   },
   "Directory": {
