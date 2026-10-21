@@ -112,7 +112,7 @@ trigger from `0031` now refuses that from anyone but an administrator.
 ### 3.4 It is deployed, behind a login
 
 **https://cihan-xi.vercel.app** — Vercel project `cihan` under
-`medamineelhafsis-projects`, deployed 21 October 2026 from `e01c7f0`.
+`medamineelhafsis-projects`, deployed 21 October 2026 from `837a6d6`.
 
 **Vercel Authentication is on for every deployment, production included**
 (`ssoProtection: { deploymentType: "all" }`). An anonymous visitor gets
@@ -130,9 +130,14 @@ therefore manual:
 npx vercel deploy --prod --yes
 ```
 
-**The site is built but keyless.** Only `NEXT_PUBLIC_SITE_URL` is set. Add
-the rest in the Vercel dashboard (Settings → Environment Variables) — they
-belong to the customer and nobody else should be typing them:
+**Supabase is connected; everything else is not.** The three Supabase
+variables were pushed with `npm run env:push` and are confirmed working on
+the live deployment — `/en/explore` there renders 25 members, 21 cities and
+10 countries, which can only have come out of the database. The rest of the
+table below is still missing, and each one gates the feature beside it. Add
+them in the Vercel dashboard (Settings → Environment Variables), or through
+`npm run env:push`; they belong to the customer and nobody else should be
+typing them:
 
 | Variable | Needed for |
 | --- | --- |

@@ -1150,3 +1150,16 @@ landing page and on `/explore`.
       goes under the search instead. Measured rather than eyeballed — 23 px
       of clearance below the search block on a 375 px screen — and mirrored
       correctly in Arabic, where bottom-end is bottom-left.
+
+## Deployed
+
+**https://cihan-xi.vercel.app**, from `837a6d6`, still behind Vercel
+Authentication. Verified on the deployment itself rather than assumed: the
+fold button is in the served markup, the panel renders 25 / 21 / 10 out of
+the live database, the count reads "46 found" rather than "46 members", and
+the chunk carrying the listing map mentions `openfreemap` and no chunk
+mentions `cartocdn` any more.
+
+That last check also settles something §3.4 had been saying for a week —
+the site is no longer keyless. Numbers that came out of Postgres cannot be
+rendered by a deployment that cannot reach it.
