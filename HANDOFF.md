@@ -196,6 +196,30 @@ German is the binding version and the other four say so in a notice at the
 top. `TERMS_UPDATED` in `lib/legal.ts` is the date readers see; change it
 when the words change.
 
+### 3.6 Blocking somebody does not actually stop them
+
+Found by the new chat tests, and not yet fixed.
+
+`user_blocks` is consulted in `lib/chat-actions.ts` before a message is
+sent, and **nowhere in the database**. PostgREST is a public endpoint: a
+blocked member holding the anon key — which ships in every page — can
+`POST /rest/v1/messages` directly, and the insert policy will allow it,
+because all the policy asks is whether they are in the conversation. The
+block is a courtesy that a browser's dev tools undo in a minute.
+
+This matters more here than it would elsewhere. The people most likely to
+block somebody on Cîhan are the ones being harassed, and they are being
+told they are safe when they are not.
+
+The fix is a migration — call it 0037 — adding a `security definer` helper
+along the lines of `blocked_in_conversation(conv, uid)` that looks for a
+block in either direction between the sender and any other participant, and
+an `and not public.blocked_in_conversation(...)` on the insert policies for
+`messages` and `group_messages`. Prove it in `test/db` first; the section
+headed "what the database does not enforce" in
+[`test/db/tests/0004-chat.test.mjs`](test/db/tests/0004-chat.test.mjs)
+is the test that should change when it is closed.
+
 ---
 
 ## 4. What is built
@@ -224,6 +248,25 @@ locales with full RTL, PWA with web push.
 | Jobs & housing board | 0034 | verified posters only, scam wording screened in EN/DE/AR/KU, held not deleted |
 | Business plan · event tickets | 0035 | longer ad runs + listing statistics; Stripe Connect destination charges, 5% fee |
 | Bazar — downloads by Kurdish makers | 0036 | the shelf, product pages, a review queue, checkout, settlement. **Paid selling is off until `STRIPE_TAX=on`**, which must not be set before the OSS registration exists. Free downloads work without any of it. See [BAZAR.md](BAZAR.md) |
+
+**Two smaller things, no migration behind either:**
+
+- **The listing map works again.** CARTO's `dark_all` basemap had been
+  key-less for years and quietly stopped being so; every tile on every
+  listing with coordinates arrived stamped "API KEY REQUIRED". It now draws
+  from [OpenFreeMap](https://openfreemap.org) — OpenStreetMap data as vector
+  tiles, no key, no registration, no request limit, with its own fonts and
+  sprites so nothing depends on a second service. If its public instance ever
+  becomes a problem the same tiles can be self-hosted, which is the point of
+  it. Attribution rides along in the tile metadata.
+- **The globe keeps its numbers on screen.** Members, cities and countries
+  used to sit on the hero curtain and vanish the moment anyone pressed
+  Explore — which is exactly when a visitor starts wondering how big this
+  place is. They now stay in a panel beside the globe
+  (`components/globe/globe-stats.tsx`), counted from the same points that are
+  drawn, so the figure and the dots always agree. While looking at it: the
+  results panel was labelling its count "46 members" when 46 was people plus
+  restaurants plus events. It says "46 found" now.
 
 Feature flags live in `lib/features.ts`. Deliberately **off** for launch:
 `match`, `views`, `billing` — engagement machinery that works against a
@@ -260,11 +303,18 @@ real Postgres (PGlite) dressed up as Supabase — roles `anon` /
 npm run test:db
 ```
 
-145 checks in about thirteen seconds: who may write a guide, who may be a
+302 checks in about fifteen seconds: who may write a guide, who may be a
 buddy, what the board holds, who can hear a voice note, who reads a
 listing's numbers, that nobody can write themselves a ticket, and that the
 whole pending set runs on a 0025 database twice. It lives in
 [`test/db`](test/db/README.md), and its README explains how to add to it.
+
+The private-material tables are covered too, which was the largest gap:
+**0004** direct messages, **0012 + 0023** group rooms and private groups,
+**0021** the help board, **0023** verification documents. Those four files
+ask the questions an attacker would — can I read a conversation I am not in,
+put myself into one, sign a message with somebody else's name, reach another
+member's passport scan — and the answer is no to each.
 
 **Run it before writing any migration, and before handing anyone SQL.** It
 has already earned its place: it caught a `CHECK` constraint in 0035 that
@@ -338,22 +388,20 @@ In the order I would do it:
    behind a login, waiting on the legal pages.
 2. **Fill in `lib/legal.ts` and get the terms reviewed** (§3.5). These are
    the last things between the site and being allowed to go public.
-3. **Extend the database tests as you go.** `npm run test:db` covers 0028 and
-   0031–0036 plus the pending set; the migrations before those have no tests
-   yet. Chat, groups and the help board are the ones carrying private
-   material, so they are worth backfilling — and every new migration should
-   arrive with its own file.
+3. **Close the blocking hole in chat** (§3.6), and extend the database tests
+   as you go. `npm run test:db` now covers 0004, 0012, 0021, 0023, 0028 and
+   0031–0036 plus the pending set — the private-material tables are done.
+   What is left untested is the ordinary stuff: listings and reviews (0002),
+   the feed (0005), news (0006), notifications (0009), stories and invites
+   (0020), reels (0024). Every new migration should still arrive with its
+   own file.
 4. **Have a native speaker read the Kurmancî and Soranî strings.** They are my
-   best effort, not a translator's. 1,304 strings in each.
-5. **Fix the map tiles.** The listing map's CARTO basemap now returns tiles
-   watermarked "API KEY REQUIRED" (`components/directory/listing-map.tsx`).
-   Needs a key or a different free provider. This is visible on every listing
-   page with coordinates, so it is the most embarrassing open bug.
-6. **Seed real content before launch.** 21 listings, 11 posts and 7 help
+   best effort, not a translator's. 1,306 strings in each.
+5. **Seed real content before launch.** 21 listings, 11 posts and 7 help
    requests across 26 profiles is not yet a community. City guides (0032) are
    the cheapest way to make the site useful on day one — they are
    administrator-written and need no other members to be there.
-7. **Decide on the brand name.** "Cîhan" is still the working name;
+6. **Decide on the brand name.** "Cîhan" is still the working name;
    `lib/constants.ts` is the one place it changes.
 
 Only after all that would I reach for new features. If the customer asks for
@@ -389,6 +437,11 @@ project is short of.
   before the locale layout so it is not a valid control, and `vercel curl`
   ignores curl's own flags. What works is listed at the end of
   [`test/db/README.md`](test/db/README.md).
+- **A free tile server is free until it isn't.** CARTO's basemap went from
+  key-less to watermarked with no error, no 4xx and no deploy on our side —
+  the tiles still arrive, 200 OK, 2.5 KB of "API KEY REQUIRED". Nothing in a
+  build or a test catches that. If the map ever looks wrong, fetch one tile
+  and *look* at it.
 - **Contrast is measured on rendered pixels**, not on token values — the aurora
   backdrop lifts the ground unevenly. Lowest measured so far: 7.26 for the
   voice/translate work, 5.45 for the newest screens. Keep it above 4.5.

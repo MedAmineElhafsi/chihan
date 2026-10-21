@@ -1064,3 +1064,48 @@ and no lawyer has seen it yet.
 German is the binding version; the other four carry a notice saying so,
 because a clause that drifted in translation should not be the one that
 decides an argument.
+
+## The map, the chat tests, and the globe's numbers
+
+- [x] **The listing map draws real streets again.** CARTO's `dark_all`
+      basemap had been key-less for years and quietly stopped being so:
+      every tile on every listing with coordinates came back 200 OK, 2.5 KB,
+      and stamped "API KEY REQUIRED". It now draws from OpenFreeMap —
+      OpenStreetMap data as vector tiles, no key, no registration, no
+      request limit, hosting its own fonts and sprites so nothing depends on
+      a second service, and self-hostable if the public instance ever
+      becomes a problem. Verified on Mîr Kebab House in Berlin: streets,
+      Neukölln, the marker, and OpenStreetMap credited in the corner.
+
+- [x] **The tables carrying private material are tested.** 96 new checks,
+      302 in all. Four files: direct messages (0004), group rooms and
+      private groups (0012 + 0023), the help board (0021), and verification
+      documents (0023). They ask what an attacker would ask — can I read a
+      conversation I am not in, put myself into one, sign a message with
+      somebody else's name, reach another member's passport scan, see who is
+      in a private group — and the answer is no to all of it. They also
+      write down the things the schema deliberately forbids: a message
+      cannot be edited or deleted by anyone, an offer of help cannot be
+      rewritten after it is read, and nobody can be thrown out of a group
+      because the delete policy only ever matches your own row.
+
+**One hole found, not yet closed.** Blocking somebody is enforced in
+`lib/chat-actions.ts` and nowhere in the database, so a blocked member can
+`POST /rest/v1/messages` directly with the anon key and the policy will
+allow it — all it asks is whether they are in the conversation. The test
+states the gap rather than hiding it. HANDOFF §3.6 has the fix.
+
+- [x] **The globe's numbers stay on screen.** Members, cities and countries
+      used to live on the hero curtain and disappear the moment anyone
+      pressed Explore. They now sit in a panel beside the globe, counted
+      from the same points that are drawn so the figure and the dots cannot
+      disagree, `pointer-events-none` so the globe can still be dragged
+      through them, bottom-end on a desktop and below the search bar on a
+      phone where the results sheet owns the bottom of the screen. Verified
+      at 1280 px and 375 px, and in Arabic, where it mirrors to the other
+      side.
+
+      While there: the results panel was calling its count "46 members" when
+      46 was people plus restaurants plus events, and the per-country rows
+      did the same. Both say "found" now, which is what they were counting
+      all along.

@@ -7,6 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { ExploreClient } from "./explore-client";
+import { GlobeStats } from "./globe-stats";
 import type { GlobePoint } from "@/lib/globe";
 import { cn } from "@/lib/utils";
 
@@ -20,7 +21,12 @@ export function GlobeHome({
   stats,
 }: {
   points: GlobePoint[];
-  stats: { members: number; places: number; countries: number };
+  stats: {
+    members: number;
+    places: number;
+    cities: number;
+    countries: number;
+  };
 }) {
   const t = useTranslations("Landing");
   const [entered, setEntered] = useState(false);
@@ -105,6 +111,20 @@ export function GlobeHome({
           </div>
         </div>
       </div>
+
+      {/* The numbers, once the curtain is gone. pointer-events-none so the
+          globe can still be dragged through them. On a phone the results
+          sheet owns the bottom of the screen, so they sit under the search
+          bar instead. */}
+      {entered && (
+        <div className="animate-rise pointer-events-none absolute end-4 top-32 z-20 md:top-auto md:bottom-5 md:end-5">
+          <GlobeStats
+            members={stats.members}
+            cities={stats.cities}
+            countries={stats.countries}
+          />
+        </div>
+      )}
 
       {/* Re-open the intro once dismissed */}
       {entered && (

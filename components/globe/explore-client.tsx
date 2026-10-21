@@ -416,7 +416,7 @@ export function ExploreClient({
           <div className="flex items-center justify-between">
             <h1 className="font-display text-lg font-semibold">{t("title")}</h1>
             <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-              {t("memberCount", { count: matches.length })}
+              {t("matchCount", { count: matches.length })}
             </span>
           </div>
           <div className="flex flex-wrap gap-1.5">
@@ -504,7 +504,7 @@ export function ExploreClient({
               </button>
               <div className="px-2 pb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
                 {selectedCountry} ·{" "}
-                {t("memberCount", { count: countryItems.length })}
+                {t("matchCount", { count: countryItems.length })}
               </div>
               {countryItems.map((p) => (
                 <ItemRow

@@ -3,23 +3,21 @@
 import { useEffect, useRef } from "react";
 import "maplibre-gl/dist/maplibre-gl.css";
 
-// Free, key-less dark basemap (CARTO raster over OSM data) — matches the theme.
-const STYLE = {
-  version: 8 as const,
-  sources: {
-    carto: {
-      type: "raster" as const,
-      tiles: [
-        "https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
-        "https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
-        "https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
-      ],
-      tileSize: 256,
-      attribution: "© OpenStreetMap contributors © CARTO",
-    },
-  },
-  layers: [{ id: "carto", type: "raster" as const, source: "carto" }],
-};
+/**
+ * The basemap.
+ *
+ * This was CARTO's `dark_all` raster, which was key-less for years and quietly
+ * stopped being so — every tile now arrives stamped "API KEY REQUIRED", on
+ * every listing that has coordinates.
+ *
+ * OpenFreeMap serves OpenStreetMap data as vector tiles with no key, no
+ * registration and no request limit, and it hosts its own fonts and sprites,
+ * so nothing here depends on a second service. If its public instance ever
+ * becomes a problem, the same tiles can be self-hosted — that is the point of
+ * it. The style's attribution travels with the tiles, so the control below
+ * credits OpenStreetMap without us restating it.
+ */
+const STYLE = "https://tiles.openfreemap.org/styles/dark";
 
 export function ListingMap({ lat, lng }: { lat: number; lng: number }) {
   const container = useRef<HTMLDivElement>(null);
