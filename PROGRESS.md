@@ -1138,3 +1138,15 @@ always being read through it. It sits at `bottom-20` now.
 
 Verified at 1280 px and 375 px, in English and Arabic, both states, on the
 landing page and on `/explore`.
+
+## The About button moves out of the panel's way
+
+- [x] **"About Cîhan" no longer sits under the results panel.** It was pinned
+      to the bottom-start corner, which is also where the panel is, so on
+      anything taller than a postcard its words were read through the country
+      list. Each layout has one free corner and they are not the same corner:
+      on a desktop the panel runs down the start side, so the button goes
+      bottom-end; on a phone the panel is a sheet across the bottom, so it
+      goes under the search instead. Measured rather than eyeballed — 23 px
+      of clearance below the search block on a 375 px screen — and mirrored
+      correctly in Arabic, where bottom-end is bottom-left.

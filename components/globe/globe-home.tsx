@@ -106,11 +106,19 @@ export function GlobeHome({
         </div>
       </div>
 
-      {/* Re-open the intro once dismissed */}
+      {/* Re-open the intro once dismissed.
+
+          It used to sit in the bottom-start corner, where the results panel
+          also is: on anything taller than a postcard the two overlapped and
+          the words were read through the country list. Each layout has one
+          free corner and they are not the same corner — on a desktop the
+          panel runs down the start side, so the button goes bottom-end; on a
+          phone the panel is a sheet across the bottom, so it goes under the
+          search instead. */}
       {entered && (
         <button
           onClick={() => setEntered(false)}
-          className="absolute bottom-5 start-5 z-20 rounded-sm border border-border bg-depth-1/80 px-3 py-2 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted-foreground backdrop-blur transition-colors hover:border-cyan hover:text-cyan"
+          className="absolute start-4 top-36 z-20 rounded-sm border border-border bg-depth-1/80 px-3 py-2 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted-foreground backdrop-blur transition-colors hover:border-cyan hover:text-cyan md:bottom-5 md:end-5 md:start-auto md:top-auto"
         >
           {t("aboutCihan")}
         </button>
