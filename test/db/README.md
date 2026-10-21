@@ -104,3 +104,58 @@ With a price and no capacity, the second branch evaluates to `null`, and a
 `CHECK` constraint passes on `null`. The number of places is the only thing
 standing between an event and overselling itself. The fix was to say `is not
 null` out loud. That is the kind of thing this directory is for.
+
+---
+
+## Checking the running app is a different problem, and a trickier one
+
+Nothing below belongs to this harness — it is about verifying the deployed
+or locally served Next.js app. It is here because the four obvious ways to
+do it are all wrong, every one of them looks like it worked, and that cost
+an afternoon.
+
+**HTTP status tells you nothing.** `notFound()` renders the not-found page
+but Next still answers **200**. A disabled route is indistinguishable from a
+working one by status alone:
+
+```bash
+curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/en/match   # 200
+```
+
+**Text in the page tells you nothing either.** next-intl serialises the
+whole message catalogue into every page, so any string in `messages/*.json`
+appears on every route. `"What you have bought"` — a Tickets string — is
+present on `/en/match`, which is a 404.
+
+**A 404 control has to 404 from inside the app.** An unknown URL like
+`/en/no-such-page` is rejected by the router _before_ the locale layout
+runs, so it carries no messages at all. That makes it look like a clean
+control when it is nothing of the sort. Use a route whose own code calls
+`notFound()` — `/en/match`, `/en/views` and `/en/pricing` are disabled by
+`lib/features.ts` and do exactly that.
+
+**`vercel curl` ignores curl's flags.** It takes its own options only
+(`--deployment`, `--protection-bypass`, `--trace`, `--json`). Passing `-s -o
+/dev/null -w '%{http_code}'` does not error — it quietly returns something
+that looks like a status code and is not one.
+
+### What does work
+
+- **Does the page render its own `<h1>`?** The heading is server-rendered and
+  unique per page, and the not-found page has none.
+
+  ```bash
+  curl -s http://localhost:3000/en/guides | grep -oE '<h1[^>]*>[^<]{2,}'
+  ```
+
+- **Ask the readiness probes directly**, with the anon key, exactly as
+  `lib/schema-ready.ts` does — `GET /rest/v1/<table>?select=<column>&limit=1`.
+  That is the actual gate, so it is the actual answer.
+
+- **Remember which routes are members-only.** `/jobs`, `/housing` and the
+  help board send anyone not signed in to `/login`. An anonymous request
+  seeing no board does not mean the feature is off.
+
+- **For a deployment behind Vercel Authentication**, `npx vercel curl <url>`
+  does get through the protection — it is only the flags it ignores. Read
+  the body, not the status.

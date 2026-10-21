@@ -351,6 +351,12 @@ project is short of.
   (a junction to the main `node_modules` makes Turbopack refuse to build:
   "Symlink points out of the filesystem root"), then build, start and
   screenshot. Slow to set up, and the only way the layout bugs got caught.
+- **Verifying the running app is full of traps**, and all four obvious
+  methods silently lie: `notFound()` still answers HTTP 200, next-intl puts
+  every message on every page so text proves nothing, an unknown URL 404s
+  before the locale layout so it is not a valid control, and `vercel curl`
+  ignores curl's own flags. What works is listed at the end of
+  [`test/db/README.md`](test/db/README.md).
 - **Contrast is measured on rendered pixels**, not on token values — the aurora
   backdrop lifts the ground unevenly. Lowest measured so far: 7.26 for the
   voice/translate work, 5.45 for the newest screens. Keep it above 4.5.
