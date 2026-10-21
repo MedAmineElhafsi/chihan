@@ -1261,3 +1261,24 @@ group page, the explore page and the imprint each serve their own `<h1>`,
 and the chunk behind the group chat carries `hiddenSenderIds` — which is
 the only trace this change leaves in anything a request can reach, since
 the filtering itself is invisible until somebody is actually blocked.
+
+## City guides seeded
+
+Six Germany-wide guides, each in English and German, administrator-authored
+— the questions a newcomer hits first: registering your address, health
+insurance, the residence permit, enrolling a child in school, opening a bank
+account, and the integration course. Twelve rows, published, live at
+`/en/guides` and `/de/guides`. The seed is `supabase/seed_guides.sql`
+(removable with `delete from public.guides where id like '9a1de032-%'`), and
+it was proven against the PGlite harness — slug regex, the jsonb array
+limits, the public select policy — before touching production.
+
+**They are drafts in substance, and `reviewed_on` is null on purpose.** They
+are written conservatively and lean on official sources (make-it-in-germany,
+BAMF, BaFin) rather than inventing precise step detail, because the migration
+is right that a wrong step costs someone an appointment or a fine. An
+administrator should read each one, correct anything that differs locally,
+and set a review date before these are leaned on — the editor at
+`/guides` → edit does exactly that. The facts chosen are the stable ones (the
+14-day Anmeldung window, the Masernschutz requirement, the Basiskonto right),
+not the ones that change office to office.

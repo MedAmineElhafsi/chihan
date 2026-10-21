@@ -435,10 +435,10 @@ In the order I would do it:
    own file.
 4. **Have a native speaker read the Kurmancî and Soranî strings.** They are my
    best effort, not a translator's. 1,306 strings in each.
-5. **Seed real content before launch.** 21 listings, 11 posts and 7 help
-   requests across 26 profiles is not yet a community. City guides (0032) are
-   the cheapest way to make the site useful on day one — they are
-   administrator-written and need no other members to be there.
+5. **Seed more real content before launch.** 21 listings, 11 posts and 7
+   help requests across 26 profiles is not yet a community. Six city guides
+   are now seeded (see below) — the directory and the feed are what is still
+   thin.
 6. **Decide on the brand name.** "Cîhan" is still the working name;
    `lib/constants.ts` is the one place it changes.
 
