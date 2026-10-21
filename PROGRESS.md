@@ -1255,3 +1255,9 @@ itself was not exercised end to end, because the live database has no
 blocked pair who share a group and making one would mean creating accounts
 and blocks in the customer's production data. The quickest real check is to
 block somebody from their profile and reload a group you are both in.
+
+Deployed from `cbd7d29`. Checked on the deployment rather than assumed: the
+group page, the explore page and the imprint each serve their own `<h1>`,
+and the chunk behind the group chat carries `hiddenSenderIds` — which is
+the only trace this change leaves in anything a request can reach, since
+the filtering itself is invisible until somebody is actually blocked.

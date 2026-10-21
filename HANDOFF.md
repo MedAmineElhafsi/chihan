@@ -113,7 +113,7 @@ trigger from `0031` now refuses that from anyone but an administrator.
 ### 3.4 It is deployed, behind a login
 
 **https://cihan-xi.vercel.app** — Vercel project `cihan` under
-`medamineelhafsis-projects`, deployed 21 October 2026 from `837a6d6`.
+`medamineelhafsis-projects`, deployed 21 October 2026 from `cbd7d29`.
 
 **Vercel Authentication is on for every deployment, production included**
 (`ssoProtection: { deploymentType: "all" }`). An anonymous visitor gets
