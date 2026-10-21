@@ -48,28 +48,29 @@ instead of erroring.
 
 ## 3. Do these first — the project is blocked on them
 
-### 3.1 Eleven migrations have never been run
+### 3.1 The migrations have been run
 
-`supabase/migrations/0026_*` through `0036_*` are written, tested and
-committed, but **none of them has been applied to the live Supabase project**
-(verified against the live database on 18 Oct 2026 — every table and column
-they add is still missing).
+All eleven, `0026` through `0036`, applied to the live project
+(`czihcdhrzbhgsugdnyxx`) on 21 October 2026, one at a time and each recorded
+under its own name.
 
-Everything built in the last several sessions is therefore invisible in
-production: ads, listing details (opening hours, WhatsApp), voice notes,
-Translate, interpreter requests, Give & Ask, city guides, the buddy programme,
-the jobs & housing board, the business plan and event tickets. The code is
-live and correct; it is just hiding, by design (see §5.1).
+Verified afterwards: the fourteen new tables all exist, row-level security
+is on for every one of them, the four private buckets are private and
+`shop-previews` is public as intended, and the content survived untouched —
+26 profiles, 21 listings, 11 posts, 7 help requests, exactly as before.
 
-Build the one-file script and paste it into the Supabase SQL editor:
+Two things that look wrong and are not:
 
-```bash
-node -e "const fs=require('fs');const d='supabase/migrations';let o='-- Cihan - every migration that has not run yet, in order.\n-- Paste the whole file into the Supabase SQL editor and run it once.\n-- Each part is safe to run again.\n\n';for(const f of fs.readdirSync(d).filter(f=>/^00(2[6-9]|3[0-6])_/.test(f)).sort()){o+='-- ====== '+f+' ======\n'+fs.readFileSync(d+'/'+f,'utf8').replace(/\r\n/g,'\n').trimEnd()+'\n\n'}fs.writeFileSync('pending.sql',o);console.log('wrote pending.sql')"
-```
+- `spatial_ref_sys` reports no row-level security. It is PostGIS's own table
+  of coordinate-system definitions, installed by the extension, holding no
+  user data and not something RLS can be enabled on normally. The test
+  harness never sees it because it strips `create extension postgis`.
+- `translations` refuses the anon key with a permission error. That is the
+  point of it: RLS on, no policies at all, service role only.
 
-It is idempotent — the whole set was run twice, end to end, against a local
-Postgres seeded to the 0025 state. Delete `pending.sql` afterwards; it is a
-build artefact, not a source file.
+**The deployed site will not show any of this until its Supabase keys are
+added and it is redeployed** (§3.4). The migrations are in the database; the
+site cannot reach the database yet.
 
 ### 3.2 There are no administrators
 
@@ -84,13 +85,20 @@ update public.profiles set is_admin = true where user_id = 'THE-UUID';
 Migration `0031` deliberately closes the hole that would have let a member do
 this to themselves, so it has to be done in SQL by hand, once.
 
-### 3.3 Two verified badges will disappear
+### 3.3 Two verified badges were taken back
 
-The live project has 2 profiles with `is_verified = true` and **0 verification
-requests**, approved or otherwise — the badges were never earned. `0031` ends
-by resetting exactly those. That is correct, not a bug: "verified" decides who
-may post a room or a job and who may be a buddy, so it has to mean a document
-an administrator looked at. Tell the customer before you run it.
+The live project had 2 profiles with `is_verified = true` and **0
+verification requests**, approved or otherwise — the badges were never
+earned. `0031` reset exactly those, and the count went 2 → 0 with nothing
+else touched. Correct, not a bug: "verified" decides who may post a room or
+a job and who may be a buddy, so it has to mean a document an administrator
+looked at.
+
+The two affected accounts, should the customer want them restored after a
+real check: `8970e05f-a138-493c-a622-a21111329a94` (Mohamed Amine El Hafsi)
+and `a870626f-d181-426e-b851-59906a2e5d68` (el hafsi hatem). Restoring means
+an approved `verification_requests` row, not a direct flag update — the
+trigger from `0031` now refuses that from anyone but an administrator.
 
 ### 3.4 It is deployed, behind a login
 

@@ -78,6 +78,14 @@ makes a decision about who may see what based on a coordinate; distance is
 worked out in TypeScript (`lib/feed.ts`). If that ever changes, this
 shortcut has to go with it.
 
+One consequence worth knowing, found when the migrations were applied for
+real: the harness has no `spatial_ref_sys`, because that table arrives with
+PostGIS and the extension is stripped. So the "row-level security on every
+table" sweep in `pending-set.test.mjs` passes here and reports one table
+without RLS on a real Supabase project. That table is PostGIS's own list of
+coordinate systems — no user data, and not something RLS is enabled on. It
+is the one known difference between this harness and the real database.
+
 ## A worked example
 
 `tests/0035-business-tickets.test.mjs` asserts that an event cannot carry a

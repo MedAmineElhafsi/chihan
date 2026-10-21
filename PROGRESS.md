@@ -1006,3 +1006,29 @@ Fixed while looking at it: the payout panel is shared with tickets and said
 "Ticket money goes straight to your account" on a maker's page; paid work
 showed a download counter that paid work never increments; and the
 administrator's subtitle still said there was no checkout.
+
+## The migrations have run
+
+All eleven, 0026 through 0036, applied to the live project on 21 October
+2026 — one at a time, each recorded under its own name, after thirteen
+months of sitting in the repository unapplied.
+
+Checked afterwards rather than assumed: the fourteen new tables exist, RLS
+is on for every one, the four private buckets are private, `shop-previews`
+is public as intended, and the content came through untouched — 26 profiles,
+21 listings, 11 posts, 7 help requests, the same before and after. `0031`
+took back the two verified badges that no approved document ever justified,
+which is what it is for; both user ids are recorded in `HANDOFF.md` §3.3 in
+case the customer wants them restored properly.
+
+Two things that look like faults and are not. `spatial_ref_sys` reports no
+row-level security: it is PostGIS's own table of coordinate systems, carries
+no user data, and never appears in the test harness because the harness
+strips the extension — the one known difference between harness and reality,
+now written down in `test/db/README.md`. And `translations` refuses the anon
+key outright, which is exactly what a table with RLS on and no policies is
+supposed to do.
+
+Still true: there are no administrators, so nothing that needs approval can
+be approved. And the deployed site has no Supabase keys yet, so it cannot
+see any of this until they are added and it is redeployed.
