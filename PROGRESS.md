@@ -1198,3 +1198,28 @@ pending-set test has been pointed at the live project's real state — 0036,
 with 0037 the only file waiting. 319 checks in all.
 
 **Not applied.** The live project is still open until the file is run.
+
+## 0037 applied
+
+Run against `czihcdhrzbhgsugdnyxx` on 21 October 2026, recorded as
+`20261021211932 blocks_in_the_database`.
+
+Checked before: two blocks exist in the live project, and neither pair
+shares a conversation — so no existing thread was closed by this. The first
+one that is will go read-only for both sides, which is the point of it.
+
+Checked after, in the catalogue rather than by hoping:
+
+- the insert policy on `messages` reads
+  `((sender_id = auth.uid()) AND is_conversation_participant(conversation_id, auth.uid()) AND (NOT blocked_in_conversation(conversation_id)))`
+- the helper is `security definer` and exists in exactly one form, taking
+  one argument — so there is no two-argument version to ask about anybody
+  else's blocks
+- `execute` is granted to `anon`, `authenticated` and `service_role`, so the
+  policy never fails with a privilege error instead of a refusal
+- `create_direct_conversation` carries the guard
+- nothing moved: 11 messages, 6 conversations, 2 blocks, before and after
+
+The behaviour itself was proven in the harness against the same schema —
+sixteen checks — not on the live database. Nobody's real conversation was
+used as a test.

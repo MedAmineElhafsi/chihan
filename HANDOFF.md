@@ -70,8 +70,8 @@ Two things that look wrong and are not:
 
 The keys were added afterwards and the deployment reaches all of it (§3.4).
 
-**`0037` is written, proven and not yet applied** — see §3.6. It is the only
-migration the live project is behind.
+`0037` followed on the same day (`20261021211932`, `blocks_in_the_database`)
+— see §3.6. The live project is level with the repository.
 
 ### 3.2 There is one administrator
 
@@ -202,9 +202,9 @@ German is the binding version and the other four say so in a notice at the
 top. `TERMS_UPDATED` in `lib/legal.ts` is the date readers see; change it
 when the words change.
 
-### 3.6 Blocking: fixed in 0037, which still has to be run
+### 3.6 Blocking is enforced in the database (0037)
 
-Found by the chat tests. `user_blocks` was consulted in
+Found by the chat tests, fixed, and now live. `user_blocks` was consulted in
 `lib/chat-actions.ts` and **nowhere in the database**. PostgREST is a public
 endpoint and the anon key ships inside every page, so a blocked member could
 `POST /rest/v1/messages` directly and 0004's insert policy waved them
@@ -233,9 +233,17 @@ Blocking inside a group is about what you are shown, and belongs in the
 interface. It is not there yet: a blocked member's group messages are still
 displayed to you. A display bug, and a far smaller one than this was.
 
-**Nothing is fixed until the file is run.** Paste it into the Supabase SQL
-editor for `czihcdhrzbhgsugdnyxx`, or apply it the way 0026–0036 were. It
-touches no data: one function added, one replaced, one policy rewritten.
+**Applied** to `czihcdhrzbhgsugdnyxx` on 21 October 2026. Verified in the
+catalogue afterwards rather than assumed: the insert policy on `messages`
+now reads `… AND (NOT blocked_in_conversation(conversation_id))`, the helper
+is `security definer` and exists in exactly one form — one argument, so
+there is no way to ask it about anybody but yourself — and
+`create_direct_conversation` carries the guard. Nothing moved: 11 messages,
+6 conversations, 2 blocks, before and after.
+
+Those two blocks are not between people who share a conversation, so no
+existing thread was closed by this. The first one that is will go read-only
+for both sides, which is the intention.
 
 ---
 
@@ -411,9 +419,7 @@ In the order I would do it:
    behind a login, waiting on the legal pages.
 2. **Fill in `lib/legal.ts` and get the terms reviewed** (§3.5). These are
    the last things between the site and being allowed to go public.
-3. **Run 0037** (§3.6) — it is written and proven but the live project is
-   still without it — and extend the database tests as you go.
-   `npm run test:db` covers 0004, 0012, 0021, 0023, 0028, 0031–0036 and 0037
+3. **Extend the database tests as you go.** `npm run test:db` covers 0004, 0012, 0021, 0023, 0028, 0031–0036 and 0037
    plus the pending set; the private-material tables are done.
    What is left untested is the ordinary stuff: listings and reviews (0002),
    the feed (0005), news (0006), notifications (0009), stories and invites
