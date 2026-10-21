@@ -21,6 +21,18 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "*.supabase.co" },
     ],
   },
+  // A German visitor types /impressum. The route is /imprint in every
+  // locale, so send the German spelling there rather than to a 404.
+  async redirects() {
+    return [
+      {
+        source: "/:locale(en|de|ku|ckb|ar)/impressum",
+        destination: "/:locale/imprint",
+        permanent: true,
+      },
+      { source: "/impressum", destination: "/de/imprint", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {

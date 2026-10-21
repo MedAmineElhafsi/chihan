@@ -168,6 +168,36 @@ is how an organiser's payout readiness gets recorded — alongside the
 
 ---
 
+### 3.5 The Impressum is built but empty
+
+`/imprint` and `/terms` exist, in all five languages, linked from every
+page's footer — an imprint has to be reachable in two clicks (§ 5 DDG) —
+and `/impressum` redirects to `/imprint` for anyone who types the German
+spelling.
+
+**The imprint has no details in it.** Nobody but the customer knows their
+legal name, postal address and contact, so `lib/legal.ts` ships empty and
+the page renders a red warning naming the missing fields rather than a
+convincing-looking blank. Fill it in, commit, redeploy. The minimum §5 DDG
+asks for is name, street, postcode, city and an address that is answered.
+
+**Until that is done the site must not be made public.** It is the reason
+Vercel Authentication is on (§3.4).
+
+The terms are a real draft rather than boilerplate: who runs Cîhan, who may
+join, house rules, what verification does and does not mean, the help board
+and buddy programme, the jobs and housing board, tickets, the Bazar and its
+withdrawal waiver, content rights, moderation and appeals, paid plans,
+liability, changes, and German law. They are written for this service so a
+lawyer has something to correct rather than draft — **but no lawyer has
+seen them, and one must before launch.**
+
+German is the binding version and the other four say so in a notice at the
+top. `TERMS_UPDATED` in `lib/legal.ts` is the date readers see; change it
+when the words change.
+
+---
+
 ## 4. What is built
 
 Everything below is committed, type-checked, linted, builds clean, and was
@@ -303,25 +333,27 @@ reliable way to edit all five. In RTL, use logical alignment (`text-start` /
 
 In the order I would do it:
 
-1. **Get §3 done.** Migrations, then an admin, then the production env vars.
-   Nothing else is worth doing while ten migrations sit unapplied — the
-   customer has been looking at a site that hides most of what has been built.
-2. **Extend the database tests as you go.** `npm run test:db` covers 0028 and
+1. **Get §3 done.** The migrations, the administrator and the environment
+   variables are finished; §3.5 is not. The site is deployed and connected,
+   behind a login, waiting on the legal pages.
+2. **Fill in `lib/legal.ts` and get the terms reviewed** (§3.5). These are
+   the last things between the site and being allowed to go public.
+3. **Extend the database tests as you go.** `npm run test:db` covers 0028 and
    0031–0036 plus the pending set; the migrations before those have no tests
    yet. Chat, groups and the help board are the ones carrying private
    material, so they are worth backfilling — and every new migration should
    arrive with its own file.
-3. **Have a native speaker read the Kurmancî and Soranî strings.** They are my
+4. **Have a native speaker read the Kurmancî and Soranî strings.** They are my
    best effort, not a translator's. 1,304 strings in each.
-4. **Fix the map tiles.** The listing map's CARTO basemap now returns tiles
+5. **Fix the map tiles.** The listing map's CARTO basemap now returns tiles
    watermarked "API KEY REQUIRED" (`components/directory/listing-map.tsx`).
    Needs a key or a different free provider. This is visible on every listing
    page with coordinates, so it is the most embarrassing open bug.
-5. **Seed real content before launch.** 21 listings, 11 posts and 7 help
+6. **Seed real content before launch.** 21 listings, 11 posts and 7 help
    requests across 26 profiles is not yet a community. City guides (0032) are
    the cheapest way to make the site useful on day one — they are
    administrator-written and need no other members to be there.
-6. **Decide on the brand name.** "Cîhan" is still the working name;
+7. **Decide on the brand name.** "Cîhan" is still the working name;
    `lib/constants.ts` is the one place it changes.
 
 Only after all that would I reach for new features. If the customer asks for

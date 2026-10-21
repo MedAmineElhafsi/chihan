@@ -1037,3 +1037,30 @@ being a buddy.
 
 Still true: the deployed site has no Supabase keys yet, so it cannot see any
 of this until they are added and it is redeployed.
+
+## The Impressum and the terms
+
+- [x] **`/imprint` and `/terms`**, in all five languages, linked from every
+      page's footer because an imprint has to be reachable in two clicks
+      (§ 5 DDG). `/impressum` redirects to `/imprint` for anyone who types
+      the German spelling.
+
+The imprint has no details in it, and says so. Nobody but the customer knows
+their legal name, postal address and contact, so `lib/legal.ts` ships empty
+and the page renders a red warning naming the missing fields. An imprint
+that looks finished and is not is worse than one that admits it.
+
+The terms are a draft written for this service rather than copied from
+somewhere: what Cîhan is and is not, who may join, house rules including the
+ban on symbols of organisations prohibited in Germany, what verification
+does and does not mean, that buddies and helpers are volunteers and no money
+should change hands, that the board's scam screening is a precaution and not
+a guarantee, that an event organiser sells the ticket and owes the refund,
+that Cîhan is the seller in the Bazar and why the withdrawal waiver exists,
+content rights, moderation and appeals, paid plans, liability under German
+law, and changes. A lawyer now has something to correct rather than draft —
+and no lawyer has seen it yet.
+
+German is the binding version; the other four carry a notice saying so,
+because a clause that drifted in translation should not be the one that
+decides an argument.

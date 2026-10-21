@@ -7,6 +7,7 @@ import { BrandMark } from "./brand";
 export async function SiteFooter() {
   const t = await getTranslations("Brand");
   const tp = await getTranslations("Privacy");
+  const tl = await getTranslations("Legal");
   const year = new Date().getFullYear();
 
   return (
@@ -22,12 +23,26 @@ export async function SiteFooter() {
             {t("tagline")}
           </span>
         </div>
-        <div className="flex items-center gap-6">
+        {/* An imprint has to be reachable from every page in no more than
+            two clicks (§ 5 DDG), which is why these live in the footer. */}
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
           <Link
             href="/privacy"
             className="label-mono transition-colors hover:text-cyan"
           >
             {tp("title")}
+          </Link>
+          <Link
+            href="/terms"
+            className="label-mono transition-colors hover:text-cyan"
+          >
+            {tl("termsTitle")}
+          </Link>
+          <Link
+            href="/imprint"
+            className="label-mono transition-colors hover:text-cyan"
+          >
+            {tl("imprintTitle")}
           </Link>
           <span className="label-mono">© {year}</span>
         </div>
