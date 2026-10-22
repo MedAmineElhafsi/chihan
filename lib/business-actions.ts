@@ -11,7 +11,7 @@ import {
 type Result = { ok: true; url: string } | { ok: false; error: string };
 
 /**
- * Buying the plan. Stripe collects the card; Cîhan never sees it. The
+ * Buying the plan. Stripe collects the card; Grêdan never sees it. The
  * webhook writes the subscription when Stripe says it is paid.
  */
 export async function startBusinessCheckout(

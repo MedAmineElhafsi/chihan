@@ -150,7 +150,7 @@ export async function POST(request: NextRequest) {
   /**
    * A paid download becomes an order, once.
    *
-   * Cîhan is the merchant here, so the order is also the tax record: what
+   * Grêdan is the merchant here, so the order is also the tax record: what
    * was charged, where the buyer was, and at what rate. The file path is
    * copied in rather than joined, so a maker editing their work later
    * cannot change or withdraw what somebody has already bought.
@@ -164,7 +164,7 @@ export async function POST(request: NextRequest) {
 
     const total = session.amount_total ?? 0;
     const vat = session.total_details?.amount_tax ?? 0;
-    // The fee is taken on what is left after the tax, which is not Cîhan's
+    // The fee is taken on what is left after the tax, which is not Grêdan's
     // money and never was.
     const net = Math.max(0, total - vat);
     const fee = Math.round((net * SHOP_FEE_PERCENT) / 100);

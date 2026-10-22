@@ -16,7 +16,7 @@ type UrlResult = { ok: true; url: string } | { ok: false; error: string };
 
 /**
  * An organiser's own Stripe account. The money for a ticket goes there
- * directly — Cîhan is never in the middle holding it, and never sees a card.
+ * directly — Grêdan is never in the middle holding it, and never sees a card.
  * Stripe asks them for their details on its own pages.
  */
 export async function connectPayouts(): Promise<UrlResult> {
@@ -76,7 +76,7 @@ export async function connectPayouts(): Promise<UrlResult> {
 /**
  * Buying places at an event. The price and the number left are read here,
  * on the server — never taken from the page — and Stripe collects the money
- * into the organiser's account, minus Cîhan's fee.
+ * into the organiser's account, minus Grêdan's fee.
  */
 export async function buyTickets(
   eventId: string,

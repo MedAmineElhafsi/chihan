@@ -165,7 +165,7 @@ export function HeroLoop() {
             textShadow: `0 0 60px rgba(80,232,244,${0.7 * breathe})`,
           }}
         >
-          Cîhan
+          Grêdan
         </span>
       </div>
     </div>

@@ -63,7 +63,7 @@ export async function inviteToGroup(
 
   await sendMessage(
     conv.conversationId,
-    `You're invited to join "${groupName}" on Cîhan: /groups/${groupId}`
+    `You're invited to join "${groupName}" on Grêdan: /groups/${groupId}`
   );
 
   revalidatePath(`/groups/${groupId}`);

@@ -1,5 +1,5 @@
 /**
- * Who runs Cîhan, in law.
+ * Who runs Grêdan, in law.
  *
  * German law (§ 5 DDG, formerly § 5 TMG) requires a commercial site to name
  * its operator, where they can be reached by post, and how to contact them

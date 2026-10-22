@@ -27,7 +27,7 @@ export function businessPlanConfigured(): boolean {
 }
 
 /**
- * Cîhan keeps this much of a ticket; the rest goes straight to the
+ * Grêdan keeps this much of a ticket; the rest goes straight to the
  * organiser Stripe account. Change it here, and in the terms.
  */
 export const TICKET_FEE_PERCENT = 5;
@@ -42,11 +42,11 @@ export function siteUrl(): string {
 }
 
 /**
- * What Cîhan keeps of a sale in the Bazar.
+ * What Grêdan keeps of a sale in the Bazar.
  *
  * Higher than a ticket's 5% for two reasons: Stripe's fixed component eats
  * a small sale (€0.25 on a €5 download is already 5%), and unlike a ticket
- * Cîhan is the merchant here — it carries the VAT registration, the filing
+ * Grêdan is the merchant here — it carries the VAT registration, the filing
  * and the refunds.
  */
 export const SHOP_FEE_PERCENT = 15;

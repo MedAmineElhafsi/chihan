@@ -520,3 +520,36 @@ including the last frame against the first.
 This replaced a short-lived CSS Earth orb, which replaced the old cyan
 constellation (`public/video/hero.mp4`, `remotion/HeroLoop.tsx`). Those
 old files are no longer used by any page and were left in place.
+
+## The name is Grêdan, and the mark is the Kurdish flag
+
+**Decision.** The product is called **Grêdan** (Kurdish: connecting, binding
+together) — "Cîhan" was always a working name. It is `BRAND.name` in
+`lib/constants.ts`, and in the five message files. Soranî and Arabic write
+it گرێدان, the Kurdish spelling, rather than an Arabic transliteration.
+
+**How the messages were renamed.** "Cîhan" in Kurmancî and جیهان/جيهان in
+Soranî and Arabic are also the ordinary word for "world", so a global
+replace would have renamed the world. The script replaced, in each
+translation, only as many occurrences as the English string has of the
+brand, and only in strings where English has it. Every remaining
+Cîhan/جیهان in ku and ckb is the word "world" — "around the world", "the
+Kurdish world, connected" — and stays.
+
+**The mark.** The Kurdish flag: red, white and green bands with the golden
+21-ray sun (Newroz, 21 March), a round badge in the interface and a square
+for app icons. Geometry lives in `lib/brand-mark.ts`, shared by the React
+mark and `scripts/make-icons.mjs`, which writes the favicon, Next's icon
+and apple-icon, and the PWA icons. The flag keeps its own colours in both
+themes. On hover only the sun turns — by three rays, so it ends where it
+looks like it began; turning the badge would turn the flag upside down.
+
+The link preview (`public/og/gredan.jpg`) is a Remotion still,
+`remotion/OgCard.tsx`: the dawn scene with the mark and the name.
+
+**Not renamed:** the repository, the Vercel project (`cihan`, and its
+`cihan-xi.vercel.app` address), the Supabase project, applied migrations
+and their tests, internal keys such as `cihan-theme` in localStorage and the
+`aboutCihan` message key, and the secrets file. Changing those is
+infrastructure work with no visible effect, and the deployment URL changes
+when a real domain is attached anyway.

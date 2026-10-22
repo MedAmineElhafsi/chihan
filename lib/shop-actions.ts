@@ -22,7 +22,7 @@ type Result<T = object> = ({ ok: true } & T) | { ok: false; error: string };
  * Taking a free download.
  *
  * No account, no order, no record of who — a link to the flag pack has to
- * work for somebody who has never heard of Cîhan and is not about to make
+ * work for somebody who has never heard of Grêdan and is not about to make
  * an account to see a flag. The only thing kept is a number on the work
  * itself, so its maker can see it was wanted.
  *
@@ -219,7 +219,7 @@ export async function deleteProduct(id: string): Promise<Result> {
 // ---------------------------------------------------------------------------
 // Buying.
 //
-// Cîhan is the merchant here, not the maker — a download is taxed where the
+// Grêdan is the merchant here, not the maker — a download is taxed where the
 // buyer is, and nobody should hand an OSS registration to somebody selling
 // six posters. Stripe Tax works the rate out and collects it; the maker is
 // paid their share afterwards (shop_payouts), not by a destination charge.
@@ -328,7 +328,7 @@ export async function buyProduct(
 }
 
 // ---------------------------------------------------------------------------
-// Settlement. Cîhan took the money, so Cîhan sends the share on.
+// Settlement. Grêdan took the money, so Grêdan sends the share on.
 // ---------------------------------------------------------------------------
 
 /**

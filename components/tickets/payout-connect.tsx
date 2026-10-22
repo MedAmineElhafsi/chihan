@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 /**
  * Where an organiser's ticket money lands.
  *
- * Stripe asks for the bank details on its own pages — Cîhan never sees
+ * Stripe asks for the bank details on its own pages — Grêdan never sees
  * them, and never holds the money on the way through.
  */
 export function PayoutConnect({

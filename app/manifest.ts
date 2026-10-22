@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Cîhan",
-    short_name: "Cîhan",
+    name: "Grêdan",
+    short_name: "Grêdan",
     description:
       "A global community and discovery platform for the Kurdish diaspora.",
     start_url: "/",

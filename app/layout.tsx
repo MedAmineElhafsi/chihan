@@ -36,14 +36,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
   ),
-  title: "Cîhan",
+  title: "Grêdan",
   description:
     "A global community and discovery platform for the Kurdish diaspora.",
-  applicationName: "Cîhan",
+  applicationName: "Grêdan",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Cîhan",
+    title: "Grêdan",
   },
   formatDetection: {
     telephone: false,

@@ -2,6 +2,7 @@ import { Composition } from "remotion";
 
 import { AuthLoop } from "./AuthLoop";
 import { HeroLoop } from "./HeroLoop";
+import { OgCard } from "./OgCard";
 import { dawn, dusk } from "./theme";
 
 export const FPS = 30;
@@ -32,6 +33,14 @@ export function RemotionRoot() {
         component={AuthLoop}
         defaultProps={{ scene: dusk }}
         {...AUTH}
+      />
+      <Composition
+        id="OgCard"
+        component={OgCard}
+        durationInFrames={1}
+        fps={30}
+        width={1200}
+        height={630}
       />
     </>
   );

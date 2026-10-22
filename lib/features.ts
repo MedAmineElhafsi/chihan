@@ -1,7 +1,7 @@
 /**
  * Which surfaces are live.
  *
- * Cîhan's job is helping newcomers settle. Everything that does not serve that
+ * Grêdan's job is helping newcomers settle. Everything that does not serve that
  * loop is switched off for launch rather than deleted: the code and database
  * tables stay untouched, so any of these can be restored by flipping a flag
  * once the community is dense enough to make them work.

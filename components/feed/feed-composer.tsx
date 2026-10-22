@@ -29,7 +29,7 @@ export function FeedComposer({
   tickets = false,
 }: {
   userId: string;
-  /** Whether this Cîhan can sell tickets at all (Stripe + migration 0035). */
+  /** Whether this Grêdan can sell tickets at all (Stripe + migration 0035). */
   tickets?: boolean;
 }) {
   const t = useTranslations("Feed");

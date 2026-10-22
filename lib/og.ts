@@ -10,10 +10,10 @@ import type { Metadata } from "next";
  * something one page forgets.
  */
 export const DEFAULT_OG_IMAGE = {
-  url: "/og/cihan.jpg",
+  url: "/og/gredan.jpg",
   width: 1200,
   height: 630,
-  alt: "Cîhan",
+  alt: "Grêdan",
 };
 
 export function preview({
@@ -34,7 +34,7 @@ export function preview({
   return {
     openGraph: {
       type,
-      siteName: "Cîhan",
+      siteName: "Grêdan",
       locale,
       title,
       description,

@@ -11,7 +11,7 @@ export type SettleInItem = {
 };
 
 /**
- * The other ways Cîhan helps someone settle, next to the board where they
+ * The other ways Grêdan helps someone settle, next to the board where they
  * came to ask: a guide may already answer the question, a buddy can walk
  * them through it, the jobs and housing board may hold what they need.
  * Only what is switched on appears.

@@ -27,7 +27,7 @@ import { VOICE_BUCKET, type VoiceInput } from "@/types/voice";
 
 /**
  * Asking for help and replying to it are NEVER paywalled. This is the reason
- * newcomers come to Cîhan; blocking it behind a subscription would break the
+ * newcomers come to Grêdan; blocking it behind a subscription would break the
  * product. Premium sells reach (filters, unlimited browsing, who-viewed), not
  * access to help.
  */

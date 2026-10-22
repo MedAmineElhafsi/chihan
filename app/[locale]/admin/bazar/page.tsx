@@ -133,7 +133,7 @@ export default async function AdminBazarPage({
         </section>
       )}
 
-      {/* Cîhan took the money, so Cîhan sends the share on. */}
+      {/* Grêdan took the money, so Grêdan sends the share on. */}
       {ready && selling && settlement.length > 0 && (
         <section className="mt-8">
           <h2 className="font-display text-xl font-semibold">

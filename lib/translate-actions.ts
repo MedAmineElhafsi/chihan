@@ -67,7 +67,7 @@ function textsOf(row: Record<string, unknown>, columns: string[]) {
  *
  * The client names what to translate, never the text itself: the server
  * reads the original with the reader's own permissions, so nobody can
- * translate what they could not read, and nobody can use Cîhan's key as a
+ * translate what they could not read, and nobody can use Grêdan's key as a
  * free translation service.
  */
 export async function translateContent(

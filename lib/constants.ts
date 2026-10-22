@@ -1,6 +1,6 @@
 /** Brand configuration. Working name — update when the customer confirms. */
 export const BRAND = {
-  name: "Cîhan",
+  name: "Grêdan",
 } as const;
 
 /**

@@ -1,5 +1,5 @@
 /**
- * Push the environment variables Cîhan needs from `.env.local` into the
+ * Push the environment variables Grêdan needs from `.env.local` into the
  * linked Vercel project.
  *
  *   npm run env:push -- --dry-run   # say what would be sent, send nothing

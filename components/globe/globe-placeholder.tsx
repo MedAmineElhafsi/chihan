@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
  * the fallback used to be `null` — so on a phone the first screen of the app
  * was nothing at all for several seconds. A spinner would only have said
  * "wait"; this says what is coming, in the shape and colour it will arrive in,
- * so the page is recognisably Cîhan from the first paint.
+ * so the page is recognisably Grêdan from the first paint.
  *
  * The breathing is the loading signal itself, not decoration: it is the only
  * evidence the page is still working. It stops under prefers-reduced-motion,

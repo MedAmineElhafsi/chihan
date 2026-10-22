@@ -29,7 +29,7 @@ export async function geocode(
 
     const res = await fetch(url, {
       headers: {
-        "User-Agent": `Cihan/0.1 (${
+        "User-Agent": `Gredan/0.1 (${
           process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
         })`,
         Accept: "application/json",

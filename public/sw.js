@@ -1,4 +1,4 @@
-/* Cîhan PWA service worker — cache shell assets for offline reopen. */
+/* Grêdan PWA service worker — cache shell assets for offline reopen. */
 const CACHE = "cihan-shell-v1";
 const PRECACHE = ["/", "/icons/icon-192.png", "/icons/icon-512.png"];
 
@@ -67,14 +67,14 @@ self.addEventListener("fetch", (event) => {
 });
 
 self.addEventListener("push", (event) => {
-  let data = { title: "Cîhan", body: "", link: "/" };
+  let data = { title: "Grêdan", body: "", link: "/" };
   try {
     if (event.data) data = { ...data, ...event.data.json() };
   } catch {
     // ignore
   }
   event.waitUntil(
-    self.registration.showNotification(data.title || "Cîhan", {
+    self.registration.showNotification(data.title || "Grêdan", {
       body: data.body || "",
       icon: "/icons/icon-192.png",
       badge: "/icons/icon-192.png",

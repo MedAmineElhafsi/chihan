@@ -75,7 +75,7 @@ async function decorate(
 /**
  * What is on the shelf. Read with the anonymous client, because the whole
  * point of the free work is that a link to it opens for somebody who has
- * never heard of Cîhan.
+ * never heard of Grêdan.
  */
 export async function getProducts(): Promise<Product[]> {
   if (!(await bazarEnabled())) return [];

@@ -58,8 +58,8 @@ export async function createNotifications(
       await Promise.all(
         rows.map((r) =>
           sendPushToUser(r.userId, {
-            title: titles[r.type] ?? "Cîhan",
-            body: "Open Cîhan to see what’s new.",
+            title: titles[r.type] ?? "Grêdan",
+            body: "Open Grêdan to see what’s new.",
             link: r.link,
           })
         )

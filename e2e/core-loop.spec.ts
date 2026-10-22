@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 /**
- * Smoke E2E over the loop Cîhan actually runs on: sign in, read the help
+ * Smoke E2E over the loop Grêdan actually runs on: sign in, read the help
  * board, open a request, and message whoever wrote it.
  *
  *   E2E_EMAIL=you@example.com E2E_PASSWORD=secret npm run test:e2e

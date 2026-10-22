@@ -29,7 +29,7 @@ export function buildEventIcs(item: FeedItem): string | null {
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Cihan//Events//EN",
+    "PRODID:-//Gredan//Events//EN",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
