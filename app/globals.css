@@ -759,6 +759,72 @@ small {
     );
 }
 
+/* ---------------------------------------------------------------------------
+   Earth orb (components/visuals/earth-orb.tsx) — the sign-in panel's planet.
+--------------------------------------------------------------------------- */
+:root {
+  --earth-image: url("/globe/earth-day.webp");
+  --earth-shade: rgba(40, 26, 14, 0.55);
+}
+
+:root[data-theme="dark"] {
+  --earth-image: url("/globe/earth-night.webp");
+  --earth-shade: rgba(0, 0, 0, 0.7);
+}
+
+/* No `position` here: unlayered CSS would beat the caller's Tailwind
+   `absolute`/`relative`, and the caller must position it anyway. */
+.earth-orb {
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--brand) 25%, transparent),
+    0 0 60px 6px color-mix(in oklab, var(--brand) 22%, transparent),
+    0 40px 90px -30px rgba(0, 0, 0, 0.45);
+}
+
+/* Equirectangular: the visible hemisphere is half the picture, so one copy
+   is two diameters wide. Two copies, slid by one, loop without a seam. */
+.earth-orb-surface {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 400%;
+  background: var(--earth-image) repeat-x 0 50% / 50% 100%;
+  animation: earth-spin 180s linear infinite;
+  will-change: transform;
+}
+
+@keyframes earth-spin {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Light from the upper left: a soft highlight there, the far limb falling
+   into shadow, and a thin bright rim where the atmosphere would be. */
+.earth-orb-shade {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(
+      circle at 32% 28%,
+      rgba(255, 255, 255, 0.18),
+      transparent 38%
+    ),
+    radial-gradient(circle at 40% 38%, transparent 48%, var(--earth-shade) 92%);
+  box-shadow: inset 0 0 18px 2px
+    color-mix(in oklab, var(--brand) 30%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .earth-orb-surface {
+    animation: none;
+  }
+}
+
 /* The outgoing frame leaves slightly faster than the incoming one arrives, so
    the two never both sit at full strength and wash the page out. */
 

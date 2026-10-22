@@ -491,3 +491,16 @@ prefix for Safari.
 **Not done.** True refraction (bending the content behind the glass through
 an SVG displacement filter) works only in Chromium and costs a filter pass
 per frame on every glass surface. It was left out on purpose.
+
+## The sign-in panel shows the same Earth
+
+The sign-in and sign-up pages used a pre-rendered Remotion video
+(`public/video/hero.mp4`) of a cyan constellation — the old palette, unable
+to follow the theme. It is replaced by `EarthOrb`
+(`components/visuals/earth-orb.tsx`): the globe's own NASA pictures, day or
+night by theme, sliding inside a circle with CSS shading on top. It turns
+once every three minutes, `transform` only, and stands still under reduced
+motion. No WebGL, so the sign-in page stays light.
+
+The video, its poster and the `remotion/` project are no longer used by any
+page; they were left in place rather than deleted.
