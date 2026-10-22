@@ -38,7 +38,7 @@ export async function ProfileView({
   return (
     <article className="panel overflow-hidden rounded-lg">
       {/* Banner */}
-      <div className="h-28 bg-[radial-gradient(120%_140%_at_50%_-20%,color-mix(in_oklab,var(--cyan)_30%,transparent),transparent_70%)]" />
+      <div className="h-28 bg-[radial-gradient(120%_140%_at_50%_-20%,color-mix(in_oklab,var(--brand)_30%,transparent),transparent_70%)]" />
 
       <div className="px-6 pb-6">
         <div className="-mt-12 flex items-end justify-between gap-4">
@@ -46,7 +46,7 @@ export async function ProfileView({
             {profile.avatar_url && (
               <AvatarImage src={profile.avatar_url} alt={name} />
             )}
-            <AvatarFallback className="from-cyan to-depth-4 text-primary-foreground bg-gradient-to-br text-2xl">
+            <AvatarFallback className="from-brand to-sage text-primary-foreground bg-gradient-to-br text-2xl">
               {initial}
             </AvatarFallback>
           </Avatar>
@@ -83,14 +83,14 @@ export async function ProfileView({
           <p className="text-muted-foreground mt-1 flex flex-wrap items-center gap-1.5 text-sm">
             {place && (
               <>
-                <MapPin className="text-cyan size-4" />
+                <MapPin className="text-brand size-4" />
                 {place}
               </>
             )}
             {originLabel && (
               <>
                 {place && <span className="text-muted-foreground/60">·</span>}
-                <span className="bg-cyan/15 text-cyan rounded-full px-2 py-0.5 text-xs font-medium">
+                <span className="bg-brand/15 text-brand rounded-full px-2 py-0.5 text-xs font-medium">
                   {originLabel}
                 </span>
               </>
@@ -162,7 +162,7 @@ export async function ProfileView({
                 <span className="text-muted-foreground font-medium">
                   {t("dialect")}:
                 </span>
-                <span className="bg-cyan/15 text-cyan rounded-full px-2.5 py-0.5 text-xs font-medium">
+                <span className="bg-brand/15 text-brand rounded-full px-2.5 py-0.5 text-xs font-medium">
                   {profile.dialect}
                 </span>
               </div>

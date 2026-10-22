@@ -224,7 +224,7 @@ export function ProfileForm({
               className="size-full object-cover"
             />
           ) : (
-            <div className="flex size-full items-center justify-center bg-gradient-to-br from-cyan to-depth-4 text-2xl font-semibold text-primary-foreground">
+            <div className="flex size-full items-center justify-center bg-gradient-to-br from-brand to-sage text-2xl font-semibold text-primary-foreground">
               {initials}
             </div>
           )}
@@ -296,7 +296,7 @@ export function ProfileForm({
               type="button"
               onClick={() => galleryInput.current?.click()}
               disabled={loading || galleryUploading}
-              className="flex aspect-square flex-col items-center justify-center gap-1.5 rounded-xl border border-dashed border-border bg-card/30 text-muted-foreground transition-colors hover:border-cyan/40 hover:text-foreground"
+              className="flex aspect-square flex-col items-center justify-center gap-1.5 rounded-xl border border-dashed border-border bg-card/30 text-muted-foreground transition-colors hover:border-brand/40 hover:text-foreground"
             >
               {galleryUploading ? (
                 <Loader2 className="size-5 animate-spin" />
@@ -432,7 +432,7 @@ export function ProfileForm({
                 className={cn(
                   "rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
                   active
-                    ? "border-cyan/50 bg-cyan/15 text-cyan"
+                    ? "border-brand/50 bg-brand/15 text-brand"
                     : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
                 )}
               >
@@ -460,7 +460,7 @@ export function ProfileForm({
                 className={cn(
                   "rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
                   active
-                    ? "border-cyan/50 bg-cyan/15 text-cyan"
+                    ? "border-brand/50 bg-brand/15 text-brand"
                     : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
                 )}
               >
@@ -487,7 +487,7 @@ export function ProfileForm({
                 className={cn(
                   "rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
                   active
-                    ? "border-cyan/50 bg-cyan/15 text-cyan"
+                    ? "border-brand/50 bg-brand/15 text-brand"
                     : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
                 )}
               >
@@ -514,7 +514,7 @@ export function ProfileForm({
                 className={cn(
                   "rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
                   active
-                    ? "border-cyan/50 bg-cyan/15 text-cyan"
+                    ? "border-brand/50 bg-brand/15 text-brand"
                     : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
                 )}
               >
@@ -588,7 +588,7 @@ export function ProfileForm({
         className={cn(
           "flex items-start gap-3 rounded-xl border p-4 text-start transition-colors",
           isPublic
-            ? "border-cyan/50 bg-cyan/10"
+            ? "border-brand/50 bg-brand/10"
             : "border-border bg-card/30 hover:border-border"
         )}
       >
@@ -596,7 +596,7 @@ export function ProfileForm({
           className={cn(
             "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-md border transition-colors",
             isPublic
-              ? "border-cyan bg-cyan text-primary-foreground"
+              ? "border-brand bg-brand text-primary-foreground"
               : "border-input bg-transparent"
           )}
         >

@@ -67,7 +67,7 @@ export function BillingActions({
             className={cn(
               "flex-1 rounded-full px-3 py-1.5 text-sm font-medium transition-colors",
               interval === i
-                ? "bg-cyan/15 text-cyan"
+                ? "bg-brand/15 text-brand"
                 : "text-muted-foreground hover:text-foreground"
             )}
           >

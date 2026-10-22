@@ -42,7 +42,7 @@ export function VerificationPanel({
     return (
       <Panel>
         <Row icon={<BadgeCheck className="size-4" />} tone="good">
-          <strong className="text-air">{t("verifiedTitle")}</strong>
+          <strong className="text-ink">{t("verifiedTitle")}</strong>
           <span className="text-muted-foreground">{t("verifiedBody")}</span>
         </Row>
       </Panel>
@@ -53,7 +53,7 @@ export function VerificationPanel({
     return (
       <Panel>
         <Row icon={<Clock className="size-4" />}>
-          <strong className="text-air">{t("pendingTitle")}</strong>
+          <strong className="text-ink">{t("pendingTitle")}</strong>
           <span className="text-muted-foreground">{t("pendingBody")}</span>
         </Row>
         <Button
@@ -110,7 +110,7 @@ export function VerificationPanel({
   return (
     <Panel>
       <Row icon={<BadgeCheck className="size-4" />}>
-        <strong className="text-air">{t("title")}</strong>
+        <strong className="text-ink">{t("title")}</strong>
         <span className="text-muted-foreground">{t("body")}</span>
       </Row>
 
@@ -180,8 +180,8 @@ function Row({
       <div
         className={
           tone === "good"
-            ? "inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-cyan/15 text-cyan ring-1 ring-cyan/40"
-            : "inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-cyan ring-1 ring-border"
+            ? "inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand/15 text-brand ring-1 ring-brand/40"
+            : "inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-brand ring-1 ring-border"
         }
       >
         {icon}

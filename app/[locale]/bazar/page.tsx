@@ -23,7 +23,7 @@ export default async function BazarPage({
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <div className="flex flex-col gap-3">
         <span className="label-mono">{t("eyebrow")}</span>
-        <h1 className="font-display text-air text-[clamp(2rem,5vw,3.25rem)] leading-[0.95] font-semibold tracking-tight">
+        <h1 className="font-display text-ink text-[clamp(2rem,5vw,3.25rem)] leading-[0.95] font-semibold tracking-tight">
           {t("title")}
         </h1>
         <p className="text-muted-foreground max-w-xl">{t("subtitle")}</p>

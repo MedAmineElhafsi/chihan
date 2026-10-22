@@ -61,8 +61,8 @@ export function BuddyForm({
   if (needsVerification) {
     return (
       <div className="panel flex flex-col gap-3 rounded-md p-5">
-        <p className="text-air flex items-center gap-2 font-medium">
-          <ShieldCheck className="text-cyan size-5" aria-hidden="true" />
+        <p className="text-ink flex items-center gap-2 font-medium">
+          <ShieldCheck className="text-brand size-5" aria-hidden="true" />
           {t("verifyTitle")}
         </p>
         <p className="text-muted-foreground text-sm">{t("verifyBody")}</p>
@@ -79,7 +79,7 @@ export function BuddyForm({
       className="panel flex flex-col gap-5 rounded-md p-5"
     >
       <div>
-        <h2 className="font-display text-air text-xl font-semibold">
+        <h2 className="font-display text-ink text-xl font-semibold">
           {t(role === "mentor" ? "joinMentorTitle" : "joinNewcomerTitle")}
         </h2>
         <p className="text-muted-foreground mt-1 text-sm">
@@ -105,8 +105,8 @@ export function BuddyForm({
                 className={cn(
                   "rounded-sm border px-2.5 py-1.5 text-sm transition-colors",
                   on
-                    ? "border-cyan bg-cyan/15 text-cyan"
-                    : "border-border bg-depth-0/40 text-muted-foreground hover:text-air"
+                    ? "border-brand bg-brand/15 text-brand"
+                    : "border-border bg-depth-0/40 text-muted-foreground hover:text-ink"
                 )}
               >
                 {t(`area_${a}` as never)}
@@ -142,8 +142,8 @@ export function BuddyForm({
                 className={cn(
                   "flex-1 rounded-sm border px-3 py-2 text-sm transition-colors",
                   capacity === n
-                    ? "border-cyan bg-cyan/15 text-cyan"
-                    : "border-border bg-depth-0/40 text-muted-foreground hover:text-air"
+                    ? "border-brand bg-brand/15 text-brand"
+                    : "border-border bg-depth-0/40 text-muted-foreground hover:text-ink"
                 )}
               >
                 {t("capacityN", { n })}
@@ -162,21 +162,21 @@ export function BuddyForm({
         aria-pressed={agreed}
         className={cn(
           "flex items-start gap-3 rounded-md border p-4 text-start transition-colors",
-          agreed ? "border-cyan/50 bg-cyan/10" : "border-border bg-depth-0/30"
+          agreed ? "border-brand/50 bg-brand/10" : "border-border bg-depth-0/30"
         )}
       >
         <span
           className={cn(
             "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-md border transition-colors",
             agreed
-              ? "border-cyan bg-cyan text-primary-foreground"
+              ? "border-brand bg-brand text-primary-foreground"
               : "border-input"
           )}
         >
           {agreed && <Check className="size-3.5" aria-hidden="true" />}
         </span>
         <span className="text-sm">
-          <span className="text-air block font-medium">
+          <span className="text-ink block font-medium">
             {t("promiseTitle")}
           </span>
           <span className="text-muted-foreground mt-1 block">

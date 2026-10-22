@@ -93,7 +93,7 @@ export async function ClassifiedDetail({
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
       <Link
         href={base}
-        className="label-mono hover:text-cyan transition-colors"
+        className="label-mono hover:text-brand transition-colors"
       >
         ← {t(item.kind === "housing" ? "housingTab" : "jobsTab")}
       </Link>
@@ -143,20 +143,20 @@ export async function ClassifiedDetail({
 
         <h1
           dir="auto"
-          className="font-display text-air text-[clamp(1.75rem,4vw,2.75rem)] leading-tight font-semibold tracking-tight"
+          className="font-display text-ink text-[clamp(1.75rem,4vw,2.75rem)] leading-tight font-semibold tracking-tight"
         >
           {item.title}
         </h1>
 
         <p className="text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
           <span className="flex items-center gap-1.5">
-            <MapPin className="text-cyan size-4" aria-hidden="true" />
+            <MapPin className="text-brand size-4" aria-hidden="true" />
             {[item.district, item.city].filter(Boolean).join(", ") ||
               t("anywhere")}
           </span>
           {item.employer && <span dir="auto">{item.employer}</span>}
           <span className="flex items-center gap-1.5">
-            <Clock className="text-cyan size-4" aria-hidden="true" />
+            <Clock className="text-brand size-4" aria-hidden="true" />
             {t("posted", { date: dateFmt.format(new Date(item.created_at)) })}
           </span>
         </p>
@@ -166,13 +166,13 @@ export async function ClassifiedDetail({
             {facts.map((f) => (
               <div key={f.label + f.value} className="flex flex-col gap-1">
                 <dt className="label-mono">{f.label}</dt>
-                <dd className="text-air flex items-center gap-2">
+                <dd className="text-ink flex items-center gap-2">
                   {f.label === t("sizeLabel") && (
-                    <Ruler className="text-cyan size-4" aria-hidden="true" />
+                    <Ruler className="text-brand size-4" aria-hidden="true" />
                   )}
                   {f.label === t("fromLabel") && (
                     <CalendarDays
-                      className="text-cyan size-4"
+                      className="text-brand size-4"
                       aria-hidden="true"
                     />
                   )}
@@ -183,9 +183,9 @@ export async function ClassifiedDetail({
             {item.languages.length > 0 && (
               <div className="flex flex-col gap-1">
                 <dt className="label-mono">{t("languagesLabel")}</dt>
-                <dd className="text-air flex items-center gap-2">
+                <dd className="text-ink flex items-center gap-2">
                   <LanguagesIcon
-                    className="text-cyan size-4"
+                    className="text-brand size-4"
                     aria-hidden="true"
                   />
                   {item.languages
@@ -213,16 +213,16 @@ export async function ClassifiedDetail({
               {item.author?.avatarUrl && (
                 <AvatarImage src={item.author.avatarUrl} alt={name} />
               )}
-              <AvatarFallback className="bg-depth-4 text-air">
+              <AvatarFallback className="bg-depth-4 text-ink">
                 {name.trim().charAt(0).toUpperCase() || "?"}
               </AvatarFallback>
             </Avatar>
             <span className="min-w-0">
-              <span className="text-air flex items-center gap-1.5 font-medium">
+              <span className="text-ink flex items-center gap-1.5 font-medium">
                 {item.author?.profileId ? (
                   <Link
                     href={`/u/${item.author.profileId}`}
-                    className="hover:text-cyan"
+                    className="hover:text-brand"
                   >
                     {name}
                   </Link>
@@ -230,7 +230,7 @@ export async function ClassifiedDetail({
                   name
                 )}
                 {item.author?.verified && (
-                  <BadgeCheck className="text-cyan size-4" aria-hidden="true" />
+                  <BadgeCheck className="text-brand size-4" aria-hidden="true" />
                 )}
               </span>
               {item.author?.memberSince && (

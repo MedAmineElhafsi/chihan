@@ -15,7 +15,7 @@ export default async function LoginPage({
     <div className="animate-rise flex flex-col gap-8">
       <div className="flex flex-col gap-2">
         <span className="label-mono">{t("signInCta")}</span>
-        <h1 className="font-display text-3xl font-semibold tracking-tight text-air">
+        <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">
           {t("loginTitle")}
         </h1>
         <p className="text-sm text-muted-foreground">{t("loginSubtitle")}</p>

@@ -73,7 +73,7 @@ export function TranslateToggle({
             <button
               type="button"
               onClick={state.showOriginal}
-              className="text-cyan ms-2 font-medium underline-offset-2 hover:underline"
+              className="text-brand ms-2 font-medium underline-offset-2 hover:underline"
             >
               {t("original")}
             </button>
@@ -91,7 +91,7 @@ export function TranslateToggle({
         type="button"
         onClick={state.translate}
         disabled={state.status === "loading"}
-        className="text-cyan inline-flex items-center gap-1.5 text-xs font-medium underline-offset-2 hover:underline disabled:opacity-70"
+        className="text-brand inline-flex items-center gap-1.5 text-xs font-medium underline-offset-2 hover:underline disabled:opacity-70"
       >
         {state.status === "loading" ? (
           <Loader2 className="size-3.5 animate-spin" aria-hidden="true" />

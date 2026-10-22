@@ -42,7 +42,7 @@ export default async function AdminGuidesPage({
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <Link
         href="/admin"
-        className="label-mono hover:text-cyan transition-colors"
+        className="label-mono hover:text-brand transition-colors"
       >
         ← {t("adminBack")}
       </Link>
@@ -86,7 +86,7 @@ export default async function AdminGuidesPage({
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p dir="auto" className="text-air font-medium">
+                    <p dir="auto" className="text-ink font-medium">
                       {s.title}
                     </p>
                     <p className="text-muted-foreground text-xs">
@@ -108,14 +108,14 @@ export default async function AdminGuidesPage({
                 <div className="flex flex-wrap gap-3 text-sm">
                   <Link
                     href={`/admin/guides/new?title=${encodeURIComponent(s.title)}&city=${encodeURIComponent(s.city ?? "")}`}
-                    className="text-cyan hover:underline"
+                    className="text-brand hover:underline"
                   >
                     {t("suggestionWrite")}
                   </Link>
                   {s.request_id && (
                     <Link
                       href={`/help/${s.request_id}`}
-                      className="text-cyan hover:underline"
+                      className="text-brand hover:underline"
                     >
                       {t("suggestionRequest")}
                     </Link>
@@ -137,9 +137,9 @@ export default async function AdminGuidesPage({
               <div className="flex flex-wrap items-center gap-2">
                 <GuideTopicIcon
                   topic={versions[0].topic}
-                  className="text-cyan size-4"
+                  className="text-brand size-4"
                 />
-                <span dir="auto" className="text-air font-medium">
+                <span dir="auto" className="text-ink font-medium">
                   {versions[0].title}
                 </span>
                 <span className="text-muted-foreground text-xs">
@@ -158,8 +158,8 @@ export default async function AdminGuidesPage({
                     className={cn(
                       "inline-flex items-center gap-1.5 rounded-sm border px-2.5 py-1 text-xs transition-colors",
                       v.status === "published"
-                        ? "border-cyan/50 text-cyan hover:bg-cyan/10"
-                        : "border-border text-muted-foreground hover:text-air"
+                        ? "border-brand/50 text-brand hover:bg-brand/10"
+                        : "border-border text-muted-foreground hover:text-ink"
                     )}
                   >
                     <Pencil className="size-3" aria-hidden="true" />

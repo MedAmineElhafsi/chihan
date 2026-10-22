@@ -28,7 +28,7 @@ export default async function AuthLayout({
 
         <div className="relative flex h-full flex-col justify-end gap-4 p-10">
           <BrandMark className="size-8" />
-          <p className="max-w-sm font-display text-2xl font-semibold leading-tight tracking-tight text-air">
+          <p className="max-w-sm font-display text-2xl font-semibold leading-tight tracking-tight text-ink">
             {t("ctaTitle")}
           </p>
           <p className="label-mono">{t("coordinates")}</p>

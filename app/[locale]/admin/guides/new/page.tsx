@@ -43,7 +43,7 @@ export default async function NewGuidePage({
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
       <Link
         href="/admin/guides"
-        className="label-mono hover:text-cyan transition-colors"
+        className="label-mono hover:text-brand transition-colors"
       >
         ← {t("adminTitle")}
       </Link>

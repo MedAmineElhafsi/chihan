@@ -28,10 +28,10 @@ export async function ReelsEmpty({ signedIn }: { signedIn: boolean }) {
       {/* The frame a reel will fill: 9:16, the one thing every reel shares. */}
       <div
         aria-hidden="true"
-        className="relative flex aspect-[9/16] w-40 items-center justify-center overflow-hidden rounded-xl border border-[color:var(--border-strong)] bg-[radial-gradient(120%_80%_at_50%_0%,rgba(80,232,244,0.14),transparent_70%)]"
+        className="relative flex aspect-[9/16] w-40 items-center justify-center overflow-hidden rounded-xl border border-[color:var(--border-strong)] bg-[radial-gradient(120%_80%_at_50%_0%,color-mix(in_oklab,var(--sun-1)_40%,transparent),transparent_70%)]"
       >
-        <span className="bg-depth-0/60 ring-cyan/30 flex size-12 items-center justify-center rounded-full ring-1 backdrop-blur">
-          <Play className="text-cyan size-5 translate-x-0.5" />
+        <span className="bg-depth-0/60 ring-brand/30 flex size-12 items-center justify-center rounded-full ring-1 backdrop-blur">
+          <Play className="text-brand size-5 translate-x-0.5" />
         </span>
         <span className="text-muted-foreground absolute bottom-3 font-mono text-[0.625rem] tracking-[0.14em] uppercase">
           {t("emptySeconds", { seconds: REEL_MAX_SECONDS })}
@@ -41,7 +41,7 @@ export async function ReelsEmpty({ signedIn }: { signedIn: boolean }) {
       <div className="flex max-w-xs flex-col gap-2">
         <h2
           id="reels-empty-title"
-          className="font-display text-air text-xl font-semibold text-balance"
+          className="font-display text-ink text-xl font-semibold text-balance"
         >
           {t("emptyTitle")}
         </h2>

@@ -3,6 +3,8 @@
 import { useEffect, useRef } from "react";
 import "maplibre-gl/dist/maplibre-gl.css";
 
+import { useColorScheme } from "@/lib/use-color-scheme";
+
 /**
  * The basemap.
  *
@@ -16,11 +18,18 @@ import "maplibre-gl/dist/maplibre-gl.css";
  * becomes a problem, the same tiles can be self-hosted — that is the point of
  * it. The style's attribution travels with the tiles, so the control below
  * credits OpenStreetMap without us restating it.
+ *
+ * Two of its styles, one per theme: Positron is a pale, quiet map that sits
+ * on the cream page; Dark matches the dusk theme.
  */
-const STYLE = "https://tiles.openfreemap.org/styles/dark";
+const STYLES = {
+  light: "https://tiles.openfreemap.org/styles/positron",
+  dark: "https://tiles.openfreemap.org/styles/dark",
+} as const;
 
 export function ListingMap({ lat, lng }: { lat: number; lng: number }) {
   const container = useRef<HTMLDivElement>(null);
+  const scheme = useColorScheme();
 
   useEffect(() => {
     if (!container.current) return;
@@ -32,7 +41,7 @@ export function ListingMap({ lat, lng }: { lat: number; lng: number }) {
       if (cancelled || !container.current) return;
       map = new maplibregl.Map({
         container: container.current,
-        style: STYLE,
+        style: STYLES[scheme],
         center: [lng, lat],
         zoom: 12,
         attributionControl: false,
@@ -45,7 +54,7 @@ export function ListingMap({ lat, lng }: { lat: number; lng: number }) {
         new maplibregl.NavigationControl({ showCompass: false }),
         "top-right"
       );
-      new maplibregl.Marker({ color: "#e1b12c" })
+      new maplibregl.Marker({ color: "#d89a2b" })
         .setLngLat([lng, lat])
         .addTo(map);
     })();
@@ -54,7 +63,7 @@ export function ListingMap({ lat, lng }: { lat: number; lng: number }) {
       cancelled = true;
       map?.remove();
     };
-  }, [lat, lng]);
+  }, [lat, lng, scheme]);
 
   return (
     <div

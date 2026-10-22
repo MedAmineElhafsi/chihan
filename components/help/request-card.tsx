@@ -2,7 +2,7 @@ import { CalendarDays, Gift, MapPin, MessageSquare, Mic } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { Link } from "@/i18n/navigation";
-import { HELP_CATEGORY_STYLE } from "@/lib/constants";
+import { HELP_CATEGORY_STYLE, categoryText } from "@/lib/constants";
 import { languageLabel } from "@/lib/language-label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { HelpRequest } from "@/types/help";
@@ -35,7 +35,7 @@ export async function RequestCard({ request }: { request: HelpRequest }) {
       href={`/help/${request.id}`}
       className="group bg-depth-1 hover:bg-depth-2 relative flex flex-col gap-3 p-5 transition-colors duration-300"
     >
-      <span className="bg-cyan absolute inset-x-0 top-0 h-px scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
+      <span className="bg-brand absolute inset-x-0 top-0 h-px scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
 
       {cover && (
         // What is on offer, before a word of the description.
@@ -51,7 +51,7 @@ export async function RequestCard({ request }: { request: HelpRequest }) {
         <span className="flex min-w-0 flex-wrap items-center gap-1.5">
           <span
             className="inline-flex items-center gap-1.5 rounded-sm px-2 py-1 font-mono text-[0.625rem] tracking-[0.14em] uppercase"
-            style={{ backgroundColor: `${style.color}1f`, color: style.color }}
+            style={{ backgroundColor: `${style.color}1f`, color: categoryText(style.color) }}
           >
             <HelpCategoryIcon category={request.category} />
             {t(`cat_${request.category}` as never)}
@@ -73,7 +73,7 @@ export async function RequestCard({ request }: { request: HelpRequest }) {
 
       <h3
         dir="auto"
-        className="font-display text-air text-lg leading-snug font-semibold tracking-tight"
+        className="font-display text-ink text-lg leading-snug font-semibold tracking-tight"
       >
         {request.title}
       </h3>
@@ -87,7 +87,7 @@ export async function RequestCard({ request }: { request: HelpRequest }) {
           </span>
           {when && (
             <span className="text-muted-foreground flex items-center gap-1">
-              <CalendarDays className="text-cyan size-3.5" aria-hidden="true" />
+              <CalendarDays className="text-brand size-3.5" aria-hidden="true" />
               {when}
             </span>
           )}
@@ -104,7 +104,7 @@ export async function RequestCard({ request }: { request: HelpRequest }) {
       )}
 
       {request.voice && (
-        <span className="text-cyan flex items-center gap-1.5 text-xs">
+        <span className="text-brand flex items-center gap-1.5 text-xs">
           <Mic className="size-3.5" aria-hidden="true" />
           {t("hasVoice", { time: formatVoiceTime(request.voice.ms) })}
         </span>
@@ -116,14 +116,14 @@ export async function RequestCard({ request }: { request: HelpRequest }) {
             {request.author.avatarUrl && (
               <AvatarImage src={request.author.avatarUrl} alt={name} />
             )}
-            <AvatarFallback className="bg-depth-4 text-air text-[0.625rem]">
+            <AvatarFallback className="bg-depth-4 text-ink text-[0.625rem]">
               {initial}
             </AvatarFallback>
           </Avatar>
           <span className="text-muted-foreground truncate text-xs">{name}</span>
           {request.city && (
             <span className="text-muted-foreground flex shrink-0 items-center gap-1 text-xs">
-              <MapPin className="text-cyan size-3" />
+              <MapPin className="text-brand size-3" />
               {request.city}
             </span>
           )}
@@ -132,7 +132,7 @@ export async function RequestCard({ request }: { request: HelpRequest }) {
         <span
           className={cn(
             "flex shrink-0 items-center gap-1.5 font-mono text-xs",
-            request.offer_count > 0 ? "text-cyan" : "text-muted-foreground"
+            request.offer_count > 0 ? "text-brand" : "text-muted-foreground"
           )}
         >
           <MessageSquare className="size-3.5" />

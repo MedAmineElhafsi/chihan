@@ -49,7 +49,11 @@
   },
   "Common": {
     "language": "Language",
-    "or": "or"
+    "or": "or",
+    "theme": "Appearance",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "Automatic"
   },
   "Landing": {
     "eyebrow": "A home for the Kurdish diaspora",

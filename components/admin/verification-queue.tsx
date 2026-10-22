@@ -71,7 +71,7 @@ function QueueRow({
           <AvatarFallback>{who.slice(0, 1).toUpperCase()}</AvatarFallback>
         </Avatar>
         <div className="min-w-0 flex-1">
-          <div className="truncate text-sm font-medium text-air">{who}</div>
+          <div className="truncate text-sm font-medium text-ink">{who}</div>
           <div className="truncate text-xs text-muted-foreground">
             {[request.profession, place].filter(Boolean).join(" · ") || "—"}
           </div>
@@ -81,7 +81,7 @@ function QueueRow({
             href={documentUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-sm border border-border px-2.5 py-1 font-mono text-[0.625rem] uppercase tracking-[0.12em] transition-colors hover:border-cyan/50 hover:text-cyan"
+            className="inline-flex items-center gap-1.5 rounded-sm border border-border px-2.5 py-1 font-mono text-[0.625rem] uppercase tracking-[0.12em] transition-colors hover:border-brand/50 hover:text-brand"
           >
             <ExternalLink className="size-3" />
             {t("verifyOpenDoc")}

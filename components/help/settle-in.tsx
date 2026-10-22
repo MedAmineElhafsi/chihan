@@ -37,14 +37,14 @@ export async function SettleIn({ items }: { items: SettleInItem[] }) {
             href={item.href}
             className="group bg-depth-1 hover:bg-depth-2 flex items-start gap-3 p-4 transition-colors"
           >
-            <span className="bg-cyan/10 text-cyan flex size-9 shrink-0 items-center justify-center rounded-md">
+            <span className="bg-brand/10 text-brand flex size-9 shrink-0 items-center justify-center rounded-md">
               <item.icon className="size-4.5" aria-hidden="true" />
             </span>
             <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-              <span className="text-air flex items-center gap-1 font-medium">
+              <span className="text-ink flex items-center gap-1 font-medium">
                 {item.title}
                 <ArrowUpRight
-                  className="text-muted-foreground group-hover:text-cyan size-3.5 transition-colors rtl:-scale-x-100"
+                  className="text-muted-foreground group-hover:text-brand size-3.5 transition-colors rtl:-scale-x-100"
                   aria-hidden="true"
                 />
               </span>

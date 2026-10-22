@@ -41,7 +41,7 @@ export function HeldQueue({
               <Link
                 href={`${item.kind === "housing" ? "/housing" : "/jobs"}/${item.id}`}
                 dir="auto"
-                className="text-air hover:text-cyan font-medium"
+                className="text-ink hover:text-brand font-medium"
               >
                 {item.title}
               </Link>

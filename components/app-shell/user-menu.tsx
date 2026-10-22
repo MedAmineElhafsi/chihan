@@ -66,7 +66,7 @@ export function UserMenu({
           aria-label={t("account")}
         >
           <Avatar>
-            <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-primary-foreground">
+            <AvatarFallback className="bg-gradient-to-br from-brand to-sage text-primary-foreground">
               {initial}
             </AvatarFallback>
           </Avatar>

@@ -16,14 +16,14 @@ export async function GuideCard({ guide }: { guide: Guide }) {
       href={`/guides/${guide.slug}`}
       className="group bg-depth-1 hover:bg-depth-2 relative flex flex-col gap-3 p-5 transition-colors duration-300"
     >
-      <span className="bg-cyan absolute inset-x-0 top-0 h-px scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
-      <span className="text-cyan inline-flex items-center gap-1.5 font-mono text-[0.625rem] tracking-[0.14em] uppercase">
+      <span className="bg-brand absolute inset-x-0 top-0 h-px scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
+      <span className="text-brand inline-flex items-center gap-1.5 font-mono text-[0.625rem] tracking-[0.14em] uppercase">
         <GuideTopicIcon topic={guide.topic} className="size-3.5" />
         {t(`topic_${guide.topic}` as never)}
       </span>
       <h3
         dir="auto"
-        className="font-display text-air text-lg leading-snug font-semibold tracking-tight"
+        className="font-display text-ink text-lg leading-snug font-semibold tracking-tight"
       >
         {guide.title}
       </h3>
@@ -37,7 +37,7 @@ export async function GuideCard({ guide }: { guide: Guide }) {
       )}
       <div className="text-muted-foreground mt-auto flex flex-wrap items-center justify-between gap-x-3 gap-y-1 pt-2 text-xs">
         <span className="flex items-center gap-1">
-          <MapPin className="text-cyan size-3" aria-hidden="true" />
+          <MapPin className="text-brand size-3" aria-hidden="true" />
           {guide.city ??
             t("allOf", { country: countryLabel(guide.country, locale) })}
         </span>

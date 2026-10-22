@@ -68,7 +68,7 @@ export function GlobeSearch({
           <button
             onClick={onClear}
             aria-label={t("clear")}
-            className="rounded-sm p-1 text-muted-foreground transition-colors hover:text-cyan"
+            className="rounded-sm p-1 text-muted-foreground transition-colors hover:text-brand"
           >
             <X className="size-4" />
           </button>
@@ -141,9 +141,9 @@ function Chip({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       className={cn(
-        "cursor-pointer rounded-full border px-2.5 py-1 text-xs font-medium outline-none transition-colors focus-visible:ring-1 focus-visible:ring-cyan",
+        "cursor-pointer rounded-full border px-2.5 py-1 text-xs font-medium outline-none transition-colors focus-visible:ring-1 focus-visible:ring-brand",
         value
-          ? "border-cyan/50 bg-cyan/15 text-cyan"
+          ? "border-brand/50 bg-brand/15 text-brand"
           : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
       )}
     >

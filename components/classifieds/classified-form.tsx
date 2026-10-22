@@ -87,8 +87,8 @@ export function ClassifiedForm({
   if (!verified) {
     return (
       <div className="panel flex flex-col gap-3 rounded-md p-5">
-        <p className="text-air flex items-center gap-2 font-medium">
-          <ShieldCheck className="text-cyan size-5" aria-hidden="true" />
+        <p className="text-ink flex items-center gap-2 font-medium">
+          <ShieldCheck className="text-brand size-5" aria-hidden="true" />
           {t("verifyTitle")}
         </p>
         <p className="text-muted-foreground text-sm">{t("verifyBody")}</p>
@@ -200,8 +200,8 @@ export function ClassifiedForm({
               className={cn(
                 "rounded-sm border px-2.5 py-1.5 text-sm transition-colors",
                 type === x
-                  ? "border-cyan bg-cyan/15 text-cyan"
-                  : "border-border bg-depth-0/40 text-muted-foreground hover:text-air"
+                  ? "border-brand bg-brand/15 text-brand"
+                  : "border-border bg-depth-0/40 text-muted-foreground hover:text-ink"
               )}
             >
               {t(`${kind === "housing" ? "housing" : "job"}_${x}` as never)}
@@ -276,8 +276,8 @@ export function ClassifiedForm({
                     className={cn(
                       "flex-1 rounded-sm border px-2 py-2 text-sm transition-colors",
                       rentKind === r
-                        ? "border-cyan bg-cyan/15 text-cyan"
-                        : "border-border bg-depth-0/40 text-muted-foreground hover:text-air"
+                        ? "border-brand bg-brand/15 text-brand"
+                        : "border-border bg-depth-0/40 text-muted-foreground hover:text-ink"
                     )}
                   >
                     {t(`rent_${r}` as never)}
@@ -349,8 +349,8 @@ export function ClassifiedForm({
                     className={cn(
                       "flex-1 rounded-sm border px-2 py-2 text-sm transition-colors",
                       payUnit === u
-                        ? "border-cyan bg-cyan/15 text-cyan"
-                        : "border-border bg-depth-0/40 text-muted-foreground hover:text-air"
+                        ? "border-brand bg-brand/15 text-brand"
+                        : "border-border bg-depth-0/40 text-muted-foreground hover:text-ink"
                     )}
                   >
                     {t(`payUnit_${u}` as never)}
@@ -381,8 +381,8 @@ export function ClassifiedForm({
                     className={cn(
                       "rounded-sm border px-2.5 py-1.5 text-sm transition-colors",
                       on
-                        ? "border-cyan bg-cyan/15 text-cyan"
-                        : "border-border bg-depth-0/40 text-muted-foreground hover:text-air"
+                        ? "border-brand bg-brand/15 text-brand"
+                        : "border-border bg-depth-0/40 text-muted-foreground hover:text-ink"
                     )}
                   >
                     {languageLabel(l, locale)}
@@ -427,14 +427,14 @@ export function ClassifiedForm({
                     setPhotos(photos.filter((_, j) => j !== i));
                   }}
                   aria-label={t("photoRemove", { n: i + 1 })}
-                  className="bg-depth-0/80 text-air absolute end-1 top-1 flex size-6 items-center justify-center rounded-full"
+                  className="bg-depth-0/80 text-ink absolute end-1 top-1 flex size-6 items-center justify-center rounded-full"
                 >
                   <X className="size-3.5" aria-hidden="true" />
                 </button>
               </div>
             ))}
             {photos.length < CLASSIFIED_PHOTOS_MAX && (
-              <label className="border-border text-muted-foreground hover:text-air flex h-20 cursor-pointer items-center gap-1.5 rounded-md border px-4 text-sm transition-colors">
+              <label className="border-border text-muted-foreground hover:text-ink flex h-20 cursor-pointer items-center gap-1.5 rounded-md border px-4 text-sm transition-colors">
                 <ImagePlus className="size-4" aria-hidden="true" />
                 {t("photosAdd")}
                 <input

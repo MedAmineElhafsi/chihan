@@ -125,7 +125,7 @@ export function ShareButton({
           className="gap-2.5"
         >
           {copied ? (
-            <Check className="text-cyan size-4" aria-hidden="true" />
+            <Check className="text-brand size-4" aria-hidden="true" />
           ) : (
             <Link2 className="size-4" aria-hidden="true" />
           )}

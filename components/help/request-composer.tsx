@@ -191,7 +191,7 @@ export function RequestComposer({
     >
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="font-display text-air text-xl font-semibold">
+          <h2 className="font-display text-ink text-xl font-semibold">
             {giving ? t("giveTitle") : t("askTitle")}
           </h2>
           <p className="text-muted-foreground mt-1 text-sm">
@@ -224,8 +224,8 @@ export function RequestComposer({
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-sm border px-2.5 py-1.5 text-sm transition-colors",
                   active
-                    ? "text-air border-transparent"
-                    : "border-border bg-depth-0/40 text-muted-foreground hover:text-air"
+                    ? "text-ink border-transparent"
+                    : "border-border bg-depth-0/40 text-muted-foreground hover:text-ink"
                 )}
                 style={
                   active
@@ -257,8 +257,8 @@ export function RequestComposer({
               className={cn(
                 "rounded-sm border px-3 py-2.5 text-sm transition-colors",
                 kind === k
-                  ? "border-cyan bg-cyan/15 text-cyan"
-                  : "border-border bg-depth-0/40 text-muted-foreground hover:text-air"
+                  ? "border-brand bg-brand/15 text-brand"
+                  : "border-border bg-depth-0/40 text-muted-foreground hover:text-ink"
               )}
             >
               {t(k === "give" ? "kindGive" : "kindAsk")}
@@ -312,8 +312,8 @@ export function RequestComposer({
                   className={cn(
                     "flex-1 rounded-sm border px-3 py-2 text-sm transition-colors",
                     urgency === u
-                      ? "border-cyan bg-cyan/15 text-cyan"
-                      : "border-border bg-depth-0/40 text-muted-foreground hover:text-air"
+                      ? "border-brand bg-brand/15 text-brand"
+                      : "border-border bg-depth-0/40 text-muted-foreground hover:text-ink"
                   )}
                 >
                   {t(`urg_${u}` as never)}

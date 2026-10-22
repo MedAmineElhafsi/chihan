@@ -37,7 +37,7 @@ export function MyEntry({
     <section className="panel flex flex-col gap-3 rounded-md p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="font-display text-air text-lg font-semibold">
+          <h2 className="font-display text-ink text-lg font-semibold">
             {t(entry.role === "mentor" ? "myEntryMentor" : "myEntryNewcomer")}
           </h2>
           <p className="text-muted-foreground mt-1 text-sm">

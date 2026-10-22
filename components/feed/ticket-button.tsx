@@ -63,7 +63,7 @@ export function TicketButton({
     <div className={cn("flex flex-col gap-1.5", className)}>
       <div className="flex flex-wrap items-center gap-2">
         <span className="inline-flex items-center gap-1.5 text-sm font-medium">
-          <Ticket className="text-cyan size-4 shrink-0" />
+          <Ticket className="text-brand size-4 shrink-0" />
           {price}
         </span>
 

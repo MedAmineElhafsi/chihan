@@ -72,8 +72,8 @@ export default async function GuidesPage({
     cn(
       "inline-flex items-center gap-1.5 rounded-sm border px-2.5 py-1.5 text-sm transition-colors",
       active
-        ? "border-cyan bg-cyan/15 text-cyan"
-        : "border-border bg-depth-0/40 text-muted-foreground hover:text-air"
+        ? "border-brand bg-brand/15 text-brand"
+        : "border-border bg-depth-0/40 text-muted-foreground hover:text-ink"
     );
 
   return (
@@ -82,7 +82,7 @@ export default async function GuidesPage({
         <span className="label-mono">
           {city} — {t("count", { count: total })}
         </span>
-        <h1 className="font-display text-air text-[clamp(2rem,5vw,3.25rem)] leading-[0.95] font-semibold tracking-tight">
+        <h1 className="font-display text-ink text-[clamp(2rem,5vw,3.25rem)] leading-[0.95] font-semibold tracking-tight">
           {t("title")}
         </h1>
         <p className="text-muted-foreground max-w-xl">{t("subtitle")}</p>
@@ -127,8 +127,8 @@ export default async function GuidesPage({
 
       {total === 0 ? (
         <div className="flex flex-col items-center gap-3 py-20 text-center">
-          <BookOpenCheck className="text-cyan size-8" aria-hidden="true" />
-          <p className="text-air max-w-sm text-balance">
+          <BookOpenCheck className="text-brand size-8" aria-hidden="true" />
+          <p className="text-ink max-w-sm text-balance">
             {t("empty", { city })}
           </p>
           <p className="text-muted-foreground max-w-sm text-sm text-balance">
@@ -139,8 +139,8 @@ export default async function GuidesPage({
         <div className="mt-8 flex flex-col gap-10">
           {guides.city.length > 0 && (
             <section className="flex flex-col gap-4">
-              <h2 className="font-display text-air flex items-center gap-2 text-xl font-semibold">
-                <MapPin className="text-cyan size-5" aria-hidden="true" />
+              <h2 className="font-display text-ink flex items-center gap-2 text-xl font-semibold">
+                <MapPin className="text-brand size-5" aria-hidden="true" />
                 {t("inCity", { city })}
               </h2>
               <div className="bg-border grid gap-px sm:grid-cols-2">
@@ -160,7 +160,7 @@ export default async function GuidesPage({
           )}
           {guides.country.length > 0 && (
             <section className="flex flex-col gap-4">
-              <h2 className="font-display text-air text-xl font-semibold">
+              <h2 className="font-display text-ink text-xl font-semibold">
                 {t("allOf", { country: countryLabel(country, locale) })}
               </h2>
               <div className="bg-border grid gap-px sm:grid-cols-2">

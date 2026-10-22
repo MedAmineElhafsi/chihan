@@ -16,7 +16,7 @@ export async function ProductCard({ product }: { product: Product }) {
       href={`/bazar/${product.slug}`}
       className="group bg-depth-1 hover:bg-depth-2 relative flex flex-col transition-colors duration-300"
     >
-      <span className="bg-cyan absolute inset-x-0 top-0 z-10 h-px scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
+      <span className="bg-brand absolute inset-x-0 top-0 z-10 h-px scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
 
       <div className="bg-depth-2 relative aspect-[4/3] overflow-hidden">
         {product.preview_url ? (
@@ -37,7 +37,7 @@ export async function ProductCard({ product }: { product: Product }) {
       <div className="flex flex-1 flex-col gap-2 p-4">
         <h3
           dir="auto"
-          className="font-display text-air text-base leading-snug font-semibold tracking-tight"
+          className="font-display text-ink text-base leading-snug font-semibold tracking-tight"
         >
           {product.title}
         </h3>
@@ -47,7 +47,7 @@ export async function ProductCard({ product }: { product: Product }) {
           </p>
         )}
         <div className="text-muted-foreground mt-auto flex flex-wrap items-center justify-between gap-x-3 gap-y-1 pt-2 text-xs">
-          <span className="text-cyan inline-flex items-center gap-1.5 font-medium">
+          <span className="text-brand inline-flex items-center gap-1.5 font-medium">
             <Download className="size-3.5" aria-hidden="true" />
             {t("free")}
           </span>

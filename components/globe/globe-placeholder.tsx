@@ -30,10 +30,10 @@ export function GlobePlaceholder() {
       >
         {/* The body of the sphere: lit from the upper left, the same direction
             the real globe is lit from, so nothing jumps when it swaps. */}
-        <span className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_32%_28%,rgba(80,232,244,0.22),rgba(76,111,232,0.10)_45%,transparent_70%)]" />
+        <span className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_32%_28%,color-mix(in_oklab,var(--sun-2)_45%,transparent),color-mix(in_oklab,var(--sun-1)_30%,transparent)_45%,transparent_70%)]" />
 
         {/* The rim. A sphere reads as a sphere because its edge catches light. */}
-        <span className="ring-cyan/20 absolute inset-0 rounded-full ring-1" />
+        <span className="ring-brand/20 absolute inset-0 rounded-full ring-1" />
       </span>
     </div>
   );

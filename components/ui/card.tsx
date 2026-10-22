@@ -3,8 +3,8 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Sharp-cornered hairline panel. Depth comes from translucency and a cyan
- * edge on hover — not from rounded, shadowed "cards".
+ * Soft-cornered panel. Depth comes from a warm shadow and a faint frosted
+ * fill, with a brand-tinted edge on hover.
  */
 function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (

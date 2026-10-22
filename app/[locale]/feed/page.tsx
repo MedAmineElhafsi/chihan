@@ -112,7 +112,7 @@ export default async function FeedPage({
             className={cn(
               "rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
               !nearMe
-                ? "border-cyan/50 bg-cyan/15 text-cyan"
+                ? "border-brand/50 bg-brand/15 text-brand"
                 : "border-border text-muted-foreground hover:text-foreground"
             )}
           >
@@ -123,7 +123,7 @@ export default async function FeedPage({
             className={cn(
               "inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
               nearMe
-                ? "border-cyan/50 bg-cyan/15 text-cyan"
+                ? "border-brand/50 bg-brand/15 text-brand"
                 : "border-border text-muted-foreground hover:text-foreground"
             )}
           >
@@ -144,7 +144,7 @@ export default async function FeedPage({
               {t("needLocation")}{" "}
               <Link
                 href="/profile/edit"
-                className="text-cyan font-medium hover:underline"
+                className="text-brand font-medium hover:underline"
               >
                 {t("setLocation")}
               </Link>
@@ -170,9 +170,9 @@ export default async function FeedPage({
             ) : ent.features.createPosts ? (
               <FeedComposer userId={user.id} tickets={canSellTickets} />
             ) : (
-              <div className="social-surface border-cyan/25 ring-cyan/15 flex flex-col gap-3 p-4 ring-1 sm:flex-row sm:items-center sm:justify-between">
+              <div className="social-surface border-brand/25 ring-brand/15 flex flex-col gap-3 p-4 ring-1 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-start gap-3">
-                  <Sparkles className="text-cyan mt-0.5 size-5 shrink-0" />
+                  <Sparkles className="text-brand mt-0.5 size-5 shrink-0" />
                   <div>
                     <div className="font-medium">{t("upgradeToPostTitle")}</div>
                     <p className="text-muted-foreground text-sm">

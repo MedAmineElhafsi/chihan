@@ -69,7 +69,7 @@ export default async function SettingsPage({
             href="/settings/invite"
             className="flex items-center gap-3 border-t border-border/60 px-6 py-4 transition-colors hover:bg-secondary/40"
           >
-            <span className="flex size-9 items-center justify-center rounded-full bg-cyan/15 text-cyan">
+            <span className="flex size-9 items-center justify-center rounded-full bg-brand/15 text-brand">
               <UserPlus className="size-4" />
             </span>
             <span className="min-w-0 flex-1">

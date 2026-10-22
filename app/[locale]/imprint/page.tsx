@@ -32,7 +32,7 @@ export default async function ImprintPage({
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6">
-      <h1 className="font-display text-air text-3xl font-semibold tracking-tight">
+      <h1 className="font-display text-ink text-3xl font-semibold tracking-tight">
         {t("imprintTitle")}
       </h1>
       <p className="text-muted-foreground mt-2 text-sm">{t("imprintLead")}</p>
@@ -92,7 +92,7 @@ export default async function ImprintPage({
             <dd className="mt-1 flex flex-col gap-0.5">
               <a
                 href={`mailto:${OPERATOR.email}`}
-                className="hover:text-cyan break-all transition-colors"
+                className="hover:text-brand break-all transition-colors"
                 dir="ltr"
               >
                 {OPERATOR.email}
@@ -100,7 +100,7 @@ export default async function ImprintPage({
               {OPERATOR.phone && (
                 <a
                   href={`tel:${OPERATOR.phone}`}
-                  className="hover:text-cyan transition-colors"
+                  className="hover:text-brand transition-colors"
                   dir="ltr"
                 >
                   {OPERATOR.phone}

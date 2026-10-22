@@ -150,9 +150,9 @@ export function ReelComposer({ userId }: { userId: string }) {
     <div className="panel flex flex-col gap-3 rounded-lg p-4">
       {!picked ? (
         <>
-          <label className="border-border hover:border-cyan/50 flex cursor-pointer flex-col items-center gap-2 rounded-xl border border-dashed p-8 text-center transition-colors">
-            <Video className="text-cyan size-6" />
-            <span className="text-air text-sm font-medium">{t("pick")}</span>
+          <label className="border-border hover:border-brand/50 flex cursor-pointer flex-col items-center gap-2 rounded-xl border border-dashed p-8 text-center transition-colors">
+            <Video className="text-brand size-6" />
+            <span className="text-ink text-sm font-medium">{t("pick")}</span>
             <span className="text-muted-foreground text-xs">
               {t("limits", {
                 seconds: REEL_MAX_SECONDS,
@@ -181,7 +181,7 @@ export function ReelComposer({ userId }: { userId: string }) {
             <button
               onClick={clear}
               aria-label={t("remove")}
-              className="bg-depth-0/80 text-air hover:text-cyan absolute end-2 top-2 rounded-full p-1.5 backdrop-blur transition-colors"
+              className="bg-depth-0/80 text-ink hover:text-brand absolute end-2 top-2 rounded-full p-1.5 backdrop-blur transition-colors"
             >
               <X className="size-4" />
             </button>

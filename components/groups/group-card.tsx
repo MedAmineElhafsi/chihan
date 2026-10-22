@@ -30,7 +30,7 @@ export function GroupCard({
           {group.name}
         </h2>
         {isJoined && (
-          <span className="shrink-0 rounded-full bg-cyan/15 px-2 py-0.5 text-xs font-medium text-cyan">
+          <span className="shrink-0 rounded-full bg-brand/15 px-2 py-0.5 text-xs font-medium text-brand">
             {joinedLabel}
           </span>
         )}
@@ -43,16 +43,16 @@ export function GroupCard({
       <div className="mt-auto flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
         {place && (
           <span className="inline-flex items-center gap-1">
-            <MapPin className="size-3.5 text-cyan" />
+            <MapPin className="size-3.5 text-brand" />
             {place}
           </span>
         )}
         <span className="inline-flex items-center gap-1">
-          <Users className="size-3.5 text-cyan" />
+          <Users className="size-3.5 text-brand" />
           {membersLabel}
         </span>
         {group.is_private && (
-          <span className="inline-flex items-center gap-1 text-cyan">
+          <span className="inline-flex items-center gap-1 text-brand">
             <Lock className="size-3.5" />
             {privateLabel}
           </span>

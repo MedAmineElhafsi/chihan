@@ -25,7 +25,7 @@ export function ListingCard({
   return (
     <Link
       href={`/directory/${listing.id}`}
-      className="panel group hover:border-cyan/40 flex flex-col overflow-hidden rounded-lg transition-colors"
+      className="panel lift group hover:border-brand/40 flex flex-col overflow-hidden rounded-lg"
     >
       {/* A card with no photo should not pretend to have one. Reserving 144px
           for an image most listings do not have left the grid mostly empty
@@ -74,17 +74,17 @@ export function ListingCard({
             {listing.name}
           </h3>
           {isPerson && (
-            <span className="label-mono border-cyan/40 text-cyan shrink-0 rounded-sm border px-1.5 py-0.5">
+            <span className="label-mono border-brand/40 text-brand shrink-0 rounded-sm border px-1.5 py-0.5">
               {professionalLabel}
             </span>
           )}
           {listing.is_verified && (
-            <BadgeCheck className="text-cyan mt-0.5 size-4 shrink-0" />
+            <BadgeCheck className="text-brand mt-0.5 size-4 shrink-0" />
           )}
         </div>
         {place && (
           <p className="text-muted-foreground flex items-center gap-1.5 text-sm">
-            <MapPin className="text-cyan size-3.5" />
+            <MapPin className="text-brand size-3.5" />
             {place}
           </p>
         )}

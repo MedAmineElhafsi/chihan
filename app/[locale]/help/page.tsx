@@ -129,8 +129,8 @@ export default async function HelpPage({
     cn(
       "inline-flex items-center gap-1.5 rounded-sm border px-2.5 py-1.5 text-sm transition-colors",
       active
-        ? "border-cyan bg-cyan/15 text-cyan"
-        : "border-border bg-depth-0/40 text-muted-foreground hover:text-air"
+        ? "border-brand bg-brand/15 text-brand"
+        : "border-border bg-depth-0/40 text-muted-foreground hover:text-ink"
     );
 
   return (
@@ -144,7 +144,7 @@ export default async function HelpPage({
               from keeping them private. */}
           {city || LAUNCH_CITY} — {t("index", { count: openCount })}
         </span>
-        <h1 className="font-display text-air text-[clamp(2rem,5vw,3.25rem)] leading-[0.95] font-semibold tracking-tight">
+        <h1 className="font-display text-ink text-[clamp(2rem,5vw,3.25rem)] leading-[0.95] font-semibold tracking-tight">
           {t("title")}
         </h1>
         <p className="text-muted-foreground max-w-xl">{t("subtitle")}</p>
@@ -225,13 +225,13 @@ export default async function HelpPage({
       {/* Board */}
       {requests.length === 0 ? (
         <div className="flex flex-col items-center gap-3 py-20 text-center">
-          <HandHeart className="text-cyan size-8" />
+          <HandHeart className="text-brand size-8" />
           {/* Two different absences, said differently. "Nothing here" and
               "hidden from you" are not the same sentence, and telling a
               visitor the first when the second is true loses them. */}
           {!user && openCount > 0 ? (
             <>
-              <p className="text-air max-w-sm text-balance">
+              <p className="text-ink max-w-sm text-balance">
                 {t("hiddenTitle", { count: openCount })}
               </p>
               <p className="text-muted-foreground max-w-sm text-sm text-balance">

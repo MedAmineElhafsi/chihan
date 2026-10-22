@@ -19,7 +19,7 @@ const DropdownMenuContent = React.forwardRef<
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
-        "panel-solid z-50 min-w-[12rem] overflow-hidden rounded-lg p-1.5 text-popover-foreground shadow-elev-3",
+        "glass-strong glass-pop z-50 min-w-[12rem] overflow-hidden rounded-xl p-1.5 text-popover-foreground",
         "data-[state=closed]:pointer-events-none",
         className
       )}
@@ -62,7 +62,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   >
     <span className="absolute start-2 flex size-4 items-center justify-center">
       <DropdownMenuPrimitive.ItemIndicator>
-        <Check className="size-4 text-cyan" />
+        <Check className="size-4 text-brand" />
       </DropdownMenuPrimitive.ItemIndicator>
     </span>
     {children}

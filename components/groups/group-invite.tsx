@@ -77,7 +77,7 @@ export function GroupInvite({
     <section className="panel mt-6 rounded-lg p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <UserPlus className="size-4 text-cyan" />
+          <UserPlus className="size-4 text-brand" />
           <h2 className="font-display text-lg font-semibold">{t("inviteTitle")}</h2>
         </div>
         <Button

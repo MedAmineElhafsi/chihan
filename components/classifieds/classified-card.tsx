@@ -18,7 +18,7 @@ export async function ClassifiedCard({ item }: { item: Classified }) {
       href={href}
       className="group bg-depth-1 hover:bg-depth-2 relative flex flex-col gap-3 p-5 transition-colors duration-300"
     >
-      <span className="bg-cyan absolute inset-x-0 top-0 h-px scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
+      <span className="bg-brand absolute inset-x-0 top-0 h-px scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
 
       {item.photo_urls[0] && (
         // eslint-disable-next-line @next/next/no-img-element
@@ -31,12 +31,12 @@ export async function ClassifiedCard({ item }: { item: Classified }) {
 
       <div className="flex flex-wrap items-center gap-2">
         {item.housing_type && (
-          <span className="bg-cyan/10 text-cyan rounded-sm px-2 py-1 font-mono text-[0.625rem] tracking-[0.14em] uppercase">
+          <span className="bg-brand/10 text-brand rounded-sm px-2 py-1 font-mono text-[0.625rem] tracking-[0.14em] uppercase">
             {t(`housing_${item.housing_type}` as never)}
           </span>
         )}
         {item.job_type && (
-          <span className="bg-cyan/10 text-cyan rounded-sm px-2 py-1 font-mono text-[0.625rem] tracking-[0.14em] uppercase">
+          <span className="bg-brand/10 text-brand rounded-sm px-2 py-1 font-mono text-[0.625rem] tracking-[0.14em] uppercase">
             {t(`job_${item.job_type}` as never)}
           </span>
         )}
@@ -54,14 +54,14 @@ export async function ClassifiedCard({ item }: { item: Classified }) {
 
       <h3
         dir="auto"
-        className="font-display text-air text-lg leading-snug font-semibold tracking-tight"
+        className="font-display text-ink text-lg leading-snug font-semibold tracking-tight"
       >
         {item.title}
       </h3>
 
       <p className="text-foreground/90 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
         {rent && (
-          <span className="text-air font-medium">
+          <span className="text-ink font-medium">
             {t("rentPer", {
               amount: rent,
               kind: item.rent_kind ? t(`rent_${item.rent_kind}` as never) : "",
@@ -69,7 +69,7 @@ export async function ClassifiedCard({ item }: { item: Classified }) {
           </span>
         )}
         {pay && (
-          <span className="text-air font-medium">
+          <span className="text-ink font-medium">
             {t(item.pay_unit === "hour" ? "payHour" : "payMonth", {
               amount: pay,
             })}
@@ -77,7 +77,7 @@ export async function ClassifiedCard({ item }: { item: Classified }) {
         )}
         {item.size_m2 && (
           <span className="text-muted-foreground flex items-center gap-1">
-            <Ruler className="text-cyan size-3.5" aria-hidden="true" />
+            <Ruler className="text-brand size-3.5" aria-hidden="true" />
             {t("squareMetres", { n: item.size_m2 })}
           </span>
         )}
@@ -88,7 +88,7 @@ export async function ClassifiedCard({ item }: { item: Classified }) {
         )}
         {item.available_from && (
           <span className="text-muted-foreground flex items-center gap-1">
-            <CalendarDays className="text-cyan size-3.5" aria-hidden="true" />
+            <CalendarDays className="text-brand size-3.5" aria-hidden="true" />
             {dateFmt.format(new Date(`${item.available_from}T12:00:00Z`))}
           </span>
         )}
@@ -103,12 +103,12 @@ export async function ClassifiedCard({ item }: { item: Classified }) {
 
       <div className="text-muted-foreground mt-auto flex flex-wrap items-center justify-between gap-2 pt-2 text-xs">
         <span className="flex items-center gap-1">
-          <MapPin className="text-cyan size-3" aria-hidden="true" />
+          <MapPin className="text-brand size-3" aria-hidden="true" />
           {[item.district, item.city].filter(Boolean).join(", ") ||
             t("anywhere")}
         </span>
         {item.author?.verified && (
-          <span className="text-cyan flex items-center gap-1">
+          <span className="text-brand flex items-center gap-1">
             <BadgeCheck className="size-3.5" aria-hidden="true" />
             {t("verifiedPoster")}
           </span>

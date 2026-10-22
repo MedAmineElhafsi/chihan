@@ -126,7 +126,7 @@ export function GroupBoard({
   return (
     <section id="board" className="mt-10 scroll-mt-24">
       <div className="mb-4 flex items-center gap-2">
-        <Megaphone className="size-4 text-cyan" />
+        <Megaphone className="size-4 text-brand" />
         <h2 className="font-display text-xl font-semibold">{t("boardTitle")}</h2>
       </div>
       <p className="mb-4 text-sm text-muted-foreground">{t("boardSubtitle")}</p>
@@ -151,7 +151,7 @@ export function GroupBoard({
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
                   tab === key
-                    ? "border-cyan/50 bg-cyan/15 text-cyan"
+                    ? "border-brand/50 bg-brand/15 text-brand"
                     : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
                 )}
               >

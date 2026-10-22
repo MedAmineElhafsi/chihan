@@ -44,7 +44,7 @@ export function ComposeSheet() {
     <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
       <DialogPrimitive.Trigger
         aria-label={t("create")}
-        className="flex size-11 items-center justify-center rounded-xl bg-cyan text-depth-0 shadow-glow transition-transform duration-[var(--press-duration)] active:scale-95 data-[state=open]:rotate-45 motion-reduce:active:scale-100 motion-reduce:data-[state=open]:rotate-0"
+        className="flex size-11 items-center justify-center rounded-xl bg-brand text-primary-foreground shadow-glow transition-transform duration-[var(--press-duration)] active:scale-95 data-[state=open]:rotate-45 motion-reduce:active:scale-100 motion-reduce:data-[state=open]:rotate-0"
       >
         <Plus className="size-5" strokeWidth={2.2} />
       </DialogPrimitive.Trigger>
@@ -107,7 +107,7 @@ function Sheet({
       <DialogPrimitive.Content asChild forceMount aria-describedby={undefined}>
         <motion.div
           role="dialog"
-          className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-lg touch-none rounded-t-3xl border-t border-cyan/25 bg-depth-2/85 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-elev-3 backdrop-blur-2xl"
+          className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-lg touch-none glass-strong rounded-t-3xl border-b-0 pb-[max(1.25rem,env(safe-area-inset-bottom))]"
           style={{ y }}
           // Enters and leaves along the same path — up from the bottom edge,
           // back down to it.
@@ -133,7 +133,7 @@ function Sheet({
           <div className="flex justify-center pt-3 pb-1">
             <span
               aria-hidden="true"
-              className="h-1 w-10 rounded-full bg-air/25"
+              className="h-1 w-10 rounded-full bg-ink/25"
             />
           </div>
 
@@ -146,9 +146,9 @@ function Sheet({
               <DialogPrimitive.Close asChild key={key}>
                 <Link
                   href={href}
-                  className="flex items-center gap-4 rounded-lg px-3 py-3.5 text-air transition-colors duration-[var(--press-duration)] active:bg-cyan/15"
+                  className="flex items-center gap-4 rounded-lg px-3 py-3.5 text-ink transition-colors duration-[var(--press-duration)] active:bg-brand/15"
                 >
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-cyan/12 text-cyan ring-1 ring-cyan/25">
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand/12 text-brand ring-1 ring-brand/25">
                     <Icon className="size-5" />
                   </span>
                   <span className="text-base font-medium">

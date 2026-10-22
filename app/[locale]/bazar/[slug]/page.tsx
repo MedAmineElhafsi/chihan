@@ -116,7 +116,7 @@ export default async function ProductPage({
 
           <h1
             dir="auto"
-            className="font-display text-air text-[clamp(1.5rem,3.5vw,2.25rem)] leading-tight font-semibold tracking-tight"
+            className="font-display text-ink text-[clamp(1.5rem,3.5vw,2.25rem)] leading-tight font-semibold tracking-tight"
           >
             {product.title}
           </h1>
@@ -137,7 +137,7 @@ export default async function ProductPage({
           <dl className="border-border text-muted-foreground flex flex-wrap gap-x-6 gap-y-1 border-t pt-4 text-sm">
             <div className="flex items-center gap-1.5">
               <dt className="sr-only">{t("price")}</dt>
-              <dd className="text-cyan inline-flex items-center gap-1.5 font-medium">
+              <dd className="text-brand inline-flex items-center gap-1.5 font-medium">
                 <Download className="size-4" aria-hidden="true" />
                 {paid
                   ? money(product.price_cents, product.currency, locale)

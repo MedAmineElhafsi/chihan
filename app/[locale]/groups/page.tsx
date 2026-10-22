@@ -93,7 +93,7 @@ export default async function GroupsPage({
           className={cn(
             "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
             !country && !near
-              ? "border-cyan/50 bg-cyan/15 text-cyan"
+              ? "border-brand/50 bg-brand/15 text-brand"
               : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
           )}
         >
@@ -105,7 +105,7 @@ export default async function GroupsPage({
           className={cn(
             "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
             near
-              ? "border-cyan/50 bg-cyan/15 text-cyan"
+              ? "border-brand/50 bg-brand/15 text-brand"
               : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
           )}
         >
@@ -119,7 +119,7 @@ export default async function GroupsPage({
             className={cn(
               "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
               country === c
-                ? "border-cyan/50 bg-cyan/15 text-cyan"
+                ? "border-brand/50 bg-brand/15 text-brand"
                 : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
             )}
           >
@@ -134,7 +134,7 @@ export default async function GroupsPage({
 
       {groups.length === 0 ? (
         <div className="mt-16 flex flex-col items-center gap-3 text-center">
-          <Users className="size-8 text-cyan" />
+          <Users className="size-8 text-brand" />
           <p className="text-muted-foreground">{t("empty")}</p>
           {user && (
             <Button asChild size="sm" className="mt-1 gap-1.5">

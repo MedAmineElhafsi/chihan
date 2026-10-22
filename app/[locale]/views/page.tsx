@@ -36,7 +36,7 @@ export default async function WhoViewedMePage({
   if (!ent.features.whoViewedMe) {
     return (
       <div className="mx-auto max-w-lg px-4 py-16 text-center sm:px-6">
-        <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-cyan/15 text-cyan">
+        <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-brand/15 text-brand">
           <Lock className="size-7" />
         </div>
         <h1 className="mt-5 font-display text-3xl font-semibold tracking-tight">
@@ -58,7 +58,7 @@ export default async function WhoViewedMePage({
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
       <div className="flex items-center gap-3">
-        <Eye className="size-6 text-cyan" />
+        <Eye className="size-6 text-brand" />
         <div>
           <h1 className="font-display text-3xl font-semibold tracking-tight">
             {t("title")}
@@ -82,7 +82,7 @@ export default async function WhoViewedMePage({
                   {v.avatar_url && (
                     <AvatarImage src={v.avatar_url} alt={name} />
                   )}
-                  <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-primary-foreground">
+                  <AvatarFallback className="bg-gradient-to-br from-brand to-sage text-primary-foreground">
                     {initial}
                   </AvatarFallback>
                 </Avatar>
@@ -91,7 +91,7 @@ export default async function WhoViewedMePage({
                   <div className="flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground">
                     {place && (
                       <span className="inline-flex items-center gap-1">
-                        <MapPin className="size-3 text-cyan" />
+                        <MapPin className="size-3 text-brand" />
                         {place}
                       </span>
                     )}

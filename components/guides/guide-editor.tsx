@@ -202,8 +202,8 @@ export function GuideEditor({
               className={cn(
                 "inline-flex items-center gap-1.5 rounded-sm border px-2.5 py-1.5 text-sm transition-colors",
                 topic === tp
-                  ? "border-cyan bg-cyan/15 text-cyan"
-                  : "border-border bg-depth-0/40 text-muted-foreground hover:text-air"
+                  ? "border-brand bg-brand/15 text-brand"
+                  : "border-border bg-depth-0/40 text-muted-foreground hover:text-ink"
               )}
             >
               <GuideTopicIcon topic={tp} className="size-3.5" />
@@ -259,7 +259,7 @@ export function GuideEditor({
             key={i}
             className="border-border/70 grid grid-cols-[2.25rem_1fr] gap-3 rounded-md border p-3"
           >
-            <span className="border-cyan/40 text-cyan flex size-8 items-center justify-center rounded-full border font-mono text-sm tabular-nums">
+            <span className="border-brand/40 text-brand flex size-8 items-center justify-center rounded-full border font-mono text-sm tabular-nums">
               {i + 1}
             </span>
             <div className="flex min-w-0 flex-col gap-2">
@@ -419,8 +419,8 @@ export function GuideEditor({
                 className={cn(
                   "flex-1 rounded-sm border px-3 py-2 text-sm transition-colors",
                   status === s
-                    ? "border-cyan bg-cyan/15 text-cyan"
-                    : "border-border bg-depth-0/40 text-muted-foreground hover:text-air"
+                    ? "border-brand bg-brand/15 text-brand"
+                    : "border-border bg-depth-0/40 text-muted-foreground hover:text-ink"
                 )}
               >
                 {t(s === "draft" ? "draft" : "published")}

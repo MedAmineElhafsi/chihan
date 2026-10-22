@@ -63,12 +63,12 @@ export function PeopleClient({
       {isAuthenticated && !isPremium && (
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card/40 px-4 py-3 text-sm">
           <span className="flex items-center gap-2 text-muted-foreground">
-            <Eye className="size-4 text-cyan" />
+            <Eye className="size-4 text-brand" />
             {t("revealsLeft", { count: remaining })}
           </span>
           <Link
             href="/pricing"
-            className="inline-flex items-center gap-1.5 font-medium text-cyan hover:underline"
+            className="inline-flex items-center gap-1.5 font-medium text-brand hover:underline"
           >
             <Sparkles className="size-4" />
             {t("upgrade")}
@@ -94,7 +94,7 @@ export function PeopleClient({
                     {p.avatar_url && (
                       <AvatarImage src={p.avatar_url} alt={p.display_name ?? ""} />
                     )}
-                    <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-primary-foreground">
+                    <AvatarFallback className="bg-gradient-to-br from-brand to-sage text-primary-foreground">
                       {initial}
                     </AvatarFallback>
                   </Avatar>
@@ -108,7 +108,7 @@ export function PeopleClient({
                     </div>
                     {place && (
                       <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <MapPin className="size-3.5 text-cyan" />
+                        <MapPin className="size-3.5 text-brand" />
                         {place}
                       </div>
                     )}
@@ -120,7 +120,7 @@ export function PeopleClient({
                   p.languages.length > 0) && (
                   <div className="flex flex-wrap gap-1.5">
                     {p.origin_region && (
-                      <span className="rounded-full bg-cyan/15 px-2 py-0.5 text-xs font-medium text-cyan">
+                      <span className="rounded-full bg-brand/15 px-2 py-0.5 text-xs font-medium text-brand">
                         {tOn(`origin_${p.origin_region}` as never)}
                       </span>
                     )}

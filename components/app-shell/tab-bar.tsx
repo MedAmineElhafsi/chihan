@@ -3,8 +3,10 @@
 import { usePathname } from "next/navigation";
 import { Clapperboard, Compass, Home, Plus, User } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { motion } from "motion/react";
 
 import { Link } from "@/i18n/navigation";
+import { springFlick } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { ComposeSheet } from "./compose-sheet";
 
@@ -39,11 +41,13 @@ export function TabBar({ signedIn }: { signedIn: boolean }) {
   const [left, right] = [tabs.slice(0, 2), tabs.slice(2)];
 
   return (
+    // A floating glass pill rather than a bar welded to the screen edge: the
+    // page scrolls on underneath and shows through it.
     <nav
       aria-label={t("primary")}
-      className="bg-depth-0/75 before:from-depth-0/70 fixed inset-x-0 bottom-0 z-50 pb-[env(safe-area-inset-bottom)] backdrop-blur-2xl before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-6 before:bg-gradient-to-t before:to-transparent lg:hidden"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-50 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] lg:hidden"
     >
-      <div className="mx-auto grid max-w-lg grid-cols-5 items-center px-2">
+      <div className="glass-strong pointer-events-auto mx-auto grid max-w-lg grid-cols-5 items-center rounded-full px-1.5">
         {left.map((tab) => (
           <TabLink
             key={tab.key}
@@ -61,7 +65,7 @@ export function TabBar({ signedIn }: { signedIn: boolean }) {
             <Link
               href="/signup"
               aria-label={t("getStarted")}
-              className="flex size-11 items-center justify-center rounded-xl bg-cyan text-depth-0 shadow-glow transition-transform active:scale-95"
+              className="press liquid-fill flex size-11 items-center justify-center rounded-full bg-brand text-primary-foreground"
             >
               <Plus className="size-5" strokeWidth={2.2} />
             </Link>
@@ -98,10 +102,21 @@ function TabLink({
       href={href}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "flex flex-col items-center gap-1 rounded-lg py-2 transition-colors",
-        active ? "text-cyan" : "text-muted-foreground hover:text-air"
+        "press relative isolate my-1.5 flex flex-col items-center gap-1 rounded-full py-1.5",
+        active ? "text-brand" : "text-muted-foreground hover:text-ink"
       )}
     >
+      {/* The lens: one shared element that springs from the old tab to the
+          new one (layoutId), with a little overshoot because a tab change is
+          a deliberate move. Motion starts it from wherever it is on screen,
+          so a quick second tap redirects it mid-flight. */}
+      {active && (
+        <motion.span
+          layoutId="tab-lens"
+          transition={springFlick}
+          className="absolute inset-0 -z-10 rounded-full bg-brand/12 shadow-[inset_0_1px_0_0_var(--glass-edge)]"
+        />
+      )}
       <Icon className="size-5" strokeWidth={active ? 2.1 : 1.7} />
       <span className="font-mono text-[0.625rem] uppercase tracking-[0.1em]">
         {label}

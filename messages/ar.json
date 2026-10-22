@@ -49,7 +49,11 @@
   },
   "Common": {
     "language": "اللغة",
-    "or": "أو"
+    "or": "أو",
+    "theme": "المظهر",
+    "themeLight": "فاتح",
+    "themeDark": "داكن",
+    "themeSystem": "تلقائي"
   },
   "Landing": {
     "eyebrow": "موطن للشتات الكردي",

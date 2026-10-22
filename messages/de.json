@@ -49,7 +49,11 @@
   },
   "Common": {
     "language": "Sprache",
-    "or": "oder"
+    "or": "oder",
+    "theme": "Darstellung",
+    "themeLight": "Hell",
+    "themeDark": "Dunkel",
+    "themeSystem": "Automatisch"
   },
   "Landing": {
     "eyebrow": "Ein Zuhause für die kurdische Diaspora",

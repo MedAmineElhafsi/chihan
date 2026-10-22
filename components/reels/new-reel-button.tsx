@@ -28,11 +28,11 @@ export function NewReelButton({ userId }: { userId: string }) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <span className="label-mono text-cyan">{t("newReel")}</span>
+        <span className="label-mono text-brand">{t("newReel")}</span>
         <button
           onClick={() => setOpen(false)}
           aria-label={t("close")}
-          className="rounded-sm p-1 text-muted-foreground transition-colors hover:text-cyan"
+          className="rounded-sm p-1 text-muted-foreground transition-colors hover:text-brand"
         >
           <X className="size-4" />
         </button>

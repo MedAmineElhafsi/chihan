@@ -60,14 +60,14 @@ export function GlobeHome({
           <div className="mx-auto flex w-full max-w-7xl flex-col items-start gap-7 px-6 sm:px-10">
             <div className="animate-rise flex items-center gap-3">
               <span className="relative flex size-1.5">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-cyan opacity-60" />
-                <span className="relative inline-flex size-1.5 rounded-full bg-cyan" />
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-brand opacity-60" />
+                <span className="relative inline-flex size-1.5 rounded-full bg-brand" />
               </span>
               <span className="label-mono">{t("eyebrow")}</span>
             </div>
 
             <h1 className="animate-rise max-w-3xl font-display text-[clamp(2.5rem,7.5vw,6rem)] font-semibold leading-[0.9] tracking-[-0.045em] text-balance [animation-delay:100ms]">
-              <span className="block text-air">{t("titleLine1")}</span>
+              <span className="block text-ink">{t("titleLine1")}</span>
               <span className="block text-signal">{t("titleLine2")}</span>
             </h1>
 
@@ -79,7 +79,7 @@ export function GlobeHome({
               {counters.map((c) => (
                 <div key={c.label} className="bg-depth-1/90 px-5 py-4">
                   <dt className="label-mono">{c.label}</dt>
-                  <dd className="mt-1.5 font-mono text-2xl font-medium tabular-nums text-cyan">
+                  <dd className="mt-1.5 font-mono text-2xl font-medium tabular-nums text-brand">
                     {String(c.value).padStart(2, "0")}
                   </dd>
                 </div>
@@ -118,7 +118,7 @@ export function GlobeHome({
       {entered && (
         <button
           onClick={() => setEntered(false)}
-          className="absolute start-4 top-36 z-20 rounded-sm border border-border bg-depth-1/80 px-3 py-2 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted-foreground backdrop-blur transition-colors hover:border-cyan hover:text-cyan md:bottom-5 md:end-5 md:start-auto md:top-auto"
+          className="absolute start-4 top-36 z-20 rounded-sm border border-border bg-depth-1/80 px-3 py-2 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-muted-foreground backdrop-blur transition-colors hover:border-brand hover:text-brand md:bottom-5 md:end-5 md:start-auto md:top-auto"
         >
           {t("aboutCihan")}
         </button>

@@ -37,7 +37,7 @@ export function GlobeStats({
     <dl className={cn("flex gap-5", className)}>
       {counters.map((c) => (
         <div key={c.label}>
-          <dd className="text-cyan font-mono text-xl font-medium tabular-nums">
+          <dd className="text-brand font-mono text-xl font-medium tabular-nums">
             {String(c.value).padStart(2, "0")}
           </dd>
           <dt className="label-mono mt-1">{c.label}</dt>

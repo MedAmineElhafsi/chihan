@@ -44,8 +44,8 @@ const chip = (active: boolean) =>
   cn(
     "rounded-sm border px-2.5 py-1.5 text-sm transition-colors",
     active
-      ? "border-cyan bg-cyan/15 text-cyan"
-      : "border-border bg-depth-0/40 text-muted-foreground hover:text-air"
+      ? "border-brand bg-brand/15 text-brand"
+      : "border-border bg-depth-0/40 text-muted-foreground hover:text-ink"
   );
 
 /** Which two languages, where, how and when: the four facts a volunteer needs. */
@@ -91,7 +91,7 @@ export function InterpreterFields({
             type="button"
             onClick={() => set({ from: value.to, to: value.from })}
             aria-label={t("interpSwap")}
-            className="text-muted-foreground hover:text-air flex size-9 items-center justify-center rounded-full transition-colors"
+            className="text-muted-foreground hover:text-ink flex size-9 items-center justify-center rounded-full transition-colors"
           >
             <ArrowLeftRight className="size-4" aria-hidden="true" />
           </button>

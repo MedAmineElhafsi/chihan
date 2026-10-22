@@ -52,14 +52,14 @@ export default async function DashboardPage({
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-16 sm:px-6">
       {upgraded && isPremium && (
-        <div className="animate-rise mb-5 flex items-center gap-2 rounded-xl border border-cyan/40 bg-cyan/10 px-4 py-3 text-sm">
-          <Sparkles className="size-4 text-cyan" />
+        <div className="animate-rise mb-5 flex items-center gap-2 rounded-xl border border-brand/40 bg-brand/10 px-4 py-3 text-sm">
+          <Sparkles className="size-4 text-brand" />
           {t("upgradedBanner")}
         </div>
       )}
       <div className="animate-rise flex flex-col gap-2">
         <span className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1 text-xs font-medium text-muted-foreground">
-          <Compass className="size-3.5 text-cyan" />
+          <Compass className="size-3.5 text-brand" />
           {t("signedInAs")} {user.email}
         </span>
         <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
@@ -76,7 +76,7 @@ export default async function DashboardPage({
               {profile.avatar_url && (
                 <AvatarImage src={profile.avatar_url} alt={name} />
               )}
-              <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-primary-foreground">
+              <AvatarFallback className="bg-gradient-to-br from-brand to-sage text-primary-foreground">
                 {initial}
               </AvatarFallback>
             </Avatar>
@@ -84,7 +84,7 @@ export default async function DashboardPage({
               <div className="flex items-center gap-2">
                 <span className="font-display text-lg font-semibold">{name}</span>
                 {isPremium && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-cyan/15 px-2 py-0.5 text-xs font-medium text-cyan">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-brand/15 px-2 py-0.5 text-xs font-medium text-brand">
                     <BadgeCheck className="size-3.5" />
                     {t("premium")}
                   </span>
@@ -116,7 +116,7 @@ export default async function DashboardPage({
       <Card className="panel animate-rise mt-5 overflow-hidden [animation-delay:120ms]">
         <CardContent className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <div className="inline-flex size-11 items-center justify-center rounded-xl bg-secondary text-cyan ring-1 ring-border">
+            <div className="inline-flex size-11 items-center justify-center rounded-xl bg-secondary text-brand ring-1 ring-border">
               <Globe2 className="size-5" />
             </div>
             <div>
@@ -141,7 +141,7 @@ export default async function DashboardPage({
       <Card className="panel animate-rise mt-5 overflow-hidden [animation-delay:200ms]">
         <CardContent className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <div className="inline-flex size-11 items-center justify-center rounded-xl bg-secondary text-cyan ring-1 ring-border">
+            <div className="inline-flex size-11 items-center justify-center rounded-xl bg-secondary text-brand ring-1 ring-border">
               <HandHeart className="size-5" />
             </div>
             <div>

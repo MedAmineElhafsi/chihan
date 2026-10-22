@@ -73,7 +73,7 @@ export function SpinnerLoading() {
       <Status />
       <Loader2
         aria-hidden="true"
-        className="text-cyan size-7 animate-spin motion-reduce:animate-none"
+        className="text-brand size-7 animate-spin motion-reduce:animate-none"
       />
     </div>
   );
@@ -229,7 +229,7 @@ export function ReelsLoading() {
     <div className="mx-auto flex w-full max-w-md flex-col gap-4 px-4 py-6">
       <Status />
       <div className="flex items-baseline justify-between gap-3">
-        <h1 className="font-display text-air text-2xl font-semibold tracking-tight">
+        <h1 className="font-display text-ink text-2xl font-semibold tracking-tight">
           {t("title")}
         </h1>
       </div>
@@ -255,7 +255,7 @@ export function ProfileLoading() {
         <div className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-4 py-12 sm:px-6">
           <Status />
           <div className="panel overflow-hidden rounded-lg">
-            <div className="h-28 bg-[radial-gradient(120%_140%_at_50%_-20%,color-mix(in_oklab,var(--cyan)_30%,transparent),transparent_70%)]" />
+            <div className="h-28 bg-[radial-gradient(120%_140%_at_50%_-20%,color-mix(in_oklab,var(--brand)_30%,transparent),transparent_70%)]" />
             <div className="px-6 pb-6">
               <div className="-mt-12 flex items-end justify-between gap-4">
                 <Skeleton className="ring-card size-24 rounded-full ring-4" />
@@ -308,7 +308,7 @@ export function HelpLoading() {
       <Status />
       <div className="flex flex-col gap-3">
         <Skeleton className="h-[0.6875rem] w-44" />
-        <h1 className="font-display text-air text-[clamp(2rem,5vw,3.25rem)] leading-[0.95] font-semibold tracking-tight">
+        <h1 className="font-display text-ink text-[clamp(2rem,5vw,3.25rem)] leading-[0.95] font-semibold tracking-tight">
           {t("title")}
         </h1>
         <p className="text-muted-foreground max-w-xl">{t("subtitle")}</p>

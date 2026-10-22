@@ -27,13 +27,13 @@ export default async function EditProductPage({
     <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
       <Link
         href="/admin/bazar"
-        className="label-mono hover:text-cyan transition-colors"
+        className="label-mono hover:text-brand transition-colors"
       >
         ← {t("adminTitle")}
       </Link>
       <h1
         dir="auto"
-        className="font-display text-air mt-4 text-2xl font-semibold tracking-tight"
+        className="font-display text-ink mt-4 text-2xl font-semibold tracking-tight"
       >
         {product.title}
       </h1>

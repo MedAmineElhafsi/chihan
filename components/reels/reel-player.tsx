@@ -97,7 +97,7 @@ function Reel({
       <button
         onClick={onToggleMute}
         aria-label={muted ? t("unmute") : t("mute")}
-        className="bg-depth-0/70 text-air hover:text-cyan absolute end-3 top-3 rounded-full p-2 backdrop-blur transition-colors"
+        className="bg-depth-0/70 text-ink hover:text-brand absolute end-3 top-3 rounded-full p-2 backdrop-blur transition-colors"
       >
         {muted ? (
           <VolumeX className="size-4" />
@@ -111,7 +111,7 @@ function Reel({
           href={`/u/${reel.author.profileId ?? ""}`}
           className="flex min-w-0 flex-1 items-center gap-2.5"
         >
-          <Avatar className="ring-cyan/40 size-8 ring-1">
+          <Avatar className="ring-brand/40 size-8 ring-1">
             {reel.author.avatarUrl && (
               <AvatarImage src={reel.author.avatarUrl} alt="" />
             )}
@@ -120,9 +120,9 @@ function Reel({
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <div className="text-air truncate text-sm font-medium">{who}</div>
+            <div className="text-ink truncate text-sm font-medium">{who}</div>
             {reel.body && (
-              <p className="text-air/80 line-clamp-2 text-xs">{reel.body}</p>
+              <p className="text-ink/80 line-clamp-2 text-xs">{reel.body}</p>
             )}
           </div>
         </Link>

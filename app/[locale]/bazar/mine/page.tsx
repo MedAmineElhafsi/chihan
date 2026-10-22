@@ -42,7 +42,7 @@ export default async function MyWorkPage({
         >
           ← {t("back")}
         </Link>
-        <h1 className="font-display text-air mt-4 text-2xl font-semibold tracking-tight">
+        <h1 className="font-display text-ink mt-4 text-2xl font-semibold tracking-tight">
           {t("mineTitle")}
         </h1>
         <p className="text-muted-foreground mt-12 py-12 text-center">
@@ -61,7 +61,7 @@ export default async function MyWorkPage({
         ← {t("back")}
       </Link>
 
-      <h1 className="font-display text-air mt-4 text-2xl font-semibold tracking-tight">
+      <h1 className="font-display text-ink mt-4 text-2xl font-semibold tracking-tight">
         {t("mineTitle")}
       </h1>
 
@@ -113,7 +113,7 @@ export default async function MyWorkPage({
                     {p.status === "listed" ? (
                       <Link
                         href={`/bazar/${p.slug}`}
-                        className="hover:text-cyan"
+                        className="hover:text-brand"
                       >
                         {p.title}
                       </Link>

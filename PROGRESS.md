@@ -1282,3 +1282,27 @@ and set a review date before these are leaned on — the editor at
 `/guides` → edit does exactly that. The facts chosen are the stable ones (the
 14-day Anmeldung window, the Masernschutz requirement, the Basiskonto right),
 not the ones that change office to office.
+
+## A new look: Newroz sunrise and Dusk
+
+The aurora theme is replaced (see DECISIONS.md, "Newroz & Dusk replaces the
+aurora"). Light and dark themes follow the device; tokens live in
+`app/globals.css`, the still backdrop in `components/backdrop.tsx`
+(`components/visuals/aurora-field.tsx` went to the Recycle Bin).
+
+Touched beyond the tokens: the brand mark now draws from theme tokens, the
+globe and listing map follow the theme, category palettes were retuned
+(`lib/constants.ts`, news categories), the viewport `themeColor` is set per
+scheme and the manifest uses the light page colour. 128 files had their
+utility names renamed `cyan` → `brand` and `air` → `ink` by script; avatar
+fallbacks became a brand-to-sage gradient so their initials stay legible on
+a light page.
+
+Verified: `tsc --noEmit`, `eslint .` and `next build` clean. Production
+build screenshotted in light and dark: home with globe at 1280 px, help and
+directory at 375 px in English, help at 375 px in Arabic (dark), explore at
+1280 px. Not yet looked at: chat, groups, reels, the Bazar, admin queues, and
+Sorani.
+
+Still says the old theme: the hero headline, "Points of light in dark
+water.", is copy in all five locales and was left alone.

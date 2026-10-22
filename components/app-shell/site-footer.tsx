@@ -16,7 +16,7 @@ export async function SiteFooter() {
         <div className="flex items-center gap-3">
           <BrandMark className="size-6" />
           <span className="text-sm text-muted-foreground">
-            <span className="font-display font-semibold text-air">
+            <span className="font-display font-semibold text-ink">
               {BRAND.name}
             </span>
             <span className="mx-2 text-border">/</span>
@@ -28,19 +28,19 @@ export async function SiteFooter() {
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
           <Link
             href="/privacy"
-            className="label-mono transition-colors hover:text-cyan"
+            className="label-mono transition-colors hover:text-brand"
           >
             {tp("title")}
           </Link>
           <Link
             href="/terms"
-            className="label-mono transition-colors hover:text-cyan"
+            className="label-mono transition-colors hover:text-brand"
           >
             {tl("termsTitle")}
           </Link>
           <Link
             href="/imprint"
-            className="label-mono transition-colors hover:text-cyan"
+            className="label-mono transition-colors hover:text-brand"
           >
             {tl("imprintTitle")}
           </Link>

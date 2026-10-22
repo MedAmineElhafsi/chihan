@@ -65,7 +65,7 @@ export default async function AdminPage({
           {withGuides && (
             <Link
               href="/admin/guides"
-              className="rounded-md border border-border bg-card/40 px-3 py-2 text-sm font-medium transition-colors hover:border-cyan/50 hover:text-cyan"
+              className="rounded-md border border-border bg-card/40 px-3 py-2 text-sm font-medium transition-colors hover:border-brand/50 hover:text-brand"
             >
               {t("guidesLink", { count: guideSuggestions.length })}
             </Link>
@@ -73,7 +73,7 @@ export default async function AdminPage({
           {withBazar && (
             <Link
               href="/admin/bazar"
-              className="rounded-md border border-border bg-card/40 px-3 py-2 text-sm font-medium transition-colors hover:border-cyan/50 hover:text-cyan"
+              className="rounded-md border border-border bg-card/40 px-3 py-2 text-sm font-medium transition-colors hover:border-brand/50 hover:text-brand"
             >
               {t("bazarLink")}
             </Link>

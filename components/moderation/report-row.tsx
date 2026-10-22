@@ -43,7 +43,7 @@ export function ReportRow({ report }: { report: Report }) {
           <span
             className={cn(
               "rounded-full px-2 py-0.5 text-xs font-medium",
-              report.status === "open" && "bg-cyan/15 text-cyan",
+              report.status === "open" && "bg-brand/15 text-brand",
               report.status === "dismissed" &&
                 "bg-secondary text-muted-foreground",
               report.status === "actioned" &&
@@ -55,7 +55,7 @@ export function ReportRow({ report }: { report: Report }) {
           {href ? (
             <Link
               href={href}
-              className="inline-flex items-center gap-1 truncate text-xs font-medium text-cyan hover:underline"
+              className="inline-flex items-center gap-1 truncate text-xs font-medium text-brand hover:underline"
             >
               <ExternalLink className="size-3 shrink-0" />
               {t("targetLink")}

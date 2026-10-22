@@ -8,7 +8,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getHelpOffers, getHelpRequest } from "@/lib/help";
 import { getSuggestedListings } from "@/lib/help-directory";
 import { ListingCard } from "@/components/directory/listing-card";
-import { HELP_CATEGORY_STYLE } from "@/lib/constants";
+import { HELP_CATEGORY_STYLE, categoryText } from "@/lib/constants";
 import { languageLabel } from "@/lib/language-label";
 import { voiceEnabled } from "@/lib/voice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -106,7 +106,7 @@ export default async function HelpRequestPage({
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
       <Link
         href="/help"
-        className="label-mono hover:text-cyan transition-colors"
+        className="label-mono hover:text-brand transition-colors"
       >
         ← {t("backToBoard")}
       </Link>
@@ -115,7 +115,7 @@ export default async function HelpRequestPage({
         <div className="flex flex-wrap items-center gap-2">
           <span
             className="inline-flex items-center gap-1.5 rounded-sm px-2.5 py-1 font-mono text-[0.625rem] tracking-[0.14em] uppercase"
-            style={{ backgroundColor: `${style.color}1f`, color: style.color }}
+            style={{ backgroundColor: `${style.color}1f`, color: categoryText(style.color) }}
           >
             <HelpCategoryIcon category={request.category} />
             {t(`cat_${request.category}` as never)}
@@ -184,8 +184,8 @@ export default async function HelpRequestPage({
             <dl className="panel grid gap-x-6 gap-y-3 rounded-md p-4 text-sm sm:grid-cols-2">
               <div className="flex flex-col gap-1">
                 <dt className="label-mono">{t("interpLanguages")}</dt>
-                <dd className="text-air flex items-center gap-2">
-                  <Languages className="text-cyan size-4" aria-hidden="true" />
+                <dd className="text-ink flex items-center gap-2">
+                  <Languages className="text-brand size-4" aria-hidden="true" />
                   <span>
                     <bdi>{languageLabel(request.interpret_from!, locale)}</bdi>
                     {" ⇄ "}
@@ -196,9 +196,9 @@ export default async function HelpRequestPage({
               {request.needed_at && (
                 <div className="flex flex-col gap-1">
                   <dt className="label-mono">{t("interpWhen")}</dt>
-                  <dd className="text-air flex items-center gap-2">
+                  <dd className="text-ink flex items-center gap-2">
                     <CalendarDays
-                      className="text-cyan size-4"
+                      className="text-brand size-4"
                       aria-hidden="true"
                     />
                     {whenFmt.format(new Date(request.needed_at))}
@@ -208,7 +208,7 @@ export default async function HelpRequestPage({
               {request.setting && (
                 <div className="flex flex-col gap-1">
                   <dt className="label-mono">{t("interpWhere")}</dt>
-                  <dd className="text-air">
+                  <dd className="text-ink">
                     {t(`setting_${request.setting}` as never)}
                   </dd>
                 </div>
@@ -216,7 +216,7 @@ export default async function HelpRequestPage({
               {request.meeting && (
                 <div className="flex flex-col gap-1">
                   <dt className="label-mono">{t("interpHow")}</dt>
-                  <dd className="text-air">
+                  <dd className="text-ink">
                     {t(`meeting_${request.meeting}` as never)}
                   </dd>
                 </div>
@@ -237,16 +237,16 @@ export default async function HelpRequestPage({
               {request.author.avatarUrl && (
                 <AvatarImage src={request.author.avatarUrl} alt={name} />
               )}
-              <AvatarFallback className="bg-depth-4 text-air">
+              <AvatarFallback className="bg-depth-4 text-ink">
                 {initial}
               </AvatarFallback>
             </Avatar>
             <div>
-              <div className="text-air text-sm font-medium">
+              <div className="text-ink text-sm font-medium">
                 {request.author.profileId ? (
                   <Link
                     href={`/u/${request.author.profileId}`}
-                    className="hover:text-cyan"
+                    className="hover:text-brand"
                   >
                     {name}
                   </Link>
@@ -257,7 +257,7 @@ export default async function HelpRequestPage({
               <div className="text-muted-foreground flex items-center gap-2 text-xs">
                 {request.city && (
                   <span className="flex items-center gap-1">
-                    <MapPin className="text-cyan size-3" />
+                    <MapPin className="text-brand size-3" />
                     {request.city}
                   </span>
                 )}
@@ -283,7 +283,7 @@ export default async function HelpRequestPage({
         request.status === "resolved" &&
         request.category !== "items" && (
           <section className="panel mt-8 rounded-lg p-5">
-            <h2 className="font-display text-air text-lg font-semibold">
+            <h2 className="font-display text-ink text-lg font-semibold">
               {t("memoryTitle")}
             </h2>
             <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
@@ -292,7 +292,7 @@ export default async function HelpRequestPage({
             <div className="mt-4 flex flex-wrap items-center gap-2">
               <Link
                 href="/directory/new"
-                className="border-cyan/40 text-cyan hover:bg-cyan/10 inline-flex items-center gap-2 rounded-sm border px-4 py-2 font-mono text-xs tracking-[0.14em] uppercase transition-colors"
+                className="border-brand/40 text-brand hover:bg-brand/10 inline-flex items-center gap-2 rounded-sm border px-4 py-2 font-mono text-xs tracking-[0.14em] uppercase transition-colors"
               >
                 {t("memoryCta")}
               </Link>
@@ -312,7 +312,7 @@ export default async function HelpRequestPage({
       {/* A guide may already answer this, step by step. */}
       {guides.length > 0 && (
         <section className="mt-8 flex flex-col gap-3">
-          <h2 className="font-display text-air text-xl font-semibold">
+          <h2 className="font-display text-ink text-xl font-semibold">
             {tGuides("mightHelp")}
           </h2>
           <ul className="flex flex-col gap-2">
@@ -320,13 +320,13 @@ export default async function HelpRequestPage({
               <li key={g.slug}>
                 <Link
                   href={`/guides/${g.slug}`}
-                  className="panel hover:border-cyan/40 flex items-start gap-3 rounded-md p-4 transition-colors"
+                  className="panel hover:border-brand/40 flex items-start gap-3 rounded-md p-4 transition-colors"
                 >
-                  <span className="bg-cyan/10 text-cyan flex size-9 shrink-0 items-center justify-center rounded-md">
+                  <span className="bg-brand/10 text-brand flex size-9 shrink-0 items-center justify-center rounded-md">
                     <GuideTopicIcon topic={g.topic} />
                   </span>
                   <span className="min-w-0">
-                    <span dir="auto" className="text-air block font-medium">
+                    <span dir="auto" className="text-ink block font-medium">
                       {g.title}
                     </span>
                     {g.summary && (
@@ -349,12 +349,12 @@ export default async function HelpRequestPage({
       {suggested.length > 0 && (
         <section className="mt-8 flex flex-col gap-4">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="font-display text-air text-xl font-semibold">
+            <h2 className="font-display text-ink text-xl font-semibold">
               {t("suggestedTitle")}
             </h2>
             <Link
               href="/directory"
-              className="label-mono hover:text-cyan transition-colors"
+              className="label-mono hover:text-brand transition-colors"
             >
               {t("suggestedAll")}
             </Link>
@@ -376,7 +376,7 @@ export default async function HelpRequestPage({
 
       {/* Offers */}
       <section className="mt-8 flex flex-col gap-4">
-        <h2 className="font-display text-air text-xl font-semibold">
+        <h2 className="font-display text-ink text-xl font-semibold">
           {giving
             ? t("claimsTitle", { count: offers.length })
             : t("offersTitle", { count: offers.length })}
@@ -402,15 +402,15 @@ export default async function HelpRequestPage({
                         {o.author.avatarUrl && (
                           <AvatarImage src={o.author.avatarUrl} alt={oName} />
                         )}
-                        <AvatarFallback className="bg-depth-4 text-air text-[0.625rem]">
+                        <AvatarFallback className="bg-depth-4 text-ink text-[0.625rem]">
                           {oInitial}
                         </AvatarFallback>
                       </Avatar>
-                      <span className="text-air text-sm font-medium">
+                      <span className="text-ink text-sm font-medium">
                         {o.author.profileId ? (
                           <Link
                             href={`/u/${o.author.profileId}`}
-                            className="hover:text-cyan"
+                            className="hover:text-brand"
                           >
                             {oName}
                           </Link>

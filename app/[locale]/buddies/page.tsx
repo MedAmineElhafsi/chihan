@@ -42,7 +42,7 @@ export default async function BuddiesPage({
   const header = (
     <div className="flex flex-col gap-3">
       <span className="label-mono">{t("eyebrow")}</span>
-      <h1 className="font-display text-air text-[clamp(2rem,5vw,3.25rem)] leading-[0.95] font-semibold tracking-tight">
+      <h1 className="font-display text-ink text-[clamp(2rem,5vw,3.25rem)] leading-[0.95] font-semibold tracking-tight">
         {t("title")}
       </h1>
       <p className="text-muted-foreground max-w-xl">{t("subtitle")}</p>
@@ -104,20 +104,20 @@ export default async function BuddiesPage({
       <span className="flex min-w-0 items-center gap-3">
         <Avatar className="size-10">
           {p.avatarUrl && <AvatarImage src={p.avatarUrl} alt={name} />}
-          <AvatarFallback className="bg-depth-4 text-air">
+          <AvatarFallback className="bg-depth-4 text-ink">
             {name.trim().charAt(0).toUpperCase() || "?"}
           </AvatarFallback>
         </Avatar>
         <span className="min-w-0">
-          <span className="text-air flex items-center gap-1.5 font-medium">
+          <span className="text-ink flex items-center gap-1.5 font-medium">
             {name}
             {p.verified && (
-              <BadgeCheck className="text-cyan size-4" aria-hidden="true" />
+              <BadgeCheck className="text-brand size-4" aria-hidden="true" />
             )}
           </span>
           {p.city && (
             <span className="text-muted-foreground flex items-center gap-1 text-xs">
-              <MapPin className="text-cyan size-3" aria-hidden="true" />
+              <MapPin className="text-brand size-3" aria-hidden="true" />
               {p.city}
             </span>
           )}
@@ -136,7 +136,7 @@ export default async function BuddiesPage({
         {/* Waiting for an answer, from either side. */}
         {incoming.length > 0 && (
           <section className="flex flex-col gap-3">
-            <h2 className="font-display text-air text-xl font-semibold">
+            <h2 className="font-display text-ink text-xl font-semibold">
               {t("incomingTitle", { count: incoming.length })}
             </h2>
             <ul className="flex flex-col gap-3">
@@ -179,7 +179,7 @@ export default async function BuddiesPage({
 
         {outgoing.length > 0 && (
           <section className="flex flex-col gap-3">
-            <h2 className="font-display text-air text-xl font-semibold">
+            <h2 className="font-display text-ink text-xl font-semibold">
               {t("waitingTitle")}
             </h2>
             <ul className="flex flex-col gap-2">
@@ -205,7 +205,7 @@ export default async function BuddiesPage({
 
         {active.length > 0 && (
           <section className="flex flex-col gap-3">
-            <h2 className="font-display text-air text-xl font-semibold">
+            <h2 className="font-display text-ink text-xl font-semibold">
               {t("activeTitle")}
             </h2>
             <ul className="flex flex-col gap-3">
@@ -241,7 +241,7 @@ export default async function BuddiesPage({
         {/* Who a newcomer could ask. */}
         {entry?.role === "newcomer" && active.length === 0 && (
           <section className="flex flex-col gap-3">
-            <h2 className="font-display text-air text-xl font-semibold">
+            <h2 className="font-display text-ink text-xl font-semibold">
               {t("candidatesTitle")}
             </h2>
             {candidates.length === 0 ? (
@@ -280,7 +280,7 @@ export default async function BuddiesPage({
                         </span>
                       ))}
                       {c.sharedLanguages.length > 0 && (
-                        <span className="text-cyan text-xs">
+                        <span className="text-brand text-xs">
                           {t("sharedLanguages", {
                             languages: c.sharedLanguages.join(", "),
                           })}
@@ -307,8 +307,8 @@ export default async function BuddiesPage({
 
         {/* The rules, where everyone sees them. */}
         <section className="border-border flex flex-col gap-2 rounded-md border p-5">
-          <h2 className="text-air flex items-center gap-2 font-medium">
-            <ShieldAlert className="text-cyan size-5" aria-hidden="true" />
+          <h2 className="text-ink flex items-center gap-2 font-medium">
+            <ShieldAlert className="text-brand size-5" aria-hidden="true" />
             {t("safetyTitle")}
           </h2>
           <ul className="text-muted-foreground flex list-disc flex-col gap-1.5 ps-5 text-sm">

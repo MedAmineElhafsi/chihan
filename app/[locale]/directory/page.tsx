@@ -56,7 +56,7 @@ export default async function DirectoryPage({
           className={cn(
             "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
             !category
-              ? "border-cyan/50 bg-cyan/15 text-cyan"
+              ? "border-brand/50 bg-brand/15 text-brand"
               : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
           )}
         >
@@ -69,7 +69,7 @@ export default async function DirectoryPage({
             className={cn(
               "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
               category === c
-                ? "border-cyan/50 bg-cyan/15 text-cyan"
+                ? "border-brand/50 bg-brand/15 text-brand"
                 : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
             )}
           >
@@ -84,7 +84,7 @@ export default async function DirectoryPage({
           {t("filteredByCountry", { country })}{" "}
           <Link
             href={category ? `/directory?category=${category}` : "/directory"}
-            className="text-cyan hover:underline"
+            className="text-brand hover:underline"
           >
             {t("clearFilter")}
           </Link>

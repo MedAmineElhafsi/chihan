@@ -24,12 +24,12 @@ export async function SafetyNotes({
   return (
     <section
       className={cn(
-        "border-cyan/25 bg-cyan/5 flex flex-col gap-2 rounded-md border p-4",
+        "border-brand/25 bg-brand/5 flex flex-col gap-2 rounded-md border p-4",
         className
       )}
     >
-      <h2 className="text-air flex items-center gap-2 text-sm font-medium">
-        <ShieldAlert className="text-cyan size-4" aria-hidden="true" />
+      <h2 className="text-ink flex items-center gap-2 text-sm font-medium">
+        <ShieldAlert className="text-brand size-4" aria-hidden="true" />
         {t("safetyTitle")}
       </h2>
       <ul className="text-muted-foreground flex list-disc flex-col gap-1 ps-5 text-sm">

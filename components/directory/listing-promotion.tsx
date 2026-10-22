@@ -82,7 +82,7 @@ export function ListingPromotion({
       className="panel flex flex-col gap-4 rounded-lg p-5"
     >
       <div className="flex items-start gap-3">
-        <span className="bg-secondary text-cyan ring-border inline-flex size-9 shrink-0 items-center justify-center rounded-lg ring-1">
+        <span className="bg-secondary text-brand ring-border inline-flex size-9 shrink-0 items-center justify-center rounded-lg ring-1">
           <Megaphone className="size-4" aria-hidden="true" />
         </span>
         <div className="flex flex-col gap-1">

@@ -10,8 +10,10 @@ export default function manifest(): MetadataRoute.Manifest {
     scope: "/",
     display: "standalone",
     orientation: "portrait-primary",
-    background_color: "#070a14",
-    theme_color: "#070a14",
+    // The manifest takes one colour; the splash uses the light theme's page,
+    // and the page's own theme-color meta takes over once it loads.
+    background_color: "#e9e1d3",
+    theme_color: "#e1d7c6",
     categories: ["social", "lifestyle"],
     icons: [
       {

@@ -21,7 +21,7 @@ export function JoinChooser({ verified }: { verified: boolean }) {
         <button
           type="button"
           onClick={() => setRole(null)}
-          className="label-mono hover:text-cyan self-start transition-colors"
+          className="label-mono hover:text-brand self-start transition-colors"
         >
           ← {t("backToChoice")}
         </button>
@@ -40,10 +40,10 @@ export function JoinChooser({ verified }: { verified: boolean }) {
         onClick={() => setRole("newcomer")}
         className={card}
       >
-        <span className="bg-cyan/10 text-cyan flex size-10 items-center justify-center rounded-md">
+        <span className="bg-brand/10 text-brand flex size-10 items-center justify-center rounded-md">
           <Sparkles className="size-5" aria-hidden="true" />
         </span>
-        <span className="font-display text-air text-lg font-semibold">
+        <span className="font-display text-ink text-lg font-semibold">
           {t("chooseNewcomer")}
         </span>
         <span className="text-muted-foreground text-sm">
@@ -51,10 +51,10 @@ export function JoinChooser({ verified }: { verified: boolean }) {
         </span>
       </button>
       <button type="button" onClick={() => setRole("mentor")} className={card}>
-        <span className="bg-cyan/10 text-cyan flex size-10 items-center justify-center rounded-md">
+        <span className="bg-brand/10 text-brand flex size-10 items-center justify-center rounded-md">
           <HeartHandshake className="size-5" aria-hidden="true" />
         </span>
-        <span className="font-display text-air text-lg font-semibold">
+        <span className="font-display text-ink text-lg font-semibold">
           {t("chooseMentor")}
         </span>
         <span className="text-muted-foreground text-sm">

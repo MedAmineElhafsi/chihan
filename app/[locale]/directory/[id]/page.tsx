@@ -150,7 +150,7 @@ export default async function ListingDetailPage({
           </span>
           <h1 className="flex items-center gap-2 font-display text-3xl font-semibold tracking-tight">
             {listing.name}
-            {listing.is_verified && <BadgeCheck className="size-6 text-cyan" />}
+            {listing.is_verified && <BadgeCheck className="size-6 text-brand" />}
           </h1>
           <div className="flex items-center gap-2 text-sm">
             {listing.rating_avg != null ? (
@@ -311,7 +311,7 @@ export default async function ListingDetailPage({
             )}
             {place && (
               <div className="flex items-start gap-2.5 text-sm">
-                <MapPin className="mt-0.5 size-4 shrink-0 text-cyan" />
+                <MapPin className="mt-0.5 size-4 shrink-0 text-brand" />
                 <span>{place}</span>
               </div>
             )}
@@ -320,31 +320,31 @@ export default async function ListingDetailPage({
                 href={directionsHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-cyan flex items-center gap-2.5 text-sm transition-colors"
+                className="hover:text-brand flex items-center gap-2.5 text-sm transition-colors"
                 data-stat="directions"
               >
-                <Navigation className="text-cyan size-4 shrink-0" />
+                <Navigation className="text-brand size-4 shrink-0" />
                 {t("directions")}
               </a>
             )}
             {listing.phone && (
               <a
                 href={`tel:${listing.phone}`}
-                className="flex items-center gap-2.5 text-sm transition-colors hover:text-cyan"
+                className="flex items-center gap-2.5 text-sm transition-colors hover:text-brand"
                 dir="ltr"
                 data-stat="call"
               >
-                <Phone className="size-4 shrink-0 text-cyan" />
+                <Phone className="size-4 shrink-0 text-brand" />
                 {listing.phone}
               </a>
             )}
             {listing.email && (
               <a
                 href={`mailto:${listing.email}`}
-                className="flex items-center gap-2.5 break-all text-sm transition-colors hover:text-cyan"
+                className="flex items-center gap-2.5 break-all text-sm transition-colors hover:text-brand"
                 dir="ltr"
               >
-                <Mail className="size-4 shrink-0 text-cyan" />
+                <Mail className="size-4 shrink-0 text-brand" />
                 {listing.email}
               </a>
             )}
@@ -357,11 +357,11 @@ export default async function ListingDetailPage({
                 }
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2.5 break-all text-sm transition-colors hover:text-cyan"
+                className="flex items-center gap-2.5 break-all text-sm transition-colors hover:text-brand"
                 dir="ltr"
                 data-stat="website"
               >
-                <Globe className="size-4 shrink-0 text-cyan" />
+                <Globe className="size-4 shrink-0 text-brand" />
                 {t("visitWebsite")}
               </a>
             )}

@@ -162,7 +162,7 @@ export function PostCard({
             {item.author.avatarUrl && (
               <AvatarImage src={item.author.avatarUrl} alt={name} />
             )}
-            <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-sm text-primary-foreground">
+            <AvatarFallback className="bg-gradient-to-br from-brand to-sage text-sm text-primary-foreground">
               {initial}
             </AvatarFallback>
           </Avatar>
@@ -175,7 +175,7 @@ export function PostCard({
         </div>
         <div className="flex shrink-0 items-center gap-1">
           {item.type === "event" && (
-            <span className="rounded-md bg-cyan/15 px-2 py-0.5 text-[0.625rem] font-medium text-cyan">
+            <span className="rounded-md bg-brand/15 px-2 py-0.5 text-[0.625rem] font-medium text-brand">
               {t("event")}
             </span>
           )}
@@ -196,7 +196,7 @@ export function PostCard({
       </header>
 
       {item.type === "event" && (
-        <div className="mx-4 mt-3 rounded-lg border border-cyan/25 bg-cyan/5 p-3.5 sm:mx-5">
+        <div className="mx-4 mt-3 rounded-lg border border-brand/25 bg-brand/5 p-3.5 sm:mx-5">
           <div
             dir="auto"
             className="font-display text-lg font-semibold leading-snug"
@@ -204,7 +204,7 @@ export function PostCard({
             {eventTitle}
           </div>
           {item.event_at && (
-            <div className="mt-1 flex items-center gap-1.5 text-sm text-cyan">
+            <div className="mt-1 flex items-center gap-1.5 text-sm text-brand">
               <CalendarDays className="size-3.5 shrink-0" />
               {eventFmt.format(new Date(item.event_at))}
             </div>
@@ -214,7 +214,7 @@ export function PostCard({
               <MapPin className="size-3.5 shrink-0" />
               <span className="min-w-0 truncate">{item.event_location}</span>
               {item.distance_km != null && (
-                <span className="shrink-0 text-cyan">
+                <span className="shrink-0 text-brand">
                   · {t("distanceKm", { km: Math.round(item.distance_km) })}
                 </span>
               )}
@@ -240,7 +240,7 @@ export function PostCard({
                 className={cn(
                   "rounded-md border px-2.5 py-1 text-xs font-medium transition-colors disabled:opacity-60",
                   myRsvp === key
-                    ? "border-cyan/50 bg-cyan/20 text-cyan"
+                    ? "border-brand/50 bg-brand/20 text-brand"
                     : "border-border bg-card text-muted-foreground hover:text-foreground"
                 )}
               >
@@ -260,7 +260,7 @@ export function PostCard({
 
           {item.ticket_price_cents != null && item.ticket_capacity != null && (
             <TicketButton
-              className="border-cyan/20 mt-2.5 border-t pt-2.5"
+              className="border-brand/20 mt-2.5 border-t pt-2.5"
               eventId={item.id}
               priceCents={item.ticket_price_cents}
               capacity={item.ticket_capacity}
@@ -306,11 +306,11 @@ export function PostCard({
             )}
             <span className="absolute inset-0 flex items-center justify-center">
               <span className="flex size-14 items-center justify-center rounded-full bg-depth-0/70 backdrop-blur transition-transform group-hover:scale-105">
-                <Play className="size-6 translate-x-0.5 fill-air text-air" />
+                <Play className="size-6 translate-x-0.5 fill-ink text-ink" />
               </span>
             </span>
             {item.duration_seconds != null && (
-              <span className="absolute end-3 top-3 rounded-sm bg-depth-0/75 px-1.5 py-0.5 font-mono text-[0.625rem] text-air backdrop-blur">
+              <span className="absolute end-3 top-3 rounded-sm bg-depth-0/75 px-1.5 py-0.5 font-mono text-[0.625rem] text-ink backdrop-blur">
                 {item.duration_seconds}s
               </span>
             )}

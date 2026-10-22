@@ -52,15 +52,15 @@ export async function ClassifiedsBoard({
     cn(
       "inline-flex items-center gap-1.5 rounded-sm border px-2.5 py-1.5 text-sm transition-colors",
       active
-        ? "border-cyan bg-cyan/15 text-cyan"
-        : "border-border bg-depth-0/40 text-muted-foreground hover:text-air"
+        ? "border-brand bg-brand/15 text-brand"
+        : "border-border bg-depth-0/40 text-muted-foreground hover:text-ink"
     );
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <div className="flex flex-col gap-3">
         <span className="label-mono">{t("eyebrow")}</span>
-        <h1 className="font-display text-air text-[clamp(2rem,5vw,3.25rem)] leading-[0.95] font-semibold tracking-tight">
+        <h1 className="font-display text-ink text-[clamp(2rem,5vw,3.25rem)] leading-[0.95] font-semibold tracking-tight">
           {t(kind === "housing" ? "housingTitle" : "jobsTitle")}
         </h1>
         <p className="text-muted-foreground max-w-xl">

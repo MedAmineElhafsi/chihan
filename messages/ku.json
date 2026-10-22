@@ -49,7 +49,11 @@
   },
   "Common": {
     "language": "Ziman",
-    "or": "an"
+    "or": "an",
+    "theme": "Xuyang",
+    "themeLight": "Ronî",
+    "themeDark": "Tarî",
+    "themeSystem": "Otomatîk"
   },
   "Landing": {
     "eyebrow": "Malek ji bo koçberên kurd",

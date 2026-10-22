@@ -94,10 +94,10 @@ export function GroupForm() {
             name="privacy"
             checked={isPrivate}
             onChange={() => setIsPrivate(true)}
-            className="mt-1 accent-cyan"
+            className="mt-1 accent-brand"
           />
           <span className="flex flex-col gap-0.5">
-            <span className="text-sm font-medium text-air">{t("privateLabel")}</span>
+            <span className="text-sm font-medium text-ink">{t("privateLabel")}</span>
             <span className="text-xs text-muted-foreground">{t("privateHint")}</span>
           </span>
         </label>
@@ -107,10 +107,10 @@ export function GroupForm() {
             name="privacy"
             checked={!isPrivate}
             onChange={() => setIsPrivate(false)}
-            className="mt-1 accent-cyan"
+            className="mt-1 accent-brand"
           />
           <span className="flex flex-col gap-0.5">
-            <span className="text-sm font-medium text-air">{t("publicLabel")}</span>
+            <span className="text-sm font-medium text-ink">{t("publicLabel")}</span>
             <span className="text-xs text-muted-foreground">{t("publicHint")}</span>
           </span>
         </label>

@@ -56,7 +56,7 @@ export function BuyButton({
           type="checkbox"
           checked={waived}
           onChange={(e) => setWaived(e.target.checked)}
-          className="border-input accent-cyan mt-0.5 size-4 shrink-0 rounded"
+          className="border-input accent-brand mt-0.5 size-4 shrink-0 rounded"
         />
         <span>{t("waiver")}</span>
       </label>

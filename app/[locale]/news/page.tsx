@@ -34,7 +34,7 @@ export default async function NewsPage({
     cn(
       "inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
       active
-        ? "border-cyan/50 bg-cyan/15 text-cyan"
+        ? "border-brand/50 bg-brand/15 text-brand"
         : "border-border bg-card text-muted-foreground hover:text-foreground"
     );
 

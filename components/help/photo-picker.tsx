@@ -77,7 +77,7 @@ export function PhotoPicker({
               onClick={() => remove(i)}
               disabled={disabled}
               aria-label={t("photoRemove", { n: i + 1 })}
-              className="bg-depth-0/80 text-air absolute end-1 top-1 flex size-6 items-center justify-center rounded-full"
+              className="bg-depth-0/80 text-ink absolute end-1 top-1 flex size-6 items-center justify-center rounded-full"
             >
               <X className="size-3.5" aria-hidden="true" />
             </button>

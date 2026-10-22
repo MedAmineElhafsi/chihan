@@ -389,11 +389,11 @@ export function ExploreClient({
       {/* Center reticle */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <svg width="46" height="46" viewBox="0 0 46 46" className="opacity-70">
-          <circle cx="23" cy="23" r="13" fill="none" stroke="#f2c84b" strokeWidth="1.5" />
-          <line x1="23" y1="4" x2="23" y2="14" stroke="#f2c84b" strokeWidth="1.5" />
-          <line x1="23" y1="32" x2="23" y2="42" stroke="#f2c84b" strokeWidth="1.5" />
-          <line x1="4" y1="23" x2="14" y2="23" stroke="#f2c84b" strokeWidth="1.5" />
-          <line x1="32" y1="23" x2="42" y2="23" stroke="#f2c84b" strokeWidth="1.5" />
+          <circle cx="23" cy="23" r="13" fill="none" stroke="#d89a2b" strokeWidth="1.5" />
+          <line x1="23" y1="4" x2="23" y2="14" stroke="#d89a2b" strokeWidth="1.5" />
+          <line x1="23" y1="32" x2="23" y2="42" stroke="#d89a2b" strokeWidth="1.5" />
+          <line x1="4" y1="23" x2="14" y2="23" stroke="#d89a2b" strokeWidth="1.5" />
+          <line x1="32" y1="23" x2="42" y2="23" stroke="#d89a2b" strokeWidth="1.5" />
         </svg>
       </div>
 
@@ -473,7 +473,7 @@ export function ExploreClient({
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors",
                   layer === key
-                    ? "border-cyan/50 bg-cyan/15 text-cyan"
+                    ? "border-brand/50 bg-brand/15 text-brand"
                     : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
                 )}
               >
@@ -522,7 +522,7 @@ export function ExploreClient({
         >
           {matches.length === 0 ? (
             <div className="flex flex-col items-center gap-2 px-4 py-10 text-center">
-              <MapPin className="size-7 text-cyan" />
+              <MapPin className="size-7 text-brand" />
               <p className="text-sm text-muted-foreground">{t("empty")}</p>
               <Button asChild size="sm" className="mt-1">
                 <Link href="/onboarding">{t("emptyCta")}</Link>
@@ -578,7 +578,7 @@ export function ExploreClient({
                   className="flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-start transition-colors hover:bg-accent"
                 >
                   <span className="flex items-center gap-2.5 font-medium">
-                    <MapPin className="size-4 text-cyan" />
+                    <MapPin className="size-4 text-brand" />
                     {c.country}
                   </span>
                   <span className="text-sm text-muted-foreground">{c.count}</span>
@@ -621,7 +621,7 @@ function ItemAvatar({ item, online }: { item: GlobePoint; online?: boolean }) {
     <span className="relative shrink-0">
       <Avatar className="size-9">
         {item.avatarUrl && <AvatarImage src={item.avatarUrl} alt={item.name} />}
-        <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-xs text-primary-foreground">
+        <AvatarFallback className="bg-gradient-to-br from-brand to-sage text-xs text-primary-foreground">
           {initial}
         </AvatarFallback>
       </Avatar>
@@ -738,7 +738,7 @@ function ItemDetail({
           </div>
           {place && (
             <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <MapPin className="size-3.5 text-cyan" />
+              <MapPin className="size-3.5 text-brand" />
               {place}
             </div>
           )}

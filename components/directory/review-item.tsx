@@ -78,10 +78,10 @@ export function ReviewItem({
       )}
 
       {review.reply && !open && (
-        <div className="mt-1 flex gap-2 rounded-md border-s-2 border-cyan/50 bg-secondary/40 p-3">
-          <CornerDownRight className="mt-0.5 size-3.5 shrink-0 text-cyan" />
+        <div className="mt-1 flex gap-2 rounded-md border-s-2 border-brand/50 bg-secondary/40 p-3">
+          <CornerDownRight className="mt-0.5 size-3.5 shrink-0 text-brand" />
           <div className="flex flex-col gap-1">
-            <span className="label-mono text-cyan">{t("ownerReply")}</span>
+            <span className="label-mono text-brand">{t("ownerReply")}</span>
             <p className="text-sm leading-relaxed text-foreground/90">
               {review.reply}
             </p>
@@ -92,7 +92,7 @@ export function ReviewItem({
       {isOwner && !open && (
         <button
           onClick={() => setOpen(true)}
-          className="self-start font-mono text-[0.625rem] uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:text-cyan"
+          className="self-start font-mono text-[0.625rem] uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:text-brand"
         >
           {review.reply ? t("editReply") : t("replyCta")}
         </button>

@@ -58,13 +58,13 @@ export default async function InviteLandingPage({
 
   return (
     <div className="mx-auto flex min-h-[calc(100dvh-13rem)] w-full max-w-md flex-col justify-center px-4 py-12">
-      <Card className="panel-solid animate-rise border-border/70 shadow-elev-3 ring-1 ring-cyan/20">
+      <Card className="panel-solid animate-rise border-border/70 shadow-elev-3 ring-1 ring-brand/20">
         <CardHeader className="items-center text-center">
-          <Avatar className="mb-2 size-16 ring-2 ring-cyan/50">
+          <Avatar className="mb-2 size-16 ring-2 ring-brand/50">
             {invite.inviter.avatarUrl && (
               <AvatarImage src={invite.inviter.avatarUrl} alt={name} />
             )}
-            <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-xl text-primary-foreground">
+            <AvatarFallback className="bg-gradient-to-br from-brand to-sage text-xl text-primary-foreground">
               {initial}
             </AvatarFallback>
           </Avatar>

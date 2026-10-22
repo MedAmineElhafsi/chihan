@@ -186,8 +186,8 @@ export function EndBuddyButton({ pairId }: { pairId: string }) {
                 className={cn(
                   "rounded-md border px-3 py-2 text-start text-sm transition-colors",
                   reason === r
-                    ? "border-cyan bg-cyan/10 text-air"
-                    : "border-border text-muted-foreground hover:text-air"
+                    ? "border-brand bg-brand/10 text-ink"
+                    : "border-border text-muted-foreground hover:text-ink"
                 )}
               >
                 {t(`reason_${r}` as never)}

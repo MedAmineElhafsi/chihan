@@ -265,12 +265,12 @@ export function ChatShell({
                       {c.partner?.avatarUrl && (
                         <AvatarImage src={c.partner.avatarUrl} alt={name} />
                       )}
-                      <AvatarFallback className="from-cyan to-depth-4 text-primary-foreground bg-gradient-to-br text-sm">
+                      <AvatarFallback className="from-brand to-sage text-primary-foreground bg-gradient-to-br text-sm">
                         {initial}
                       </AvatarFallback>
                     </Avatar>
                     {unread > 0 && (
-                      <span className="bg-cyan text-primary-foreground ring-card absolute -end-0.5 -top-0.5 flex size-5 items-center justify-center rounded-full text-[0.625rem] font-bold ring-2">
+                      <span className="bg-brand text-primary-foreground ring-card absolute -end-0.5 -top-0.5 flex size-5 items-center justify-center rounded-full text-[0.625rem] font-bold ring-2">
                         {unread > 9 ? "9+" : unread}
                       </span>
                     )}
@@ -348,7 +348,7 @@ export function ChatShell({
                 {partnerAvatar && (
                   <AvatarImage src={partnerAvatar} alt={partnerName ?? ""} />
                 )}
-                <AvatarFallback className="from-cyan to-depth-4 text-primary-foreground bg-gradient-to-br text-sm">
+                <AvatarFallback className="from-brand to-sage text-primary-foreground bg-gradient-to-br text-sm">
                   {(partnerName ?? t("partnerFallback"))
                     .charAt(0)
                     .toUpperCase()}

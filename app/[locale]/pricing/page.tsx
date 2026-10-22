@@ -78,14 +78,14 @@ export default async function PricingPage({
         </div>
 
         {/* Premium */}
-        <div className="panel-solid relative flex flex-col rounded-lg border-cyan/40 p-6 ring-1 ring-cyan/30">
+        <div className="panel-solid relative flex flex-col rounded-lg border-brand/40 p-6 ring-1 ring-brand/30">
           <div className="flex items-center justify-between">
             <h2 className="flex items-center gap-2 font-display text-xl font-semibold">
-              <Sparkles className="size-5 text-cyan" />
+              <Sparkles className="size-5 text-brand" />
               {t("premiumName")}
             </h2>
             {ent.tier === "premium" && (
-              <span className="rounded-full bg-cyan/15 px-2.5 py-0.5 text-xs font-medium text-cyan">
+              <span className="rounded-full bg-brand/15 px-2.5 py-0.5 text-xs font-medium text-brand">
                 {t("currentPlan")}
               </span>
             )}
@@ -99,7 +99,7 @@ export default async function PricingPage({
           <ul className="mt-5 flex flex-1 flex-col gap-2.5">
             {PREMIUM_FEATURES.map((f) => (
               <li key={f} className="flex items-start gap-2.5 text-sm">
-                <Check className="mt-0.5 size-4 shrink-0 text-cyan" />
+                <Check className="mt-0.5 size-4 shrink-0 text-brand" />
                 {t(f)}
               </li>
             ))}

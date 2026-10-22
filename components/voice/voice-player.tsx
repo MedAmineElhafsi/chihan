@@ -27,8 +27,8 @@ const TONES = {
   },
   // On a card or panel.
   plain: {
-    button: "bg-cyan/15 text-cyan hover:bg-cyan/25",
-    played: "bg-cyan",
+    button: "bg-brand/15 text-brand hover:bg-brand/25",
+    played: "bg-brand",
     rest: "bg-muted-foreground/40",
     time: "text-muted-foreground",
   },

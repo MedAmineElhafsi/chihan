@@ -66,7 +66,7 @@ function QueueRow({ item }: { item: PendingAd }) {
         ·{" "}
         <Link
           href={`/directory/${listing.id}`}
-          className="text-cyan hover:underline"
+          className="text-brand hover:underline"
         >
           {t("adsOpenListing")}
         </Link>

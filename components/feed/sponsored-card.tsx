@@ -6,7 +6,7 @@ import { BadgeCheck, ChevronRight } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { CATEGORY_COLORS } from "@/lib/constants";
+import { CATEGORY_COLORS, categoryText } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { CategoryIcon } from "@/components/directory/category-icon";
 import { Stars } from "@/components/directory/stars";
@@ -99,7 +99,7 @@ export function SponsoredCard({
           <span
             aria-hidden="true"
             className="ring-border flex size-11 shrink-0 items-center justify-center rounded-full ring-1"
-            style={{ backgroundColor: `${color}26`, color }}
+            style={{ backgroundColor: `${color}26`, color: categoryText(color) }}
           >
             <CategoryIcon category={listing.category} className="size-5" />
           </span>
@@ -111,7 +111,7 @@ export function SponsoredCard({
               {listing.is_verified && (
                 <BadgeCheck
                   aria-label={t("verified")}
-                  className="text-cyan size-4 shrink-0"
+                  className="text-brand size-4 shrink-0"
                 />
               )}
             </div>
@@ -134,7 +134,7 @@ export function SponsoredCard({
           instead of having its full stop thrown to the wrong end. */}
       <p
         dir="auto"
-        className="font-display text-air mt-3 px-4 text-lg leading-snug font-semibold text-balance sm:px-5"
+        className="font-display text-ink mt-3 px-4 text-lg leading-snug font-semibold text-balance sm:px-5"
       >
         {item.headline}
       </p>
@@ -173,7 +173,7 @@ export function SponsoredCard({
         ) : (
           <span />
         )}
-        <span className="text-cyan inline-flex items-center gap-1 text-sm font-semibold">
+        <span className="text-brand inline-flex items-center gap-1 text-sm font-semibold">
           {t("view")}
           <ChevronRight className="size-4 rtl:rotate-180" aria-hidden="true" />
         </span>
@@ -190,7 +190,7 @@ export function SponsoredCard({
   return (
     <article
       ref={ref}
-      className="social-surface hover:border-cyan/25 overflow-hidden transition-colors"
+      className="social-surface hover:border-brand/25 overflow-hidden transition-colors"
     >
       <Link
         href={`/directory/${listing.id}`}

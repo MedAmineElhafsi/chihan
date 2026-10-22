@@ -23,14 +23,14 @@ export async function MatchList({ matches }: { matches: ProfileMatch[] }) {
         return (
           <li
             key={p.id}
-            className="social-surface flex flex-col gap-3.5 p-4 transition-colors hover:border-cyan/25 sm:p-5"
+            className="social-surface flex flex-col gap-3.5 p-4 transition-colors hover:border-brand/25 sm:p-5"
           >
             <div className="flex items-start gap-4">
               <Avatar className="size-[4.5rem] shrink-0 sm:size-20">
                 {p.avatar_url && (
                   <AvatarImage src={p.avatar_url} alt={name} />
                 )}
-                <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-xl text-primary-foreground">
+                <AvatarFallback className="bg-gradient-to-br from-brand to-sage text-xl text-primary-foreground">
                   {initial}
                 </AvatarFallback>
               </Avatar>
@@ -44,7 +44,7 @@ export async function MatchList({ matches }: { matches: ProfileMatch[] }) {
                     label={tProfile("verified")}
                   />
                   {mutual && (
-                    <span className="inline-flex items-center gap-1 rounded-md bg-cyan/15 px-2 py-0.5 text-xs font-medium text-cyan">
+                    <span className="inline-flex items-center gap-1 rounded-md bg-brand/15 px-2 py-0.5 text-xs font-medium text-brand">
                       <Sparkles className="size-3" />
                       {t("mutual")}
                     </span>
@@ -52,7 +52,7 @@ export async function MatchList({ matches }: { matches: ProfileMatch[] }) {
                 </div>
                 {place && (
                   <div className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
-                    <MapPin className="size-3.5 shrink-0 text-cyan" />
+                    <MapPin className="size-3.5 shrink-0 text-brand" />
                     <span className="truncate">{place}</span>
                   </div>
                 )}

@@ -26,6 +26,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ThemeMenuItems } from "./theme-switcher";
 
 export function MobileMenu({
   email,
@@ -64,7 +65,7 @@ export function MobileMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[15rem]">
         <DropdownMenuItem asChild>
-          <Link href="/help" className="font-medium text-cyan">
+          <Link href="/help" className="font-medium text-brand">
             {tNav("help")}
           </Link>
         </DropdownMenuItem>
@@ -122,9 +123,12 @@ export function MobileMenu({
             dir={localeMeta[l].dir}
           >
             <span className="flex-1 font-medium">{localeMeta[l].native}</span>
-            {l === locale && <Check className="size-4 text-cyan" />}
+            {l === locale && <Check className="size-4 text-brand" />}
           </DropdownMenuItem>
         ))}
+
+        <DropdownMenuSeparator />
+        <ThemeMenuItems />
 
         <DropdownMenuSeparator />
         {email ? (
@@ -187,7 +191,7 @@ export function MobileMenu({
               <Link href="/login">{tNav("signIn")}</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/signup" className="font-medium text-cyan">
+              <Link href="/signup" className="font-medium text-brand">
                 {tNav("getStarted")}
               </Link>
             </DropdownMenuItem>

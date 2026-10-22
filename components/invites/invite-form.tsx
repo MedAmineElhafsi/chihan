@@ -96,8 +96,8 @@ export function InviteForm({ initial }: { initial: AppInviteRow[] }) {
       </form>
 
       {link && (
-        <div className="panel rounded-xl border border-cyan/30 p-4 ring-1 ring-cyan/15">
-          <p className="text-sm font-medium text-cyan">
+        <div className="panel rounded-xl border border-brand/30 p-4 ring-1 ring-brand/15">
+          <p className="text-sm font-medium text-brand">
             {emailed ? t("createdEmailed") : t("createdLinkOnly")}
           </p>
           <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center">

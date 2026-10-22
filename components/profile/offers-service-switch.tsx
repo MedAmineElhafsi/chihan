@@ -42,11 +42,11 @@ export function OffersServiceSwitch({
   return (
     <div className="panel flex flex-col gap-3 rounded-lg p-5">
       <div className="flex items-start gap-3">
-        <div className="inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-cyan ring-1 ring-border">
+        <div className="inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-brand ring-1 ring-border">
           <BriefcaseBusiness className="size-4" />
         </div>
         <div className="flex flex-col gap-1">
-          <h2 className="font-display text-base font-semibold text-air">
+          <h2 className="font-display text-base font-semibold text-ink">
             {t("serviceTitle")}
           </h2>
           <p className="text-sm leading-relaxed text-muted-foreground">

@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState, type MutableRefObject } from "react";
 import * as THREE from "three";
 import Globe, { type GlobeMethods } from "react-globe.gl";
 
+import { useColorScheme } from "@/lib/use-color-scheme";
+
 export type GlobeDatum = {
   id: string;
   name: string;
@@ -27,6 +29,36 @@ type CountryFeature = {
   properties: { name?: string };
   geometry: unknown;
 };
+
+/**
+ * WebGL cannot read CSS variables, so the globe carries its own copy of the
+ * two themes. Keep these in step with the tokens in app/globals.css.
+ */
+const GLOBE_THEME = {
+  light: {
+    // NASA Blue Marble, graded warm (public/globe, made from three-globe's
+    // bundled example images — no third-party request at runtime).
+    image: "/globe/earth-day.webp",
+    atmosphere: "#c39572",
+    highlight: "rgba(242,166,90,0.35)",
+    highlightEdge: "#f6efe4",
+    dimmed: "rgba(241,233,224,0.45)",
+    ring: "#83390f",
+    tooltip:
+      "background:rgba(241,235,225,.97);border:1px solid rgba(42,36,32,.14);color:#26201c;box-shadow:0 10px 28px -14px rgba(74,48,24,.35)",
+  },
+  dark: {
+    // The same Earth at night: city lights, pushed toward sodium orange.
+    image: "/globe/earth-night.webp",
+    atmosphere: "#b8704a",
+    highlight: "rgba(242,166,90,0.3)",
+    highlightEdge: "#f2a65a",
+    dimmed: "rgba(179,168,158,0.4)",
+    ring: "#f2a65a",
+    tooltip:
+      "background:rgba(29,26,38,.95);border:1px solid rgba(242,166,90,.3);color:#fff6ec;box-shadow:0 10px 28px -12px rgba(0,0,0,.6)",
+  },
+} as const;
 
 function escapeHtml(s: string) {
   return s.replace(
@@ -84,17 +116,13 @@ export default function GlobeGL({
     };
   }, []);
 
-  // Ocean sphere — deep and near-black so glowing coastlines carry the form.
+  const t = GLOBE_THEME[useColorScheme()];
+
+  // A matte material for the satellite picture: no shine, so the texture
+  // reads as the Earth rather than a glossy ball. The library puts the image
+  // and the relief map onto it.
   const globeMaterial = useMemo(
-    () =>
-      new THREE.MeshPhongMaterial({
-        color: "#001a20",
-        emissive: "#002a33",
-        emissiveIntensity: 0.35,
-        shininess: 1,
-        transparent: true,
-        opacity: 0.96,
-      }),
+    () => new THREE.MeshPhongMaterial({ shininess: 0, bumpScale: 4 }),
     []
   );
 
@@ -109,30 +137,28 @@ export default function GlobeGL({
       backgroundColor="rgba(0,0,0,0)"
       animateIn={false}
       globeMaterial={globeMaterial}
+      globeImageUrl={t.image}
+      bumpImageUrl="/globe/earth-relief.webp"
       showAtmosphere
-      atmosphereColor="#50e8f4"
-      atmosphereAltitude={0.25}
+      atmosphereColor={t.atmosphere}
+      atmosphereAltitude={0.16}
       onGlobeReady={onGlobeReady}
-      /* Continents & country borders */
+      /* The picture is the land; countries are drawn invisibly on top so
+         hovering still names one and a selected country can light up. Only
+         the selected one gets a fill and an edge. */
       polygonsData={countries}
-      polygonAltitude={0.006}
-      /* Landmasses read as dark plates; the luminous coastline carries the
-         form. A muddy green fill fought the cyan and flattened the sphere. */
+      polygonAltitude={0.005}
       polygonCapColor={(d: object) => {
         const name = norm((d as CountryFeature).properties?.name);
-        return highlight && name === highlight
-          ? "rgba(80,232,244,0.22)"
-          : "rgba(0,49,58,0.92)";
+        return highlight && name === highlight ? t.highlight : "rgba(0,0,0,0)";
       }}
-      polygonSideColor={() => "rgba(0,22,25,0.9)"}
+      polygonSideColor={() => "rgba(0,0,0,0)"}
       polygonStrokeColor={(d: object) => {
         const name = norm((d as CountryFeature).properties?.name);
-        return highlight && name === highlight
-          ? "#c7f8fe"
-          : "rgba(80,232,244,0.55)";
+        return highlight && name === highlight ? t.highlightEdge : false;
       }}
       polygonLabel={(d: object) =>
-        `<div style="background:rgba(8,12,20,.88);border:1px solid rgba(255,255,255,.14);color:#e8ecf6;padding:4px 8px;border-radius:8px;font-size:12px;white-space:nowrap">${
+        `<div style="${t.tooltip};padding:4px 8px;border-radius:10px;font-size:12px;white-space:nowrap">${
           (d as CountryFeature).properties?.name ?? ""
         }</div>`
       }
@@ -146,7 +172,7 @@ export default function GlobeGL({
       pointLng="lng"
       pointColor={(d: object) => {
         const p = d as GlobeDatum;
-        if (p.dimmed) return "rgba(120,150,160,0.35)";
+        if (p.dimmed) return t.dimmed;
         return p.color;
       }}
       pointRadius={(d: object) => ((d as GlobeDatum).selected ? 0.7 : 0.34)}
@@ -157,7 +183,7 @@ export default function GlobeGL({
         const p = d as GlobeDatum;
         const status =
           p.kind === "person" ? (p.online ? " · Online" : "") : "";
-        return `<div style="background:rgba(0,22,25,.92);border:1px solid rgba(80,232,244,.35);color:#c7f8fe;padding:5px 9px;border-radius:4px;font-size:12px;font-family:ui-monospace,monospace;white-space:nowrap;box-shadow:0 0 18px -4px rgba(80,232,244,.6)">
+        return `<div style="${t.tooltip};padding:5px 10px;border-radius:10px;font-size:12px;white-space:nowrap">
           <span style="color:${p.color}">${p.icon}</span> ${escapeHtml(p.name)}${
             p.subtitle ? ` · ${escapeHtml(p.subtitle)}` : ""
           }${status}
@@ -167,7 +193,7 @@ export default function GlobeGL({
       ringsData={rings}
       ringLat="lat"
       ringLng="lng"
-      ringColor={() => "#50e8f4"}
+      ringColor={() => t.ring}
       ringMaxRadius={5}
       ringPropagationSpeed={1.6}
       ringRepeatPeriod={800}

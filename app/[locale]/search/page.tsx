@@ -63,7 +63,7 @@ export default async function SearchPage({
                     href={h.href}
                     className="panel flex items-start gap-3 rounded-xl p-4 transition-colors hover:bg-accent/40"
                   >
-                    <Icon className="mt-0.5 size-4 shrink-0 text-cyan" />
+                    <Icon className="mt-0.5 size-4 shrink-0 text-brand" />
                     <span className="min-w-0 flex-1">
                       <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
                         {t(`kind_${h.kind}`)}

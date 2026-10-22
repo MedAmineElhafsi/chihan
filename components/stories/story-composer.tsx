@@ -100,7 +100,7 @@ export function StoryComposer({ userId }: { userId: string }) {
         onClick={() => setOpen(true)}
         className="group flex w-[5rem] shrink-0 flex-col items-center gap-1.5 transition-transform hover:-translate-y-0.5"
       >
-        <span className="relative flex size-16 items-center justify-center rounded-full border-2 border-dashed border-cyan/55 bg-cyan/10 text-cyan transition-colors group-hover:bg-cyan/20">
+        <span className="relative flex size-16 items-center justify-center rounded-full border-2 border-dashed border-brand/55 bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
           <Plus className="size-6" />
         </span>
         <span className="w-full truncate text-center text-xs font-medium leading-tight text-muted-foreground">

@@ -10,6 +10,7 @@ import {
 import { getUnreadMessageCount } from "@/lib/chat";
 import { BrandWordmark } from "./brand";
 import { LanguageSwitcher } from "./language-switcher";
+import { ThemeSwitcher } from "./theme-switcher";
 import { UserMenu } from "./user-menu";
 import { MobileMenu } from "./mobile-menu";
 import { NotificationsBell } from "@/components/notifications/notifications-bell";
@@ -51,7 +52,7 @@ export async function SiteHeader() {
     : [[], 0, 0];
 
   return (
-    <header className="sticky top-0 z-40 bg-depth-0/70 backdrop-blur-xl after:pointer-events-none after:absolute after:inset-x-0 after:top-full after:h-6 after:bg-gradient-to-b after:from-depth-0/60 after:to-transparent">
+    <header className="glass-strong sticky top-0 z-40 rounded-none border-x-0 border-t-0">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <div className="flex items-center gap-10">
           <BrandWordmark />
@@ -62,10 +63,10 @@ export async function SiteHeader() {
               <Link
                 key={item.key}
                 href={item.href}
-                className="group relative font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors duration-200 hover:text-cyan"
+                className="group relative font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors duration-200 hover:text-brand"
               >
                 {t(item.key)}
-                <span className="absolute -bottom-1.5 left-0 h-px w-full scale-x-0 bg-cyan transition-transform duration-300 group-hover:scale-x-100" />
+                <span className="absolute -bottom-1.5 left-0 h-px w-full scale-x-0 bg-brand transition-transform duration-300 group-hover:scale-x-100" />
               </Link>
             ))}
           </nav>
@@ -75,12 +76,13 @@ export async function SiteHeader() {
           <div className="hidden items-center gap-1 lg:flex">
             <Link
               href="/search"
-              className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-cyan"
+              className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-brand"
             >
               {t("search")}
             </Link>
             <span className="mx-3 h-4 w-px bg-border" />
             <LanguageSwitcher />
+            <ThemeSwitcher />
             {user && <ChatIcon unread={unreadMessages} />}
             {user && (
               <NotificationsBell

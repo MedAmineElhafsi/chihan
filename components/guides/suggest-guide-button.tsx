@@ -75,7 +75,7 @@ export function SuggestGuideButton({
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="border-cyan/40 text-cyan hover:bg-cyan/10 inline-flex items-center gap-2 rounded-sm border px-4 py-2 font-mono text-xs tracking-[0.14em] uppercase transition-colors"
+          className="border-brand/40 text-brand hover:bg-brand/10 inline-flex items-center gap-2 rounded-sm border px-4 py-2 font-mono text-xs tracking-[0.14em] uppercase transition-colors"
         >
           <Lightbulb className="size-4" aria-hidden="true" />
           {t("suggestFromRequest")}

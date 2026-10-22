@@ -30,7 +30,7 @@ export function RequestText({
     <>
       <h1
         dir="auto"
-        className="font-display text-air text-[clamp(1.75rem,4vw,2.75rem)] leading-tight font-semibold tracking-tight"
+        className="font-display text-ink text-[clamp(1.75rem,4vw,2.75rem)] leading-tight font-semibold tracking-tight"
       >
         {shownTitle}
       </h1>

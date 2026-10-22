@@ -60,12 +60,12 @@ export default async function GroupDetailPage({
           </h1>
           {place && (
             <p className="mt-2 flex items-center gap-1.5 text-muted-foreground">
-              <MapPin className="size-4 text-cyan" />
+              <MapPin className="size-4 text-brand" />
               {place}
             </p>
           )}
           <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
-            <Users className="size-3.5 text-cyan" />
+            <Users className="size-3.5 text-brand" />
             {t("memberCount", { count: group.member_count })}
           </p>
         </div>
@@ -131,7 +131,7 @@ export default async function GroupDetailPage({
                     {m.avatar_url && (
                       <AvatarImage src={m.avatar_url} alt={name} />
                     )}
-                    <AvatarFallback className="bg-gradient-to-br from-cyan to-depth-4 text-primary-foreground">
+                    <AvatarFallback className="bg-gradient-to-br from-brand to-sage text-primary-foreground">
                       {initial}
                     </AvatarFallback>
                   </Avatar>

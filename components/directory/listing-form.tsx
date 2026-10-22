@@ -236,7 +236,7 @@ export function ListingForm({
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
                   active
-                    ? "border-cyan/50 bg-cyan/15 text-cyan"
+                    ? "border-brand/50 bg-brand/15 text-brand"
                     : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
                 )}
               >
@@ -451,7 +451,7 @@ export function ListingForm({
                         type="checkbox"
                         checked={v.closed}
                         onChange={(e) => setDay(d, { closed: e.target.checked })}
-                        className="accent-cyan size-4"
+                        className="accent-brand size-4"
                       />
                       {t("hoursClosed")}
                     </label>

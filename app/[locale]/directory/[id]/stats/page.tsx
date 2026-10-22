@@ -71,7 +71,7 @@ export default async function ListingStatsPage({
 
       <div className="mt-3 flex flex-col gap-3">
         <span className="label-mono">{t("eyebrow")}</span>
-        <h1 className="font-display text-air text-[clamp(1.75rem,4vw,2.75rem)] leading-tight font-semibold tracking-tight">
+        <h1 className="font-display text-ink text-[clamp(1.75rem,4vw,2.75rem)] leading-tight font-semibold tracking-tight">
           {t("statsTitle")}
         </h1>
         <p className="text-muted-foreground max-w-xl text-sm">
@@ -116,7 +116,7 @@ export default async function ListingStatsPage({
                   }}
                 >
                   <span
-                    className="bg-cyan/70 absolute inset-x-0 bottom-0 rounded-t-sm"
+                    className="bg-brand/70 absolute inset-x-0 bottom-0 rounded-t-sm"
                     style={{
                       height: `${
                         d.views + d.taps === 0
@@ -167,9 +167,9 @@ export default async function ListingStatsPage({
           </div>
         </>
       ) : (
-        <section className="panel border-cyan/25 ring-cyan/15 mt-10 rounded-lg p-5 ring-1">
+        <section className="panel border-brand/25 ring-brand/15 mt-10 rounded-lg p-5 ring-1">
           <div className="flex items-start gap-3">
-            <BarChart3 className="text-cyan mt-0.5 size-5 shrink-0" />
+            <BarChart3 className="text-brand mt-0.5 size-5 shrink-0" />
             <div className="flex flex-col gap-3">
               <div>
                 <h2 className="font-display text-lg font-semibold">
@@ -182,7 +182,7 @@ export default async function ListingStatsPage({
               <ul className="flex flex-col gap-1.5 text-sm">
                 {(["perk1", "perk2", "perk3"] as const).map((k) => (
                   <li key={k} className="flex items-start gap-2">
-                    <Check className="text-cyan mt-0.5 size-4 shrink-0" />
+                    <Check className="text-brand mt-0.5 size-4 shrink-0" />
                     {t(k)}
                   </li>
                 ))}

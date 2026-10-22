@@ -254,7 +254,7 @@ export function NotificationsBell({
             <button
               type="button"
               onClick={onMarkAll}
-              className="text-xs font-medium text-cyan hover:underline"
+              className="text-xs font-medium text-brand hover:underline"
             >
               {t("markAllRead")}
             </button>
@@ -285,7 +285,7 @@ export function NotificationsBell({
                     onClick={() => onOpen(n)}
                     className={cn(
                       "flex w-full items-start gap-3 px-3 py-2.5",
-                      !n.read_at && "bg-cyan/5"
+                      !n.read_at && "bg-brand/5"
                     )}
                   >
                     <Avatar className="size-9 shrink-0">
@@ -298,7 +298,7 @@ export function NotificationsBell({
                     </Avatar>
                     <span className="min-w-0 flex-1">
                       <span className="flex items-start gap-1.5 text-sm">
-                        <Icon className="mt-0.5 size-3.5 shrink-0 text-cyan" />
+                        <Icon className="mt-0.5 size-3.5 shrink-0 text-brand" />
                         <span className="leading-snug">
                           {notificationCopy(t, n)}
                         </span>
@@ -308,7 +308,7 @@ export function NotificationsBell({
                       </span>
                     </span>
                     {!n.read_at && (
-                      <span className="mt-1.5 size-2 shrink-0 rounded-full bg-cyan" />
+                      <span className="mt-1.5 size-2 shrink-0 rounded-full bg-brand" />
                     )}
                   </Link>
                 </DropdownMenuItem>
@@ -318,7 +318,7 @@ export function NotificationsBell({
         </div>
         <DropdownMenuSeparator className="m-0" />
         <DropdownMenuItem asChild className="justify-center rounded-none py-2.5">
-          <Link href="/notifications" className="text-sm font-medium text-cyan">
+          <Link href="/notifications" className="text-sm font-medium text-brand">
             {t("seeAll")}
           </Link>
         </DropdownMenuItem>

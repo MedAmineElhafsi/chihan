@@ -34,7 +34,7 @@ export default async function TicketsPage({
   const header = (
     <div className="flex flex-col gap-3">
       <span className="label-mono">{t("eyebrow")}</span>
-      <h1 className="font-display text-air text-[clamp(2rem,5vw,3.25rem)] leading-[0.95] font-semibold tracking-tight">
+      <h1 className="font-display text-ink text-[clamp(2rem,5vw,3.25rem)] leading-[0.95] font-semibold tracking-tight">
         {t("title")}
       </h1>
       <p className="text-muted-foreground max-w-xl">{t("subtitle")}</p>
@@ -90,7 +90,7 @@ export default async function TicketsPage({
                       {ticket.event_title ?? t("anEvent")}
                     </div>
                     {ticket.event_at && (
-                      <div className="text-cyan mt-1 flex items-center gap-1.5 text-sm">
+                      <div className="text-brand mt-1 flex items-center gap-1.5 text-sm">
                         <CalendarDays className="size-3.5 shrink-0" />
                         {dateFmt.format(new Date(ticket.event_at))}
                       </div>
@@ -118,7 +118,7 @@ export default async function TicketsPage({
                   <div className="flex flex-col items-end gap-1">
                     <span
                       dir="ltr"
-                      className="border-cyan/30 bg-cyan/10 text-cyan rounded-md border px-3 py-1.5 font-mono text-base tracking-wider"
+                      className="border-brand/30 bg-brand/10 text-brand rounded-md border px-3 py-1.5 font-mono text-base tracking-wider"
                     >
                       {ticket.code}
                     </span>

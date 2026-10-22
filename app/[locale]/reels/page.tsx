@@ -36,7 +36,7 @@ export default async function ReelsPage({
   return (
     <div className="mx-auto flex w-full max-w-md flex-col gap-4 px-4 py-6">
       <div className="flex items-baseline justify-between gap-3">
-        <h1 className="font-display text-air text-2xl font-semibold tracking-tight">
+        <h1 className="font-display text-ink text-2xl font-semibold tracking-tight">
           {t("title")}
         </h1>
         {/* An empty metric is worse than none: "0 reels" in the header told

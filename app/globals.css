@@ -1,82 +1,148 @@
 @import "tailwindcss";
 
 /* ============================================================================
-   CÎHAN — "Bioluminescence"
-   Dark-only. Deep-water charcoal, fluorescent cyan signal, thin-air highlights.
-   The diaspora as points of light in dark water.
+   CÎHAN — "Newroz & Dusk"
+   Two themes. Light is a sunrise: linen ground, burnt
+   saffron, a breath of sage. Dark is the same hills an hour after sunset:
+   night plum, apricot, terracotta. Warm in both, never neon.
+   The gradient is a still wash, not weather — the content is what moves.
+
+   The active theme is `data-theme` on <html>, set before first paint by
+   lib/theme-script.ts from the member's choice (light, dark, or automatic,
+   which follows the device). Everything dark keys off that attribute.
 ============================================================================ */
 
 :root {
-  /* Core palette (customer-supplied) — unchanged. */
-  --charcoal: #001619; /* Blue Charcoal  */
-  --cyan: #50e8f4; /* Fluorescent Blue */
-  --air: #c7f8fe; /* Thin Air */
+  /* --- light: Newroz sunrise, at linen rather than paper -----------------
+     The first cut used a near-white cream page and pure-white cards, and it
+     glared. The page is a warm linen now and nothing is white; the lightest
+     surface, a card, is a step above linen, not a sheet of paper. */
+  --brand: #83390f; /* burnt saffron — text, fills, focus */
+  --ink: #1a1512; /* strongest text, headings */
+  --sage: #3a5c44; /* the second voice, used sparingly */
 
-  /* Depth scale — the ground drops so the signal can rise off it.
-     The old page ground (#002b33) sat high enough that a cyan glow had
-     nothing to glow against; everything read as one lit teal wash. Charcoal
-     is the page now, with two steps below it for wells and vignette. */
-  --depth-0: #000c0f; /* deepest — vignette, wells */
-  --depth-1: #00191e; /* page background */
-  --depth-2: #002027; /* panels */
-  --depth-3: #002a33; /* raised */
-  --depth-4: #003742; /* hover / active */
+  /* Gradient stops. Atmosphere and decoration only, never text. */
+  --sun-1: #e3b896; /* peach */
+  --sun-2: #dcc07e; /* saffron */
+  --sun-3: #b3c4a8; /* sage */
 
-  /* Semantic */
+  /* Depth scale. 0 is the chrome — header, footer, tab bar, wells — and sits
+     a step below the page; 2 is a card and sits above it. */
+  --depth-0: #e1d7c6;
+  --depth-1: #e9e1d3; /* page */
+  --depth-2: #f1ebe1; /* cards, panels */
+  --depth-3: #e4dbcb; /* raised */
+  --depth-4: #dcd0bd; /* hover / active */
+
+  --foreground: #26201c;
+  /* Every text colour below holds 4.5:1 on the hover ground and on a 15%
+     brand tint, the two lowest-contrast places it lands. */
+  --muted-foreground: #574b42;
+  --primary-foreground: #f6efe4;
+  --destructive: #97231d;
+  --destructive-foreground: #f6efe4;
+  --success: #225e3a;
+  --warning: #6e4708;
+
+  --border: rgba(42, 36, 32, 0.1);
+  --border-strong: rgba(42, 36, 32, 0.2);
+  --input: rgba(42, 36, 32, 0.16);
+
+  --scrollbar: rgba(42, 36, 32, 0.18);
+  --scrollbar-hover: rgba(42, 36, 32, 0.32);
+
+  /* Soft, warm shadows: a light page shows elevation by shadow, not by a
+     lighter fill. */
+  --elev-1: 0 1px 2px rgba(74, 48, 24, 0.08);
+  --elev-2: 0 10px 28px -14px rgba(74, 48, 24, 0.22);
+  --elev-3: 0 28px 64px -28px rgba(74, 48, 24, 0.32);
+  --glow-accent: 0 6px 20px -8px rgba(131, 57, 15, 0.4);
+
+  /* Liquid glass. A translucent fill the page shows through (blurred and
+     saturated), a sheen that is brightest along the top where light would
+     catch the curve, a bright upper edge and a darker lower one. */
+  --glass-fill: rgba(241, 235, 225, 0.5);
+  --glass-fill-strong: rgba(241, 235, 225, 0.74);
+  --glass-edge: rgba(255, 255, 255, 0.6);
+  --glass-edge-low: rgba(74, 48, 24, 0.12);
+  --glass-sheen: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.1) 42%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  --glass-shadow:
+    0 12px 32px -14px rgba(74, 48, 24, 0.3),
+    0 2px 6px -2px rgba(74, 48, 24, 0.12);
+
+  /* --- semantic, shared by both themes ----------------------------------- */
   --background: var(--depth-1);
-  --foreground: #e4f1f3; /* near-white with a breath of the brand */
   --surface: var(--depth-2);
   --surface-raised: var(--depth-3);
-
   --card: var(--depth-2);
   --card-foreground: var(--foreground);
-  --popover: var(--depth-3);
+  --popover: var(--depth-2);
   --popover-foreground: var(--foreground);
-
-  --primary: var(--cyan);
-  --primary-foreground: #00181c;
+  --primary: var(--brand);
   --secondary: var(--depth-3);
   --secondary-foreground: var(--foreground);
-  --muted: var(--depth-2);
-  /* Desaturated: quiet text should not be teal. And light enough to hold
-     4.5:1 on the brightest pixel the aurora reaches, measured, not just on the
-     flat page colour — #7f979d passed the flat colour at 5.89 and fell to 3.1
-     where the light pooled behind it. */
-  --muted-foreground: #a4bcc3;
+  --muted: var(--depth-3);
   --accent: var(--depth-3);
   --accent-foreground: var(--foreground);
-  --destructive: #ff5c7a;
-  --destructive-foreground: #1a0006;
-  --success: #3ff0b2;
-  --warning: #ffd166;
+  --ring: var(--brand);
 
-  /* Hairlines are light, not accent. Cyan borders meant every panel edge
-     spent the accent; an accent spent everywhere is just the base colour. */
-  --border: rgba(199, 248, 254, 0.08);
-  --border-strong: rgba(199, 248, 254, 0.16);
-  --input: rgba(199, 248, 254, 0.12);
-  --ring: var(--cyan);
+  --radius: 0.75rem; /* soft, comfortable */
+}
 
-  /* Atmosphere only — never used on a control. A single hue cannot make a
-     gradient travel anywhere, so the field gets somewhere to go: the brand
-     cyan, an indigo, and a violet held furthest back.
+:root[data-theme="dark"] {
+  /* --- dark: dusk over the hills --------------------------------------- */
+  --brand: #f2a65a; /* apricot */
+  --ink: #fff6ec;
+  --sage: #9cc4a4;
 
-     Indigo and violet get more alpha than cyan because they carry colour
-     rather than light: at equal alpha they are about a third as bright, so
-     they can be generous without making a spot too bright for text. */
-  --aurora-1: rgba(80, 232, 244, 0.5); /* Fluorescent Blue, the brand */
-  --aurora-2: rgba(76, 111, 232, 0.58); /* indigo — depth */
-  --aurora-3: rgba(155, 92, 240, 0.48); /* violet — the far edge, faintest */
+  --sun-1: #3b2e4a; /* dusk violet */
+  --sun-2: #8a4f4a; /* terracotta */
+  --sun-3: #f2a65a; /* apricot */
 
-  --radius: 0.25rem; /* sharp, instrument-like */
+  --depth-0: #100e15;
+  --depth-1: #15131c; /* page */
+  --depth-2: #1d1a26; /* cards, panels */
+  --depth-3: #27232f;
+  --depth-4: #322c3a;
 
-  /* --- one elevation scale ------------------------------------------------
-     Bigger surfaces read as thicker: more blur and a deeper shadow than a
-     small chip. Never a glow — glow is reserved for the accent itself. */
+  --foreground: #f1e9e0;
+  --muted-foreground: #b3a89e;
+  --primary-foreground: #1a120b;
+  --destructive: #ff8173;
+  --destructive-foreground: #1a0806;
+  --success: #7fd69b;
+  --warning: #f5c76b;
+
+  --border: rgba(255, 236, 214, 0.09);
+  --border-strong: rgba(255, 236, 214, 0.18);
+  --input: rgba(255, 236, 214, 0.14);
+
+  --scrollbar: rgba(242, 166, 90, 0.2);
+  --scrollbar-hover: rgba(242, 166, 90, 0.4);
+
   --elev-1: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --elev-2: 0 8px 24px -12px rgba(0, 0, 0, 0.65);
-  --elev-3: 0 24px 60px -24px rgba(0, 0, 0, 0.8);
-  --glow-accent: 0 0 24px -6px rgba(80, 232, 244, 0.55);
+  --elev-2: 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  --elev-3: 0 24px 60px -24px rgba(0, 0, 0, 0.75);
+  --glow-accent: 0 6px 22px -8px rgba(242, 166, 90, 0.5);
+
+  --glass-fill: rgba(39, 35, 47, 0.48);
+  --glass-fill-strong: rgba(29, 26, 38, 0.72);
+  --glass-edge: rgba(255, 236, 214, 0.18);
+  --glass-edge-low: rgba(0, 0, 0, 0.4);
+  --glass-sheen: linear-gradient(
+    180deg,
+    rgba(255, 246, 236, 0.14) 0%,
+    rgba(255, 246, 236, 0.03) 42%,
+    rgba(255, 246, 236, 0) 70%
+  );
+  --glass-shadow:
+    0 14px 36px -14px rgba(0, 0, 0, 0.7),
+    0 2px 6px -2px rgba(0, 0, 0, 0.4);
 }
 
 @theme inline {
@@ -104,9 +170,12 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --color-cyan: var(--cyan);
-  --color-air: var(--air);
-  --color-charcoal: var(--charcoal);
+  --color-brand: var(--brand);
+  --color-ink: var(--ink);
+  --color-sage: var(--sage);
+  --color-sun-1: var(--sun-1);
+  --color-sun-2: var(--sun-2);
+  --color-sun-3: var(--sun-3);
   --color-depth-0: var(--depth-0);
   --color-depth-1: var(--depth-1);
   --color-depth-2: var(--depth-2);
@@ -115,15 +184,19 @@
 
   --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  /* The "mono" role used to be JetBrains Mono, the instrument-readout voice.
+     It is the UI sans now with tabular figures (below), so counters and times
+     still line up without reading as a terminal. */
+  --font-mono: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
   --font-arabic: var(--font-vazirmatn), ui-sans-serif, system-ui, sans-serif;
 
   /* One radius scale. Six ad-hoc radii read as six different products;
-     four, used consistently, read as one. */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.625rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
+     four, used consistently, read as one. Softer than the old instrument
+     corners: this is a living room, not a cockpit. */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.125rem;
+  --radius-xl: 1.625rem;
 
   /* One elevation scale, as utilities: shadow-elev-1/2/3 and shadow-glow.
      Bigger surfaces read as thicker. Glow is reserved for the accent —
@@ -144,6 +217,10 @@
   html {
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
+    color-scheme: light;
+  }
+
+  html[data-theme="dark"] {
     color-scheme: dark;
   }
 
@@ -156,22 +233,26 @@
     overflow-x: hidden;
   }
 
+  .font-mono {
+    font-variant-numeric: tabular-nums;
+  }
+
   [dir="rtl"] body,
   [dir="rtl"] .font-display {
     font-family: var(--font-arabic);
   }
 
   ::selection {
-    background-color: var(--cyan);
+    background-color: var(--brand);
     color: var(--primary-foreground);
   }
 
   :focus-visible {
-    outline: 1px solid var(--cyan);
+    outline: 2px solid var(--brand);
     outline-offset: 2px;
   }
 
-  /* Instrument-style scrollbar */
+  /* Quiet scrollbar */
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -180,11 +261,12 @@
     background: var(--depth-0);
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(80, 232, 244, 0.18);
+    background: var(--scrollbar);
     border: 2px solid var(--depth-0);
+    border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(80, 232, 244, 0.38);
+    background: var(--scrollbar-hover);
   }
 }
 
@@ -200,45 +282,104 @@
   letter-spacing: -0.03em;
 }
 
-/* Uppercase monospace micro-label — the "instrument readout" voice */
+/* Small uppercase label. It used to be monospace, the "instrument readout"
+   voice of the old theme; a friendly sans with less tracking reads as a
+   caption rather than a gauge. The name stays so its call sites do not. */
 @utility label-mono {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.6875rem;
+  font-weight: 600;
   line-height: 1;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted-foreground);
 }
 
-/* Frosted panel over the deep-water background */
+/* Liquid glass — see the --glass-* tokens. `glass` is for small floating
+   controls (chips, buttons, the tab bar's lens); `glass-strong` and `panel`
+   carry text over moving content, so they are frostier. Never stack one on
+   another: two translucent layers make neither legible. */
+@utility glass {
+  background: var(--glass-sheen), var(--glass-fill);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-edge);
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-edge),
+    inset 0 -1px 0 0 var(--glass-edge-low),
+    var(--glass-shadow);
+}
+
+@utility glass-strong {
+  background: var(--glass-sheen), var(--glass-fill-strong);
+  backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid var(--glass-edge);
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-edge),
+    inset 0 -1px 0 0 var(--glass-edge-low),
+    var(--glass-shadow);
+}
+
+/* Glass for controls that sit in rows (outline buttons, chips): the same
+   material with a contact shadow instead of a floating one, so a row of
+   them does not look like a stack of cards. */
+@utility glass-chip {
+  background: var(--glass-sheen), var(--glass-fill);
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid var(--glass-edge);
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-edge),
+    inset 0 -1px 0 0 var(--glass-edge-low),
+    var(--elev-1);
+}
+
+/* A solid colour made liquid: a highlight across the top of the pill that
+   fades out before it reaches the label, and a lit upper rim. */
+@utility liquid-fill {
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0) 55%
+  );
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.18),
+    var(--glow-accent);
+}
+
+/* Cards and panels are glass now. */
 @utility panel {
-  background: color-mix(in oklab, var(--depth-2) 78%, transparent);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  border: 1px solid var(--border);
+  background: var(--glass-sheen), var(--glass-fill-strong);
+  backdrop-filter: blur(24px) saturate(170%);
+  border: 1px solid var(--glass-edge);
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-edge),
+    inset 0 -1px 0 0 var(--glass-edge-low),
+    var(--glass-shadow);
 }
 
 @utility panel-solid {
   background: var(--depth-2);
   border: 1px solid var(--border);
+  box-shadow: var(--elev-1);
 }
 
 /* The card social content sits on — posts, the composer, news, stories.
    Opaque rather than frosted: a feed scrolls, and a frosted card would
-   re-blur the aurora behind it on every frame. The same 1rem corners as the
+   re-blur the backdrop behind it on every frame. The same corners as the
    directory's cards, so a post and a listing read as the same kind of
    object. */
 @utility social-surface {
   background: var(--depth-2);
   border: 1px solid var(--border);
-  border-radius: 1rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elev-1);
 }
 
-/* Cyan signal glow */
+/* Warm lift for the one element on a page that should be noticed */
 @utility glow {
   box-shadow:
-    0 0 0 1px rgba(80, 232, 244, 0.35),
-    0 0 24px -4px rgba(80, 232, 244, 0.5);
+    0 0 0 1px color-mix(in oklab, var(--brand) 35%, transparent),
+    var(--glow-accent);
 }
 
 /* Hairline rules */
@@ -253,13 +394,13 @@
   text-wrap: balance;
 }
 
-/* Gradient text — thin air into fluorescent cyan */
+/* Gradient text — ink warming into the brand, settling on sage */
 @utility text-signal {
   background: linear-gradient(
     100deg,
-    var(--air) 0%,
-    var(--cyan) 55%,
-    #2bb8c6 100%
+    var(--ink) 0%,
+    var(--brand) 55%,
+    var(--sage) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -357,6 +498,8 @@
 /* Translucency is decoration here, never the only thing carrying meaning.
    When it is turned off the panels become solid rather than disappearing. */
 @media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .glass-strong,
   .panel,
   .panel-solid,
   .social-surface,
@@ -364,16 +507,21 @@
   nav[aria-label] {
     background-color: var(--depth-2) !important;
     backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
   }
 }
 
 /* Higher contrast: solid grounds and a border that is actually visible. */
 @media (prefers-contrast: more) {
   :root {
-    --border: rgba(199, 248, 254, 0.45);
-    --border-strong: rgba(199, 248, 254, 0.7);
-    --muted-foreground: #c2e4ea;
+    --border: rgba(42, 36, 32, 0.45);
+    --border-strong: rgba(42, 36, 32, 0.7);
+    --muted-foreground: #4a3f37;
+  }
+
+  :root[data-theme="dark"] {
+    --border: rgba(255, 236, 214, 0.45);
+    --border-strong: rgba(255, 236, 214, 0.7);
+    --muted-foreground: #d9cfc5;
   }
 
   .panel,
@@ -436,6 +584,119 @@ small {
   --ease-out-quint: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-fast: 150ms;
   --duration-base: 250ms;
+
+  /* Springs as CSS easings, sampled from the real spring equation
+     (damping ratio + response, Apple's two numbers), so CSS-only motion
+     moves like the Motion springs in lib/motion.ts. A linear() spring needs
+     its settle time as the duration. */
+  --ease-spring: linear(0, 0.03, 0.102, 0.194, 0.293, 0.39, 0.48, 0.562, 0.634, 0.697, 0.75, 0.795, 0.833, 0.864, 0.89, 0.911, 0.929, 0.943, 0.954, 0.963, 0.971, 0.977, 0.981, 0.985, 0.988, 0.991, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 1); /* damping 1.0, response 0.35 */
+  --spring-duration: 480ms;
+  --ease-spring-bounce: linear(0, 0.027, 0.094, 0.186, 0.29, 0.398, 0.503, 0.6, 0.688, 0.764, 0.829, 0.882, 0.925, 0.958, 0.983, 1.002, 1.014, 1.022, 1.027, 1.028, 1.028, 1.026, 1.024, 1.021, 1.018, 1.015, 1.012, 1.01, 1.007, 1.005, 1.004, 1.003, 1); /* damping 0.75, response 0.4 */
+  --spring-bounce-duration: 500ms;
+  --ease-spring-press: linear(0, 0.029, 0.099, 0.189, 0.286, 0.382, 0.472, 0.553, 0.626, 0.688, 0.742, 0.788, 0.826, 0.858, 0.885, 0.907, 0.925, 0.939, 0.951, 0.961, 0.969, 0.975, 0.98, 0.984, 0.987, 0.99, 0.992, 0.994, 0.995, 0.996, 0.997, 0.998, 1); /* damping 1.0, response 0.2 */
+  --spring-press-duration: 270ms;
+}
+
+/* --- materialize ------------------------------------------------------------
+   Glass that appears grows out of whatever opened it (Radix publishes the
+   trigger-side origin) with a slight overshoot, and leaves faster than it
+   arrived. `scale`, not `transform`, so it never fights Tailwind's
+   `translate` positioning. */
+.glass-pop {
+  transform-origin: var(
+    --radix-dropdown-menu-content-transform-origin,
+    var(--radix-popover-content-transform-origin, center)
+  );
+}
+
+.glass-pop[data-state="open"] {
+  animation: glass-in var(--spring-bounce-duration) var(--ease-spring-bounce)
+    both;
+}
+
+.glass-pop[data-state="closed"] {
+  animation: glass-out 140ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+@keyframes glass-in {
+  from {
+    opacity: 0;
+    scale: 0.9;
+  }
+  40% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes glass-out {
+  to {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+
+.glass-scrim[data-state="open"] {
+  animation: scrim-in 240ms ease-out both;
+}
+
+.glass-scrim[data-state="closed"] {
+  animation: scrim-in 160ms ease-in reverse both;
+}
+
+@keyframes scrim-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Press: squeeze instantly on pointer-down, spring back on release. */
+.press {
+  transition:
+    scale var(--spring-press-duration) var(--ease-spring-press),
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.press:active {
+  scale: 0.96;
+  transition-duration: 60ms;
+}
+
+/* Cards that can be opened lift toward the pointer on a spring. */
+.lift {
+  transition:
+    translate var(--spring-duration) var(--ease-spring),
+    box-shadow var(--spring-duration) var(--ease-spring),
+    border-color 200ms ease;
+}
+
+@media (hover: hover) {
+  .lift:hover {
+    translate: 0 -3px;
+    box-shadow:
+      inset 0 1px 0 0 var(--glass-edge),
+      inset 0 -1px 0 0 var(--glass-edge-low),
+      0 22px 44px -18px rgba(74, 48, 24, 0.35);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-pop[data-state="open"],
+  .glass-pop[data-state="closed"] {
+    animation-name: scrim-in;
+  }
+  .press:active {
+    scale: 1;
+  }
+  .lift:hover {
+    translate: none;
+  }
 }
 
 /* A filter row scrolls sideways on a phone; its scrollbar would be chrome
@@ -448,72 +709,54 @@ small {
 }
 
 /* ---------------------------------------------------------------------------
-   Aurora field.
+   Sun wash — the still gradient behind every page (components/backdrop.tsx).
 
-   Each body drifts on its own long cycle and breathes slightly as it goes.
-   Only transform and opacity animate, so the compositor carries all of it and
-   the main thread never sees a frame.
+   Light: a sunrise along the top. Peach on one side, saffron in the middle,
+   sage on the other, each fading to the cream page well before the content
+   gets busy, so text never sits on more than a tint.
 
-   Depth comes from three things moving together, the way it does in weather:
-   a near body is bigger, sharper and travels further; a far body is small,
-   heavily blurred and barely moves.
+   Dark: the horizon an hour after sunset, along the bottom. Dusk violet high,
+   terracotta lower, a thin band of apricot right at the edge.
 
-   Blur is in vmax, like the bodies' sizes, so the field is the same picture
-   at every screen size. In px it stayed fixed while the bodies grew, and on
-   a 1920px screen the brightest spot reached 2.6x a phone's — light pooled
-   hard enough that quiet text over it dropped to about 3:1.
+   Alphas are kept low on purpose; quiet text was measured over the brightest
+   pixel of each wash and holds 4.5:1.
 --------------------------------------------------------------------------- */
-.aurora-blob {
-  position: absolute;
-  display: block;
-  border-radius: 9999px;
-  will-change: transform;
-  animation-name: aurora-drift;
-  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
+.sun-wash {
+  background:
+    radial-gradient(
+      70% 50% at 12% -8%,
+      color-mix(in oklab, var(--sun-1) 45%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      60% 40% at 52% -12%,
+      color-mix(in oklab, var(--sun-2) 35%, transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      65% 50% at 92% -6%,
+      color-mix(in oklab, var(--sun-3) 40%, transparent),
+      transparent 70%
+    );
 }
 
-.aurora-far {
-  filter: blur(14.75vmax);
-  opacity: 0.55;
-  --drift-x: 4%;
-  --drift-y: 3%;
-  --drift-scale: 1.06;
-}
-
-.aurora-mid {
-  filter: blur(11vmax);
-  opacity: 0.7;
-  --drift-x: 8%;
-  --drift-y: 6%;
-  --drift-scale: 1.12;
-}
-
-.aurora-near {
-  filter: blur(7.9vmax);
-  opacity: 0.8;
-  --drift-x: 14%;
-  --drift-y: 10%;
-  --drift-scale: 1.18;
-}
-
-@keyframes aurora-drift {
-  from {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  to {
-    transform: translate3d(var(--drift-x), var(--drift-y), 0)
-      scale(var(--drift-scale));
-  }
-}
-
-/* A slow full-viewport wash is exactly what the reduced-motion setting exists
-   to stop. The colour stays; the movement does not. */
-@media (prefers-reduced-motion: reduce) {
-  .aurora-blob {
-    animation: none;
-  }
+:root[data-theme="dark"] .sun-wash {
+  background:
+    radial-gradient(
+      120% 60% at 50% 115%,
+      color-mix(in oklab, var(--sun-3) 22%, transparent),
+      transparent 55%
+    ),
+    radial-gradient(
+      130% 75% at 30% 120%,
+      color-mix(in oklab, var(--sun-2) 45%, transparent),
+      transparent 65%
+    ),
+    radial-gradient(
+      110% 70% at 85% 0%,
+      color-mix(in oklab, var(--sun-1) 55%, transparent),
+      transparent 70%
+    );
 }
 
 /* The outgoing frame leaves slightly faster than the incoming one arrives, so
@@ -550,7 +793,7 @@ small {
    cycle so the whole app has one way of saying "still working", and holds
    still under reduced motion, where the shape alone carries the meaning. */
 @utility skeleton {
-  background-color: color-mix(in oklab, var(--air) 9%, transparent);
+  background-color: color-mix(in oklab, var(--ink) 8%, transparent);
   animation: skeleton-breathe 2.8s cubic-bezier(0.45, 0, 0.55, 1) infinite
     alternate;
 

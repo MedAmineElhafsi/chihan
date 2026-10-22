@@ -74,33 +74,62 @@ export const PROFESSIONS = [
 ] as const;
 export type Profession = (typeof PROFESSIONS)[number];
 
+/**
+ * The categorical palette: earthy mid-tones that sit in both themes — dark
+ * enough to read as a dot on cream, light enough to read on night plum. Used
+ * as fills; as text, pass the colour through `categoryText()`.
+ */
+const HUE = {
+  terracotta: "#c8643b",
+  saffron: "#d89a2b",
+  olive: "#7e9a3f",
+  sage: "#5e9a78",
+  teal: "#3f8f94",
+  slate: "#5b7db8",
+  dusk: "#6f7fa6",
+  plum: "#8e62a8",
+  orchid: "#b5679a",
+  rose: "#c25b7a",
+  clay: "#b07a56",
+  apricot: "#e08a4f",
+  stone: "#8f8579",
+} as const;
+
+/**
+ * A category colour made safe for text in either theme: mixed toward the
+ * page's ink, so it darkens on the light page and lightens on the dark one,
+ * keeping its hue and holding 4.5:1.
+ */
+export function categoryText(color: string) {
+  return `color-mix(in oklab, ${color} 45%, var(--ink))`;
+}
+
 /** Colour + icon per profession (people). */
 export const PROFESSION_STYLE: Record<string, { color: string; icon: string }> = {
-  student: { color: "#38bdf8", icon: "🎓" },
-  worker: { color: "#f97316", icon: "🔧" },
-  engineer: { color: "#a78bfa", icon: "⚙️" },
-  doctor: { color: "#34d399", icon: "🩺" },
-  nurse: { color: "#2dd4bf", icon: "💊" },
-  teacher: { color: "#facc15", icon: "📚" },
-  artist: { color: "#f472b6", icon: "🎨" },
-  business: { color: "#e1b12c", icon: "💼" },
-  driver: { color: "#60a5fa", icon: "🚗" },
-  chef: { color: "#fb7185", icon: "👨‍🍳" },
-  lawyer: { color: "#818cf8", icon: "⚖️" },
-  other: { color: "#cbd5e1", icon: "👤" },
+  student: { color: HUE.slate, icon: "🎓" },
+  worker: { color: HUE.apricot, icon: "🔧" },
+  engineer: { color: HUE.plum, icon: "⚙️" },
+  doctor: { color: HUE.sage, icon: "🩺" },
+  nurse: { color: HUE.teal, icon: "💊" },
+  teacher: { color: HUE.saffron, icon: "📚" },
+  artist: { color: HUE.rose, icon: "🎨" },
+  business: { color: HUE.clay, icon: "💼" },
+  driver: { color: HUE.dusk, icon: "🚗" },
+  chef: { color: HUE.terracotta, icon: "👨‍🍳" },
+  lawyer: { color: HUE.orchid, icon: "⚖️" },
+  other: { color: HUE.stone, icon: "👤" },
 };
 
 /** Colour + icon per business category (listings). */
 export const CATEGORY_STYLE: Record<string, { color: string; icon: string }> = {
-  restaurant: { color: "#d6443b", icon: "🍽️" },
-  doctor: { color: "#1fa36b", icon: "🏥" },
-  grocery: { color: "#3b82f6", icon: "🛒" },
-  lawyer: { color: "#a855f7", icon: "🏛️" },
-  hairdresser: { color: "#ec4899", icon: "✂️" },
-  community: { color: "#14b8a6", icon: "🤝" },
-  // Lime: the one hue no listing or profession marker already uses.
-  classes: { color: "#84cc16", icon: "📚" },
-  other: { color: "#94a3b8", icon: "🏪" },
+  restaurant: { color: HUE.terracotta, icon: "🍽️" },
+  doctor: { color: HUE.sage, icon: "🏥" },
+  grocery: { color: HUE.slate, icon: "🛒" },
+  lawyer: { color: HUE.plum, icon: "🏛️" },
+  hairdresser: { color: HUE.rose, icon: "✂️" },
+  community: { color: HUE.teal, icon: "🤝" },
+  classes: { color: HUE.olive, icon: "📚" },
+  other: { color: HUE.stone, icon: "🏪" },
 };
 
 /** Back-compat colour map (person + categories) used by list UIs. */
@@ -117,7 +146,7 @@ export function pointStyle(
   key: string | null | undefined
 ): { color: string; icon: string } {
   if (kind === "event") {
-    return { color: "#e1b12c", icon: "📅" };
+    return { color: HUE.saffron, icon: "📅" };
   }
   const table = kind === "person" ? PROFESSION_STYLE : CATEGORY_STYLE;
   return table[key ?? "other"] ?? table.other;
@@ -267,18 +296,18 @@ export const HELP_CATEGORY_STYLE: Record<
   // Emoji were replaced: they render differently on every platform, cannot
   // inherit colour or weight, and are the loudest "unconsidered product"
   // signal an interface can carry.
-  housing: { color: "#50e8f4", icon: "House" },
-  paperwork: { color: "#f4c150", icon: "FileText" },
-  work: { color: "#7ee787", icon: "Briefcase" },
-  language: { color: "#c792ea", icon: "MessagesSquare" },
-  health: { color: "#ff7b9c", icon: "Stethoscope" },
-  education: { color: "#79c0ff", icon: "GraduationCap" },
-  family: { color: "#ffa657", icon: "Users" },
-  legal: { color: "#a5d6ff", icon: "Scale" },
-  transport: { color: "#8ddb9c", icon: "Car" },
-  other: { color: "#9cc4cc", icon: "Circle" },
-  interpreting: { color: "#f7a8d8", icon: "Languages" },
-  items: { color: "#ffd479", icon: "Gift" },
+  housing: { color: HUE.teal, icon: "House" },
+  paperwork: { color: HUE.saffron, icon: "FileText" },
+  work: { color: HUE.olive, icon: "Briefcase" },
+  language: { color: HUE.plum, icon: "MessagesSquare" },
+  health: { color: HUE.rose, icon: "Stethoscope" },
+  education: { color: HUE.slate, icon: "GraduationCap" },
+  family: { color: HUE.apricot, icon: "Users" },
+  legal: { color: HUE.dusk, icon: "Scale" },
+  transport: { color: HUE.sage, icon: "Car" },
+  other: { color: HUE.stone, icon: "Circle" },
+  interpreting: { color: HUE.orchid, icon: "Languages" },
+  items: { color: HUE.terracotta, icon: "Gift" },
 };
 
 export const HELP_URGENCIES = ["normal", "soon", "urgent"] as const;

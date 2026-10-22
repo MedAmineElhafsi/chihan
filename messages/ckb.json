@@ -49,7 +49,11 @@
   },
   "Common": {
     "language": "زمان",
-    "or": "یان"
+    "or": "یان",
+    "theme": "ڕووکار",
+    "themeLight": "ڕووناک",
+    "themeDark": "تاریک",
+    "themeSystem": "خۆکار"
   },
   "Landing": {
     "eyebrow": "ماڵێک بۆ کۆچەرانی کورد",

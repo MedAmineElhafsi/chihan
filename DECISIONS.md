@@ -377,3 +377,117 @@ the order.
 **Why.** In the EU that right ends only if the buyer agreed before buying and
 acknowledged what they were giving up. An interface that forgets the box is a
 fortnight of refunds on files people already have. A constraint cannot forget.
+
+## Newroz & Dusk replaces the aurora
+
+**Decision.** The dark-only "Bioluminescence" theme — cyan on deep teal with
+five drifting aurora bodies — is gone. There are two themes now and the
+device chooses between them with `prefers-color-scheme`: **Newroz sunrise**
+(cream ground, burnt-saffron brand `#97481a`, sage second voice) and
+**Dusk** (night-plum ground, apricot brand `#f2a65a`, terracotta). The
+backdrop is a still gradient wash: a sunrise along the top in light, the
+last of the sun along the bottom in dark. Nothing in it moves.
+
+**Why.** The customer did not like the aurora and asked for a comfortable
+graduation of colours. Weather behind the content competed with it; a still
+wash gives the same warmth without pulling the eye or costing frames.
+
+**How it is built.**
+- Tokens were renamed for what they are: `cyan` → `brand`, `air` → `ink`.
+  `depth-0…4` keep their names and roles (0 is chrome, 1 the page, 2 a card)
+  with values per theme. Components never pick a theme themselves.
+- Every text colour holds 4.5:1 on the hover ground and on a 15% brand tint,
+  in both themes. Category colours are earthy mid-tones that work as fills in
+  either theme; as text they go through `categoryText()` in
+  `lib/constants.ts`, which mixes them toward `--ink` (minimum 5.2:1 light,
+  6.6:1 dark).
+- WebGL and map tiles cannot read CSS, so `lib/use-color-scheme.ts` gives
+  them the preference: the globe carries a light and a dark colouring
+  (`GLOBE_THEME`), the listing map switches between OpenFreeMap's Positron
+  and Dark styles.
+- Softer corners (radius scale 0.5 / 0.75 / 1.125 / 1.625 rem) and warm
+  shadows for elevation. The monospace "instrument" voice is retired: the
+  `font-mono` role is the UI sans with tabular figures, `label-mono` is a
+  small uppercase sans caption, and JetBrains Mono is no longer loaded.
+
+**Revised the same day: linen, not paper.** The first light theme (page
+`#fbf7f1`, white cards, brand `#97481a`) was too bright. The page is a warm
+linen `#e9e1d3` now, cards `#f1ebe1`, nothing is pure white, the sunrise
+wash runs at roughly half its alpha, and the brand darkened to `#83390f` to
+keep 4.5:1 on the darker ground. `categoryText()` mixes 55% ink instead of
+45% for the same reason. The dark theme did not change.
+
+## The globe is the real Earth
+
+**Decision.** The globe shows a satellite picture of the Earth: NASA Blue
+Marble in the light theme, NASA city lights at night in the dark theme, with
+a faint relief map for texture. All three are made from the example images
+that ship inside `three-globe` (public domain), graded warm and converted to
+WebP by script — about 240 KB together, served from `public/globe`, so there
+is no third-party request at runtime.
+
+Countries are still drawn on top, invisibly: hovering names one, and a
+selected country gets a soft apricot fill and edge.
+
+**Why.** The customer looked at the solid-plate globe and then a dotted one
+and liked neither; a real Earth was their choice. It also says "the world"
+more plainly than any stylisation.
+
+## Members choose the theme
+
+**Decision.** An Appearance menu — Light, Dark, Automatic — sits in the
+header beside the language switcher and in the phone menu. Automatic, the
+default, follows the device. The choice is stored in this browser only
+(`localStorage["cihan-theme"]`), not on the profile: it is a display
+preference, and it has to work signed out.
+
+**How.** The theme is `data-theme` on `<html>`, and every dark rule in
+`app/globals.css` is scoped to `:root[data-theme="dark"]` rather than a
+`prefers-color-scheme` query. `lib/theme-script.ts` is inlined in `<head>`
+and sets the attribute before first paint, so a pinned theme never flashes
+the other one. `lib/theme.ts` applies changes at runtime and, on Automatic,
+re-applies when the device switches. The globe and map read the attribute
+through `useColorScheme()`.
+
+The page has one `theme-color` tag, created by the script. Next's
+media-keyed `themeColor` tags were removed from the viewport config: they
+are emitted after the script runs and would paint the browser bar for the
+device's theme, not the member's.
+
+## Liquid glass and spring motion
+
+**Decision.** Chrome and surfaces are liquid glass: a translucent fill the
+page shows through (blurred 16–28 px, saturated), a sheen brightest along
+the top edge, a lit upper rim and a darker lower one. Four utilities in
+`app/globals.css`, all driven by `--glass-*` tokens per theme:
+
+- `glass-strong` — header, phone tab bar, menus, dialogs, compose sheet.
+- `panel` — cards (`Card`, directory cards) and the explore panels.
+- `glass-chip` — outline and secondary buttons; a contact shadow, not a
+  floating one, so a row of them does not read as a stack of cards.
+- `liquid-fill` — solid buttons: a highlight that fades out before the label.
+
+The phone tab bar is a floating pill. The active tab carries a lens that
+springs between tabs (Motion `layoutId`, `springFlick`). Buttons are pills.
+
+**Motion.** Everything that moves uses springs with Apple's damping/response
+values. CSS cannot spring natively, so the curves are sampled from the spring
+equation into `linear()` easings (`--ease-spring`, `--ease-spring-bounce`,
+`--ease-spring-press`, each with its settle time as the duration). Menus and
+dialogs grow out of their trigger with a 3% overshoot (`glass-pop`) and leave
+faster than they came; buttons squeeze on pointer-down and spring back
+(`press`); directory cards lift on hover (`lift`). Only `scale`, `translate`
+and `opacity` animate, and `scale` never collides with Tailwind's
+`translate` positioning. Reduced motion drops travel and keeps the fades,
+in CSS and through `MotionConfig reducedMotion="user"`. Reduced transparency
+makes every glass surface solid.
+
+**A bug this fixed.** The stylesheet wrote both `backdrop-filter` and
+`-webkit-backdrop-filter`; Lightning CSS merged them and kept only the
+prefixed one, which Chrome ignores. The old frosted panels never blurred in
+Chrome. Only the unprefixed property is written now, and the build adds the
+prefix for Safari.
+
+**Not done.** True refraction (bending the content behind the glass through
+an SVG displacement filter) works only in Chromium and costs a filter pass
+per frame on every glass surface. It was left out on purpose.

@@ -126,7 +126,7 @@ export function AuthForm({
   if (sent) {
     return (
       <div className="flex flex-col items-center gap-3 py-4 text-center">
-        <div className="flex size-12 items-center justify-center rounded-full bg-secondary text-cyan">
+        <div className="flex size-12 items-center justify-center rounded-full bg-secondary text-brand">
           <MailCheck className="size-6" />
         </div>
         <h3 className="font-display text-lg font-semibold">
@@ -219,7 +219,7 @@ export function AuthForm({
         {isLogin ? t("noAccount") : t("haveAccount")}{" "}
         <Link
           href={isLogin ? "/signup" : "/login"}
-          className="font-medium text-cyan hover:underline"
+          className="font-medium text-brand hover:underline"
         >
           {isLogin ? t("signUpLink") : t("signInLink")}
         </Link>

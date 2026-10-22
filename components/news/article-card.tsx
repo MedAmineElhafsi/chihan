@@ -3,11 +3,11 @@ import { ExternalLink, Globe2, Newspaper } from "lucide-react";
 import type { NewsArticle } from "@/types/news";
 
 const NEWS_COLORS: Record<string, string> = {
-  culture: "#e1b12c",
-  community: "#1fa36b",
-  politics: "#d6443b",
-  diaspora: "#3b82f6",
-  business: "#a855f7",
+  culture: "#d89a2b",
+  community: "#5e9a78",
+  politics: "#c8643b",
+  diaspora: "#5b7db8",
+  business: "#8e62a8",
 };
 
 /** Shared by the News page and Home’s News tab. */
@@ -20,9 +20,9 @@ export function ArticleCard({
   dateLabel: string;
   readMore: string;
 }) {
-  const color = NEWS_COLORS[article.category ?? ""] ?? "#94a3b8";
+  const color = NEWS_COLORS[article.category ?? ""] ?? "#8f8579";
   return (
-    <article className="social-surface hover:border-cyan/25 flex flex-col overflow-hidden transition-colors">
+    <article className="social-surface hover:border-brand/25 flex flex-col overflow-hidden transition-colors">
       <div
         className="relative flex h-40 items-center justify-center sm:h-44"
         style={{
@@ -49,7 +49,7 @@ export function ArticleCard({
       <div className="flex flex-1 flex-col gap-2.5 p-5 sm:p-6">
         {article.country && (
           <span className="text-muted-foreground flex items-center gap-1.5 text-sm font-medium">
-            <Globe2 className="text-cyan size-4" />
+            <Globe2 className="text-brand size-4" />
             {article.country}
           </span>
         )}
@@ -71,7 +71,7 @@ export function ArticleCard({
               href={article.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-cyan inline-flex shrink-0 items-center gap-1 font-medium hover:underline"
+              className="text-brand inline-flex shrink-0 items-center gap-1 font-medium hover:underline"
             >
               {readMore}
               <ExternalLink className="size-3.5" />

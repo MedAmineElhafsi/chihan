@@ -33,7 +33,7 @@ export default async function DownloadsPage({
         ← {t("back")}
       </Link>
 
-      <h1 className="font-display text-air mt-4 text-2xl font-semibold tracking-tight">
+      <h1 className="font-display text-ink mt-4 text-2xl font-semibold tracking-tight">
         {t("downloadsTitle")}
       </h1>
       <p className="text-muted-foreground mt-1 text-sm">
@@ -54,7 +54,7 @@ export default async function DownloadsPage({
               <div className="min-w-0">
                 <div dir="auto" className="font-medium">
                   {p.slug ? (
-                    <Link href={`/bazar/${p.slug}`} className="hover:text-cyan">
+                    <Link href={`/bazar/${p.slug}`} className="hover:text-brand">
                       {p.title || t("anItem")}
                     </Link>
                   ) : (

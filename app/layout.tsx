@@ -3,11 +3,11 @@ import { cookies, headers } from "next/headers";
 import {
   Bricolage_Grotesque,
   Instrument_Sans,
-  JetBrains_Mono,
   Vazirmatn,
 } from "next/font/google";
 
 import { getDir, locales, routing, type Locale } from "@/i18n/routing";
+import { THEME_SCRIPT } from "@/lib/theme-script";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 
@@ -22,13 +22,6 @@ const bricolage = Bricolage_Grotesque({
 const instrument = Instrument_Sans({
   subsets: ["latin"],
   variable: "--font-instrument",
-  display: "swap",
-});
-
-/** Data/instrument readouts — coordinates, counters, micro-labels. */
-const jetbrains = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains",
   display: "swap",
 });
 
@@ -49,7 +42,7 @@ export const metadata: Metadata = {
   applicationName: "Cîhan",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "default",
     title: "Cîhan",
   },
   formatDetection: {
@@ -91,12 +84,16 @@ export default async function RootLayout({
       className={cn(
         bricolage.variable,
         instrument.variable,
-        jetbrains.variable,
         vazirmatn.variable,
-        // Cîhan is a dark product by design; there is no light theme to switch to.
-        "dark antialiased"
+        // The theme is data-theme, set by THEME_SCRIPT below, not a class.
+        "antialiased"
       )}
     >
+      <head>
+        {/* Sets data-theme before first paint, so there is no flash of the
+            wrong theme. suppressHydrationWarning above covers the attribute. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body className="min-h-dvh">{children}</body>
     </html>
   );

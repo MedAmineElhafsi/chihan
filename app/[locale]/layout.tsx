@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { DocumentAttributes } from "@/components/providers/document-attributes";
 import { Backdrop } from "@/components/backdrop";
+import { MotionProvider } from "@/components/providers/motion-provider";
 import { SiteHeader } from "@/components/app-shell/site-header";
 import { TabBar } from "@/components/app-shell/tab-bar";
 import { getCurrentUser } from "@/lib/auth";
@@ -21,10 +22,11 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-// Dark-only product — one committed look.
+// Two themes, Newroz sunrise and Dusk, chosen by the member or the device.
+// No themeColor here: Next would emit media-keyed tags that ignore a pinned
+// theme. lib/theme-script.ts owns the single theme-color tag instead.
 export const viewport: Viewport = {
-  themeColor: "#001619",
-  colorScheme: "dark",
+  colorScheme: "light dark",
 };
 
 export async function generateMetadata({
@@ -57,42 +59,44 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider>
-      <DocumentAttributes />
-      <Backdrop />
-      {/* data-viewer lets a loading skeleton promise only what this viewer
-          will get (a composer for a member, a join prompt for a visitor)
-          with CSS alone, so server and client render the same thing. */}
-      <div
-        data-viewer={user ? "member" : "visitor"}
-        className="group/viewer relative flex min-h-dvh flex-col"
-      >
-        {/* The first stop for a keyboard: past every link in the header,
-            straight to the page. Hidden until it has focus. */}
-        <a
-          href="#main"
-          className="bg-cyan text-primary-foreground shadow-elev-2 sr-only z-[60] rounded-md text-sm font-semibold focus:not-sr-only focus:fixed focus:start-4 focus:top-3 focus:px-4 focus:py-2.5"
+      <MotionProvider>
+        <DocumentAttributes />
+        <Backdrop />
+        {/* data-viewer lets a loading skeleton promise only what this viewer
+            will get (a composer for a member, a join prompt for a visitor)
+            with CSS alone, so server and client render the same thing. */}
+        <div
+          data-viewer={user ? "member" : "visitor"}
+          className="group/viewer relative flex min-h-dvh flex-col"
         >
-          {tNav("skipToContent")}
-        </a>
-        <SiteHeader />
-        {/* Focusable only as the skip link's target, so it needs no ring. */}
-        <main
-          id="main"
-          tabIndex={-1}
-          className="flex-1 pb-20 outline-none lg:pb-0"
-        >
-          {/* Translating reads the text as its reader, so it needs one. */}
-          <TranslateProvider enabled={Boolean(user) && translationAvailable()}>
-            {children}
-          </TranslateProvider>
-        </main>
-        <ShellFooter>
-          <SiteFooter />
-        </ShellFooter>
-      </div>
-      <TabBar signedIn={Boolean(user)} />
-      <InstallPrompt />
-      <ServiceWorkerRegister />
+          {/* The first stop for a keyboard: past every link in the header,
+              straight to the page. Hidden until it has focus. */}
+          <a
+            href="#main"
+            className="bg-brand text-primary-foreground shadow-elev-2 sr-only z-[60] rounded-md text-sm font-semibold focus:not-sr-only focus:fixed focus:start-4 focus:top-3 focus:px-4 focus:py-2.5"
+          >
+            {tNav("skipToContent")}
+          </a>
+          <SiteHeader />
+          {/* Focusable only as the skip link's target, so it needs no ring. */}
+          <main
+            id="main"
+            tabIndex={-1}
+            className="flex-1 pb-[calc(6rem+env(safe-area-inset-bottom))] outline-none lg:pb-0"
+          >
+            {/* Translating reads the text as its reader, so it needs one. */}
+            <TranslateProvider enabled={Boolean(user) && translationAvailable()}>
+              {children}
+            </TranslateProvider>
+          </main>
+          <ShellFooter>
+            <SiteFooter />
+          </ShellFooter>
+        </div>
+        <TabBar signedIn={Boolean(user)} />
+        <InstallPrompt />
+        <ServiceWorkerRegister />
+      </MotionProvider>
     </NextIntlClientProvider>
   );
 }

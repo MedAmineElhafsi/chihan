@@ -40,14 +40,14 @@ export default async function AdminBazarPage({
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <Link
         href="/admin"
-        className="label-mono hover:text-cyan transition-colors"
+        className="label-mono hover:text-brand transition-colors"
       >
         ← {t("adminBack")}
       </Link>
 
       <div className="mt-4 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="font-display text-air text-2xl font-semibold tracking-tight">
+          <h1 className="font-display text-ink text-2xl font-semibold tracking-tight">
             {t("adminTitle")}
           </h1>
           <p className="text-muted-foreground mt-1 text-sm">

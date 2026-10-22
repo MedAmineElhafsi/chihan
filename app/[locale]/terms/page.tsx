@@ -49,7 +49,7 @@ export default async function TermsPage({
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6">
-      <h1 className="font-display text-air text-3xl font-semibold tracking-tight">
+      <h1 className="font-display text-ink text-3xl font-semibold tracking-tight">
         {t("termsTitle")}
       </h1>
       <p className="text-muted-foreground mt-2 text-sm">
@@ -63,7 +63,7 @@ export default async function TermsPage({
       {locale !== BINDING_LOCALE && (
         <div className="border-border bg-depth-1 mt-8 flex items-start gap-3 rounded-lg border p-4">
           <Info
-            className="text-cyan mt-0.5 size-5 shrink-0"
+            className="text-brand mt-0.5 size-5 shrink-0"
             aria-hidden="true"
           />
           <p className="text-muted-foreground text-sm leading-relaxed">
@@ -75,7 +75,7 @@ export default async function TermsPage({
       <div className="mt-10 flex flex-col gap-8">
         {SECTIONS.map((key, i) => (
           <section key={key} className="flex flex-col gap-2">
-            <h2 className="font-display text-air text-lg font-semibold">
+            <h2 className="font-display text-ink text-lg font-semibold">
               {i + 1}. {t(`terms_${key}_title` as never)}
             </h2>
             {t(`terms_${key}_body` as never)
@@ -95,12 +95,12 @@ export default async function TermsPage({
       <p className="text-muted-foreground mt-12 text-sm">
         {t.rich("termsSeeAlso", {
           privacy: (chunks) => (
-            <Link href="/privacy" className="text-cyan hover:underline">
+            <Link href="/privacy" className="text-brand hover:underline">
               {chunks}
             </Link>
           ),
           imprint: (chunks) => (
-            <Link href="/imprint" className="text-cyan hover:underline">
+            <Link href="/imprint" className="text-brand hover:underline">
               {chunks}
             </Link>
           ),
