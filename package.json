@@ -11,6 +11,7 @@
     "test:e2e:ui": "playwright test --ui",
     "video:studio": "remotion studio remotion/index.ts",
     "video:render": "remotion render remotion/index.ts HeroLoop public/video/hero.mp4 --codec=h264",
+    "video:auth": "remotion render remotion/index.ts AuthDawn public/video/auth-dawn.mp4 --codec=h264 --crf=23 && remotion render remotion/index.ts AuthDusk public/video/auth-dusk.mp4 --codec=h264 --crf=23",
     "db:migrate": "node scripts/run-migration.mjs",
     "test:db": "node test/db/run.mjs",
     "env:push": "node scripts/push-env-to-vercel.mjs"

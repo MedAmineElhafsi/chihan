@@ -492,15 +492,31 @@ prefix for Safari.
 an SVG displacement filter) works only in Chromium and costs a filter pass
 per frame on every glass surface. It was left out on purpose.
 
-## The sign-in panel shows the same Earth
+## The sign-in panel is a Remotion film: Newroz over the mountains
 
-The sign-in and sign-up pages used a pre-rendered Remotion video
-(`public/video/hero.mp4`) of a cyan constellation — the old palette, unable
-to follow the theme. It is replaced by `EarthOrb`
-(`components/visuals/earth-orb.tsx`): the globe's own NASA pictures, day or
-night by theme, sliding inside a circle with CSS shading on top. It turns
-once every three minutes, `transform` only, and stands still under reduced
-motion. No WebGL, so the sign-in page stays light.
+The sign-in and sign-up side panel plays a 10-second seamless loop rendered
+with Remotion (`remotion/AuthLoop.tsx`): layered mountain ridges, a sun
+breathing behind them, and small lanterns of light rising off the hills —
+"add your light". Two renders, `AuthDawn` and `AuthDusk`, in the two
+themes' colours (`remotion/theme.ts`), about 1.2 MB each with WebP posters
+of ~5 KB. `npm run video:auth` re-renders both.
 
-The video, its poster and the `remotion/` project are no longer used by any
-page; they were left in place rather than deleted.
+The film carries no text. The headline and coordinates are HTML over it, so
+they are in the reader's language, and they rise in one after another —
+mark, headline word by word, coordinates — on the CSS spring
+(`.auth-rise`).
+
+`components/visuals/auth-motion.tsx` paints the current theme's poster
+through CSS (no flash on load), fades the matching film in once it plays,
+and swaps films live when the theme changes. Under reduced motion only the
+poster shows and no video is fetched.
+
+Built to the remotion-motion-graphics skill's rules: no linear easing, every
+motion a whole number of cycles so the loop has no seam, five layers (sky
+mesh, sun and ridges, lights, grade, grain and vignette), one glowing
+element — the sun. Frames were extracted from the encoded files and checked,
+including the last frame against the first.
+
+This replaced a short-lived CSS Earth orb, which replaced the old cyan
+constellation (`public/video/hero.mp4`, `remotion/HeroLoop.tsx`). Those
+old files are no longer used by any page and were left in place.

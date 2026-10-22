@@ -1,7 +1,11 @@
+import { Fragment, type CSSProperties } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { BrandMark } from "@/components/app-shell/brand";
-import { EarthOrb } from "@/components/visuals/earth-orb";
+import { AuthMotion } from "@/components/visuals/auth-motion";
+
+/** Places an element in the panel's entrance sequence (`.auth-rise`). */
+const step = (i: number) => ({ "--i": i }) as CSSProperties;
 
 export default async function AuthLayout({
   children,
@@ -10,23 +14,30 @@ export default async function AuthLayout({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("Landing");
+  const words = t("ctaTitle").split(" ");
 
   return (
     <div className="grid min-h-[calc(100dvh-3.5rem)] lg:grid-cols-2">
-      {/* The world, turning — the same Earth as the globe, in the page's
-          theme. It replaced a pre-rendered Remotion loop in the old cyan
-          palette, which could follow neither the theme nor the switch. */}
+      {/* Newroz over the mountains — a Remotion loop per theme, with the
+          words written over it in HTML so they are in the reader's language. */}
       <aside className="relative hidden overflow-hidden border-e border-border lg:block">
-        <div className="sun-wash absolute inset-0" />
-        <EarthOrb className="absolute start-1/2 top-[12%] w-[78%] max-w-[36rem] -translate-x-1/2 rtl:translate-x-1/2" />
-        <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-background via-background/80 to-transparent" />
+        <AuthMotion />
+        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background via-background/70 to-transparent" />
 
         <div className="relative flex h-full flex-col justify-end gap-4 p-10">
-          <BrandMark className="size-8" />
+          <BrandMark className="auth-rise size-8" />
           <p className="max-w-sm font-display text-2xl font-semibold leading-tight tracking-tight text-ink">
-            {t("ctaTitle")}
+            {words.map((w, i) => (
+              <Fragment key={i}>
+                <span className="auth-rise inline-block" style={step(i + 1)}>
+                  {w}
+                </span>{" "}
+              </Fragment>
+            ))}
           </p>
-          <p className="label-mono">{t("coordinates")}</p>
+          <p className="auth-rise label-mono" style={step(words.length + 2)}>
+            {t("coordinates")}
+          </p>
         </div>
       </aside>
 
