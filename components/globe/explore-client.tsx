@@ -198,6 +198,7 @@ export function ExploreClient({
           subtitle: p.city ?? "",
           kind: p.kind,
           online: p.kind === "person" ? online.has(p.id) : undefined,
+          category: (p.kind === "person" ? p.profession : p.category) ?? undefined,
         };
       }),
     [layerPoints, matchIds, searching, selectedId, selectedCountry, online]

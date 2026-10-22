@@ -799,6 +799,163 @@ small {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Globe pins (components/globe/globe-gl.tsx) — small liquid-glass map pins:
+   a round glass head with the category's line icon and a rim in its colour
+   (--pin), and a tip on the exact coordinate. They spring up on hover, a
+   selected pin springs larger with a little overshoot, and pins filtered
+   out or on the far side of the planet fade.
+--------------------------------------------------------------------------- */
+.globe-pin-anchor {
+  transition: opacity 220ms ease;
+}
+
+.globe-pin-anchor[data-far] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.globe-pin {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Lift by half the pin, so the tip — not the middle — is on the point. */
+  translate: 0 -50%;
+  transform-origin: 50% 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    scale var(--spring-bounce-duration) var(--ease-spring-bounce),
+    opacity 220ms ease;
+}
+
+.globe-pin-head {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  color: color-mix(in oklab, var(--pin) 50%, var(--ink));
+  background: var(--glass-sheen), var(--glass-fill-strong);
+  backdrop-filter: blur(10px) saturate(180%);
+  border: 1.5px solid var(--pin);
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-edge),
+    0 6px 14px -6px rgba(0, 0, 0, 0.45);
+}
+
+.globe-pin-tip {
+  width: 10px;
+  height: 7px;
+  margin-top: -1px;
+  background: var(--pin);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.globe-pin-online {
+  position: absolute;
+  top: -2px;
+  inset-inline-end: -2px;
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px;
+  background: var(--success);
+  box-shadow: 0 0 0 2px var(--depth-2);
+}
+
+.globe-pin-label {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+  color: var(--ink);
+  background: var(--glass-sheen), var(--glass-fill-strong);
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--glass-shadow);
+  opacity: 0;
+  translate: 0 4px;
+  pointer-events: none;
+  transition:
+    opacity 160ms ease,
+    translate var(--spring-duration) var(--ease-spring);
+}
+
+.globe-pin-label span {
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
+@media (hover: hover) {
+  .globe-pin:hover {
+    scale: 1.2;
+    z-index: 2;
+  }
+  .globe-pin:hover .globe-pin-label {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.globe-pin:focus-visible {
+  outline: none;
+}
+
+.globe-pin:focus-visible .globe-pin-head {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+.globe-pin[data-selected] {
+  scale: 1.35;
+  z-index: 3;
+}
+
+.globe-pin[data-selected] .globe-pin-head {
+  border-width: 2px;
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-edge),
+    0 0 0 4px color-mix(in oklab, var(--pin) 25%, transparent),
+    0 8px 18px -6px rgba(0, 0, 0, 0.5);
+}
+
+.globe-pin[data-selected] .globe-pin-label {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* A freshly selected pin is a new element, so it arrives with the spring. */
+.globe-pin[data-selected] {
+  animation: pin-select var(--spring-bounce-duration) var(--ease-spring-bounce)
+    both;
+}
+
+@keyframes pin-select {
+  from {
+    scale: 1;
+  }
+}
+
+.globe-pin[data-dimmed] {
+  opacity: 0.35;
+  scale: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .globe-pin[data-selected] {
+    animation: none;
+  }
+}
+
 /* The outgoing frame leaves slightly faster than the incoming one arrives, so
    the two never both sit at full strength and wash the page out. */
 

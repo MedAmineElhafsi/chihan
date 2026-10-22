@@ -553,3 +553,24 @@ and their tests, internal keys such as `cihan-theme` in localStorage and the
 `aboutCihan` message key, and the secrets file. Changing those is
 infrastructure work with no visible effect, and the deployment URL changes
 when a real domain is attached anyway.
+
+## Globe markers are glass pins
+
+**Decision.** The members, places and events on the globe are small
+liquid-glass map pins instead of flat coloured dots: a round frosted head
+with the category's line icon (graduation cap for a student, fork and knife
+for a restaurant, calendar for an event — `components/globe/pin-glyphs.tsx`),
+a rim and a tip in the category colour, and a green dot for a member who is
+online. On hover a pin springs up and shows a glass label with the name and
+city; a selected pin springs larger with a slight overshoot; filtered-out
+pins fade; pins on the far side of the planet fade out rather than show
+through it.
+
+**How.** They are HTML elements (`htmlElementsData`), styled as
+`.globe-pin` in globals.css, not WebGL points. Icons are rendered to SVG
+markup once per kind and reused, so no React mounts per pin. A pin stops
+`pointerdown` from reaching the globe's drag controls — they capture the
+pointer, and the click never landed on the pin otherwise.
+
+At city scale pins overlap. That is accepted for now; if the directory grows,
+cluster nearby pins into one with a count.
