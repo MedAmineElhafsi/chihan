@@ -572,5 +572,17 @@ markup once per kind and reused, so no React mounts per pin. A pin stops
 `pointerdown` from reaching the globe's drag controls — they capture the
 pointer, and the click never landed on the pin otherwise.
 
-At city scale pins overlap. That is accepted for now; if the directory grows,
-cluster nearby pins into one with a count.
+**Pins that would overlap become one bubble** (`components/globe/cluster.ts`):
+a glass disc with the count, the cities on hover. Grouping is by the angle
+between points on the sphere against a threshold that scales with the
+camera's altitude, so zooming in splits bubbles and zooming out merges them;
+it is recomputed in steps of about a quarter of the altitude, not on every
+frame. Clicking a bubble flies the camera about twice as close, so groups
+open level by level (31 over Europe → 7 → 3 in Paris). When the members
+share an address and no zoom could separate them, the bubble opens a glass
+list of them instead, and picking one selects it. A selected point never
+joins a bubble.
+
+The globe library sets each marker's z-index inline on every frame, so the
+marker being hovered, selected or opened is lifted with an `!important`
+rule on its anchor.

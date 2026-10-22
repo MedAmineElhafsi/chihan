@@ -11,6 +11,7 @@ import * as THREE from "three";
 import Globe, { type GlobeMethods } from "react-globe.gl";
 
 import { useColorScheme } from "@/lib/use-color-scheme";
+import { clusterPoints, isCluster, type Cluster } from "./cluster";
 import { pinGlyph } from "./pin-glyphs";
 
 export type GlobeDatum = {
@@ -64,6 +65,65 @@ function pinElement(p: GlobeDatum, onClick: (id: string) => void) {
   });
 
   wrap.appendChild(pin);
+  return wrap;
+}
+
+/**
+ * A bubble standing in for pins that would overlap at this zoom: a glass
+ * disc with the count, the cities on hover. Clicking zooms in on it, which
+ * splits it; when its members share an address and no zoom could, it opens
+ * a list of them instead.
+ */
+function clusterElement(
+  c: Cluster<GlobeDatum>,
+  onBubble: (c: Cluster<GlobeDatum>, el: HTMLElement) => void,
+  onPick: (id: string) => void
+) {
+  const wrap = document.createElement("div");
+  wrap.className = "globe-pin-anchor";
+
+  const cities = [...new Set(c.members.map((m) => m.subtitle).filter(Boolean))];
+  const where =
+    cities.slice(0, 2).join(", ") + (cities.length > 2 ? ", …" : "");
+  const count = new Intl.NumberFormat(document.documentElement.lang).format(
+    c.members.length
+  );
+
+  const box = document.createElement("div");
+  box.className = "globe-cluster";
+  if (c.dimmed) box.dataset.dimmed = "";
+  box.innerHTML = `<button type="button" class="globe-cluster-bubble" aria-label="${escapeHtml(
+    `${count} · ${where}`
+  )}" aria-expanded="false">${count}</button><span class="globe-pin-tip"></span>${
+    where ? `<span class="globe-pin-label">${escapeHtml(where)}</span>` : ""
+  }<div class="globe-cluster-list">${c.members
+    .map(
+      (m) =>
+        `<button type="button" data-id="${escapeHtml(m.id)}" style="--pin:${m.color}"><span class="globe-cluster-icon">${pinGlyph(
+          m.kind,
+          m.category
+        )}</span><span class="globe-cluster-name">${escapeHtml(m.name)}${
+          m.subtitle ? `<small>${escapeHtml(m.subtitle)}</small>` : ""
+        }</span></button>`
+    )
+    .join("")}</div>`;
+
+  // Same reason as a pin: keep the drag controls from capturing the pointer.
+  // The list scrolls, so the wheel must not zoom the globe either.
+  box.addEventListener("pointerdown", (e) => e.stopPropagation());
+  box.addEventListener("wheel", (e) => e.stopPropagation());
+  box.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const target = e.target as HTMLElement;
+    const member = target.closest<HTMLElement>("[data-id]");
+    if (member?.dataset.id) {
+      onPick(member.dataset.id);
+      return;
+    }
+    if (target.closest(".globe-cluster-bubble")) onBubble(c, box);
+  });
+
+  wrap.appendChild(box);
   return wrap;
 }
 
@@ -168,6 +228,41 @@ export default function GlobeGL({
     clickRef.current = onPointClick;
   }, [onPointClick]);
 
+  // Clustering follows the zoom, in steps of about a quarter of the
+  // altitude, so pins are regrouped when the view has really changed and
+  // not on every frame of a scroll.
+  const [altitude, setAltitude] = useState(2.5);
+  const onZoom = ({ altitude: a }: { altitude: number }) => {
+    const stepped = 2 ** (Math.round(Math.log2(a) * 3) / 3);
+    setAltitude((prev) => (prev === stepped ? prev : stepped));
+  };
+  const markers = useMemo(
+    () => clusterPoints(points, altitude),
+    [points, altitude]
+  );
+
+  // A bubble flies the camera in far enough to split it; members that share
+  // an address can never be split, so their bubble opens a list.
+  const onBubble = (c: Cluster<GlobeDatum>, el: HTMLElement) => {
+    const g = globeRef.current;
+    const now = g?.pointOfView().altitude ?? altitude;
+    const target = Math.max(0.12, Math.min(now * 0.45, (c.spread / 4.5) * 0.8));
+    if (!g || c.spread < 0.05 || target >= now * 0.95) {
+      const open = !el.hasAttribute("data-open");
+      el.toggleAttribute("data-open", open);
+      el.querySelector(".globe-cluster-bubble")?.setAttribute(
+        "aria-expanded",
+        String(open)
+      );
+      return;
+    }
+    g.pointOfView({ lat: c.lat, lng: c.lng, altitude: target }, 900);
+  };
+  const bubbleRef = useRef(onBubble);
+  useEffect(() => {
+    bubbleRef.current = onBubble;
+  });
+
   // A matte material for the satellite picture: no shine, so the texture
   // reads as the Earth rather than a glossy ball. The library puts the image
   // and the relief map onto it.
@@ -215,12 +310,19 @@ export default function GlobeGL({
       /* Glass pins: HTML elements the library keeps on their coordinates,
          styled in globals.css (.globe-pin). Pins on the far side of the
          planet fade out rather than showing through it. */
-      htmlElementsData={points}
+      htmlElementsData={markers}
       htmlLat="lat"
       htmlLng="lng"
       htmlAltitude={0.005}
       htmlTransitionDuration={0}
-      htmlElement={(d: object) => pinElement(d as GlobeDatum, (id) => clickRef.current(id))}
+      htmlElement={(d: object) => {
+        const m = d as GlobeDatum | Cluster<GlobeDatum>;
+        const pick = (id: string) => clickRef.current(id);
+        return isCluster(m)
+          ? clusterElement(m, (c, el) => bubbleRef.current(c, el), pick)
+          : pinElement(m, pick);
+      }}
+      onZoom={onZoom}
       htmlElementVisibilityModifier={(el: HTMLElement, visible: boolean) => {
         el.toggleAttribute("data-far", !visible);
       }}
